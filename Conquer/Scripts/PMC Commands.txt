@@ -1,0 +1,1 @@
+Scaffold-DbContext "Server=DESKTOP-IGJ0C36\SQLEXPRESS;Database=Conquer;Trusted_Connection=True;TrustServerCertificate=true" Microsoft.EntityFrameworkCore.SqlServer -Namespace "Conquer.Models.Domain" -OutputDir "C:\GIT\AdminCRM\Conquer\Conquer.Models\Domain" -force
