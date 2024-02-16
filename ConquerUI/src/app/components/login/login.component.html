@@ -1,0 +1,46 @@
+<div class="flex justify-content-center align-items-center h-full">
+  <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+    <p-card header="Login" [style]="{ width: '360px' }">
+      <div class="field">
+        <label for="userName">User Name</label>
+        <input
+          type="text"
+          pInputText
+          formControlName="userName"
+          class="w-full"
+          name="userName"
+          placeholder="Enter User Name"
+        />
+        <small
+          *ngIf="userName.invalid || userName.dirty || userName.touched"
+          class="block p-error"
+        >
+          <div *ngIf="userName.errors?.['required']">User Name is required</div>
+        </small>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          pInputText
+          formControlName="password"
+          class="w-full"
+          name="password"
+          placeholder="Enter Password"
+        />
+        <small
+          *ngIf="password.invalid || password.dirty || password.touched"
+          class="block p-error"
+        >
+          <div *ngIf="password.errors?.['required']">Password is required</div>
+        </small>
+      </div>
+      <p-button
+        label="Login"
+        styleClass="w-full"
+        (click)="onLoginSubmit()"
+      ></p-button>
+    </p-card>
+  </form>
+  <p-toast position="top-center"></p-toast>
+</div>
