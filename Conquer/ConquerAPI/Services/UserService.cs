@@ -1,4 +1,4 @@
-﻿using Conquer.Models.Domain;
+﻿using ConquerAPI.Models.Domain;
 using ConquerAPI.DTOs;
 using ConquerAPI.Services.Interfaces;
 using System.Security.Claims;

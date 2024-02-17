@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Conquer.Models.Domain;
+using ConquerAPI.Models.Domain;
 using ConquerAPI.DTOs;
 
 namespace ConquerAPI

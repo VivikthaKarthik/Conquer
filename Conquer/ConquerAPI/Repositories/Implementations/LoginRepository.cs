@@ -1,4 +1,4 @@
-﻿using Conquer.Models.Domain;
+﻿using ConquerAPI.Models.Domain;
 using ConquerAPI.DTOs;
 using ConquerAPI.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,4 @@
-﻿using Conquer.Models.Domain;
+﻿using ConquerAPI.Models.Domain;
 using ConquerAPI.Repositories.Interfaces;
 using ConquerAPI.Services.Interfaces;
 

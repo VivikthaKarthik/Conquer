@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Conquer.Models.Domain;
+namespace ConquerAPI.Models.Domain;
 
 public partial class Company
 {

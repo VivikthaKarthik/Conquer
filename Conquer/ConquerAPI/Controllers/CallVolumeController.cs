@@ -1,26 +1,9 @@
 ﻿using AutoMapper;
-using Azure;
-using BrunoZell.ModelBinding;
-using Conquer.Models.Domain;
 using ConquerAPI.DTOs;
-using ConquerAPI.Repositories.Interfaces;
-using ExcelDataReader;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing.Constraints;
-using System.Security.Claims;
-using static System.Net.Mime.MediaTypeNames;
-using System.Text;
-using System.IO;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Wordprocessing;
-using DocumentFormat.OpenXml.Drawing;
-using Paragraph = DocumentFormat.OpenXml.Drawing.Paragraph;
-using Run = DocumentFormat.OpenXml.Wordprocessing.Run;
+using ConquerAPI.Models.Domain;
 using ConquerAPI.Repositories.Implementations;
-using ConquerAPI.Repositories;
+using ConquerAPI.Repositories.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ConquerAPI.Controllers
 {

@@ -1,4 +1,4 @@
-using Conquer.Models.Domain;
+using ConquerAPI.Models.Domain;
 using ConquerAPI.Repositories.Implementations;
 using ConquerAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;

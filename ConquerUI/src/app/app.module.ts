@@ -16,6 +16,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { HomeComponent } from './components/home/home.component';
+import { MainHeaderComponent } from './main-header/main-header.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { HomeComponent } from './components/home/home.component';
     RegisterComponent,
     HomeComponent,
     PageNotFoundComponent,
+    MainHeaderComponent,
   ],
   imports: [
     BrowserModule,

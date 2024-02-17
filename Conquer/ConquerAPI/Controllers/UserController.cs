@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using Conquer.Models.Domain;
 using ConquerAPI.DTOs;
+using ConquerAPI.Models.Domain;
 using ConquerAPI.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
