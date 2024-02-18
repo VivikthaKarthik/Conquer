@@ -18,6 +18,10 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { HomeComponent } from './components/home/home.component';
 import { MainHeaderComponent } from './main-header/main-header.component';
 
+import { CallvolumeComponent } from './components/callvolume/callvolume.component';
+import { UserComponent } from './components/user/user.component';
+import { AgGridAngular } from 'ag-grid-angular';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,6 +30,9 @@ import { MainHeaderComponent } from './main-header/main-header.component';
     HomeComponent,
     PageNotFoundComponent,
     MainHeaderComponent,
+    CallvolumeComponent,
+    UserComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -37,6 +44,7 @@ import { MainHeaderComponent } from './main-header/main-header.component';
     ButtonModule,
     ToastModule,
     BrowserAnimationsModule,
+    AgGridAngular
   ],
   providers: [AuthService, MessageService],
   bootstrap: [AppComponent],

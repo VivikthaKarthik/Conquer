@@ -1,0 +1,18 @@
+<!-- <div style="display: none;">
+    <button
+      (click)="onBtExport()"
+      style="margin-bottom: 5px; font-weight: bold;"
+    >
+      Export to Excel
+    </button>
+  </div> -->
+
+<div class="row">
+    <div class="col-12">
+        <ag-grid-angular class="ag-theme-quartz" style="height:500px;width: 100%;" 
+        [rowData]="callVolumeList" 
+        [columnDefs]="colDefs"
+        [defaultColDef]="defaultColDef">
+        </ag-grid-angular>
+    </div>
+</div>

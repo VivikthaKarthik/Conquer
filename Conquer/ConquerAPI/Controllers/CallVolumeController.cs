@@ -3,11 +3,12 @@ using ConquerAPI.DTOs;
 using ConquerAPI.Models.Domain;
 using ConquerAPI.Repositories.Implementations;
 using ConquerAPI.Repositories.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ConquerAPI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CallVolumeController : ControllerBase

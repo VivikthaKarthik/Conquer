@@ -58,7 +58,7 @@ public partial class ConquerContext : DbContext
 
         modelBuilder.Entity<Company>(entity =>
         {
-            entity.HasKey(e => e.CompanyId).HasName("PK__Company__2D971CAC39A2DC01");
+            entity.HasKey(e => e.CompanyId).HasName("PK__Company__2D971CACFBC2971B");
 
             entity.ToTable("Company");
 
@@ -69,7 +69,7 @@ public partial class ConquerContext : DbContext
 
             entity.HasOne(d => d.ParentCompany).WithMany(p => p.InverseParentCompany)
                 .HasForeignKey(d => d.ParentCompanyId)
-                .HasConstraintName("FK__Company__ParentC__398D8EEE");
+                .HasConstraintName("FK__Company__ParentC__412EB0B6");
         });
 
         modelBuilder.Entity<Role>(entity =>
