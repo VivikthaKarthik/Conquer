@@ -7,9 +7,12 @@ import { SideBarComponent } from './containers/side-bar/side-bar.component';
 import { HeaderComponent } from './containers/header/header.component';
 import { HeaderService } from './services/services/header-service.service';
 import { HomeComponent } from './components/home/home.component';
+import { NavigationHistoryComponent } from './widgets/navigation-history/navigation-history.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { GridComponent } from './widgets/grid/grid.component';
 
 @NgModule({
-  declarations: [AppComponent, SideBarComponent, HeaderComponent, HomeComponent],
+  declarations: [AppComponent, SideBarComponent, HeaderComponent, HomeComponent, NavigationHistoryComponent, DashboardComponent, GridComponent],
   imports: [BrowserModule, AppRoutingModule],
   providers: [HeaderService],
   bootstrap: [AppComponent],
