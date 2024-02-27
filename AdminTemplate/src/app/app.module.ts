@@ -10,9 +10,10 @@ import { HomeComponent } from './components/home/home.component';
 import { NavigationHistoryComponent } from './widgets/navigation-history/navigation-history.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { GridComponent } from './widgets/grid/grid.component';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
-  declarations: [AppComponent, SideBarComponent, HeaderComponent, HomeComponent, NavigationHistoryComponent, DashboardComponent, GridComponent],
+  declarations: [AppComponent, SideBarComponent, HeaderComponent, HomeComponent, NavigationHistoryComponent, DashboardComponent, GridComponent, LoginComponent],
   imports: [BrowserModule, AppRoutingModule],
   providers: [HeaderService],
   bootstrap: [AppComponent],
