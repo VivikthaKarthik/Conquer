@@ -5,6 +5,8 @@ import { HomeComponent } from './components/home/home.component';
 import { AuthGuard } from './guards/auth.guard';
 import { CourseComponent } from './components/course/course.component';
 import { SubjectComponent } from './components/subject/subject.component';
+import { HeaderComponent } from './shared/header/header.component';
+import { SidebarComponent } from './shared/sidebar/sidebar.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -24,10 +26,18 @@ const routes: Routes = [
       },
     ],
   },
+  {
+    path: 'header',
+    component: HeaderComponent
+  },
+  {
+    path: 'sidebar',
+    component: SidebarComponent
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

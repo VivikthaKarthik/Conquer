@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CourseComponent } from './components/course/course.component';
 import { SubjectComponent } from './components/subject/subject.component';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, HomeComponent, CourseComponent, SubjectComponent],
@@ -21,8 +22,9 @@ import { SubjectComponent } from './components/subject/subject.component';
     ReactiveFormsModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule
   ],
   providers: [AuthService, MasterService],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

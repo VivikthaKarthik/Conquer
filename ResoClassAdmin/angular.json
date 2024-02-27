@@ -31,17 +31,32 @@
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "src/styles.css",
-              "src/assets/css/style.css",
               "src/assets/css/bootstrap.min.css",
-              "src/assets/css/font-awesome.min.css"
+              "src/assets/css/font-awesome.min.css",
+              "src/assets/css/style.css",
+              "src/assets/css/font-awesome.min.css",
+              "src/assets/css/line-awesome.min.css",
+              "src/assets/css/dataTables.bootstrap4.min.css",
+              "src/assets/css/select2.min.css",
+              "src/assets/css/bootstrap-datetimepicker.min.css"
             ],
             "scripts": [
               "src/assets/js/jquery-3.5.1.min.js",
               "src/assets/js/popper.min.js",
               "src/assets/js/bootstrap.min.js",
               "src/assets/js/app.js",
-              "src/assets/js/html5shiv.min.js",
-              "src/assets/js/respond.min.js"
+              "src/assets/js/jquery.slimscroll.min.js",
+              
+              "src/assets/js/bootstrap.min.js",
+              "src/assets/js/jquery.slimscroll.min.js",
+              "src/assets/js/select2.min.js",
+              "src/assets/js/moment.min.js",
+              "src/assets/js/bootstrap-datetimepicker.min.js",
+              "src/assets/js/jquery.dataTables.min.js",
+              "src/assets/js/dataTables.bootstrap4.min.js",
+              "src/assets/js/app.js",
+              "src/assets/js/sidebar.js",
+              "src/assets/js/sweetalert.min.js"
             ]
           },
           "configurations": {
@@ -98,5 +113,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
