@@ -9,12 +9,13 @@ import { AuthService } from './services/auth.service';
 import { MasterService } from './services/master.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { CourseComponent } from './components/course/course.component';
+
 import { SubjectComponent } from './components/subject/subject.component';
-import { SharedModule } from './shared/shared.module';
+
+import { LayoutModule } from './layout/layout.module';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, HomeComponent, CourseComponent, SubjectComponent],
+  declarations: [AppComponent, LoginComponent, HomeComponent, SubjectComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -22,7 +23,10 @@ import { SharedModule } from './shared/shared.module';
     ReactiveFormsModule,
     FormsModule,
     ReactiveFormsModule,
-    SharedModule
+        LayoutModule
+  ],
+  exports:[
+    LayoutModule
   ],
   providers: [AuthService, MasterService],
   bootstrap: [AppComponent],

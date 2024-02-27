@@ -1,1 +1,172 @@
-<p>subject works!</p>
+<div class="main-wrapper">
+    
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="page-title">Subjects</h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Subjects</li>
+                        </ul>
+                    </div>
+                    <div class="col-auto float-right ml-auto">
+                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_subject"><i
+                                class="fa fa-plus"></i> Add Subject</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 pad_b_20">
+                    <h4>Bulk Upload</h4>
+                    <form class="import_div" id="importform" action="#" method="POST">
+                        <input type="file" class="form-control" name="import_file" required>
+                        <button class="btn import-btn" type="submit"><i class="las la-file-upload"></i> Import</button>
+                    </form>
+                </div>
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped custom-table datatable">
+                            <thead>
+                                <tr>
+                                    <th class="no-sort"></th>
+                                    <th>S. No.</th>
+                                    <th>Subject</th>
+                                    <th>Course/Class Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <button class="btn edit m-r-5" id="1" onclick="editrecord(this.id);"
+                                            data-toggle="modal" data-target="#edit_subject" type="button"><i
+                                                class="fa fa-pencil"></i></button>
+                                        <button class="btn delete m-r-5" id="1" onclick="deleterecord(this.id);"
+                                            type="button"><i class="fa fa-trash-o"></i></button>
+                                    </td>
+                                    <td>1</td>
+                                    <td>Botany</td>
+                                    <td>Class 11/NEET</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <button class="btn edit m-r-5" id="2" onclick="editrecord(this.id);"
+                                            data-toggle="modal" data-target="#edit_subject" type="button"><i
+                                                class="fa fa-pencil"></i></button>
+                                        <button class="btn delete m-r-5" id="2" onclick="deleterecord(this.id);"
+                                            type="button"><i class="fa fa-trash-o"></i></button>
+                                    </td>
+                                    <td>2</td>
+                                    <td>Zoology</td>
+                                    <td>Class 12/NEET</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <button class="btn edit m-r-5" id="3" onclick="editrecord(this.id);"
+                                            data-toggle="modal" data-target="#edit_subject" type="button"><i
+                                                class="fa fa-pencil"></i></button>
+                                        <button class="btn delete m-r-5" id="3" onclick="deleterecord(this.id);"
+                                            type="button"><i class="fa fa-trash-o"></i></button>
+                                    </td>
+                                    <td>3</td>
+                                    <td>Zoology</td>
+                                    <td>Class 11/NEET</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <button class="btn edit m-r-5" id="4" onclick="editrecord(this.id);"
+                                            data-toggle="modal" data-target="#edit_subject" type="button"><i
+                                                class="fa fa-pencil"></i></button>
+                                        <button class="btn delete m-r-5" id="4" onclick="deleterecord(this.id);"
+                                            type="button"><i class="fa fa-trash-o"></i></button>
+                                    </td>
+                                    <td>4</td>
+                                    <td>Botany</td>
+                                    <td>Class 12/NEET</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="add_subject" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Subject</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addform">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group form-focus">
+                                        <input type="text" class="form-control floating" id="subject_name"
+                                            name="subject_name">
+                                        <label class="focus-label">Subject Name *</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <select class="select floating" id="class_id" name="class_id">
+                                            <option value="">Select Course/Class</option>
+                                            <option value="1">Class 11/NEET</option>
+                                            <option value="2">Class 12/NEET</option>
+                                        </select>
+                                        <label class="focus-label">Course/Class *</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="edit_subject" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Subject</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editform">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group form-focus">
+                                        <input type="text" class="form-control floating" id="edit_subject_name"
+                                            name="subject_name">
+                                        <label class="focus-label">Subject Name *</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <select class="select floating" id="edit_class_id" name="class_id">
+                                            <option value="">Select Course/Class</option>
+                                            <option value="1">Class 11/NEET</option>
+                                            <option value="2">Class 12/NEET</option>
+                                        </select>
+                                        <label class="focus-label">Course/Class *</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <input type="hidden" id="subject_id" name="subject_id">
+                                <button class="btn btn-primary submit-btn" type="submit">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

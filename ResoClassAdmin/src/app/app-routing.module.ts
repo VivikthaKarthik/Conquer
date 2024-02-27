@@ -7,12 +7,13 @@ import { CourseComponent } from './components/course/course.component';
 import { SubjectComponent } from './components/subject/subject.component';
 import { HeaderComponent } from './shared/header/header.component';
 import { SidebarComponent } from './shared/sidebar/sidebar.component';
+import { LayoutComponent } from './layout/layout.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
     path: '',
-    component: HomeComponent,
+    component: LayoutComponent,
     canActivate: [AuthGuard],
     // pathMatch: 'full',
     children: [
