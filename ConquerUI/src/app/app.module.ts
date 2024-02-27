@@ -21,6 +21,9 @@ import { MainHeaderComponent } from './main-header/main-header.component';
 import { CallvolumeComponent } from './components/callvolume/callvolume.component';
 import { UserComponent } from './components/user/user.component';
 import { AgGridAngular } from 'ag-grid-angular';
+import { DefaultFooterComponent } from './containers/default-layouts/default-footer/default-footer.component';
+import { DefaultHeaderComponent } from './containers/default-layouts/default-header/default-header.component';
+import { DefaultLayoutsComponent } from './containers/default-layouts/default-layouts.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +34,10 @@ import { AgGridAngular } from 'ag-grid-angular';
     PageNotFoundComponent,
     MainHeaderComponent,
     CallvolumeComponent,
-    UserComponent
+    UserComponent,
+    DefaultFooterComponent,
+    DefaultHeaderComponent,
+    DefaultLayoutsComponent
     
   ],
   imports: [

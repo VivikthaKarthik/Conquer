@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs';
 export class AppComponent {
   title = 'AdminTemplate';
   status = false;
+  
   subscription: Subscription | undefined;
   constructor(private headerService: HeaderService) {}
 
@@ -22,5 +23,7 @@ export class AppComponent {
     this.subscription = this.headerService
       .get()
       .subscribe((sideNav) => (this.status = sideNav));
+
+      
   }
 }

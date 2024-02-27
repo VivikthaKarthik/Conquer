@@ -9,7 +9,7 @@ import { navItems } from './_nav';
 })
 export class DefaultLayoutComponent {
 
-  public navItems = navItems;
+  //public navItems = navItems;
 
   constructor() {}
 }

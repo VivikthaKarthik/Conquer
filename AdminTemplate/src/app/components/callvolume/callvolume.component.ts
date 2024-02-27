@@ -1,17 +1,19 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component,OnInit} from '@angular/core';
-import {ColDef} from 'ag-grid-community'
-import { AuthService } from '../../services/auth.service';
+import { AgGridAngular } from 'ag-grid-angular'; 
+import { ColDef } from 'ag-grid-community'; 
+import { AuthService } from '../../services/services/auth.service';
 
 @Component({
   selector: 'app-callvolume',
   templateUrl: './callvolume.component.html',
   styleUrl: './callvolume.component.css'
 })
-export class CallvolumeComponent implements OnInit {
+export class CallvolumeComponent implements OnInit{
+  
   callVolumeList:any [] = [];
   colDefs: ColDef[] = [
-    {field: "callVolumeId",filter:'agTextColumnFilter'},
+    {field: "callVolumeId",filter:'agTextColumnFilter',checkboxSelection:true},
     {field: "customerName",filter:'agTextColumnFilter'},
     {field: "phoneNumber",filter:'agTextColumnFilter'},
     {field: "email",filter:'agTextColumnFilter'},
@@ -51,4 +53,3 @@ export class CallvolumeComponent implements OnInit {
     })
   }
   }
-
