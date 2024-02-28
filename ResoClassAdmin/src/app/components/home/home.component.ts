@@ -12,12 +12,4 @@ export class HomeComponent {
   logout() {
     this.auth.logout();
   }
-
-  NavigateToCourse() {
-    this._router.navigate(['course']);
-  }
-
-  NavigateToSubject() {
-    this._router.navigate(['subject']);
-  }
 }

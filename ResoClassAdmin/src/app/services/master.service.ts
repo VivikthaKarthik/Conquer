@@ -6,13 +6,24 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class MasterService {
-  private baseUrl: string = 'https://localhost:7292/api/User/Authenticate';
+  private baseUrl: string = 'https://localhost:7292/api';
   constructor(private http: HttpClient) {}
 
-  public post(obj: any, api: string): Observable<any> {
+  public post(obj: any, apiName: string): Observable<any> {
     const header = new HttpHeaders({
       contentType: 'application/json',
     });
-    return this.http.post<any>(this.baseUrl, obj, { headers: header });
+    return this.http.post<any>(`${this.baseUrl}/${apiName}`, obj, {
+      headers: header,
+    });
+  }
+
+  public fetchDataWithToken(apiName: string) {
+    // Set the auth token in the request headers
+    let token = localStorage.getItem('authToken');
+    const headers = new HttpHeaders().set('Authorization', `${token}`);
+
+    // Make the HTTP request with the auth token included
+    return this.http.get(`${this.baseUrl}/${apiName}`, { headers });
   }
 }

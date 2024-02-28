@@ -289,16 +289,16 @@ $(document).ready(function() {
 	
 	// Small Sidebar
 
-	$(document).on('click', '#toggle_btn', function() {
-		if($('body').hasClass('mini-sidebar')) {
-			$('body').removeClass('mini-sidebar');
-			$('.subdrop + ul').slideDown();
-		} else {
-			$('body').addClass('mini-sidebar');
-			$('.subdrop + ul').slideUp();
-		}
-		return false;
-	});
+	// $(document).on('click', '#toggle_btn', function() {
+	// 	if($('body').hasClass('mini-sidebar')) {
+	// 		$('body').removeClass('mini-sidebar');
+	// 		$('.subdrop + ul').slideDown();
+	// 	} else {
+	// 		$('body').addClass('mini-sidebar');
+	// 		$('.subdrop + ul').slideUp();
+	// 	}
+	// 	return false;
+	// });
 	$(document).on('mouseover', function(e) {
 		e.stopPropagation();
 		if($('body').hasClass('mini-sidebar') && $('#toggle_btn').is(':visible')) {

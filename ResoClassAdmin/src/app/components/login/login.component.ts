@@ -40,7 +40,7 @@ export class LoginComponent {
       next: (res) => {
         if (res != null && res.isSuccess === true) {
           this.auth.setToken(res.result);
-          this._router.navigateByUrl('');
+          this._router.navigateByUrl('course');
         } else {
           alert('Invalid Credentials');
           // this.messageService.add({
