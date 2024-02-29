@@ -32,6 +32,6 @@ export class AuthService {
   }
 
   login(loginObj: any): Observable<any> {
-    return this._service.post(loginObj, 'User/Authenticate');
+    return this._service.authenticate(loginObj);
   }
 }

@@ -13,6 +13,7 @@ import { SubjectComponent } from './components/subject/subject.component';
 
 import { LayoutModule } from './layout/layout.module';
 
+
 @NgModule({
   declarations: [AppComponent, LoginComponent, SubjectComponent],
   imports: [

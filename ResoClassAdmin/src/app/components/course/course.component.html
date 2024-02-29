@@ -13,13 +13,8 @@
             </ul>
           </div>
           <div class="col-auto float-right ml-auto">
-            <a
-              href="#"
-              class="btn add-btn"
-              data-toggle="modal"
-              data-target="#add_course"
-              ><i class="fa fa-plus"></i> Add Course</a
-            >
+            <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_course"><i class="fa fa-plus"></i> Add
+              Course</a>
           </div>
         </div>
       </div>
@@ -27,12 +22,7 @@
         <div class="col-md-6 pad_b_20">
           <h4>Bulk Upload</h4>
           <form class="import_div" id="importform" action="#" method="POST">
-            <input
-              type="file"
-              class="form-control"
-              name="import_file"
-              required
-            />
+            <input type="file" class="form-control" name="import_file" required (change)="onFileSelected($event)" />
             <button class="btn import-btn" type="submit">
               <i class="las la-file-upload"></i> Import
             </button>
@@ -51,22 +41,11 @@
               <tbody>
                 <tr *ngFor="let course of courses">
                   <td>
-                    <button
-                      class="btn edit m-r-5"
-                      id="1"
-                      onclick="editrecord(this.id);"
-                      data-toggle="modal"
-                      data-target="#edit_course"
-                      type="button"
-                    >
+                    <button class="btn edit m-r-5" (click)="editCourse(course.id);" data-toggle="modal"
+                      data-target="#edit_course" type="button">
                       <i class="fa fa-pencil"></i>
                     </button>
-                    <button
-                      class="btn delete m-r-5"
-                      id="1"
-                      onclick="deleterecord(this.id);"
-                      type="button"
-                    >
+                    <button class="btn delete m-r-5" (click)="showConfirmation(course.id);" type="button">
                       <i class="fa fa-trash-o"></i>
                     </button>
                   </td>
@@ -84,35 +63,23 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Add Course</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
+          <div class="modal-body" >
             <form id="addform">
               <div class="row">
                 <div class="col-sm-12 col-md-12">
                   <div class="form-group">
-                    <label
-                      >Course Name <span class="text-danger">*</span></label
-                    >
-                    <input
-                      class="form-control"
-                      type="text"
-                      id="course_name"
-                      name="course_name"
-                      required
-                    />
+                    <label>Course Name <span class="text-danger">*</span></label>
+                    <input class="form-control" type="text" id="course_name" name="course_name" [(ngModel)]="courseName"
+                      required />
                   </div>
                 </div>
               </div>
               <div class="submit-section">
-                <button class="btn btn-primary submit-btn" type="submit">
+                <button class="btn btn-primary submit-btn" type="button" (click)="createCourse()">
                   Submit
                 </button>
               </div>
@@ -126,12 +93,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Edit Course</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
@@ -140,23 +102,15 @@
               <div class="row">
                 <div class="col-sm-12 col-md-12">
                   <div class="form-group">
-                    <label
-                      >Course Name <span class="text-danger">*</span></label
-                    >
-                    <input
-                      class="form-control"
-                      value=""
-                      type="text"
-                      id="edit_course_name"
-                      name="course_name"
-                      required
-                    />
+                    <label>Course Name <span class="text-danger">*</span></label>
+                    <input class="form-control" value="" type="text" id="edit_course_name" name="course_name" [(ngModel)]="courseName"
+                      required />
                   </div>
                 </div>
               </div>
               <div class="submit-section">
                 <input type="hidden" id="course_id" name="course_id" />
-                <button class="btn btn-primary submit-btn" type="submit">
+                <button class="btn btn-primary submit-btn" type="submit" (click)="updateCourse()">
                   Update
                 </button>
               </div>
