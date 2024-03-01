@@ -7,11 +7,10 @@ import { LoginComponent } from './components/login/login.component';
 import { AuthService } from './services/auth.service';
 import { MasterService } from './services/master.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { LayoutModule } from './layout/layout.module';
-
+import { AuthInterceptor } from './interceptor/auth.interceptor';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent],
@@ -25,7 +24,11 @@ import { LayoutModule } from './layout/layout.module';
     LayoutModule,
   ],
   exports: [LayoutModule],
-  providers: [AuthService, MasterService],
+  providers: [
+    AuthService,
+    MasterService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
