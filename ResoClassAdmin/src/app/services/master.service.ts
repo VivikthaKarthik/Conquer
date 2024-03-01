@@ -48,5 +48,11 @@ export class MasterService {
     return this.http.post(`${this.baseUrl}/${type}/${apiName}`, file, { headers: this.getTokenHeaders() });
   }
 
+  uploadImage(imageFile: File, type: string, apiName: string) {
+    const formData = new FormData();
+    formData.append('image', imageFile);
+    return this.http.post(`${this.baseUrl}/${type}/${apiName}`, formData, { headers: this.getTokenHeaders() });
+  }
+
 
 }

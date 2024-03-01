@@ -9,13 +9,12 @@ import { MasterService } from './services/master.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
-import { SubjectComponent } from './components/subject/subject.component';
 
 import { LayoutModule } from './layout/layout.module';
 
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, SubjectComponent],
+  declarations: [AppComponent, LoginComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -1,0 +1,211 @@
+<div class="main-wrapper">
+    
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="page-title">Chapters</h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Chapters</li>
+                        </ul>
+                    </div>
+                    <div class="col-auto float-right ml-auto">
+                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_chapter"><i
+                                class="fa fa-plus"></i> Add Chapter</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 pad_b_20">
+                    <h4>Bulk Upload</h4>
+                    <form class="import_div" id="importform" action="#" method="POST">
+                        <input type="file" class="form-control" name="import_file" required>
+                        <button class="btn import-btn" type="submit"><i class="las la-file-upload"></i> Import</button>
+                    </form>
+                </div>
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped custom-table datatable">
+                            <thead>
+                                <tr>
+                                    <th class="no-sort"></th>
+                                    <th>S. No.</th>
+                                    <th>Thumbnail</th>
+                                    <th>Chapter</th>
+                                    <!-- <th>Subject</th>
+                                    <th>Course/Class Name</th>
+                                    <th>Description</th>
+                                    <th>Recommended?</th> -->
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let chapter of chapters">
+                                <tr>
+                                    <td>
+                                        <button class="btn edit m-r-5" (click)="editChapter(chapter.id);" data-toggle="modal" data-target="#edit_course"
+                                            type="button">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        <button class="btn delete m-r-5" (click)="showConfirmation(chapter.id);" type="button">
+                                            <i class="fa fa-trash-o"></i>
+                                        </button>
+                                    </td>
+                                    <td>{{ chapter.id }}</td>
+                                    <td>{{ chapter.thumbnail }}</td>
+                                    <td>{{ chapter.name }}</td>
+                                    
+                                    
+                                    <td class="icon-center"><i class="las la-check-double icon-font-green"></i></td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="add_chapter" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_subject" (click)="getAllCourses()"><i
+                            class="fa fa-plus"></i> Add Chapters</a>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addform">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="form-group form-focus select-focus">
+                                        <input type="text" class="form-control floating" id="chapter_name" [(ngModel)]="chapterName"
+                                            name="chapter_name" required>
+                                        <label class="focus-label">Chapter Name *</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="form-group form-focus select-focus">
+                                        <select class="select floating" id="class_id" name="class_id" [ngModel]="selectedOption" (ngModelChange)="getSubByCourseID($event)"
+                                             required >
+                                            <option value="">Select Course/Class</option>
+                                            <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}</option>
+                                            
+                                        </select>
+                                        <label class="focus-label">Course/Class *</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="form-group form-focus select-focus">
+                                        <select class="select floating" id="subject_id" name="subject_id" required>
+                                            <option value="">Select Subject</option>
+                                            <option *ngFor="let item of subjectData" [value]="item.id">{{ item.name }}</option>
+                                        </select>
+                                        <label class="focus-label">Subject *</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <textarea class="form-control floating textarea-height" id="chapter_description"
+                                            name="chapter_description" required></textarea>
+                                        <label class="focus-label">Description *</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <input type="file" class="form-control floating" id="thumbnail" name="thumbnail" (change)="onFileSelected($event)" accept="image/*"
+                                            required>
+                                        <label class="focus-label">Thumbnail *</label>
+                                    </div>
+                                    <div>
+                                        <img src="assets/img/size_thumb.png" id="add_thumb_image">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <input type="checkbox" id="recommended" name="recommended" required> Is Recommended?
+                                    *
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="edit_chapter" class="modal custom-modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Chapter</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="editform">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="form-group form-focus select-focus">
+                                        <input type="text" class="form-control floating" id="edit_chapter_name"
+                                            name="chapter_name" required>
+                                        <label class="focus-label">Chapter Name *</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="form-group form-focus select-focus">
+                                        <select class="select floating" id="edit_class_id" name="class_id"
+                                            onchange="getsubjects_edit()" required>
+                                            <option value="">Select Course/Class</option>
+                                            <option value="1">Class 11/NEET</option>
+                                            <option value="2">Class 12/NEET</option>
+                                        </select>
+                                        <label class="focus-label">Course/Class *</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-4">
+                                    <div class="form-group form-focus select-focus">
+                                        <select class="select floating" id="edit_subject_id" name="subject_id" required>
+                                            <option value="">Select Subject</option>
+                                            <option value="1">Botany</option>
+                                            <option value="2">Zoology</option>
+                                        </select>
+                                        <label class="focus-label">Subject *</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <textarea class="form-control floating textarea-height"
+                                            id="edit_chapter_description" name="chapter_description"
+                                            required></textarea>
+                                        <label class="focus-label">Description *</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <input type="file" class="form-control floating" id="edit_thumbnail"
+                                            name="thumbnail" onchange="readURL_edit(this)" required>
+                                        <label class="focus-label">Thumbnail *</label>
+                                    </div>
+                                    <div>
+                                        <img src="assets/img/size_thumb.png" id="edit_thumb_image">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <input type="checkbox" id="edit_recommended" name="edit_recommended" required> Is
+                                    Recommended? *
+                                </div>
+                            </div>
+                            <div class="submit-section">
+                                <input type="hidden" name="chapter_id" id="chapter_id">
+                                <button class="btn btn-primary submit-btn" type="submit">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

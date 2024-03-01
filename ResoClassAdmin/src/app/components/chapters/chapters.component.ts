@@ -1,44 +1,45 @@
 import { Component } from '@angular/core';
 import { MasterService } from '../../services/master.service';
-import { Subject } from '../../models/subject';
+import { Chapters } from '../../models/chapters';
 import { DataMappingService } from '../../services/data-mapping.service';
 import { ConfirmdialogComponent } from '../../confirmdialog/confirmdialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { Course } from '../../models/course';
-import { Form,FormGroup,FormControl, Validators,FormBuilder } from '@angular/forms';
+import { Subject } from '../../models/subject';
+
 
 @Component({
-  selector: 'app-subject',
-  templateUrl: './subject.component.html',
-  styleUrl: './subject.component.css'
+  selector: 'app-chapters',
+  templateUrl: './chapters.component.html',
+  styleUrl: './chapters.component.css'
 })
-export class SubjectComponent {
-  subject: Subject[] | undefined;
-  subjectName: string = '';
-  subjectId: any;
+export class ChaptersComponent {
+  chapters: Chapters[] | undefined;
+  subjects: Subject[] | undefined;
+  chapterName: string = '';
+  chapterId: any;
   courseData: Course[] = [];
-
+  subjectData: Subject[] = [];
+  selectedOption: any;
+  selectedFile: File | undefined;
+  imageUrl: string | undefined;
   constructor(
-    private masterService: MasterService,private fb:FormBuilder,
+    private masterService: MasterService,
     private dataMappingService: DataMappingService, private dialog: MatDialog
   ) { }
 
-  
-
-  subForm = this.fb.group({
-    subjectName : new FormControl("",Validators.required)
-  })
-
   ngOnInit(): void {
-    this.getAllSubjects();
+    this.getAllChapters();
 
   }
-  getAllSubjects() {
-    this.masterService.getAll('Subject', 'GetAll')
+
+  getAllChapters() {
+    this.masterService.getAll('Chapter', 'GetAll')
       .subscribe((data: any) => {
+        
         if (data.isSuccess) {
-          this.subject = this.dataMappingService.mapToModel<Subject>(
+          this.chapters = this.dataMappingService.mapToModel<Chapters>(
             data.result,
             (item) => ({
               id: item.id,
@@ -52,16 +53,15 @@ export class SubjectComponent {
       });
   }
 
-  // Edit
-  editSubject(sId: any) {
-    this.subjectId = sId;
+  editChapter(cId: any) {
+    this.chapterId = cId;
     this.masterService
-      .getById(sId, 'Subject', 'Get')
+      .getById(cId, 'Chapter', 'Get')
       .subscribe((data: any) => {
 
         if (data.isSuccess) {
           if (data.result != null && data.result.name != null) {
-            this.subjectName = data.result.name;
+            this.chapterName = data.result.name;
           }
           else {
             alert('Some error occured..! Plaese try again');
@@ -72,47 +72,44 @@ export class SubjectComponent {
       });
   }
 
-  // create
-  createSubject() {
+  createChapter() {
     var objCourse = {
-      name: this.subjectName,
-      thumbnail: "Subject ThumbNail"
+      name: this.chapterName,
+      thumbnail: "Chapter ThumbNail",
     }
-    this.masterService.post(objCourse, 'Subject', 'Create')
+    this.masterService.post(objCourse, 'Chapter', 'Create')
       .subscribe((data: any) => {
         if (data.isSuccess) {
-          this.getAllSubjects();
+          this.getAllChapters();
         } else {
           alert(data.message);
         }
       });
   }
 
-  // update
-  updateSubject() {
+  updateChapter() {
     var objCourse = {
-      id: this.subjectId,
-      name: this.subjectName,
-      thumbnail: "Subject Thumbnail"
+      id: this.chapterId,
+      name: this.chapterName,
+      thumbnail: "Chapter Thumbnail"
     }
-    this.masterService.put(objCourse, 'Subject', 'Update')
+    this.masterService.put(objCourse, 'Chapter', 'Update')
       .subscribe((data: any) => {
         if (data.isSuccess) {
-          this.getAllSubjects();
+          this.getAllChapters();
         } else {
           alert(data.message);
         }
       });
   }
 
-  // Delete
-  deleteSubject(sId: any) {
+  deleteChapters(cId: any) {
 
     this.masterService
-      .delete(sId, 'Subject', 'Delete')
+      .delete(cId, 'Chapter', 'Delete')
       .subscribe((data: any) => {
         if (data.isSuccess) {
-          this.getAllSubjects();
+          this.getAllChapters();
         } else {
           alert(data.message);
         }
@@ -120,11 +117,11 @@ export class SubjectComponent {
   }
 
   
-  // Delete-Conformation
+
   showConfirmation(id: any): void {
     Swal.fire({
 
-      text: 'Do you really want to remove this course/class?',
+      text: 'Do you really want to remove this chapter/class?',
       icon: 'warning',
       showCancelButton: true,
 
@@ -134,7 +131,7 @@ export class SubjectComponent {
       // cancelButtonColor: '#d33'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.deleteSubject(id);
+        this.deleteChapters(id);
         Swal.fire(
           'Deleted!',
           'Your file has been deleted.',
@@ -144,11 +141,9 @@ export class SubjectComponent {
     });
   }
 
-
-  //File-Upload
   // Event handler for file input change event
   onFileSelected(event: any): void {
-    debugger
+    
     const file: File = event.target.files[0];
     if (file) {
       // Call the service method to read Excel file
@@ -157,11 +152,11 @@ export class SubjectComponent {
       // this.excelService.uploadExcelFile(file,'Course', 'Upload');
       const formData = new FormData();
       formData.append('file', file);
-      this.masterService.post(formData, 'Subject', 'Upload')
+      this.masterService.post(formData, 'Chapter', 'Upload')
         .subscribe((data: any) => {
           if (data.isSuccess) {
             alert(data.result);
-            this.getAllSubjects();
+            this.getAllChapters();
           } else {
             alert(data.message);
           }
@@ -172,10 +167,12 @@ export class SubjectComponent {
     }
   }
 
+  
   getAllCourses() {
    
     this.masterService.getAll('Course', 'GetAll')
       .subscribe((data: any) => {
+        
         if (data.isSuccess) {
           this.courseData = this.dataMappingService.mapToModel<Course>(
             data.result,
@@ -189,6 +186,47 @@ export class SubjectComponent {
           alert(data.message);
         }
       });
+  }
+
+  getSubByCourseID(cId:any) {
+    this.masterService.getById(cId,'Subject', 'GetSubjectByCourseId')
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.subjectData = this.dataMappingService.mapToModel<Subject>(
+            data.result,
+            (item) => ({
+              id: item.id,
+              name: item.name,
+              thumbnail: item.thumbnail,
+            })
+          );
+        } else {
+          alert(data.message);
+        }
+      });
+  }
+
+  onImageFileSelected(event:any): void {
+    this.selectedFile = event.target.files[0];
+  }
+  uploadImage(): void {
+    if (this.selectedFile) {
+      this.masterService.uploadImage(this.selectedFile,'Subject', 'Upload')
+        .subscribe(
+          response => {
+            console.log('Image uploaded successfully', response);
+            // if (response && response) {
+            //   this.imageUrl = response; // Assuming the response has a property named 'imageUrl'
+            // } else {
+            //   console.error('Image URL not found in the response');
+            // }
+          },
+          error => {
+            console.error('Error uploading image', error);
+            // Handle error
+          }
+        );
+    }
   }
 
 }

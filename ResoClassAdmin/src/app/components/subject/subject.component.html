@@ -12,7 +12,7 @@
                         </ul>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_subject"><i
+                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_subject" (click)="getAllCourses()"><i
                                 class="fa fa-plus"></i> Add Subject</a>
                     </div>
                 </div>
@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-md-6 pad_b_20">
                     <h4>Bulk Upload</h4>
-                    <form class="import_div" id="importform" action="#" method="POST">
+                    <form class="import_div" id="importform" action="#" method="POST" (change)="onFileSelected($event)">
                         <input type="file" class="form-control" name="import_file" required>
                         <button class="btn import-btn" type="submit"><i class="las la-file-upload"></i> Import</button>
                     </form>
@@ -33,57 +33,21 @@
                                     <th class="no-sort"></th>
                                     <th>S. No.</th>
                                     <th>Subject</th>
-                                    <th>Course/Class Name</th>
+                                    <!-- <th>Course/Class Name</th> -->
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody *ngFor="let subject of subject">
                                 <tr>
                                     <td>
-                                        <button class="btn edit m-r-5" id="1" onclick="editrecord(this.id);"
+                                        <button class="btn edit m-r-5" id="1" (click)="editSubject(subject.id);"
                                             data-toggle="modal" data-target="#edit_subject" type="button"><i
                                                 class="fa fa-pencil"></i></button>
-                                        <button class="btn delete m-r-5" id="1" onclick="deleterecord(this.id);"
+                                        <button class="btn delete m-r-5" id="1" (click)="showConfirmation(subjectId.id);"
                                             type="button"><i class="fa fa-trash-o"></i></button>
                                     </td>
-                                    <td>1</td>
-                                    <td>Botany</td>
-                                    <td>Class 11/NEET</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <button class="btn edit m-r-5" id="2" onclick="editrecord(this.id);"
-                                            data-toggle="modal" data-target="#edit_subject" type="button"><i
-                                                class="fa fa-pencil"></i></button>
-                                        <button class="btn delete m-r-5" id="2" onclick="deleterecord(this.id);"
-                                            type="button"><i class="fa fa-trash-o"></i></button>
-                                    </td>
-                                    <td>2</td>
-                                    <td>Zoology</td>
-                                    <td>Class 12/NEET</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <button class="btn edit m-r-5" id="3" onclick="editrecord(this.id);"
-                                            data-toggle="modal" data-target="#edit_subject" type="button"><i
-                                                class="fa fa-pencil"></i></button>
-                                        <button class="btn delete m-r-5" id="3" onclick="deleterecord(this.id);"
-                                            type="button"><i class="fa fa-trash-o"></i></button>
-                                    </td>
-                                    <td>3</td>
-                                    <td>Zoology</td>
-                                    <td>Class 11/NEET</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <button class="btn edit m-r-5" id="4" onclick="editrecord(this.id);"
-                                            data-toggle="modal" data-target="#edit_subject" type="button"><i
-                                                class="fa fa-pencil"></i></button>
-                                        <button class="btn delete m-r-5" id="4" onclick="deleterecord(this.id);"
-                                            type="button"><i class="fa fa-trash-o"></i></button>
-                                    </td>
-                                    <td>4</td>
-                                    <td>Botany</td>
-                                    <td>Class 12/NEET</td>
+                                    <td>{{subject.id}}</td>
+                                    <td>{{subject.name}}</td>
+                                    
                                 </tr>
                             </tbody>
                         </table>
@@ -105,7 +69,7 @@
                             <div class="row">
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus">
-                                        <input type="text" class="form-control floating" id="subject_name"
+                                        <input type="text" class="form-control floating" id="subject_name" [(ngModel)]="subjectName" 
                                             name="subject_name">
                                         <label class="focus-label">Subject Name *</label>
                                     </div>
@@ -114,15 +78,15 @@
                                     <div class="form-group form-focus select-focus">
                                         <select class="select floating" id="class_id" name="class_id">
                                             <option value="">Select Course/Class</option>
-                                            <option value="1">Class 11/NEET</option>
-                                            <option value="2">Class 12/NEET</option>
+                                            <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}</option>
+                                            
                                         </select>
                                         <label class="focus-label">Course/Class *</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="submit-section">
-                                <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                                <button class="btn btn-primary submit-btn" type="submit" (click)="createSubject()">Submit</button>
                             </div>
                         </form>
                     </div>
