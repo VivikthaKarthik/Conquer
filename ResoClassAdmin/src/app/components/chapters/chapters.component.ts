@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { Course } from '../../models/course';
 import { Subject } from '../../models/subject';
 import { NotificationService } from '../../services/notification.service';
+import { ColDef } from 'ag-grid-community';
 
 
 @Component({
@@ -16,8 +17,8 @@ import { NotificationService } from '../../services/notification.service';
   styleUrl: './chapters.component.css'
 })
 export class ChaptersComponent {
-  chapters: Chapters[] | undefined;
-  subjects: Subject[] | undefined;
+  chaptersList: Chapters[] = [];
+  subjects: Subject[] = [];
   chapterName: string = '';
   chapterId: any;
   courseData: Course[] = [];
@@ -29,12 +30,23 @@ export class ChaptersComponent {
   isChecked: boolean = false;
   isAddPopupVisible: boolean = true;
   desc:string = "";
+  colDefs: ColDef[] = [];
 
 
   constructor(
     private masterService: MasterService,
     private dataMappingService: DataMappingService, private dialog: MatDialog, public notificationService: NotificationService
-  ) { }
+  ) {
+    this.colDefs.push({
+      headerName: 'ID', field: 'id', filter: 'agTextColumnFilter'
+    });
+    this.colDefs.push({
+      headerName: 'Chapter', field: 'name', filter: 'agTextColumnFilter'
+    });
+    this.colDefs.push({
+      headerName: 'Thumbnail', field: 'thumbnail', filter: 'agTextColumnFilter',
+    });
+   }
 
   showMessage() {
     this.notificationService.addNotification('Chapter Saved Successfully!.');
@@ -48,23 +60,15 @@ export class ChaptersComponent {
   getAllChapters() {
     this.masterService.getAll('Chapter', 'GetAll')
       .subscribe((data: any) => {
-
         if (data.isSuccess) {
-          this.chapters = this.dataMappingService.mapToModel<Chapters>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-              thumbnail: item.thumbnail,
-            })
-          );
+          this.chaptersList = data.result;
         } else {
           alert(data.message);
         }
       });
   }
 
-  editChapter(cId: number) {
+  getChaptersById(cId: number) {
     debugger
     this.chapterId = cId;
     this.masterService
@@ -151,10 +155,6 @@ export class ChaptersComponent {
       icon: 'warning',
       showCancelButton: true,
 
-      // confirmButtonText: 'Yes, delete it!',
-      // cancelButtonText: 'No, cancel!',
-      // confirmButtonColor: '#3085d6',
-      // cancelButtonColor: '#d33'
     }).then((result) => {
       if (result.isConfirmed) {
         this.deleteChapters(id);
@@ -167,15 +167,12 @@ export class ChaptersComponent {
     });
   }
 
-  // Event handler for file input change event
+  
   onFileSelected(event: any): void {
 
     const file: File = event.target.files[0];
     if (file) {
-      // Call the service method to read Excel file
-      // this.excelService.readExcelFile(file);
-      // // If you need to upload the file to a backend
-      // this.excelService.uploadExcelFile(file,'Course', 'Upload');
+      
       const formData = new FormData();
       formData.append('file', file);
       this.masterService.post(formData, 'Chapter', 'Upload')
@@ -195,7 +192,7 @@ export class ChaptersComponent {
 
 
   getAllCourses() {
-    debugger
+    
     this.masterService.getAll('Course', 'GetAll')
       .subscribe((data: any) => {
 
@@ -215,7 +212,7 @@ export class ChaptersComponent {
   }
 
   getSubByCourseID(cId: number) {
-    debugger
+    
     this.masterService.getById(cId, 'Subject', 'GetSubjectsByCourseId', 'courseId')
       .subscribe((data: any) => {
         if (data.isSuccess) {
@@ -256,5 +253,14 @@ export class ChaptersComponent {
     }
   }
   
+  editGridRecord(id: any) {
+    this.getChaptersById(id);
+    alert("Subject ID" + id);
+
+  }
+
+  deleteGridRecord(id: any) {
+    this.showConfirmation(id);
+  }
 
 }

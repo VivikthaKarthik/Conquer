@@ -26,42 +26,8 @@
                     </form>
                 </div>
                 <div class="col-md-12">
-                    <div class="table-responsive">
-                        <table class="table table-striped custom-table datatable">
-                            <thead>
-                                <tr>
-                                    <th class="no-sort"></th>
-                                    <th>S. No.</th>
-                                    <th>Thumbnail</th>
-                                    <th>Chapter</th>
-                                    <!-- <th>Subject</th>
-                                    <th>Course/Class Name</th>
-                                    <th>Description</th>
-                                    <th>Recommended?</th> -->
-                                </tr>
-                            </thead>
-                            <tbody *ngFor="let chapter of chapters">
-                                <tr>
-                                    <td>
-                                        <button class="btn edit m-r-5" (click)="editChapter(chapter.id);" data-toggle="modal" data-target="#edit_course"
-                                            type="button">
-                                            <i class="fa fa-pencil"></i>
-                                        </button>
-                                        <button class="btn delete m-r-5" (click)="showConfirmation(chapter.id);" type="button">
-                                            <i class="fa fa-trash-o"></i>
-                                        </button>
-                                    </td>
-                                    <td>{{ chapter.id }}</td>
-                                    <td>{{ chapter.thumbnail }}</td>
-                                    <td>{{ chapter.name }}</td>
-                                    
-                                    
-                                    <td class="icon-center"><i class="las la-check-double icon-font-green"></i></td>
-                                </tr>
-                                
-                            </tbody>
-                        </table>
-                    </div>
+                    <app-grid [data]="chaptersList" [coloumnDef]="colDefs" 
+                    (editRecord)="editGridRecord($event)" (deleteRecord)="deleteGridRecord($event)"></app-grid>
                 </div>
             </div>
         </div>

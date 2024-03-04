@@ -6,7 +6,8 @@ import { ConfirmdialogComponent } from '../../confirmdialog/confirmdialog.compon
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { Course } from '../../models/course';
-import { Form,FormGroup,FormControl, Validators,FormBuilder } from '@angular/forms';
+import { Form, FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { ColDef } from 'ag-grid-community';
 
 
 @Component({
@@ -15,23 +16,34 @@ import { Form,FormGroup,FormControl, Validators,FormBuilder } from '@angular/for
   styleUrl: './subject.component.css'
 })
 export class SubjectComponent {
-  subject: Subject[] | undefined;
+  subjectList: Subject[] = [];
   subjectName: string = '';
   subjectId: any;
   courseData: Course[] = [];
   isPopupVisible: any;
   selectedValue: string = "";
   isAddPopupVisible: boolean = true;
+  colDefs: ColDef[] = [];
 
   constructor(
-    private masterService: MasterService,private fb:FormBuilder,
+    private masterService: MasterService, private fb: FormBuilder,
     private dataMappingService: DataMappingService, private dialog: MatDialog
-  ) { }
+  ) {
+    this.colDefs.push({
+      headerName: 'ID', field: 'id', filter: 'agTextColumnFilter'
+    });
+    this.colDefs.push({
+      headerName: 'Subject', field: 'name', filter: 'agTextColumnFilter'
+    });
+    this.colDefs.push({
+      headerName: 'Thumbnail', field: 'thumbnail', filter: 'agTextColumnFilter',
+    });
+  }
 
-  
+
 
   subForm = this.fb.group({
-    subjectName : new FormControl("",Validators.required)
+    subjectName: new FormControl("", Validators.required)
   })
 
   ngOnInit(): void {
@@ -42,24 +54,15 @@ export class SubjectComponent {
     this.masterService.getAll('Subject', 'GetAll')
       .subscribe((data: any) => {
         if (data.isSuccess) {
-          this.subject = this.dataMappingService.mapToModel<Subject>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-              thumbnail: item.thumbnail,
-              //courseId:item.courseId,
-              // courseName:item.courseName
-            })
-          );
+          this.subjectList = data.result;
         } else {
           alert(data.message);
         }
       });
   }
 
-  // Edit
-  editSubject(sId: any) {
+
+  getSubjectById(sId: any) {
     debugger
     this.getAllCourses();
     this.subjectId = sId;
@@ -82,14 +85,14 @@ export class SubjectComponent {
       });
   }
 
-  // create
+
   createSubject() {
     debugger
     let num: number = parseInt(this.selectedValue);
     var objCourse = {
       name: this.subjectName,
       thumbnail: "Subject ThumbNail",
-      courseId:parseInt(this.selectedValue)
+      courseId: parseInt(this.selectedValue)
     }
     this.masterService.post(objCourse, 'Subject', 'Create')
       .subscribe((data: any) => {
@@ -99,18 +102,18 @@ export class SubjectComponent {
           alert(data.message);
         }
       });
-      this.isAddPopupVisible = false;
+    this.isAddPopupVisible = false;
     window.location.reload();
   }
 
-  // update
+
   updateSubject() {
     debugger
     var objCourse = {
       id: this.subjectId,
       name: this.subjectName,
       thumbnail: "Subject Thumbnail",
-      courseId:parseInt(this.selectedValue)
+      courseId: parseInt(this.selectedValue)
     }
     this.masterService.put(objCourse, 'Subject', 'Update')
       .subscribe((data: any) => {
@@ -121,11 +124,11 @@ export class SubjectComponent {
           alert(data.message);
         }
       });
-      this.isAddPopupVisible = false;
+    this.isAddPopupVisible = false;
     window.location.reload();
   }
 
-  // Delete
+
   deleteSubject(sId: any) {
 
     this.masterService
@@ -139,19 +142,14 @@ export class SubjectComponent {
       });
   }
 
-  
-  // Delete-Conformation
+
+
   showConfirmation(id: any): void {
     Swal.fire({
 
       text: 'Do you really want to remove this course/class?',
       icon: 'warning',
       showCancelButton: true,
-
-      // confirmButtonText: 'Yes, delete it!',
-      // cancelButtonText: 'No, cancel!',
-      // confirmButtonColor: '#3085d6',
-      // cancelButtonColor: '#d33'
     }).then((result) => {
       if (result.isConfirmed) {
         this.deleteSubject(id);
@@ -165,16 +163,11 @@ export class SubjectComponent {
   }
 
 
-  //File-Upload
-  // Event handler for file input change event
+
   onFileSelected(event: any): void {
     debugger
     const file: File = event.target.files[0];
     if (file) {
-      // Call the service method to read Excel file
-      // this.excelService.readExcelFile(file);
-      // // If you need to upload the file to a backend
-      // this.excelService.uploadExcelFile(file,'Course', 'Upload');
       const formData = new FormData();
       formData.append('file', file);
       this.masterService.post(formData, 'Subject', 'Upload')
@@ -193,7 +186,7 @@ export class SubjectComponent {
   }
 
   getAllCourses() {
-   debugger
+    debugger
     this.masterService.getAll('Course', 'GetAll')
       .subscribe((data: any) => {
         if (data.isSuccess) {
@@ -210,6 +203,16 @@ export class SubjectComponent {
           alert(data.message);
         }
       });
+  }
+
+  editGridRecord(id: any) {
+    this.getSubjectById(id);
+    alert("Subject ID" + id);
+
+  }
+
+  deleteGridRecord(id: any) {
+    this.showConfirmation(id);
   }
 
 }

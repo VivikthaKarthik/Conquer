@@ -28,33 +28,8 @@
                     </form>
                 </div>
                 <div class="col-md-12">
-                    <div class="table-responsive">
-                        <table class="table table-striped custom-table datatable">
-                            <thead>
-                                <tr>
-                                    <th class="no-sort"></th>
-                                    <th>S. No.</th>
-                                    <th>Subject</th>
-                                    <th>Course/Class Name</th>
-                                </tr>
-                            </thead>
-                            <tbody *ngFor="let subject of subject">
-                                <tr>
-                                    <td>
-                                        <button class="btn edit m-r-5" id="1" (click)="editSubject(subject.id);"
-                                            data-toggle="modal" data-target="#edit_subject" type="button"><i
-                                                class="fa fa-pencil"></i></button>
-                                        <button class="btn delete m-r-5" id="1" (click)="showConfirmation(subjectId.id);"
-                                            type="button"><i class="fa fa-trash-o"></i></button>
-                                    </td>
-                                    <td>{{subject.id}}</td>
-                                    <td>{{subject.name}}</td>
-                                    <!-- <td>{{subject.courseName}}</td> -->
-                                    
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <app-grid [data]="subjectList" [coloumnDef]="colDefs" 
+                    (editRecord)="editGridRecord($event)" (deleteRecord)="deleteGridRecord($event)"></app-grid>
                 </div>
             </div>
         </div>

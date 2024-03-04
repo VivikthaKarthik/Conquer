@@ -9,6 +9,7 @@ import { Course } from '../../models/course';
 import { Subject } from '../../models/subject';
 import { NotificationService } from '../../services/notification.service';
 import { Topic } from '../../models/topic';
+import { ColDef } from 'ag-grid-community';
 
 @Component({
   selector: 'app-topics',
@@ -16,10 +17,10 @@ import { Topic } from '../../models/topic';
   styleUrl: './topics.component.css'
 })
 export class TopicsComponent {
-  topics: Topic[] | undefined;
+  topicsList: Topic[] = [];
   chapters: Chapters[] = [];
   topicName: string = "";
-  description:string = "";
+  description: string = "";
   topicId: number = 0;
   chapterId: number = 0;
   courseData: Course[] = [];
@@ -31,12 +32,29 @@ export class TopicsComponent {
   isChecked: boolean = false;
   isAddPopupVisible: boolean = true;
   selectedValue: any;
+  colDefs: ColDef[] = [];
 
 
   constructor(
     private masterService: MasterService,
     private dataMappingService: DataMappingService, private dialog: MatDialog, public notificationService: NotificationService
-  ) { }
+  ) {
+    this.colDefs.push({
+      headerName: 'ID', field: 'id', filter: 'agTextColumnFilter'
+    });
+    this.colDefs.push({
+      headerName: 'Topic', field: 'name', filter: 'agTextColumnFilter'
+    });
+    this.colDefs.push({
+      headerName: 'Chapter', field: 'chapter', filter: 'agTextColumnFilter',
+    });
+    this.colDefs.push({
+      headerName: 'Thumbnail', field: 'thumbnail', filter: 'agTextColumnFilter',
+    });
+    this.colDefs.push({
+      headerName: 'Description', field: 'description', filter: 'agTextColumnFilter',
+    });
+  }
 
   showMessage() {
     this.notificationService.addNotification('Chapter Saved Successfully!.');
@@ -44,7 +62,7 @@ export class TopicsComponent {
   onSelectChange(event: any) {
     // Read the selected value
     this.chapterId = this.selectedValue;
-    
+
   }
   ngOnInit(): void {
     this.getAllTopics();
@@ -55,34 +73,22 @@ export class TopicsComponent {
     debugger
     this.masterService.getAll('Topic', 'GetAll')
       .subscribe((data: any) => {
-
         if (data.isSuccess) {
-          debugger
-          this.topics = this.dataMappingService.mapToModel<Topic>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-              chapter: item.chapterId,
-              thumbnail: item.thumbnail,
-              description:item.description
-
-            })
-          );
+          this.topicsList = data.result;
         } else {
           alert(data.message);
         }
       });
   }
 
-  editTopic(Id: any) {
+  getTopicById(Id: any) {
     debugger
     this.getAllChapters();
     this.topicId = Id;
     this.masterService
       .getById(Id, 'Topic', 'Get')
       .subscribe((data: any) => {
-      debugger
+        debugger
         if (data.isSuccess) {
           debugger
           if (data.result != null && data.result.name != null) {
@@ -106,7 +112,7 @@ export class TopicsComponent {
       name: this.topicName,
       chapterId: this.chapterId,
       thumbnail: "https://www.neetprep.com/exam-info",
-      description:this.description
+      description: this.description
 
     }
     this.masterService.post(objChapter, 'Topic', 'Create')
@@ -130,7 +136,7 @@ export class TopicsComponent {
       name: this.topicName,
       chapterId: this.selectedOption,
       thumbnail: "https://www.neetprep.com/exam-info",
-      description:this.description
+      description: this.description
 
 
     }
@@ -142,8 +148,8 @@ export class TopicsComponent {
           alert(data.message);
         }
       });
-      this.isAddPopupVisible = false;
-      window.location.reload();
+    this.isAddPopupVisible = false;
+    window.location.reload();
   }
 
   deleteTopic(cId: any) {
@@ -168,10 +174,6 @@ export class TopicsComponent {
       icon: 'warning',
       showCancelButton: true,
 
-      // confirmButtonText: 'Yes, delete it!',
-      // cancelButtonText: 'No, cancel!',
-      // confirmButtonColor: '#3085d6',
-      // cancelButtonColor: '#d33'
     }).then((result) => {
       if (result.isConfirmed) {
         this.deleteTopic(id);
@@ -189,10 +191,7 @@ export class TopicsComponent {
 
     const file: File = event.target.files[0];
     if (file) {
-      // Call the service method to read Excel file
-      // this.excelService.readExcelFile(file);
-      // // If you need to upload the file to a backend
-      // this.excelService.uploadExcelFile(file,'Course', 'Upload');
+
       const formData = new FormData();
       formData.append('file', file);
       this.masterService.post(formData, 'Topic', 'Upload')
@@ -230,7 +229,15 @@ export class TopicsComponent {
       });
   }
 
+  editGridRecord(id: any) {
+    this.getTopicById(id);
 
+
+  }
+
+  deleteGridRecord(id: any) {
+    this.showConfirmation(id);
+  }
 
 
 }
