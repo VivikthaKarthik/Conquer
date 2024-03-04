@@ -1,0 +1,170 @@
+<div class="main-wrapper">
+   
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="page-title">Students</h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="students.html">Students</a></li>
+                            <li class="breadcrumb-item">Add Students</li>
+                        </ul>
+                    </div>
+                    <div class="col-auto float-right ml-auto">
+                        <h4>Bulk Upload</h4>
+                        <form class="import_div" id="importform" action="#" method="POST">
+                            <input type="file" class="form-control" name="import_file" required>
+                            <button class="btn import-btn" type="submit"><i class="las la-file-upload"></i>
+                                Import</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <form action="#!" id="addform"  [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="admission_id" name="admission_id" formControlName="admissionId"
+                                required>
+                            <label class="focus-label">Admission ID *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus">
+                            <input type="date" class="form-control floating" id="admission_date" name="admission_date" formControlName="admissionDate"
+                                required>
+                            <label class="focus-label">Admission Date *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="student_name" name="student_name" formControlName="studentName"
+                                required>
+                            <label class="focus-label">Student Full Name *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="father_name" name="father_name" formControlName="fatherName"
+                                required>
+                            <label class="focus-label">Father Name *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="mother_name" name="mother_name" formControlName="motherName"
+                                required>
+                            <label class="focus-label">Mother Name *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus">
+                            <input type="date" class="form-control floating" id="dob" name="dob" required formControlName="dateofBirth">
+                            <label class="focus-label">Date Of Birth *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus">
+                            <select class="select floating" id="gender" name="gender" required formControlName="gender">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                            <label class="focus-label">Gender *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus">
+                            <input type="number" class="form-control floating" id="mobile_number" name="mobile_number" formControlName="mobileNumber"
+                                required>
+                            <label class="focus-label">Mobile Number *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus">
+                            <input type="number" class="form-control floating" id="alt_mobile_number" formControlName="altMobileNumber"
+                                name="alt_mobile_number">
+                            <label class="focus-label">Alternate Mobile Number</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus">
+                            <input type="email" class="form-control floating" id="email" name="email" formControlName="email">
+                            <label class="focus-label">Email</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus">
+                            <select class="select floating" id="class_id" name="class_id" required formControlName="classId">
+                                <option value="">Select Course/Class</option>
+                                <option *ngFor="let item of courses" [value]="item.id">{{ item.name }}</option>
+                            </select>
+                            <label class="focus-label">Course/Class *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="address_line1" name="address_line1" formControlName="addressLine1"
+                                required>
+                            <label class="focus-label">Address Line 1 *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="address_line2" name="address_line2" formControlName="addressLine2"
+                                required>
+                            <label class="focus-label">Address Line 2 *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="landmark" name="landmark" formControlName="landMark" >
+                            <label class="focus-label">Landmark</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus">
+                            <select class="select floating" id="state" name="state"  required formControlName="stateID">
+                                <option value="">Select State</option>
+                                <option value="1">Andhra Pradesh</option>
+                                <option value="2">Telangana</option>
+                            </select>
+                            <label class="focus-label">State *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus">
+                            <select class="select floating" id="city" name="city" required formControlName="cityID">
+                                <option value="">Select City</option>
+                                <option value="1">Vijayawada</option>
+                                <option value="2">Hyderabad</option>
+                            </select>
+                            <label class="focus-label">City *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="pincode" name="pincode" required formControlName="pinCode">
+                            <label class="focus-label">Pincode</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <button class="btn btn-danger btn-block" type="button" onclick="window.history.back();"> Cancel
+                        </button>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <button class="btn btn-success btn-block" type="submit" > Submit </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div style="width: 100%; text-align: center; position: fixed; z-index: 9998889; top: 250px; left: 0px; text-align: center; display:none"
+    id="loader">
+    <img src="assets/img/loading.gif" style="width: 150px; height: auto">
+</div>

@@ -1,0 +1,94 @@
+<div class="main-wrapper">
+
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="page-title">Users</h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Users</li>
+                        </ul>
+                    </div>
+                    <div class="col-auto float-right ml-auto">
+                        <a routerLink="/adduser" class="btn add-btn"><i class="fa fa-plus"></i> Add User</a>
+                    </div>
+                </div>
+            </div>
+            <div class="row filter-row">
+                <div class="col-sm-6 col-md-3">
+                    <div class="form-group form-focus">
+                        <input type="text" class="form-control floating" id="user_name">
+                        <label class="focus-label">User Name</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <div class="form-group form-focus select-focus">
+                        <select class="select floating" id="class_id" name="class_id" 
+                             required >
+                            <option value="">Select Course/Class</option>
+                            <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}</option>
+                            
+                        </select>
+                        <label class="focus-label">Course/Class *</label>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <a href="#" class="btn btn-success btn-block" onclick="getstudents_filter();"> Search </a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped custom-table datatable">
+                            <thead>
+                                <tr>
+                                    <th class="no-sort"></th>
+                                    <th>S.No</th>
+                                    <th>First Name</th>
+                                    <th>Last Name</th>
+                                    <th>Email</th>
+                                    <th>Phone Number</th>
+                                    <th>Role</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody *ngFor="let student of students">
+                                <tr>
+                                    <td>
+                                        <button class="btn edit m-r-5" (click)="editStudent(student.Id);" data-toggle="modal" data-target="#edit_course"
+                                            type="button">
+                                            <i class="fa fa-pencil"></i>
+                                        </button>
+                                        <button class="btn delete m-r-5" (click)="showConfirmation(student.Id);" type="button">
+                                            <i class="fa fa-trash-o"></i>
+                                        </button>
+                                    </td>
+                                    <td>{{student.Id}}</td>
+                                    <td>{{student.AdmissionId}}</td>
+                                    <td>{{student.Name}}</td>
+                                    <td>{{student.FatherName}}</td>
+                                    <td>{{student.MotherName}}</td>
+                                    <td>{{student.CourseId}}</td>
+                                    <td>{{student.Gender}}</td>
+                                    <td>{{student.AdmissionDate}}</td>
+                                    <td>{{student.DateOfBirth}}</td>
+                                    <td>{{student.MobileNumber}}</td>
+                                    <td>{{student.EmailAddress}}</td>
+                                    <td>{{student.AlternateMobileNumber}}</td>
+                                    <td>{{student.AddressLine1}}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="width: 100%; text-align: center; position: fixed; z-index: 9998889; top: 250px; left: 0px; text-align: center; display:none"
+    id="loader">
+    <img src="assets/img/loading.gif" style="width: 150px; height: auto">
+</div>

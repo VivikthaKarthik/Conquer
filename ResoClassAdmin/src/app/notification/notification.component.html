@@ -1,0 +1,5 @@
+<!-- notification.component.html -->
+<div *ngFor="let notification of notificationService.notifications; let i = index" class="notification">
+    {{ notification }}
+    <button (click)="removeNotification(i)">Dismiss</button>
+  </div>

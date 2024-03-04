@@ -1,0 +1,75 @@
+<div class="main-wrapper">
+
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="page-title">Users</h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a href="students.html">User</a></li>
+                            <li class="breadcrumb-item">Add User</li>
+                        </ul>
+                    </div>
+                    <div class="col-auto float-right ml-auto">
+                        <h4>Bulk Upload</h4>
+                        <form class="import_div" id="importform" action="#" method="POST">
+                            <input type="file" class="form-control" name="import_file" required>
+                            <button class="btn import-btn" type="submit"><i class="las la-file-upload"></i>
+                                Import</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <form action="#!" id="addform" [formGroup]="form" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus">
+                            <input type="text" class="form-control floating" id="first_Name" name="first_Name"
+                                formControlName="firstName" required>
+                            <label class="focus-label">First Name *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus">
+                            <input type="date" class="form-control floating" id="last_Name" name="last_Name"
+                                formControlName="lastName" required>
+                            <label class="focus-label">Last Name *</label>
+                        </div>
+                    </div>
+                   
+                    
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus">
+                            <input type="email" class="form-control floating" id="email" name="email"
+                                formControlName="email">
+                            <label class="focus-label">Email</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus">
+                            <input type="date" class="form-control floating" id="user_Role" name="user_Role"
+                                formControlName="role" required>
+                            <label class="focus-label">Role *</label>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <button class="btn btn-danger btn-block" type="button" onclick="window.history.back();"> Cancel
+                        </button>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <button class="btn btn-success btn-block" type="submit"> Submit </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div style="width: 100%; text-align: center; position: fixed; z-index: 9998889; top: 250px; left: 0px; text-align: center; display:none"
+    id="loader">
+    <img src="assets/img/loading.gif" style="width: 150px; height: auto">
+</div>

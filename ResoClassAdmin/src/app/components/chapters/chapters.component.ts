@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { Course } from '../../models/course';
 import { Subject } from '../../models/subject';
+import { NotificationService } from '../../services/notification.service';
 
 
 @Component({
@@ -22,12 +23,22 @@ export class ChaptersComponent {
   courseData: Course[] = [];
   subjectData: Subject[] = [];
   selectedOption: any;
+  selSubjectId: number | undefined;
   selectedFile: File | undefined;
   imageUrl: string | undefined;
+  isChecked: boolean = false;
+  isAddPopupVisible: boolean = true;
+  desc:string = "";
+
+
   constructor(
     private masterService: MasterService,
-    private dataMappingService: DataMappingService, private dialog: MatDialog
+    private dataMappingService: DataMappingService, private dialog: MatDialog, public notificationService: NotificationService
   ) { }
+
+  showMessage() {
+    this.notificationService.addNotification('Chapter Saved Successfully!.');
+  }
 
   ngOnInit(): void {
     this.getAllChapters();
@@ -37,7 +48,7 @@ export class ChaptersComponent {
   getAllChapters() {
     this.masterService.getAll('Chapter', 'GetAll')
       .subscribe((data: any) => {
-        
+
         if (data.isSuccess) {
           this.chapters = this.dataMappingService.mapToModel<Chapters>(
             data.result,
@@ -53,7 +64,8 @@ export class ChaptersComponent {
       });
   }
 
-  editChapter(cId: any) {
+  editChapter(cId: number) {
+    debugger
     this.chapterId = cId;
     this.masterService
       .getById(cId, 'Chapter', 'Get')
@@ -62,6 +74,10 @@ export class ChaptersComponent {
         if (data.isSuccess) {
           if (data.result != null && data.result.name != null) {
             this.chapterName = data.result.name;
+            this.selectedOption = data.courseId;
+            this.selSubjectId = data.subjectId;
+            this.isChecked = data.isRecommended;
+            this.desc = "";
           }
           else {
             alert('Some error occured..! Plaese try again');
@@ -73,25 +89,35 @@ export class ChaptersComponent {
   }
 
   createChapter() {
-    var objCourse = {
+    debugger
+    var objChapter = {
       name: this.chapterName,
-      thumbnail: "Chapter ThumbNail",
+      subjectId: this.selSubjectId,
+      thumbnail: "https://www.neetprep.com/exam-info",
+      isRecommended: this.isChecked
     }
-    this.masterService.post(objCourse, 'Chapter', 'Create')
+    this.masterService.post(objChapter, 'Chapter', 'Create')
       .subscribe((data: any) => {
+        debugger
         if (data.isSuccess) {
           this.getAllChapters();
+          this.showMessage();
         } else {
           alert(data.message);
         }
       });
+    this.isAddPopupVisible = false;
+    window.location.reload();
   }
+  
 
   updateChapter() {
     var objCourse = {
       id: this.chapterId,
       name: this.chapterName,
-      thumbnail: "Chapter Thumbnail"
+      subjectId: this.selSubjectId,
+      thumbnail: "https://www.neetprep.com/exam-info",
+      isRecommended: this.isChecked
     }
     this.masterService.put(objCourse, 'Chapter', 'Update')
       .subscribe((data: any) => {
@@ -116,7 +142,7 @@ export class ChaptersComponent {
       });
   }
 
-  
+
 
   showConfirmation(id: any): void {
     Swal.fire({
@@ -143,7 +169,7 @@ export class ChaptersComponent {
 
   // Event handler for file input change event
   onFileSelected(event: any): void {
-    
+
     const file: File = event.target.files[0];
     if (file) {
       // Call the service method to read Excel file
@@ -167,12 +193,12 @@ export class ChaptersComponent {
     }
   }
 
-  
+
   getAllCourses() {
-   
+    debugger
     this.masterService.getAll('Course', 'GetAll')
       .subscribe((data: any) => {
-        
+
         if (data.isSuccess) {
           this.courseData = this.dataMappingService.mapToModel<Course>(
             data.result,
@@ -188,8 +214,9 @@ export class ChaptersComponent {
       });
   }
 
-  getSubByCourseID(cId:any) {
-    this.masterService.getById(cId,'Subject', 'GetSubjectByCourseId')
+  getSubByCourseID(cId: number) {
+    debugger
+    this.masterService.getById(cId, 'Subject', 'GetSubjectsByCourseId', 'courseId')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.subjectData = this.dataMappingService.mapToModel<Subject>(
@@ -206,12 +233,12 @@ export class ChaptersComponent {
       });
   }
 
-  onImageFileSelected(event:any): void {
+  onImageFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];
   }
   uploadImage(): void {
     if (this.selectedFile) {
-      this.masterService.uploadImage(this.selectedFile,'Subject', 'Upload')
+      this.masterService.uploadImage(this.selectedFile, 'Subject', 'Upload')
         .subscribe(
           response => {
             console.log('Image uploaded successfully', response);
@@ -228,5 +255,6 @@ export class ChaptersComponent {
         );
     }
   }
+  
 
 }

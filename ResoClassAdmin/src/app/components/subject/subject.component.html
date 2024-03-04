@@ -12,8 +12,10 @@
                         </ul>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_subject" (click)="getAllCourses()"><i
-                                class="fa fa-plus"></i> Add Subject</a>
+                        <button ty="button" class="btn add-btn" data-toggle="modal" data-target="#add_subject" (click)="getAllCourses()" ><i
+                            class="fa fa-plus"></i> Add Subject</button>
+                        <!-- <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_subject" (click)="getAllCourses()"><i
+                                class="fa fa-plus"></i> Add Subject</a> -->
                     </div>
                 </div>
             </div>
@@ -33,7 +35,7 @@
                                     <th class="no-sort"></th>
                                     <th>S. No.</th>
                                     <th>Subject</th>
-                                    <!-- <th>Course/Class Name</th> -->
+                                    <th>Course/Class Name</th>
                                 </tr>
                             </thead>
                             <tbody *ngFor="let subject of subject">
@@ -47,6 +49,7 @@
                                     </td>
                                     <td>{{subject.id}}</td>
                                     <td>{{subject.name}}</td>
+                                    <!-- <td>{{subject.courseName}}</td> -->
                                     
                                 </tr>
                             </tbody>
@@ -55,7 +58,7 @@
                 </div>
             </div>
         </div>
-        <div id="add_subject" class="modal custom-modal fade" role="dialog">
+        <div id="add_subject" class="modal custom-modal fade popup" role="dialog"  [ngClass]="{'show': isPopupVisible}" *ngIf="isAddPopupVisible">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -65,7 +68,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="addform">
+                        <form id="addform" >
                             <div class="row">
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus">
@@ -76,9 +79,10 @@
                                 </div>
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="select floating" id="class_id" name="class_id">
+                                        <select class="select floating" id="class_id" name="class_id" [(ngModel)]="selectedValue">
                                             <option value="">Select Course/Class</option>
                                             <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}</option>
+                                            
                                             
                                         </select>
                                         <label class="focus-label">Course/Class *</label>
@@ -92,8 +96,9 @@
                     </div>
                 </div>
             </div>
+            
         </div>
-        <div id="edit_subject" class="modal custom-modal fade" role="dialog">
+        <div id="edit_subject" class="modal custom-modal fade" role="dialog" *ngIf="isAddPopupVisible">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -107,17 +112,16 @@
                             <div class="row">
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus">
-                                        <input type="text" class="form-control floating" id="edit_subject_name"
+                                        <input type="text" class="form-control floating" id="edit_subject_name" [(ngModel)]="subjectName"
                                             name="subject_name">
                                         <label class="focus-label">Subject Name *</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="select floating" id="edit_class_id" name="class_id">
+                                        <select class="select floating" id="edit_class_id" name="class_id"  [(ngModel)]="selectedValue">
                                             <option value="">Select Course/Class</option>
-                                            <option value="1">Class 11/NEET</option>
-                                            <option value="2">Class 12/NEET</option>
+                                            <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}</option>
                                         </select>
                                         <label class="focus-label">Course/Class *</label>
                                     </div>
@@ -125,7 +129,7 @@
                             </div>
                             <div class="submit-section">
                                 <input type="hidden" id="subject_id" name="subject_id">
-                                <button class="btn btn-primary submit-btn" type="submit">Update</button>
+                                <button class="btn btn-primary submit-btn" type="submit" (click)="updateSubject()">Update</button>
                             </div>
                         </form>
                     </div>

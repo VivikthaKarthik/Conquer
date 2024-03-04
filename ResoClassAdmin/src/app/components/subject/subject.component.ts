@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { Course } from '../../models/course';
 import { Form,FormGroup,FormControl, Validators,FormBuilder } from '@angular/forms';
 
+
 @Component({
   selector: 'app-subject',
   templateUrl: './subject.component.html',
@@ -18,6 +19,9 @@ export class SubjectComponent {
   subjectName: string = '';
   subjectId: any;
   courseData: Course[] = [];
+  isPopupVisible: any;
+  selectedValue: string = "";
+  isAddPopupVisible: boolean = true;
 
   constructor(
     private masterService: MasterService,private fb:FormBuilder,
@@ -44,6 +48,8 @@ export class SubjectComponent {
               id: item.id,
               name: item.name,
               thumbnail: item.thumbnail,
+              //courseId:item.courseId,
+              // courseName:item.courseName
             })
           );
         } else {
@@ -54,14 +60,18 @@ export class SubjectComponent {
 
   // Edit
   editSubject(sId: any) {
+    debugger
+    this.getAllCourses();
     this.subjectId = sId;
     this.masterService
       .getById(sId, 'Subject', 'Get')
       .subscribe((data: any) => {
 
         if (data.isSuccess) {
+          debugger
           if (data.result != null && data.result.name != null) {
             this.subjectName = data.result.name;
+            this.selectedValue = data.result.courseId;
           }
           else {
             alert('Some error occured..! Plaese try again');
@@ -74,9 +84,12 @@ export class SubjectComponent {
 
   // create
   createSubject() {
+    debugger
+    let num: number = parseInt(this.selectedValue);
     var objCourse = {
       name: this.subjectName,
-      thumbnail: "Subject ThumbNail"
+      thumbnail: "Subject ThumbNail",
+      courseId:parseInt(this.selectedValue)
     }
     this.masterService.post(objCourse, 'Subject', 'Create')
       .subscribe((data: any) => {
@@ -86,23 +99,30 @@ export class SubjectComponent {
           alert(data.message);
         }
       });
+      this.isAddPopupVisible = false;
+    window.location.reload();
   }
 
   // update
   updateSubject() {
+    debugger
     var objCourse = {
       id: this.subjectId,
       name: this.subjectName,
-      thumbnail: "Subject Thumbnail"
+      thumbnail: "Subject Thumbnail",
+      courseId:parseInt(this.selectedValue)
     }
     this.masterService.put(objCourse, 'Subject', 'Update')
       .subscribe((data: any) => {
+        debugger
         if (data.isSuccess) {
           this.getAllSubjects();
         } else {
           alert(data.message);
         }
       });
+      this.isAddPopupVisible = false;
+    window.location.reload();
   }
 
   // Delete
@@ -173,10 +193,11 @@ export class SubjectComponent {
   }
 
   getAllCourses() {
-   
+   debugger
     this.masterService.getAll('Course', 'GetAll')
       .subscribe((data: any) => {
         if (data.isSuccess) {
+          debugger
           this.courseData = this.dataMappingService.mapToModel<Course>(
             data.result,
             (item) => ({

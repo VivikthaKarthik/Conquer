@@ -12,7 +12,7 @@
                         </ul>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_chapter"><i
+                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_chapter" (click)="getAllCourses()"><i
                                 class="fa fa-plus"></i> Add Chapter</a>
                     </div>
                 </div>
@@ -65,12 +65,11 @@
                 </div>
             </div>
         </div>
-        <div id="add_chapter" class="modal custom-modal fade" role="dialog">
+        <div id="add_chapter" class="modal custom-modal fade" role="dialog" *ngIf="isAddPopupVisible">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_subject" (click)="getAllCourses()"><i
-                            class="fa fa-plus"></i> Add Chapters</a>
+                        
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -98,7 +97,7 @@
                                 </div>
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="select floating" id="subject_id" name="subject_id" required>
+                                        <select class="select floating" id="subject_id" name="subject_id" [(ngModel)]="selSubjectId" required >
                                             <option value="">Select Subject</option>
                                             <option *ngFor="let item of subjectData" [value]="item.id">{{ item.name }}</option>
                                         </select>
@@ -123,13 +122,15 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
-                                    <input type="checkbox" id="recommended" name="recommended" required> Is Recommended?
+                                    <input type="checkbox" id="recommended" name="recommended" [(ngModel)]="isChecked"  required> Is Recommended?
                                     *
                                 </div>
                             </div>
                             <div class="submit-section">
-                                <button class="btn btn-primary submit-btn" type="submit">Submit</button>
+                                <button class="btn btn-primary submit-btn" type="submit" (click)="createChapter()">Submit</button>
                             </div>
+                           
+
                         </form>
                     </div>
                 </div>
@@ -150,27 +151,25 @@
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
                                         <input type="text" class="form-control floating" id="edit_chapter_name"
-                                            name="chapter_name" required>
+                                            name="chapter_name" required [(ngModel)]="chapterName">
                                         <label class="focus-label">Chapter Name *</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="select floating" id="edit_class_id" name="class_id"
-                                            onchange="getsubjects_edit()" required>
+                                        <select class="select floating" id="edit_class_id" name="class_id" [ngModel]="selectedOption" (ngModelChange)="getSubByCourseID($event)"
+                                             required>
                                             <option value="">Select Course/Class</option>
-                                            <option value="1">Class 11/NEET</option>
-                                            <option value="2">Class 12/NEET</option>
+                                            <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}</option>
                                         </select>
                                         <label class="focus-label">Course/Class *</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="select floating" id="edit_subject_id" name="subject_id" required>
+                                        <select class="select floating" id="edit_subject_id" name="subject_id"  [(ngModel)]="selSubjectId" required >
                                             <option value="">Select Subject</option>
-                                            <option value="1">Botany</option>
-                                            <option value="2">Zoology</option>
+                                            <option *ngFor="let item of subjectData" [value]="item.id">{{ item.name }}</option>
                                         </select>
                                         <label class="focus-label">Subject *</label>
                                     </div>
@@ -179,7 +178,7 @@
                                     <div class="form-group form-focus select-focus">
                                         <textarea class="form-control floating textarea-height"
                                             id="edit_chapter_description" name="chapter_description"
-                                            required></textarea>
+                                            required [(ngModel)]="desc"></textarea>
                                         <label class="focus-label">Description *</label>
                                     </div>
                                 </div>
@@ -194,7 +193,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
-                                    <input type="checkbox" id="edit_recommended" name="edit_recommended" required> Is
+                                    <input type="checkbox" id="edit_recommended" name="edit_recommended" required [(ngModel)]="isChecked">> Is
                                     Recommended? *
                                 </div>
                             </div>

@@ -10,6 +10,11 @@ import { LayoutComponent } from './layout/layout.component';
 import { ChaptersComponent } from './components/chapters/chapters.component';
 import { TopicsComponent } from './components/topics/topics.component';
 import { SubtopicsComponent } from './components/subtopics/subtopics.component';
+import { StudentsComponent } from './components/students/students.component';
+import { AddstudentComponent } from './components/addstudent/addstudent.component';
+import { EditstudentComponent } from './components/editstudent/editstudent.component';
+import { UsersComponent } from './components/users/users.component';
+import { AdduserComponent } from './components/adduser/adduser.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -38,6 +43,30 @@ const routes: Routes = [
       {
         path: 'subtopic',
         component: SubtopicsComponent,
+      },
+      {
+        path: 'student',
+        component: StudentsComponent,
+      },
+      {
+        path: 'addstudent',
+        component: AddstudentComponent,
+      },
+      {
+        path: 'editstudent',
+        component: EditstudentComponent,
+      },
+      {
+        path: 'user',
+        component: UsersComponent,
+      },
+      {
+        path: 'adduser',
+        component: AdduserComponent,
+      },
+      {
+        path: 'editstudent',
+        component: EditstudentComponent,
       },
     ],
   },

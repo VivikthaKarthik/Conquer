@@ -11,10 +11,17 @@ import { HttpClientModule } from '@angular/common/http';
 
 
 import { LayoutModule } from './layout/layout.module';
-
+import { NotificationComponent } from './notification/notification.component';
+import { StudentsComponent } from './components/students/students.component';
+import { AddstudentComponent } from './components/addstudent/addstudent.component';
+import { EditstudentComponent } from './components/editstudent/editstudent.component';
+import { UsersComponent } from './components/users/users.component';
+import { AdduserComponent } from './components/adduser/adduser.component';
+import { EdituserComponent } from './edituser/edituser.component';
+import { ActionsrenderComponent } from './actionsrender/actionsrender.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent],
+  declarations: [AppComponent, LoginComponent, NotificationComponent, StudentsComponent, AddstudentComponent, EditstudentComponent, UsersComponent, AdduserComponent, EdituserComponent, ActionsrenderComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -22,7 +29,7 @@ import { LayoutModule } from './layout/layout.module';
     ReactiveFormsModule,
     FormsModule,
     ReactiveFormsModule,
-    LayoutModule,
+    LayoutModule
   ],
   exports: [LayoutModule],
   providers: [AuthService, MasterService],

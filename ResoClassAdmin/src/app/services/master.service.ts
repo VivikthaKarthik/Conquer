@@ -24,8 +24,8 @@ export class MasterService {
     return this.http.get(`${this.baseUrl}/${type}/${apiName}`, { headers: this.getTokenHeaders() });
   }
 
-  getById(id:any, type: string, apiName: string) {    
-    return this.http.get(`${this.baseUrl}/${type}/${apiName}?id=${id}`, { headers: this.getTokenHeaders() });
+  getById(id:any, type: string, apiName: string, idParamName: string = 'id') {    
+    return this.http.get(`${this.baseUrl}/${type}/${apiName}?${idParamName}=${id}`, { headers: this.getTokenHeaders() });
   }
 
   post(obj:any, type: string, apiName: string) {    
