@@ -15,8 +15,10 @@ export class MasterService {
     return this.http.get(`${this.baseUrl}/${type}/${apiName}`);
   }
 
-  getById(id: any, type: string, apiName: string) {
-    return this.http.get(`${this.baseUrl}/${type}/${apiName}?id=${id}`);
+  getById(id: any, type: string, apiName: string, idParamName: string = 'id') {
+    return this.http.get(
+      `${this.baseUrl}/${type}/${apiName}?${idParamName}=${id}`
+    );
   }
 
   post(obj: any, type: string, apiName: string) {
