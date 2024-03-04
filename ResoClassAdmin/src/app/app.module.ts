@@ -19,9 +19,11 @@ import { UsersComponent } from './components/users/users.component';
 import { AdduserComponent } from './components/adduser/adduser.component';
 import { EdituserComponent } from './edituser/edituser.component';
 import { ActionsrenderComponent } from './actionsrender/actionsrender.component';
+import { GridComponent } from './components/grid/grid.component';
+import { ActionCellRendererComponent } from './components/action-cell-renderer/action-cell-renderer.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NotificationComponent, StudentsComponent, AddstudentComponent, EditstudentComponent, UsersComponent, AdduserComponent, EdituserComponent, ActionsrenderComponent],
+  declarations: [AppComponent, LoginComponent, NotificationComponent, StudentsComponent, AddstudentComponent, EditstudentComponent, UsersComponent, AdduserComponent, EdituserComponent, ActionsrenderComponent, ActionCellRendererComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

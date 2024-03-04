@@ -14,7 +14,8 @@ import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { ConfirmdialogComponent } from '../confirmdialog/confirmdialog.component';
-import { AgGridAngular,AgGridModule  } from 'ag-grid-angular';
+import { AgGridAngular, AgGridModule } from 'ag-grid-angular';
+import { GridComponent } from '../components/grid/grid.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AgGridAngular,AgGridModule  } from 'ag-grid-angular';
     SubjectComponent,
     ChaptersComponent,
     TopicsComponent,
-    SubtopicsComponent
+    SubtopicsComponent,
+    GridComponent,
   ],
   imports: [
     CommonModule,
@@ -34,10 +36,8 @@ import { AgGridAngular,AgGridModule  } from 'ag-grid-angular';
     MatDialogModule,
     MatButtonModule,
     AgGridAngular,
-    AgGridModule
+    AgGridModule,
   ],
-  exports: [
-    SharedModule
-  ]
+  exports: [SharedModule],
 })
-export class LayoutModule { }
+export class LayoutModule {}
