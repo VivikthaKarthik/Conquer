@@ -29,13 +29,8 @@
           </form>
         </div>
         <div class="col-md-12">
-          <app-grid [courseList]="courseList"></app-grid>
-        </div>
-        <div class="col-md-12">
-          <ag-grid-angular class="ag-theme-quartz" style="height:500px;width: 100%;" [rowData]="courseList"
-            [columnDefs]="colDefs" [defaultColDef]="defaultColDef" [domLayout]="'autoHeight'"
-            [getRowHeight]="getRowHeight" [gridOptions]="gridOptions">
-          </ag-grid-angular>
+          <app-grid [data]="courseList" [coloumnDef]="colDefs" 
+          (editRecord)="editGridRecord($event)" (deleteRecord)="deleteGridRecord($event)"></app-grid>
         </div>
       </div>
     </div>

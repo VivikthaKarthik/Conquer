@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { MasterService } from '../../services/master.service';
-import { Course } from '../../models/course';
 import { DataMappingService } from '../../services/data-mapping.service';
-import { ConfirmdialogComponent } from '../../confirmdialog/confirmdialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { ColDef } from 'ag-grid-community';
-import { GridApi, GridOptions } from 'ag-grid-community';
+
 
 @Component({
   selector: 'app-course',
@@ -14,86 +12,36 @@ import { GridApi, GridOptions } from 'ag-grid-community';
   styleUrl: './course.component.css',
 })
 export class CourseComponent {
-  gridOptions!: GridOptions;
-  gridApi!: GridApi;
+
+  courseList: any[] = [];
+  colDefs: ColDef[] = [];
+  courseName: string = '';
+  courseId: any;
+  
 
   constructor(
     private masterService: MasterService,
     private dataMappingService: DataMappingService,
     private dialog: MatDialog
   ) {
-    (this.gridOptions = {
-      onGridReady: (params) => {
-        this.gridApi = params.api;
-      },
-    }),
-      (this.gridOptions = {
-        pagination: true,
-        paginationPageSize: 5, // Number of rows per page
-        onPaginationChanged: this.onPaginationChanged.bind(this),
-      });
-  }
-  onGridReady(params: any) {
-    params.api.sizeColumnsToFit();
+    this.colDefs.push({
+      headerName: 'Course ID', field: 'id', filter: 'agTextColumnFilter'
+    });
+    this.colDefs.push({
+      headerName: 'Course', field: 'name', filter: 'agTextColumnFilter'
+    });
+    this.colDefs.push({
+      headerName: 'Thumbnail', field: 'thumbnail', filter: 'agTextColumnFilter',
+    });
   }
 
-  // Example method to handle pagination changes
-  onPaginationChanged(event: any) {
-    console.log('Current page:', event.api.paginationGetCurrentPage() + 1);
-  }
-  // ag-grid-Begin
-  defaultColDef = {
-    flex: 1,
-    minWidth: 100,
-    sortable: true,
-    filter: true,
-  };
-  courseList: any[] = [];
-  colDefs: ColDef[] = [
-    // { headerName: 'Actions', cellRenderer: ActionsrenderComponent },
-    {
-      headerName: 'Actions',
-      cellRenderer: (params: any) => {
-        return `
-        <button class="btn edit m-r-5" style="color:blue" (click)="editRow(${params.data.id});" data-toggle="modal"
-        data-target="#edit_course"
-         type="button">
-        <i class="fa fa-pencil"></i>
-      </button>
-      <button class="btn delete m-r-5" style="color:red" (click)="deleteRow();" type="button">
-        <i class="fa fa-trash-o"></i>
-      </button>
-        `;
-      },
-    },
-    { headerName: 'ID', field: 'id', filter: 'agTextColumnFilter' },
-    { headerName: 'Course', field: 'name', filter: 'agTextColumnFilter' },
-    {
-      headerName: 'Thumbnail',
-      field: 'thumbnail',
-      filter: 'agTextColumnFilter',
-    },
-  ];
 
-  getRowHeight(params: any) {
-    const DEFAULT_ROW_HEIGHT = 25;
-    const lineHeight = 20;
-
-    const numberOfLines =
-      (params.data.make + params.data.model + params.data.price).length / 40;
-    return DEFAULT_ROW_HEIGHT + numberOfLines * lineHeight;
-  }
-
-  courses: Course[] | undefined;
-  courseName: string = '';
-  courseId: any;
 
   ngOnInit(): void {
-    //this.getAllCourses();
-    this.getAllCoursesAG();
+    this.getAllCourses();
   }
 
-  getAllCoursesAG() {
+  getAllCourses() {
     this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
       if (data.isSuccess) {
         this.courseList = data.result;
@@ -103,24 +51,7 @@ export class CourseComponent {
     });
   }
 
-  getAllCourses() {
-    this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
-      if (data.isSuccess) {
-        this.courses = this.dataMappingService.mapToModel<Course>(
-          data.result,
-          (item) => ({
-            id: item.id,
-            name: item.name,
-            thumbnail: item.thumbnail,
-          })
-        );
-      } else {
-        alert(data.message);
-      }
-    });
-  }
-
-  editCourse(cId: any) {
+  getCourseById(cId: any) {
     this.courseId = cId;
     this.masterService.getById(cId, 'Course', 'Get').subscribe((data: any) => {
       if (data.isSuccess) {
@@ -180,34 +111,11 @@ export class CourseComponent {
       });
   }
 
-  confirmDelete(id: any): void {
-    debugger;
-    const dialogRef = this.dialog.open(ConfirmdialogComponent, {
-      data: {
-        title: 'Confirm Deletion',
-        message: 'Are you sure you want to delete this item?',
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      debugger;
-      if (result) {
-        this.deleteCourse(id);
-      } else {
-      }
-    });
-  }
-
   showConfirmation(id: any): void {
     Swal.fire({
       text: 'Do you really want to remove this course/class?',
       icon: 'warning',
       showCancelButton: true,
-
-      // confirmButtonText: 'Yes, delete it!',
-      // cancelButtonText: 'No, cancel!',
-      // confirmButtonColor: '#3085d6',
-      // cancelButtonColor: '#d33'
     }).then((result) => {
       if (result.isConfirmed) {
         this.deleteCourse(id);
@@ -221,10 +129,6 @@ export class CourseComponent {
     debugger;
     const file: File = event.target.files[0];
     if (file) {
-      // Call the service method to read Excel file
-      // this.excelService.readExcelFile(file);
-      // // If you need to upload the file to a backend
-      // this.excelService.uploadExcelFile(file,'Course', 'Upload');
       const formData = new FormData();
       formData.append('file', file);
       this.masterService
@@ -240,5 +144,15 @@ export class CourseComponent {
     } else {
       alert('Please select a File!');
     }
+  }
+
+
+  editGridRecord(id: any) {
+    this.getCourseById(id);
+
+  }
+
+  deleteGridRecord(id: any) {
+    this.showConfirmation(id);
   }
 }
