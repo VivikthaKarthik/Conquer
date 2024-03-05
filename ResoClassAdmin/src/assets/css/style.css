@@ -8570,3 +8570,7 @@ td .edit:hover {
 .textarea-height {
     height: 200px !important;
 }
+
+.disable-links {
+	pointer-events: none;
+}

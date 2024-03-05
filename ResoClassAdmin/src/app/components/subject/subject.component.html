@@ -1,5 +1,5 @@
 <div class="main-wrapper">
-    
+
     <div class="page-wrapper">
         <div class="content container-fluid">
             <div class="page-header">
@@ -7,13 +7,13 @@
                     <div class="col">
                         <h3 class="page-title">Subjects</h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
                             <li class="breadcrumb-item active">Subjects</li>
                         </ul>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <button ty="button" class="btn add-btn" data-toggle="modal" data-target="#add_subject" (click)="getAllCourses()" ><i
-                            class="fa fa-plus"></i> Add Subject</button>
+                        <button ty="button" class="btn add-btn" data-toggle="modal" data-target="#add_subject"
+                            (click)="getAllCourses()"><i class="fa fa-plus"></i> Add Subject</button>
                         <!-- <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_subject" (click)="getAllCourses()"><i
                                 class="fa fa-plus"></i> Add Subject</a> -->
                     </div>
@@ -28,12 +28,13 @@
                     </form>
                 </div>
                 <div class="col-md-12">
-                    <app-grid [data]="subjectList" [coloumnDef]="colDefs" 
-                    (editRecord)="editGridRecord($event)" (deleteRecord)="deleteGridRecord($event)"></app-grid>
+                    <app-grid [data]="subjectList" [coloumnDef]="colDefs" (editRecord)="editGridRecord($event)"
+                        (deleteRecord)="deleteGridRecord($event)"></app-grid>
                 </div>
             </div>
         </div>
-        <div id="add_subject" class="modal custom-modal fade popup" role="dialog"  [ngClass]="{'show': isPopupVisible}" *ngIf="isAddPopupVisible">
+        <div id="add_subject" class="modal custom-modal fade popup" role="dialog" [ngClass]="{'show': isPopupVisible}"
+            *ngIf="isAddPopupVisible">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -43,35 +44,38 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="addform" >
+                        <form id="addform">
                             <div class="row">
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus">
-                                        <input type="text" class="form-control floating" id="subject_name" [(ngModel)]="subjectName" 
-                                            name="subject_name">
+                                        <input type="text" class="form-control floating" id="subject_name"
+                                            [(ngModel)]="subjectName" name="subject_name">
                                         <label class="focus-label">Subject Name *</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="select floating" id="class_id" name="class_id" [(ngModel)]="selectedValue">
+                                        <select class="select floating" id="class_id" name="class_id"
+                                            [(ngModel)]="selectedValue">
                                             <option value="">Select Course/Class</option>
-                                            <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}</option>
-                                            
-                                            
+                                            <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}
+                                            </option>
+
+
                                         </select>
                                         <label class="focus-label">Course/Class *</label>
                                     </div>
                                 </div>
                             </div>
                             <div class="submit-section">
-                                <button class="btn btn-primary submit-btn" type="submit" (click)="createSubject()">Submit</button>
+                                <button class="btn btn-primary submit-btn" type="submit"
+                                    (click)="createSubject()">Submit</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-            
+
         </div>
         <div id="edit_subject" class="modal custom-modal fade" role="dialog" *ngIf="isAddPopupVisible">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -87,16 +91,18 @@
                             <div class="row">
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus">
-                                        <input type="text" class="form-control floating" id="edit_subject_name" [(ngModel)]="subjectName"
-                                            name="subject_name">
+                                        <input type="text" class="form-control floating" id="edit_subject_name"
+                                            [(ngModel)]="subjectName" name="subject_name">
                                         <label class="focus-label">Subject Name *</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="select floating" id="edit_class_id" name="class_id"  [(ngModel)]="selectedValue">
+                                        <select class="select floating" id="edit_class_id" name="class_id"
+                                            [(ngModel)]="selectedValue">
                                             <option value="">Select Course/Class</option>
-                                            <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}</option>
+                                            <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}
+                                            </option>
                                         </select>
                                         <label class="focus-label">Course/Class *</label>
                                     </div>
@@ -104,7 +110,8 @@
                             </div>
                             <div class="submit-section">
                                 <input type="hidden" id="subject_id" name="subject_id">
-                                <button class="btn btn-primary submit-btn" type="submit" (click)="updateSubject()">Update</button>
+                                <button class="btn btn-primary submit-btn" type="submit"
+                                    (click)="updateSubject()">Update</button>
                             </div>
                         </form>
                     </div>

@@ -7,7 +7,7 @@
                     <div class="col">
                         <h3 class="page-title">Users</h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
                             <li class="breadcrumb-item active">Users</li>
                         </ul>
                     </div>
@@ -25,11 +25,10 @@
                 </div>
                 <div class="col-sm-6 col-md-3">
                     <div class="form-group form-focus select-focus">
-                        <select class="select floating" id="class_id" name="class_id" 
-                             required >
+                        <select class="select floating" id="class_id" name="class_id" required>
                             <option value="">Select Course/Class</option>
                             <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}</option>
-                            
+
                         </select>
                         <label class="focus-label">Course/Class *</label>
                     </div>
@@ -51,17 +50,18 @@
                                     <th>Email</th>
                                     <th>Phone Number</th>
                                     <th>Role</th>
-                                    
+
                                 </tr>
                             </thead>
                             <tbody *ngFor="let student of students">
                                 <tr>
                                     <td>
-                                        <button class="btn edit m-r-5" (click)="editStudent(student.Id);" data-toggle="modal" data-target="#edit_course"
-                                            type="button">
+                                        <button class="btn edit m-r-5" (click)="editStudent(student.Id);"
+                                            data-toggle="modal" data-target="#edit_course" type="button">
                                             <i class="fa fa-pencil"></i>
                                         </button>
-                                        <button class="btn delete m-r-5" (click)="showConfirmation(student.Id);" type="button">
+                                        <button class="btn delete m-r-5" (click)="showConfirmation(student.Id);"
+                                            type="button">
                                             <i class="fa fa-trash-o"></i>
                                         </button>
                                     </td>

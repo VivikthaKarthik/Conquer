@@ -15,6 +15,7 @@ import { AddstudentComponent } from './components/addstudent/addstudent.componen
 import { EditstudentComponent } from './components/editstudent/editstudent.component';
 import { UsersComponent } from './components/users/users.component';
 import { AdduserComponent } from './components/adduser/adduser.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -70,14 +71,11 @@ const routes: Routes = [
       },
     ],
   },
-  // {
-  //   path: 'header',
-  //   component: HeaderComponent,
-  // },
-  // {
-  //   path: 'sidebar',
-  //   component: SidebarComponent,
-  // },
+  {
+    path: '**',
+    pathMatch: 'full',
+    component: NotFoundComponent,
+  },
 ];
 
 @NgModule({

@@ -1,5 +1,5 @@
 <div class="main-wrapper">
-    
+
     <div class="page-wrapper">
         <div class="content container-fluid">
             <div class="page-header">
@@ -7,13 +7,13 @@
                     <div class="col">
                         <h3 class="page-title">Topics</h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                            <li class="breadcrumb-item"><a routerLink="/dashboard">Dashboard</a></li>
                             <li class="breadcrumb-item active">Topics</li>
                         </ul>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_chapter" (click)="getAllChapters()"><i
-                                class="fa fa-plus"></i> Add Topics</a>
+                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_chapter"
+                            (click)="getAllChapters()"><i class="fa fa-plus"></i> Add Topics</a>
                     </div>
                 </div>
             </div>
@@ -26,8 +26,8 @@
                     </form>
                 </div>
                 <div class="col-md-12">
-                    <app-grid [data]="topicsList" [coloumnDef]="colDefs" 
-                    (editRecord)="editGridRecord($event)" (deleteRecord)="deleteGridRecord($event)"></app-grid>
+                    <app-grid [data]="topicsList" [coloumnDef]="colDefs" (editRecord)="editGridRecord($event)"
+                        (deleteRecord)="deleteGridRecord($event)"></app-grid>
                 </div>
             </div>
         </div>
@@ -35,7 +35,7 @@
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        
+
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -45,34 +45,35 @@
                             <div class="row">
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <input type="text" class="form-control floating" id="chapter_name" [(ngModel)]="topicName"
-                                            name="chapter_name" required>
+                                        <input type="text" class="form-control floating" id="chapter_name"
+                                            [(ngModel)]="topicName" name="chapter_name" required>
                                         <label class="focus-label">Topic Name *</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="select floating" id="class_id" name="class_id" [(ngModel)]="selectedValue" (change)="onSelectChange($event)" 
-                                             required >
+                                        <select class="select floating" id="class_id" name="class_id"
+                                            [(ngModel)]="selectedValue" (change)="onSelectChange($event)" required>
                                             <option value="">Select Chapter</option>
-                                            <option *ngFor="let item of chapters" [value]="item.id">{{ item.name }}</option>
-                                            
+                                            <option *ngFor="let item of chapters" [value]="item.id">{{ item.name }}
+                                            </option>
+
                                         </select>
                                         <label class="focus-label">Chapter *</label>
                                     </div>
                                 </div>
-                               
+
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus select-focus">
-                                        <textarea class="form-control floating textarea-height" id="chapter_description" [(ngModel)]="description"
-                                            name="chapter_description" required></textarea>
+                                        <textarea class="form-control floating textarea-height" id="chapter_description"
+                                            [(ngModel)]="description" name="chapter_description" required></textarea>
                                         <label class="focus-label">Description *</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus select-focus">
-                                        <input type="file" class="form-control floating" id="thumbnail" name="thumbnail" (change)="onFileSelected($event)" accept="image/*"
-                                            required>
+                                        <input type="file" class="form-control floating" id="thumbnail" name="thumbnail"
+                                            (change)="onFileSelected($event)" accept="image/*" required>
                                         <label class="focus-label">Thumbnail *</label>
                                     </div>
                                     <div>
@@ -80,14 +81,16 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
-                                    <input type="checkbox" id="recommended" name="recommended" [(ngModel)]="isChecked"  required> Is Recommended?
+                                    <input type="checkbox" id="recommended" name="recommended" [(ngModel)]="isChecked"
+                                        required> Is Recommended?
                                     *
                                 </div>
                             </div>
                             <div class="submit-section">
-                                <button class="btn btn-primary submit-btn" type="submit" (click)="createTopic()">Submit</button>
+                                <button class="btn btn-primary submit-btn" type="submit"
+                                    (click)="createTopic()">Submit</button>
                             </div>
-                           
+
 
                         </form>
                     </div>
@@ -108,23 +111,24 @@
                             <div class="row">
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <input type="text" class="form-control floating" id="edit_Topic_name" [(ngModel)]="topicName"
-                                            name="Topic_name" required>
+                                        <input type="text" class="form-control floating" id="edit_Topic_name"
+                                            [(ngModel)]="topicName" name="Topic_name" required>
                                         <label class="focus-label">Topic Name *</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="select floating" id="class_id" name="class_id" [ngModel]="selectedOption"  [(ngModel)]="selectedOption"
-                                             required >
+                                        <select class="select floating" id="class_id" name="class_id"
+                                            [ngModel]="selectedOption" [(ngModel)]="selectedOption" required>
                                             <option value="">Select Chapter</option>
-                                            <option *ngFor="let item of chapters" [value]="item.id">{{ item.name }}</option>
-                                            
+                                            <option *ngFor="let item of chapters" [value]="item.id">{{ item.name }}
+                                            </option>
+
                                         </select>
                                         <label class="focus-label">Chapter *</label>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus select-focus">
                                         <textarea class="form-control floating textarea-height"
@@ -136,18 +140,20 @@
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus select-focus">
                                         <input type="file" class="form-control floating" id="edit_thumbnail"
-                                            name="thumbnail" onchange="readURL_edit(this)" required [(ngModel)]="thumbnail">
+                                            name="thumbnail" onchange="readURL_edit(this)" required
+                                            [(ngModel)]="thumbnail">
                                         <label class="focus-label">Thumbnail *</label>
                                     </div>
                                     <div>
                                         <img src="assets/img/size_thumb.png" id="edit_thumb_image">
                                     </div>
                                 </div>
-                               
+
                             </div>
                             <div class="submit-section">
                                 <input type="hidden" name="chapter_id" id="chapter_id">
-                                <button class="btn btn-primary submit-btn" type="submit" (click)="updateTopic()">Update</button>
+                                <button class="btn btn-primary submit-btn" type="submit"
+                                    (click)="updateTopic()">Update</button>
                             </div>
                         </form>
                     </div>
