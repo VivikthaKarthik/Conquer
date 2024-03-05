@@ -213,7 +213,7 @@ export class ChaptersComponent {
 
   getSubByCourseID(cId: number) {
     
-    this.masterService.getById(cId, 'Subject', 'GetSubjectsByCourseId', 'courseId')
+    this.masterService.getById(cId, 'Subject', 'GetSubjectsByCourseId')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.subjectData = this.dataMappingService.mapToModel<Subject>(
