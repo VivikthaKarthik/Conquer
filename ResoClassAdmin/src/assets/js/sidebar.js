@@ -1,11 +1,11 @@
 var base_url = "https://google.com/";
-$(document).ready(function() {
-    var listitem="";
-    listitem += `<div class="sidebar-inner slimscroll">
+$(document).ready(function () {
+  var listitem = "";
+  listitem += `<div class="sidebar-inner slimscroll">
         <div id="sidebar-menu" class="sidebar-menu">
             <ul>
                 <li id="dashboard_menu">
-                    <a href="dashboard.html"><i class="la la-dashboard"></i> <span> Dashboard</span></a>
+                    <a routerLink="/dashboard"><i class="la la-dashboard"></i> <span> Dashboard</span></a>
                 </li>
                 <li id="students_menu">
                     <a href="students.html"><i class="las la-users"></i> <span> Students</span> </a>
@@ -79,10 +79,10 @@ $(document).ready(function() {
             </ul>
         </div>
     </div>`;
-    $("#sidebar").html(listitem); 
+  $("#sidebar").html(listitem);
 
-	var listitem_header="";
-	listitem_header += `<div class="header-left">
+  var listitem_header = "";
+  listitem_header += `<div class="header-left">
 			<a href="#!" class="logo">
 				<img src="assets/img/logo.png" width="40" height="40" alt="">
 			</a>
@@ -118,6 +118,6 @@ $(document).ready(function() {
 				<a class="dropdown-item" href="login.html">Logout</a>
 			</div>
 		</div>`;
-	$("#header").html(listitem_header); 
-	$('select').select2();
+  $("#header").html(listitem_header);
+  $("select").select2();
 });

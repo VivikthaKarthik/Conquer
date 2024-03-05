@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 import { ColDef } from 'ag-grid-community';
 import { GridApi, GridOptions } from 'ag-grid-community';
 import { ActionCellRendererComponent } from '../action-cell-renderer/action-cell-renderer.component';
@@ -8,7 +15,6 @@ import { ActionCellRendererComponent } from '../action-cell-renderer/action-cell
   templateUrl: './grid.component.html',
   styleUrl: './grid.component.css',
 })
-
 export class GridComponent {
   @Output() editRecord = new EventEmitter();
   @Output() deleteRecord = new EventEmitter();
@@ -17,7 +23,7 @@ export class GridComponent {
   gridOptions!: GridOptions;
   gridApi!: GridApi;
   gridColumns: ColDef[] = [];
-  defaultColDef:any = {};
+  defaultColDef: any = {};
 
   constructor() {
     //Set onGridReady Event
@@ -70,13 +76,12 @@ export class GridComponent {
       (params.data.make + params.data.model + params.data.price).length / 40;
     return DEFAULT_ROW_HEIGHT + numberOfLines * lineHeight;
   }
-  
+
   editRow(id: number): void {
     this.editRecord.emit(id);
   }
 
   deleteRow(id: number): void {
     this.deleteRecord.emit(id);
-   }
-
+  }
 }

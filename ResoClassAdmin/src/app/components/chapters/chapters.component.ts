@@ -10,11 +10,10 @@ import { Subject } from '../../models/subject';
 import { NotificationService } from '../../services/notification.service';
 import { ColDef } from 'ag-grid-community';
 
-
 @Component({
   selector: 'app-chapters',
   templateUrl: './chapters.component.html',
-  styleUrl: './chapters.component.css'
+  styleUrl: './chapters.component.css',
 })
 export class ChaptersComponent {
   chaptersList: Chapters[] = [];
@@ -29,24 +28,31 @@ export class ChaptersComponent {
   imageUrl: string | undefined;
   isChecked: boolean = false;
   isAddPopupVisible: boolean = true;
-  desc:string = "";
+  desc: string = '';
   colDefs: ColDef[] = [];
-
 
   constructor(
     private masterService: MasterService,
-    private dataMappingService: DataMappingService, private dialog: MatDialog, public notificationService: NotificationService
+    private dataMappingService: DataMappingService,
+    private dialog: MatDialog,
+    public notificationService: NotificationService
   ) {
     this.colDefs.push({
-      headerName: 'ID', field: 'id', filter: 'agTextColumnFilter'
+      headerName: 'ID',
+      field: 'id',
+      filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
-      headerName: 'Chapter', field: 'name', filter: 'agTextColumnFilter'
+      headerName: 'Chapter',
+      field: 'name',
+      filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
-      headerName: 'Thumbnail', field: 'thumbnail', filter: 'agTextColumnFilter',
+      headerName: 'Thumbnail',
+      field: 'thumbnail',
+      filter: 'agTextColumnFilter',
     });
-   }
+  }
 
   showMessage() {
     this.notificationService.addNotification('Chapter Saved Successfully!.');
@@ -54,55 +60,50 @@ export class ChaptersComponent {
 
   ngOnInit(): void {
     this.getAllChapters();
-
   }
 
   getAllChapters() {
-    this.masterService.getAll('Chapter', 'GetAll')
-      .subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.chaptersList = data.result;
-        } else {
-          alert(data.message);
-        }
-      });
+    this.masterService.getAll('Chapter', 'GetAll').subscribe((data: any) => {
+      if (data.isSuccess) {
+        this.chaptersList = data.result;
+      } else {
+        alert(data.message);
+      }
+    });
   }
 
   getChaptersById(cId: number) {
-    debugger
+    debugger;
     this.chapterId = cId;
-    this.masterService
-      .getById(cId, 'Chapter', 'Get')
-      .subscribe((data: any) => {
-
-        if (data.isSuccess) {
-          if (data.result != null && data.result.name != null) {
-            this.chapterName = data.result.name;
-            this.selectedOption = data.courseId;
-            this.selSubjectId = data.subjectId;
-            this.isChecked = data.isRecommended;
-            this.desc = "";
-          }
-          else {
-            alert('Some error occured..! Plaese try again');
-          }
+    this.masterService.getById(cId, 'Chapter', 'Get').subscribe((data: any) => {
+      if (data.isSuccess) {
+        if (data.result != null && data.result.name != null) {
+          this.chapterName = data.result.name;
+          this.selectedOption = data.courseId;
+          this.selSubjectId = data.subjectId;
+          this.isChecked = data.isRecommended;
+          this.desc = '';
         } else {
-          alert(data.message);
+          alert('Some error occured..! Plaese try again');
         }
-      });
+      } else {
+        alert(data.message);
+      }
+    });
   }
 
   createChapter() {
-    debugger
+    debugger;
     var objChapter = {
       name: this.chapterName,
       subjectId: this.selSubjectId,
-      thumbnail: "https://www.neetprep.com/exam-info",
-      isRecommended: this.isChecked
-    }
-    this.masterService.post(objChapter, 'Chapter', 'Create')
+      thumbnail: 'https://www.neetprep.com/exam-info',
+      isRecommended: this.isChecked,
+    };
+    this.masterService
+      .post(objChapter, 'Chapter', 'Create')
       .subscribe((data: any) => {
-        debugger
+        debugger;
         if (data.isSuccess) {
           this.getAllChapters();
           this.showMessage();
@@ -113,17 +114,17 @@ export class ChaptersComponent {
     this.isAddPopupVisible = false;
     window.location.reload();
   }
-  
 
   updateChapter() {
     var objCourse = {
       id: this.chapterId,
       name: this.chapterName,
       subjectId: this.selSubjectId,
-      thumbnail: "https://www.neetprep.com/exam-info",
-      isRecommended: this.isChecked
-    }
-    this.masterService.put(objCourse, 'Chapter', 'Update')
+      thumbnail: 'https://www.neetprep.com/exam-info',
+      isRecommended: this.isChecked,
+    };
+    this.masterService
+      .put(objCourse, 'Chapter', 'Update')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.getAllChapters();
@@ -134,7 +135,6 @@ export class ChaptersComponent {
   }
 
   deleteChapters(cId: any) {
-
     this.masterService
       .delete(cId, 'Chapter', 'Delete')
       .subscribe((data: any) => {
@@ -146,36 +146,26 @@ export class ChaptersComponent {
       });
   }
 
-
-
   showConfirmation(id: any): void {
     Swal.fire({
-
       text: 'Do you really want to remove this chapter/class?',
       icon: 'warning',
       showCancelButton: true,
-
     }).then((result) => {
       if (result.isConfirmed) {
         this.deleteChapters(id);
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        );
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
       }
     });
   }
 
-  
   onFileSelected(event: any): void {
-
     const file: File = event.target.files[0];
     if (file) {
-      
       const formData = new FormData();
       formData.append('file', file);
-      this.masterService.post(formData, 'Chapter', 'Upload')
+      this.masterService
+        .post(formData, 'Chapter', 'Upload')
         .subscribe((data: any) => {
           if (data.isSuccess) {
             alert(data.result);
@@ -184,36 +174,33 @@ export class ChaptersComponent {
             alert(data.message);
           }
         });
-    }
-    else {
-      alert("Please select a File!")
+    } else {
+      alert('Please select a File!');
     }
   }
 
-
   getAllCourses() {
-    
-    this.masterService.getAll('Course', 'GetAll')
-      .subscribe((data: any) => {
-
-        if (data.isSuccess) {
-          this.courseData = this.dataMappingService.mapToModel<Course>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-              thumbnail: item.thumbnail,
-            }))
-          console.log(this.courseData);
-        } else {
-          alert(data.message);
-        }
-      });
+    this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
+      if (data.isSuccess) {
+        this.courseData = this.dataMappingService.mapToModel<Course>(
+          data.result,
+          (item) => ({
+            id: item.id,
+            name: item.name,
+            thumbnail: item.thumbnail,
+          })
+        );
+        console.log(this.courseData);
+      } else {
+        alert(data.message);
+      }
+    });
   }
 
   getSubByCourseID(cId: number) {
-    
-    this.masterService.getById(cId, 'Subject', 'GetSubjectsByCourseId')
+    this.masterService
+      .getById(cId, 'Subject', 'GetSubjectsByCourseId', 'courseId')
+
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.subjectData = this.dataMappingService.mapToModel<Subject>(
@@ -235,9 +222,10 @@ export class ChaptersComponent {
   }
   uploadImage(): void {
     if (this.selectedFile) {
-      this.masterService.uploadImage(this.selectedFile, 'Subject', 'Upload')
+      this.masterService
+        .uploadImage(this.selectedFile, 'Subject', 'Upload')
         .subscribe(
-          response => {
+          (response) => {
             console.log('Image uploaded successfully', response);
             // if (response && response) {
             //   this.imageUrl = response; // Assuming the response has a property named 'imageUrl'
@@ -245,22 +233,20 @@ export class ChaptersComponent {
             //   console.error('Image URL not found in the response');
             // }
           },
-          error => {
+          (error) => {
             console.error('Error uploading image', error);
             // Handle error
           }
         );
     }
   }
-  
+
   editGridRecord(id: any) {
     this.getChaptersById(id);
-    alert("Subject ID" + id);
-
+    alert('Subject ID' + id);
   }
 
   deleteGridRecord(id: any) {
     this.showConfirmation(id);
   }
-
 }
