@@ -4,6 +4,10 @@ import { DataMappingService } from '../../services/data-mapping.service';
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { ColDef } from 'ag-grid-community';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
+import { ValidationsService } from '../../services/validations.service';
+
 
 
 @Component({
@@ -17,22 +21,35 @@ export class CourseComponent {
   colDefs: ColDef[] = [];
   courseName: string = '';
   courseId: any;
-  
+  myForm: FormGroup;
+  submitted: boolean = false;
+  labelText: string = 'Couse Name is Required';
+
 
   constructor(
     private masterService: MasterService,
     private dataMappingService: DataMappingService,
-    private dialog: MatDialog
+    private dialog: MatDialog, private formBuilder: FormBuilder, private validations: ValidationsService
   ) {
-    this.colDefs.push({
-      headerName: 'Course ID', field: 'id', filter: 'agTextColumnFilter'
-    });
-    this.colDefs.push({
-      headerName: 'Course', field: 'name', filter: 'agTextColumnFilter'
-    });
-    this.colDefs.push({
-      headerName: 'Thumbnail', field: 'thumbnail', filter: 'agTextColumnFilter',
-    });
+    {
+      this.colDefs.push({
+        headerName: 'Course ID', field: 'id', filter: 'agTextColumnFilter'
+      });
+      this.colDefs.push({
+        headerName: 'Course', field: 'name', filter: 'agTextColumnFilter'
+      });
+      this.colDefs.push({
+        headerName: 'Thumbnail', field: 'thumbnail', filter: 'agTextColumnFilter',
+      });
+    };
+
+    // Reactive-Form validations
+    {
+      this.myForm = this.formBuilder.group({
+        name: ['', [Validators.required, validations.requiredIfEmptyValidator()]]
+        // Add more form controls and validators as needed
+      });
+    }
   }
 
 
@@ -40,6 +57,9 @@ export class CourseComponent {
   ngOnInit(): void {
     this.getAllCourses();
   }
+
+
+
 
   getAllCourses() {
     this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
@@ -64,6 +84,29 @@ export class CourseComponent {
         alert(data.message);
       }
     });
+  }
+  onSubmit() {
+    debugger
+    this.submitted = true;
+    if (this.myForm.valid) {
+      var objCourse = {
+        name: this.myForm.value.name,
+        thumbnail: this.myForm.value.thumbnail,
+      };
+      this.masterService
+        .post(objCourse, 'Course', 'Create')
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.getAllCourses();
+          } else {
+            alert(data.message);
+          }
+        });
+    }
+    else{
+        alert("Course Name is Required!");
+    }
+
   }
 
   createCourse() {
@@ -155,4 +198,8 @@ export class CourseComponent {
   deleteGridRecord(id: any) {
     this.showConfirmation(id);
   }
+
+  // Convenience getter for easy access to form controls
+  get f() { return this.myForm.controls; }
+
 }

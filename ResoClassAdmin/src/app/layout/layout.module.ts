@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { ConfirmdialogComponent } from '../confirmdialog/confirmdialog.component';
 import { AgGridAngular, AgGridModule } from 'ag-grid-angular';
 import { GridComponent } from '../components/grid/grid.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { GridComponent } from '../components/grid/grid.component';
     MatButtonModule,
     AgGridAngular,
     AgGridModule,
+    ReactiveFormsModule,
   ],
   exports: [SharedModule],
 })

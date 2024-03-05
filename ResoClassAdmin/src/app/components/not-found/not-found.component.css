@@ -1,0 +1,26 @@
+/* page-not-found.component.css */
+
+.container {
+    margin-top: 50px;
+    text-align: center;
+  }
+  
+  h1 {
+    font-size: 36px;
+    color: #ff0000;
+  }
+  
+  p {
+    font-size: 18px;
+    margin-bottom: 20px;
+  }
+  
+  a {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  

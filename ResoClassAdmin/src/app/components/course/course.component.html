@@ -44,18 +44,22 @@
             </button>
           </div>
           <div class="modal-body">
-            <form id="addform">
+            <form id="addform" [formGroup]="myForm" (ngSubmit)="onSubmit()">
               <div class="row">
                 <div class="col-sm-12 col-md-12">
                   <div class="form-group">
                     <label>Course Name <span class="text-danger">*</span></label>
-                    <input class="form-control" type="text" id="course_name" name="course_name" [(ngModel)]="courseName"
+                    <input class="form-control" type="text" id="course_name" name="course_name" [(ngModel)]="courseName" formControlName="name"
                       required />
+                      <div *ngIf="myForm.get('name')?.touched && myForm.get('name')?.errors && myForm.get('name')?.invalid">
+                        <label style="color: red;">{{ labelText }}</label>
+                        
+                      </div>
                   </div>
                 </div>
               </div>
               <div class="submit-section">
-                <button class="btn btn-primary submit-btn" type="button" (click)="createCourse()">
+                <button class="btn btn-primary submit-btn" type="button" (click)="onSubmit()">
                   Submit
                 </button>
               </div>
