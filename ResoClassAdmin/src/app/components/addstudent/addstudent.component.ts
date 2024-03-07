@@ -4,79 +4,99 @@ import { MasterService } from '../../services/master.service';
 import { DataMappingService } from '../../services/data-mapping.service';
 import { Router } from '@angular/router';
 import { Course } from '../../models/course';
+import { ListItem } from '../../models/listItem';
 
 @Component({
   selector: 'app-addstudent',
   templateUrl: './addstudent.component.html',
-  styleUrl: './addstudent.component.css'
+  styleUrl: './addstudent.component.css',
 })
 export class AddstudentComponent {
   studentForm!: FormGroup;
-  studentName: string = "";
+  studentName: string = '';
   courses: Course[] | undefined;
+  states: ListItem[] = [{ id: 0, name: 'Select State' }];
   submitted = false;
   labelText: string = '';
+  selectedstate: any | undefined;
 
-
-  constructor(private fb: FormBuilder, private masterService: MasterService, private dataMappingService: DataMappingService, private router: Router) {
-
-  }
+  constructor(
+    private fb: FormBuilder,
+    private masterService: MasterService,
+    private dataMappingService: DataMappingService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getAllCourses();
+    this.getStates();
     this.studentForm = this.fb.group({
       // Define your form controls here
       admissionId: ['', Validators.required],
-      admissionDate: ['',Validators.required],
-      studentName: ['',Validators.required],
-      fatherName: ['',Validators.required],
-      motherName: ['',Validators.required],
-      dateofBirth: ['',Validators.required],
+      admissionDate: ['', Validators.required],
+      studentName: ['', Validators.required],
+      fatherName: ['', Validators.required],
+      motherName: ['', Validators.required],
+      dateofBirth: ['', Validators.required],
       gender: [''],
-      mobileNumber: ['',Validators.required],
+      mobileNumber: ['', Validators.required],
       altMobileNumber: [''],
       email: [''],
       classId: [''],
-      addressLine1: ['',Validators.required],
-      addressLine2: ['',Validators.required],
+      addressLine1: ['', Validators.required],
+      addressLine2: ['', Validators.required],
       landMark: [''],
       stateID: [''],
       cityID: [''],
       pinCode: [''],
 
-
       // Add more controls as needed
     });
   }
 
-  getAllCourses() {
-debugger
-    this.masterService.getAll('Course', 'GetAll')
-      .subscribe((data: any) => {
+  getStates() {
+    this.masterService.getListItems('state', '', 0).subscribe((data: any) => {
+      if (data.isSuccess) {
+        var list = this.dataMappingService.mapToModel<ListItem>(
+          data.result,
+          (item) => ({
+            id: item.id,
+            name: item.name,
+          })
+        );
+        this.states = this.states.concat(list);
+      } else {
+        alert(data.message);
+      }
+    });
+  }
 
-        if (data.isSuccess) {
-          this.courses = this.dataMappingService.mapToModel<Course>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-              thumbnail: item.thumbnail,
-            })
-          );
-        } else {
-          alert(data.message);
-        }
-      });
+  onStateChange() {
+    console.log('Dummy');
+  }
+
+  getAllCourses() {
+    this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
+      if (data.isSuccess) {
+        this.courses = this.dataMappingService.mapToModel<Course>(
+          data.result,
+          (item) => ({
+            id: item.id,
+            name: item.name,
+            thumbnail: item.thumbnail,
+          })
+        );
+      } else {
+        alert(data.message);
+      }
+    });
   }
 
   onSubmit() {
-   
     this.submitted = true;
     if (this.studentForm.invalid) {
-
-      return
-    }
-    else {
+      return;
+    } else {
       this.saveStudent();
     }
   }
@@ -98,21 +118,20 @@ debugger
       AddressLine2: this.studentForm.value.addressLine2,
       StateId: 1,
       CityId: 2,
-      PinCode:this.studentForm.value.pinCode,
-      Branchid:"BRNCHOne"
+      PinCode: this.studentForm.value.pinCode,
+      Branchid: 'BRNCHOne',
       // StateId: this.studentForm.value.stateId,
       // City: this.studentForm.value.cityId
-    }
-    console.log(JSON.stringify(objStudent))
-    this.masterService.post(objStudent, 'Student', 'Create')
+    };
+    console.log(JSON.stringify(objStudent));
+    this.masterService
+      .post(objStudent, 'Student', 'Create')
       .subscribe((data: any) => {
-
         if (data.isSuccess) {
           this.router.navigate(['/student']);
         } else {
           alert(data.message);
         }
       });
-
   }
 }

@@ -15,6 +15,12 @@ export class MasterService {
     return this.http.get(`${this.baseUrl}/${type}/${apiName}`);
   }
 
+  getListItems(itemName: string, parentName: string, parentId: number) {
+    return this.http.get(
+      `${this.baseUrl}/Home/GetListItems?itemName=${itemName}&parentName=${parentName}&parentId=${parentId}`
+    );
+  }
+
   getById(id: any, type: string, apiName: string, idParamName: string = 'id') {
     return this.http.get(
       `${this.baseUrl}/${type}/${apiName}?${idParamName}=${id}`
