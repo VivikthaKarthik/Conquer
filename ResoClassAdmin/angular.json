@@ -47,16 +47,12 @@
               "src/assets/js/popper.min.js",
               "src/assets/js/bootstrap.min.js",
               "src/assets/js/app.js",
-              "src/assets/js/jquery.slimscroll.min.js",
-              
-              "src/assets/js/bootstrap.min.js",
-              "src/assets/js/jquery.slimscroll.min.js",
+              "src/assets/js/jquery.slimscroll.min.js",              
               "src/assets/js/select2.min.js",
               "src/assets/js/moment.min.js",
               "src/assets/js/bootstrap-datetimepicker.min.js",
               "src/assets/js/jquery.dataTables.min.js",
               "src/assets/js/dataTables.bootstrap4.min.js",
-              "src/assets/js/app.js",
               "src/assets/js/sidebar.js",
               "src/assets/js/sweetalert.min.js"
             ]

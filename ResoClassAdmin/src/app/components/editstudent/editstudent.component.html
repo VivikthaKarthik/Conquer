@@ -14,52 +14,52 @@
                     </div>
                 </div>
             </div>
-            <form action="#!" id="editform">
+            <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
                 <div class="row">
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="text" class="form-control floating" id="admission_id" name="admission_id"
+                            <input type="text" class="form-control floating" id="admission_id" name="admission_id" [(ngModel)]="admissionId"
                                 required>
                             <label class="focus-label">Admission ID *</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="date" class="form-control floating" id="admission_date" name="admission_date"
+                            <input type="date" class="form-control floating" id="admission_date" name="admission_date" [(ngModel)]="admissionDate"
                                 required>
                             <label class="focus-label">Admission Date *</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="text" class="form-control floating" id="student_name" name="student_name"
+                            <input type="text" class="form-control floating" id="student_name" name="student_name" [(ngModel)]="studenrName"
                                 required>
                             <label class="focus-label">Student Full Name *</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="text" class="form-control floating" id="father_name" name="father_name"
+                            <input type="text" class="form-control floating" id="father_name" name="father_name" [(ngModel)]="fatherName"
                                 required>
                             <label class="focus-label">Father Name *</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="text" class="form-control floating" id="mother_name" name="mother_name"
+                            <input type="text" class="form-control floating" id="mother_name" name="mother_name" [(ngModel)]="motherName"
                                 required>
                             <label class="focus-label">Mother Name *</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="date" class="form-control floating" id="dob" name="dob" required>
+                            <input type="date" class="form-control floating" id="dob" name="dob" required [(ngModel)]="dateOfBirth">
                             <label class="focus-label">Date Of Birth *</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <select class="select floating" id="gender" name="gender" required>
+                            <select class="select floating" id="gender" name="gender" required [(ngModel)]="Gender">
                                 <option value="">Select Gender</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
@@ -69,26 +69,26 @@
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="number" class="form-control floating" id="mobile_number" name="mobile_number"
+                            <input type="number" class="form-control floating" id="mobile_number" name="mobile_number" [(ngModel)]="MobileNumber"
                                 required>
                             <label class="focus-label">Mobile Number *</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="number" class="form-control floating" id="alt_mobile_number"
+                            <input type="number" class="form-control floating" id="alt_mobile_number" [(ngModel)]="AlternateMobileNumber"
                                 name="alt_mobile_number">
                             <label class="focus-label">Alternate Mobile Number</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="email" class="form-control floating" id="email" name="email">
+                            <input type="email" class="form-control floating" id="email" name="email" [(ngModel)]="EmailAddress">
                             <label class="focus-label">Email</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <div class="form-group form-focus select-focus">
+                        <div class="form-group form-focus select-focus" [(ngModel)]="courseId">
                             <select class="select floating" id="class_id" name="class_id" required>
                                 <option value="">Select Course/Class</option>
                                 <option value="1">Class 11/NEET</option>
@@ -99,27 +99,27 @@
                     </div>
                     <div class="col-sm-6 col-md-6">
                         <div class="form-group form-focus select-focus">
-                            <input type="text" class="form-control floating" id="address_line1" name="address_line1"
+                            <input type="text" class="form-control floating" id="address_line1" name="address_line1" [(ngModel)]="AddressLine1"
                                 required>
                             <label class="focus-label">Address Line 1 *</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-6">
                         <div class="form-group form-focus select-focus">
-                            <input type="text" class="form-control floating" id="address_line2" name="address_line2"
+                            <input type="text" class="form-control floating" id="address_line2" name="address_line2" [(ngModel)]="AddressLine2"
                                 required>
                             <label class="focus-label">Address Line 2 *</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-6">
                         <div class="form-group form-focus select-focus">
-                            <input type="text" class="form-control floating" id="landmark" name="landmark">
+                            <input type="text" class="form-control floating" id="landmark" name="landmark" [(ngModel)]="landMark">
                             <label class="focus-label">Landmark</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <select class="select floating" id="state" name="state" onchange="getcities();" required>
+                            <select class="select floating" id="state" name="state" onchange="getcities();" required [(ngModel)]="stateId">
                                 <option value="">Select State</option>
                                 <option value="1">Andhra Pradesh</option>
                                 <option value="2">Telangana</option>
@@ -128,7 +128,7 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <div class="form-group form-focus select-focus">
+                        <div class="form-group form-focus select-focus" [(ngModel)]="cityId">
                             <select class="select floating" id="city" name="city" required>
                                 <option value="">Select City</option>
                                 <option value="1">Vijayawada</option>
@@ -139,7 +139,7 @@
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="text" class="form-control floating" id="pincode" name="pincode" required>
+                            <input type="text" class="form-control floating" id="pincode" name="pincode" required [(ngModel)]="pincode">
                             <label class="focus-label">Pincode</label>
                         </div>
                     </div>

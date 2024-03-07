@@ -15,5 +15,7 @@ export interface Student {
     Gender:string;
     Landmark:string;
     StateId:number;
-    City:number;
+    CityId:number;
+    PinCode:string;
+    BranchId:string;
   }

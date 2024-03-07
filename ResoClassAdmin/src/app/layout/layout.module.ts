@@ -17,6 +17,10 @@ import { ConfirmdialogComponent } from '../confirmdialog/confirmdialog.component
 import { AgGridAngular, AgGridModule } from 'ag-grid-angular';
 import { GridComponent } from '../components/grid/grid.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { StudentsComponent } from '../components/students/students.component';
+import { AddstudentComponent } from '../components/addstudent/addstudent.component';
+import { EditstudentComponent } from '../components/editstudent/editstudent.component';
+
 
 @NgModule({
   declarations: [
@@ -27,7 +31,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     ChaptersComponent,
     TopicsComponent,
     SubtopicsComponent,
-    GridComponent,
+    GridComponent
+    , StudentsComponent,
+    AddstudentComponent,
+    EditstudentComponent
   ],
   imports: [
     CommonModule,
@@ -42,4 +49,4 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
   exports: [SharedModule],
 })
-export class LayoutModule {}
+export class LayoutModule { }

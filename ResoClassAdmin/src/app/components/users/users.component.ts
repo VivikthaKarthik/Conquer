@@ -65,42 +65,9 @@ export class UsersComponent {
 
     this.router.navigate(['/student'], { queryParams: { id: cId } });
   }
-  getAllUsers() {
-    debugger
-    this.masterService.getAll('User', 'GetAll')
-      .subscribe((data: any) => {
-        debugger
-        if (data.isSuccess) {
-          debugger
-          this.students = this.dataMappingService.mapToModel<Student>(
-            data.result,
-            (item) => ({
-              Id: item.Id,
-              AdmissionId: item.admissionId,
-              Name: item.name,
-              FatherName: item.fatherName,
-              MotherName: item.motherName,
-              DateOfBirth: item.dateOfBirth,
-              CourseId: item.courseId,
-              AdmissionDate: item.admissionDate,
-              MobileNumber: item.models,
-              EmailAddress: item.emailAddress,
-              AlternateMobileNumber: item.alternateMobileNumber,
-              AddressLine1: item.addressLine1,
-              Gender: item.gender,
-              Landmark: item.landMark,
-              AddressLine2: item.addressLine2,
-              StateId: item.stateId,
-              City: item.city
-            })
-          );
-        } else {
-          alert(data.message);
-        }
-      });
+  getAllUsers(){
+
   }
-
-
 
 
 

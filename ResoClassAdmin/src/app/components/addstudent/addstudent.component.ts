@@ -11,27 +11,34 @@ import { Course } from '../../models/course';
   styleUrl: './addstudent.component.css'
 })
 export class AddstudentComponent {
-  form: FormGroup;
+  studentForm!: FormGroup;
   studentName: string = "";
   courses: Course[] | undefined;
- 
+  submitted = false;
+  labelText: string = '';
+
 
   constructor(private fb: FormBuilder, private masterService: MasterService, private dataMappingService: DataMappingService, private router: Router) {
-    this.form = this.fb.group({
+
+  }
+
+  ngOnInit(): void {
+    this.getAllCourses();
+    this.studentForm = this.fb.group({
       // Define your form controls here
-      admissionId: ['',],
-      admissionDate: [''],
-      studentName: [''],
-      fatherName: [''],
-      motherName: [''],
-      dateofBirth: [''],
+      admissionId: ['', Validators.required],
+      admissionDate: ['',Validators.required],
+      studentName: ['',Validators.required],
+      fatherName: ['',Validators.required],
+      motherName: ['',Validators.required],
+      dateofBirth: ['',Validators.required],
       gender: [''],
-      mobileNumber: [''],
+      mobileNumber: ['',Validators.required],
       altMobileNumber: [''],
       email: [''],
       classId: [''],
-      addressLine1: [''],
-      addressLine2: [''],
+      addressLine1: ['',Validators.required],
+      addressLine2: ['',Validators.required],
       landMark: [''],
       stateID: [''],
       cityID: [''],
@@ -42,16 +49,11 @@ export class AddstudentComponent {
     });
   }
 
-  ngOnInit(): void {
-    this.getAllCourses();
-
-  }
-
   getAllCourses() {
-    debugger
+debugger
     this.masterService.getAll('Course', 'GetAll')
       .subscribe((data: any) => {
-        debugger
+
         if (data.isSuccess) {
           this.courses = this.dataMappingService.mapToModel<Course>(
             data.result,
@@ -67,30 +69,44 @@ export class AddstudentComponent {
       });
   }
 
-
   onSubmit() {
+   
+    this.submitted = true;
+    if (this.studentForm.invalid) {
 
-    var objStudent = {
-      AdmissionId: this.form.value.admissionId,
-      Name: this.form.value.studenrName,
-      FatherName: this.form.value.fatherName,
-      MotherName: this.form.value.motherName,
-      DateOfBirth: this.form.value.dateOfBirth,
-      CourseId: this.form.value.courseId,
-      AdmissionDate: this.form.value.admissionDate,
-      MobileNumber: this.form.value.MobileNumber,
-      EmailAddress: this.form.value.EmailAddress,
-      AlternateMobileNumber: this.form.value.AlternateMobileNumber,
-      AddressLine1: this.form.value.AddressLine1,
-      Gender: this.form.value.Gender,
-      Landmark: this.form.value.landMark,
-      AddressLine2: this.form.value.AddressLine2,
-      StateId: this.form.value.stateId,
-      City: this.form.value.cityId
+      return
     }
+    else {
+      this.saveStudent();
+    }
+  }
+  saveStudent() {
+    var objStudent = {
+      AdmissionId: this.studentForm.value.admissionId,
+      Name: this.studentForm.value.studentName,
+      FatherName: this.studentForm.value.fatherName,
+      MotherName: this.studentForm.value.motherName,
+      DateOfBirth: this.studentForm.value.dateOfBirth,
+      CourseId: this.studentForm.value.courseId,
+      AdmissionDate: this.studentForm.value.admissionDate,
+      MobileNumber: String(this.studentForm.value.mobileNumber),
+      EmailAddress: this.studentForm.value.email,
+      AlternateMobileNumber: String(this.studentForm.value.altMobileNumber),
+      AddressLine1: this.studentForm.value.addressLine1,
+      Gender: this.studentForm.value.gender,
+      Landmark: this.studentForm.value.landMark,
+      AddressLine2: this.studentForm.value.addressLine2,
+      StateId: 1,
+      CityId: 2,
+      PinCode:this.studentForm.value.pinCode,
+      Branchid:"BRNCHOne"
+      // StateId: this.studentForm.value.stateId,
+      // City: this.studentForm.value.cityId
+    }
+    console.log(JSON.stringify(objStudent))
     this.masterService.post(objStudent, 'Student', 'Create')
       .subscribe((data: any) => {
-        debugger
+
         if (data.isSuccess) {
           this.router.navigate(['/student']);
         } else {

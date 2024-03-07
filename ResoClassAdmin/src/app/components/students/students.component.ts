@@ -10,6 +10,7 @@ import { Subject } from '../../models/subject';
 import { Student } from '../../models/student';
 import { NotificationService } from '../../services/notification.service';
 import { Router } from '@angular/router';
+import { ColDef } from 'ag-grid-community';
 
 @Component({
   selector: 'app-students',
@@ -19,7 +20,7 @@ import { Router } from '@angular/router';
 export class StudentsComponent {
   chapters: Chapters[] | undefined;
   subjects: Subject[] | undefined;
-  students: Student[] = [];
+  studentsList: Student[] = [];
   chapterName: string = '';
   studentId: any;
   courseData: Course[] = [];
@@ -30,6 +31,7 @@ export class StudentsComponent {
   imageUrl: string | undefined;
   isChecked: boolean = false;
   isAddPopupVisible: boolean = true;
+  colDefs: ColDef[] = [];
 
 
   admissionId: string = "";
@@ -52,8 +54,50 @@ export class StudentsComponent {
 
   constructor(
     private masterService: MasterService,
-    private dataMappingService: DataMappingService, private dialog: MatDialog, public notificationService: NotificationService,private router: Router
-  ) { }
+    private dataMappingService: DataMappingService, private dialog: MatDialog, public notificationService: NotificationService, private router: Router
+  ) {
+    this.colDefs.push({
+      headerName: 'S.NO', field: 'id', filter: 'agTextColumnFilter'
+    });
+    this.colDefs.push({
+      headerName: 'Admission ID', field: 'admissionId', filter: 'agTextColumnFilter'
+    });
+    this.colDefs.push({
+      headerName: 'Name', field: 'name', filter: 'agTextColumnFilter'
+    });
+    this.colDefs.push({
+      headerName: 'Father Name', field: 'fatherName', filter: 'agTextColumnFilter',
+    });
+    this.colDefs.push({
+      headerName: 'Mother Name', field: 'motherName', filter: 'agTextColumnFilter',
+    });
+    this.colDefs.push({
+      headerName: 'Class/Course', field: 'courseId', filter: 'agTextColumnFilter',
+    });
+    this.colDefs.push({
+      headerName: 'Gender', field: 'gender', filter: 'agTextColumnFilter',
+    });
+
+    this.colDefs.push({
+      headerName: 'Admission Date', field: 'admissionDate', filter: 'agTextColumnFilter',
+    });
+    this.colDefs.push({
+      headerName: 'Date of Birth', field: 'dateOfBirth', filter: 'agTextColumnFilter',
+    });
+    this.colDefs.push({
+      headerName: 'Mobile Number', field: 'mobileNumber', filter: 'agTextColumnFilter',
+    });
+    this.colDefs.push({
+      headerName: 'Email', field: 'email', filter: 'agTextColumnFilter',
+    });
+    this.colDefs.push({
+      headerName: 'Alternate Number', field: 'alternateMobileNumber', filter: 'agTextColumnFilter',
+    });
+    this.colDefs.push({
+      headerName: 'Address', field: 'addressLine1', filter: 'agTextColumnFilter',
+    });
+
+  }
 
   ngOnInit(): void {
     this.getAllStudents();
@@ -61,57 +105,34 @@ export class StudentsComponent {
 
   }
 
-  editStudent(cId: any){
-   
+  getStudentById(cId: any) {
+
     this.router.navigate(['/student'], { queryParams: { id: cId } });
   }
   getAllStudents() {
-    debugger
-    this.masterService.getAll('Student', 'GetProfile')
+     
+    this.masterService.getAll('Student', 'GetAll')
       .subscribe((data: any) => {
-      debugger
         if (data.isSuccess) {
-          debugger
-          this.students = this.dataMappingService.mapToModel<Student>(
-            data.result,
-            (item) => ({
-              Id: item.id,
-              AdmissionId: item.admissionId,
-              Name: item.name,
-              FatherName: item.fatherName,
-              MotherName: item.motherName,
-              DateOfBirth: item.dateOfBirth,
-              CourseId: item.courseId,
-              AdmissionDate: item.admissionDate,
-              MobileNumber: item.models,
-              EmailAddress: item.emailAddress,
-              AlternateMobileNumber: item.alternateMobileNumber,
-              AddressLine1: item.addressLine1,
-              Gender: item.gender,
-              Landmark: item.landMark,
-              AddressLine2: item.addressLine2,
-              StateId: item.stateId,
-              City: item.city
-            })
-          );
+          this.studentsList = data.result;
         } else {
           alert(data.message);
         }
       });
   }
 
-  
 
 
-  
 
-  showConfirmation(id:any): void {
+
+
+  showConfirmation(id: any): void {
     Swal.fire({
-      
+
       text: 'Do you really want to remove this course/class?',
       icon: 'warning',
       showCancelButton: true,
-      
+
       // confirmButtonText: 'Yes, delete it!',
       // cancelButtonText: 'No, cancel!',
       // confirmButtonColor: '#3085d6',
@@ -168,7 +189,7 @@ export class StudentsComponent {
   }
 
   getAllCourses() {
-    debugger
+     
     this.masterService.getAll('Course', 'GetAll')
       .subscribe((data: any) => {
 
@@ -187,7 +208,14 @@ export class StudentsComponent {
       });
   }
 
-  
+  editGridRecord(id: any) {
+    this.getStudentById(id);
+
+  }
+
+  deleteGridRecord(id: any) {
+    this.showConfirmation(id);
+  }
 
 
 }

@@ -12,9 +12,6 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { LayoutModule } from './layout/layout.module';
 import { NotificationComponent } from './notification/notification.component';
-import { StudentsComponent } from './components/students/students.component';
-import { AddstudentComponent } from './components/addstudent/addstudent.component';
-import { EditstudentComponent } from './components/editstudent/editstudent.component';
 import { UsersComponent } from './components/users/users.component';
 import { AdduserComponent } from './components/adduser/adduser.component';
 import { EdituserComponent } from './edituser/edituser.component';
@@ -24,7 +21,7 @@ import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NotificationComponent, StudentsComponent, AddstudentComponent, EditstudentComponent, UsersComponent, AdduserComponent, EdituserComponent, ActionCellRendererComponent, NotFoundComponent],
+  declarations: [AppComponent, LoginComponent, NotificationComponent, UsersComponent, AdduserComponent, EdituserComponent, ActionCellRendererComponent, NotFoundComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
