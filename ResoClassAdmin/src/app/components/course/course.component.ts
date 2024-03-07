@@ -7,8 +7,7 @@ import { ColDef } from 'ag-grid-community';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AbstractControl, ValidatorFn } from '@angular/forms';
 import { ValidationsService } from '../../services/validations.service';
-
-
+declare var $: any;
 
 @Component({
   selector: 'app-course',
@@ -16,7 +15,6 @@ import { ValidationsService } from '../../services/validations.service';
   styleUrl: './course.component.css',
 })
 export class CourseComponent {
-
   courseList: any[] = [];
   colDefs: ColDef[] = [];
   courseName: string = '';
@@ -25,41 +23,46 @@ export class CourseComponent {
   submitted: boolean = false;
   labelText: string = 'Couse Name is Required';
 
-
   constructor(
     private masterService: MasterService,
     private dataMappingService: DataMappingService,
-    private dialog: MatDialog, private formBuilder: FormBuilder, private validations: ValidationsService
+    private dialog: MatDialog,
+    private formBuilder: FormBuilder,
+    private validations: ValidationsService
   ) {
     {
       this.colDefs.push({
-        headerName: 'Course ID', field: 'id', filter: 'agTextColumnFilter'
+        headerName: 'Course ID',
+        field: 'id',
+        filter: 'agTextColumnFilter',
       });
       this.colDefs.push({
-        headerName: 'Course', field: 'name', filter: 'agTextColumnFilter'
+        headerName: 'Course',
+        field: 'name',
+        filter: 'agTextColumnFilter',
       });
       this.colDefs.push({
-        headerName: 'Thumbnail', field: 'thumbnail', filter: 'agTextColumnFilter',
+        headerName: 'Thumbnail',
+        field: 'thumbnail',
+        filter: 'agTextColumnFilter',
       });
-    };
+    }
 
     // Reactive-Form validations
     {
       this.myForm = this.formBuilder.group({
-        name: ['', [Validators.required, validations.requiredIfEmptyValidator()]]
+        name: [
+          '',
+          [Validators.required, validations.requiredIfEmptyValidator()],
+        ],
         // Add more form controls and validators as needed
       });
     }
   }
 
-
-
   ngOnInit(): void {
     this.getAllCourses();
   }
-
-
-
 
   getAllCourses() {
     this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
@@ -77,6 +80,7 @@ export class CourseComponent {
       if (data.isSuccess) {
         if (data.result != null && data.result.name != null) {
           this.courseName = data.result.name;
+          ($('#edit_course') as any).modal('show');
         } else {
           alert('Some error occured..! Plaese try again');
         }
@@ -85,8 +89,8 @@ export class CourseComponent {
       }
     });
   }
+
   onSubmit() {
-   
     this.submitted = true;
     if (this.myForm.valid) {
       var objCourse = {
@@ -102,11 +106,9 @@ export class CourseComponent {
             alert(data.message);
           }
         });
+    } else {
+      alert('Course Name is Required!');
     }
-    else{
-        alert("Course Name is Required!");
-    }
-
   }
 
   createCourse() {
@@ -136,8 +138,10 @@ export class CourseComponent {
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.getAllCourses();
+          ($('#edit_course') as any).modal('hide');
         } else {
           alert(data.message);
+          ($('#edit_course') as any).modal('hide');
         }
       });
   }
@@ -169,7 +173,6 @@ export class CourseComponent {
 
   // Event handler for file input change event
   onFileSelected(event: any): void {
-     ;
     const file: File = event.target.files[0];
     if (file) {
       const formData = new FormData();
@@ -189,17 +192,15 @@ export class CourseComponent {
     }
   }
 
-
   editGridRecord(id: any) {
     this.getCourseById(id);
-
   }
 
   deleteGridRecord(id: any) {
     this.showConfirmation(id);
   }
 
-  // Convenience getter for easy access to form controls
-  get f() { return this.myForm.controls; }
-
+  closeModal() {
+    ($('#edit_course') as any).modal('hide');
+  }
 }

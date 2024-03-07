@@ -192,8 +192,7 @@
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <select class="select floating" id="state" name="state" required formControlName="stateID"
-                                (update)="onStateChange($event)">
+                            <select class="select floating" id="state" name="state" required formControlName="stateID">
                                 <option *ngFor="let state of states" [value]="state.id">{{ state.name }}</option>
                             </select>
                             <label class="focus-label">State *</label>
