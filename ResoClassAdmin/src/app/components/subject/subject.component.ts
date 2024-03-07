@@ -8,6 +8,8 @@ import Swal from 'sweetalert2';
 import { Course } from '../../models/course';
 import { Form, FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { ColDef } from 'ag-grid-community';
+declare var $: any;
+
 
 
 @Component({
@@ -24,27 +26,41 @@ export class SubjectComponent {
   selectedValue: string = "";
   isAddPopupVisible: boolean = true;
   colDefs: ColDef[] = [];
+  subjectForm!: FormGroup;
+  submitted: boolean = false;
+  selectedId: number = 0;
+  selectedOption: any;
+
 
   constructor(
     private masterService: MasterService, private fb: FormBuilder,
     private dataMappingService: DataMappingService, private dialog: MatDialog
   ) {
-    this.colDefs.push({
-      headerName: 'ID', field: 'id', filter: 'agTextColumnFilter'
-    });
-    this.colDefs.push({
-      headerName: 'Subject', field: 'name', filter: 'agTextColumnFilter'
-    });
-    this.colDefs.push({
-      headerName: 'Thumbnail', field: 'thumbnail', filter: 'agTextColumnFilter',
-    });
+    {
+      this.colDefs.push({
+        headerName: 'ID', field: 'id', filter: 'agTextColumnFilter'
+      });
+      this.colDefs.push({
+        headerName: 'Subject', field: 'name', filter: 'agTextColumnFilter'
+      });
+      this.colDefs.push({
+        headerName: 'Thumbnail', field: 'thumbnail', filter: 'agTextColumnFilter',
+      });
+    }
+    // Reactive-Form validations
+    {
+      this.subjectForm = this.fb.group({
+        name: ['', Validators.required],
+        course : ['', Validators.required],
+
+      });
+    }
+
   }
 
 
 
-  subForm = this.fb.group({
-    subjectName: new FormControl("", Validators.required)
-  })
+ 
 
   ngOnInit(): void {
     this.getAllSubjects();
@@ -62,6 +78,7 @@ export class SubjectComponent {
   }
 
 
+
   getSubjectById(sId: any) {
     debugger
     this.getAllCourses();
@@ -75,6 +92,7 @@ export class SubjectComponent {
           if (data.result != null && data.result.name != null) {
             this.subjectName = data.result.name;
             this.selectedValue = data.result.courseId;
+            ($('#edit_chapter') as any).modal('show');
           }
           else {
             alert('Some error occured..! Plaese try again');
@@ -85,16 +103,25 @@ export class SubjectComponent {
       });
   }
 
+  onSubmit() {
+    debugger
+    this.submitted = true;
+    if (this.subjectForm.invalid) {
+      return;
+    } else {
+      this.createSubject();
+    }
+  }
 
   createSubject() {
     debugger
-    let num: number = parseInt(this.selectedValue);
-    var objCourse = {
-      name: this.subjectName,
-      thumbnail: "Subject ThumbNail",
-      courseId: parseInt(this.selectedValue)
+    
+    var subjectData = {
+      name: this.subjectForm.value.name,
+      thumbnail: 'NA',
+      courseId: this.selectedId
     }
-    this.masterService.post(objCourse, 'Subject', 'Create')
+    this.masterService.post(subjectData, 'Subject', 'Create')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.getAllSubjects();
@@ -207,12 +234,22 @@ export class SubjectComponent {
 
   editGridRecord(id: any) {
     this.getSubjectById(id);
-    alert("Subject ID" + id);
-
+    
   }
 
   deleteGridRecord(id: any) {
     this.showConfirmation(id);
   }
+  closeModal() {
+    ($('#edit_subject') as any).modal('hide');
+  }
+  onSelectionChange(event: any): void {
+    debugger
+    
+    const selectedId = parseInt(event.target.value, 10); // Parse value to integer
+    alert("The Sected Couese ID:"+ selectedId);
+    this.selectedId = selectedId;
+  }
 
+ 
 }

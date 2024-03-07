@@ -24,7 +24,8 @@
                     <h4>Bulk Upload</h4>
                     <form class="import_div" id="importform" action="#" method="POST" (change)="onFileSelected($event)">
                         <input type="file" class="form-control" name="import_file" required>
-                        <button class="btn import-btn" type="submit"><i class="las la-file-upload"></i> Import</button>
+                        <button class="btn import-btn" type="submit" style="display: none;"><i
+                                class="las la-file-upload"></i> Import</button>
                     </form>
                 </div>
                 <div class="col-md-12">
@@ -39,37 +40,49 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Add Subject</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            (click)="closeModal()">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="addform">
+                        <form id="addform" [formGroup]="subjectForm" (ngSubmit)="onSubmit()">
                             <div class="row">
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus">
                                         <input type="text" class="form-control floating" id="subject_name"
-                                            [(ngModel)]="subjectName" name="subject_name">
+                                            name="subject_name" formControlName="name"
+                                            [ngClass]="{'is-invalid': submitted && subjectForm.controls.name.errors}">
+                                        <div *ngIf="submitted && subjectForm.controls.name.errors" class="text-danger">
+                                            <div *ngIf="submitted && subjectForm.controls.name.errors.required">
+                                                Course Name is required
+                                            </div>
+                                        </div>
                                         <label class="focus-label">Subject Name *</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus select-focus">
                                         <select class="select floating" id="class_id" name="class_id"
-                                            [(ngModel)]="selectedValue">
+                                            (change)="onSelectionChange($event)" formControlName="course">
                                             <option value="">Select Course/Class</option>
                                             <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}
                                             </option>
 
 
                                         </select>
+                                        <div *ngIf="submitted && subjectForm.controls.name.errors" class="text-danger">
+                                            <div *ngIf="submitted && subjectForm.controls.name.errors.required">
+                                                Course Name is required
+                                            </div>
+                                        </div>
                                         <label class="focus-label">Course/Class *</label>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="submit-section">
-                                <button class="btn btn-primary submit-btn" type="submit"
-                                    (click)="createSubject()">Submit</button>
+                                <button class="btn btn-primary submit-btn" type="submit">Submit</button>
                             </div>
                         </form>
                     </div>
@@ -82,7 +95,8 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Edit Subject</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            (click)="closeModal()">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>

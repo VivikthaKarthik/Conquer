@@ -23,7 +23,7 @@
           <h4>Bulk Upload</h4>
           <form class="import_div" id="importform" action="#" method="POST">
             <input type="file" class="form-control" name="import_file" required (change)="onFileSelected($event)" />
-            <button class="btn import-btn" type="submit">
+            <button class="btn import-btn" type="submit" style="display: none;">
               <i class="las la-file-upload"></i> Import
             </button>
           </form>
@@ -34,7 +34,7 @@
         </div>
       </div>
     </div>
-    <div id="add_course" class="modal custom-modal fade" role="dialog">
+    <div id="add_course" class="modal custom-modal fade" role="dialog" *ngIf="isAddPopupVisible">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
@@ -44,22 +44,24 @@
             </button>
           </div>
           <div class="modal-body">
-            <form id="addform" [formGroup]="myForm" (ngSubmit)="onSubmit()">
+            <form id="addform" [formGroup]="courseForm" (ngSubmit)="onSubmit()" >
               <div class="row">
                 <div class="col-sm-12 col-md-12">
                   <div class="form-group">
                     <label>Course Name <span class="text-danger">*</span></label>
                     <input class="form-control" type="text" id="course_name" name="course_name" [(ngModel)]="courseName" formControlName="name"
-                      required />
-                      <div *ngIf="myForm.get('name')?.touched && myForm.get('name')?.errors && myForm.get('name')?.invalid">
-                        <label style="color: red;">{{ labelText }}</label>
-                        
+                    [ngClass]="{'is-invalid': submitted && courseForm.controls.name.errors}" />
+                    <div *ngIf="submitted && courseForm.controls.name.errors" class="text-danger">
+                      <div *ngIf="submitted && courseForm.controls.name.errors.required">
+                          Course Name is required
                       </div>
+                  </div>
+                     
                   </div>
                 </div>
               </div>
               <div class="submit-section">
-                <button class="btn btn-primary submit-btn" type="button" (click)="onSubmit()">
+                <button class="btn btn-primary submit-btn" type="submit" >
                   Submit
                 </button>
               </div>

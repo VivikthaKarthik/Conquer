@@ -383,8 +383,8 @@ $(window).on("load", function () {
   $("#loader-wrapper").delay(500).fadeOut("slow");
 });
 
-$(document).ready(function () {
-  setTimeout(function () {
-    $("select").select2();
-  }, 2000);
-});
+// $(document).ready(function () {
+//   setTimeout(function () {
+//     $("select").select2();
+//   }, 2000);
+// });

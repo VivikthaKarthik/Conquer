@@ -9,6 +9,8 @@ import { Course } from '../../models/course';
 import { Subject } from '../../models/subject';
 import { NotificationService } from '../../services/notification.service';
 import { ColDef } from 'ag-grid-community';
+import { Form, FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+declare var $: any;
 
 @Component({
   selector: 'app-chapters',
@@ -23,35 +25,52 @@ export class ChaptersComponent {
   courseData: Course[] = [];
   subjectData: Subject[] = [];
   selectedOption: any;
-  selSubjectId: number | undefined;
+  selSubjectId: number = 0;
   selectedFile: File | undefined;
   imageUrl: string | undefined;
   isChecked: boolean = false;
   isAddPopupVisible: boolean = true;
   desc: string = '';
   colDefs: ColDef[] = [];
+  chapterForm!: FormGroup;
+  submitted: boolean = false;
+  selectedId: number = 0;
+
 
   constructor(
     private masterService: MasterService,
     private dataMappingService: DataMappingService,
     private dialog: MatDialog,
-    public notificationService: NotificationService
+    public notificationService: NotificationService, private fb: FormBuilder
   ) {
-    this.colDefs.push({
-      headerName: 'ID',
-      field: 'id',
-      filter: 'agTextColumnFilter',
-    });
-    this.colDefs.push({
-      headerName: 'Chapter',
-      field: 'name',
-      filter: 'agTextColumnFilter',
-    });
-    this.colDefs.push({
-      headerName: 'Thumbnail',
-      field: 'thumbnail',
-      filter: 'agTextColumnFilter',
-    });
+    {
+      this.colDefs.push({
+        headerName: 'ID',
+        field: 'id',
+        filter: 'agTextColumnFilter',
+      });
+      this.colDefs.push({
+        headerName: 'Chapter',
+        field: 'name',
+        filter: 'agTextColumnFilter',
+      });
+      this.colDefs.push({
+        headerName: 'Thumbnail',
+        field: 'thumbnail',
+        filter: 'agTextColumnFilter',
+      });
+    }
+    // Reactive-Form validations
+    {
+      this.chapterForm = this.fb.group({
+        name: ['', Validators.required],
+        selCourseId: ['', Validators.required],
+        selSubId: ['', Validators.required],
+        description: ['', Validators.required],
+
+      });
+    }
+
   }
 
   showMessage() {
@@ -73,7 +92,7 @@ export class ChaptersComponent {
   }
 
   getChaptersById(cId: number) {
-    debugger;
+
     this.chapterId = cId;
     this.masterService.getById(cId, 'Chapter', 'Get').subscribe((data: any) => {
       if (data.isSuccess) {
@@ -83,6 +102,7 @@ export class ChaptersComponent {
           this.selSubjectId = data.subjectId;
           this.isChecked = data.isRecommended;
           this.desc = '';
+          ($('#edit_subject') as any).modal('show');
         } else {
           alert('Some error occured..! Plaese try again');
         }
@@ -92,18 +112,28 @@ export class ChaptersComponent {
     });
   }
 
+  onSubmit() {
+
+    this.submitted = true;
+    if (this.chapterForm.invalid) {
+      return;
+    } else {
+      this.createChapter();
+    }
+  }
   createChapter() {
-    debugger;
+    let subjID: number = Number(this.chapterForm.value.selSubId);
     var objChapter = {
-      name: this.chapterName,
-      subjectId: this.selSubjectId,
+      name: this.chapterForm.value.name,
+      subjectId: subjID,
       thumbnail: 'https://www.neetprep.com/exam-info',
       isRecommended: this.isChecked,
+
     };
     this.masterService
       .post(objChapter, 'Chapter', 'Create')
       .subscribe((data: any) => {
-        debugger;
+
         if (data.isSuccess) {
           this.getAllChapters();
           this.showMessage();
@@ -198,23 +228,26 @@ export class ChaptersComponent {
   }
 
   getSubByCourseID(cId: number) {
-    this.masterService
-      .getById(cId, 'Subject', 'GetSubjectsByCourseId', 'courseId')
+    if (cId != undefined) {
+      this.masterService
+        .getById(cId, 'Subject', 'GetSubjectsByCourseId', 'courseId')
 
-      .subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.subjectData = this.dataMappingService.mapToModel<Subject>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-              thumbnail: item.thumbnail,
-            })
-          );
-        } else {
-          alert(data.message);
-        }
-      });
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.subjectData = this.dataMappingService.mapToModel<Subject>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+                thumbnail: item.thumbnail,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
+    }
+
   }
 
   onImageFileSelected(event: any): void {
@@ -243,10 +276,13 @@ export class ChaptersComponent {
 
   editGridRecord(id: any) {
     this.getChaptersById(id);
-    alert('Subject ID' + id);
+
   }
 
   deleteGridRecord(id: any) {
     this.showConfirmation(id);
+  }
+  closeModal() {
+    ($('#edit_chapter') as any).modal('hide');
   }
 }

@@ -10,6 +10,8 @@ import { Subject } from '../../models/subject';
 import { NotificationService } from '../../services/notification.service';
 import { Topic } from '../../models/topic';
 import { ColDef } from 'ag-grid-community';
+import { Form, FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+declare var $: any;
 
 @Component({
   selector: 'app-topics',
@@ -33,27 +35,40 @@ export class TopicsComponent {
   isAddPopupVisible: boolean = true;
   selectedValue: any;
   colDefs: ColDef[] = [];
+  topicForm!: FormGroup;
+  submitted: boolean = false;
+  selectedId: number = 0;
 
 
   constructor(
     private masterService: MasterService,
-    private dataMappingService: DataMappingService, private dialog: MatDialog, public notificationService: NotificationService
+    private dataMappingService: DataMappingService, private dialog: MatDialog, public notificationService: NotificationService,private fb: FormBuilder
   ) {
-    this.colDefs.push({
-      headerName: 'ID', field: 'id', filter: 'agTextColumnFilter'
-    });
-    this.colDefs.push({
-      headerName: 'Topic', field: 'name', filter: 'agTextColumnFilter'
-    });
-    this.colDefs.push({
-      headerName: 'Chapter', field: 'chapter', filter: 'agTextColumnFilter',
-    });
-    this.colDefs.push({
-      headerName: 'Thumbnail', field: 'thumbnail', filter: 'agTextColumnFilter',
-    });
-    this.colDefs.push({
-      headerName: 'Description', field: 'description', filter: 'agTextColumnFilter',
-    });
+    {
+      this.colDefs.push({
+        headerName: 'ID', field: 'id', filter: 'agTextColumnFilter'
+      });
+      this.colDefs.push({
+        headerName: 'Topic', field: 'name', filter: 'agTextColumnFilter'
+      });
+      this.colDefs.push({
+        headerName: 'Chapter', field: 'chapter', filter: 'agTextColumnFilter',
+      });
+      this.colDefs.push({
+        headerName: 'Thumbnail', field: 'thumbnail', filter: 'agTextColumnFilter',
+      });
+      this.colDefs.push({
+        headerName: 'Description', field: 'description', filter: 'agTextColumnFilter',
+      });
+    }
+    // Reactive-Form validations
+    {
+      this.topicForm = this.fb.group({
+        name: ['', Validators.required],
+        chapterId: ['', Validators.required],
+        
+      });
+    }
   }
 
   showMessage() {
@@ -95,6 +110,8 @@ export class TopicsComponent {
             this.topicName = data.result.name;
             this.selectedOption = data.result.chapterId;
             this.thumbnail = data.result.thumbnail;
+            this.description = data.result.description;
+            ($('#edit_topic') as any).modal('show');
 
           }
           else {
@@ -221,6 +238,7 @@ export class TopicsComponent {
               id: item.id,
               name: item.name,
               thumbnail: item.thumbnail,
+              subjectId:item.subjectId
             })
           );
         } else {
@@ -239,5 +257,17 @@ export class TopicsComponent {
     this.showConfirmation(id);
   }
 
+  onSubmit() {
 
+    this.submitted = true;
+    if (this.topicForm.invalid) {
+      return;
+    } else {
+      this.createTopic();
+    }
+  }
+
+  closeModal() {
+    ($('#edit_topic') as any).modal('hide');
+  }
 }

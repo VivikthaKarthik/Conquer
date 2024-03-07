@@ -19,9 +19,10 @@ export class CourseComponent {
   colDefs: ColDef[] = [];
   courseName: string = '';
   courseId: any;
-  myForm: FormGroup;
+  courseForm: FormGroup;
   submitted: boolean = false;
   labelText: string = 'Couse Name is Required';
+  isAddPopupVisible: boolean = true;
 
   constructor(
     private masterService: MasterService,
@@ -50,12 +51,9 @@ export class CourseComponent {
 
     // Reactive-Form validations
     {
-      this.myForm = this.formBuilder.group({
-        name: [
-          '',
-          [Validators.required, validations.requiredIfEmptyValidator()],
-        ],
-        // Add more form controls and validators as needed
+      this.courseForm = this.formBuilder.group({
+        name:['', Validators.required],
+       
       });
     }
   }
@@ -89,32 +87,21 @@ export class CourseComponent {
       }
     });
   }
-
   onSubmit() {
+    
     this.submitted = true;
-    if (this.myForm.valid) {
-      var objCourse = {
-        name: this.myForm.value.name,
-        thumbnail: this.myForm.value.thumbnail,
-      };
-      this.masterService
-        .post(objCourse, 'Course', 'Create')
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            this.getAllCourses();
-          } else {
-            alert(data.message);
-          }
-        });
+    if (this.courseForm.invalid) {
+      return;
     } else {
-      alert('Course Name is Required!');
+      this.createCourse();
     }
   }
+ 
 
   createCourse() {
     var objCourse = {
-      name: this.courseName,
-      thumbnail: 'course ThumbNail',
+      name: this.courseForm.value.name,
+      thumbnail: 'NA',
     };
     this.masterService
       .post(objCourse, 'Course', 'Create')
@@ -125,13 +112,15 @@ export class CourseComponent {
           alert(data.message);
         }
       });
+      this.isAddPopupVisible = false;
+      window.location.reload();
   }
 
   updateCourse() {
     var objCourse = {
       id: this.courseId,
       name: this.courseName,
-      thumbnail: 'Course Thumbnail',
+      thumbnail: 'NA',
     };
     this.masterService
       .put(objCourse, 'Course', 'Update')
@@ -173,6 +162,7 @@ export class CourseComponent {
 
   // Event handler for file input change event
   onFileSelected(event: any): void {
+    debugger
     const file: File = event.target.files[0];
     if (file) {
       const formData = new FormData();

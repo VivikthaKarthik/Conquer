@@ -25,7 +25,7 @@
             <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
                 <div class="row">
                     <div class="col-sm-6 col-md-3">
-                        <div class="form-group form-focus">
+                        <div class="form-group form-focus select-focus">
                             <input type="text" class="form-control floating" id="admission_id" name="admission_id"
                                 formControlName="admissionId"
                                 [ngClass]="{'is-invalid': submitted && studentForm.controls.admissionId.errors}">
@@ -106,7 +106,7 @@
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <select class="select floating" id="gender" name="gender" required formControlName="gender">
+                            <select class="form-control floating" id="gender" name="gender" required formControlName="gender">
                                 <option value="">Select Gender</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>

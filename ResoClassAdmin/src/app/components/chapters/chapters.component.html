@@ -22,7 +22,7 @@
                     <h4>Bulk Upload</h4>
                     <form class="import_div" id="importform" action="#" method="POST">
                         <input type="file" class="form-control" name="import_file" required>
-                        <button class="btn import-btn" type="submit"><i class="las la-file-upload"></i> Import</button>
+                        <button class="btn import-btn" type="submit" style="display: none;"><i class="las la-file-upload"></i> Import</button>
                     </form>
                 </div>
                 <div class="col-md-12">
@@ -41,40 +41,62 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="addform">
+                        <form id="addform" [formGroup]="chapterForm" (ngSubmit)="onSubmit()">
                             <div class="row">
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <input type="text" class="form-control floating" id="chapter_name" [(ngModel)]="chapterName"
-                                            name="chapter_name" required>
+                                        <input type="text" class="form-control floating select-focus" id="chapter_name" formControlName="name"
+                                            name="chapter_name" [ngClass]="{'is-invalid': submitted && chapterForm.controls.name.errors}">
+                                            <div *ngIf="submitted && chapterForm.controls.name.errors" class="text-danger">
+                                                <div *ngIf="submitted && chapterForm.controls.name.errors.required">
+                                                    Chapter Name Name is required
+                                                </div>
+                                            </div>
                                         <label class="focus-label">Chapter Name *</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="select floating" id="class_id" name="class_id" [ngModel]="selectedOption" (ngModelChange)="getSubByCourseID($event)"
-                                             required >
+                                        <select class="form-control floating" id="class_id" name="class_id" [ngModel]="selectedOption" (ngModelChange)="getSubByCourseID($event)" formControlName="selCourseId"
+                                        [ngClass]="{'is-invalid': submitted && chapterForm.controls.selCourseId.errors}" >
                                             <option value="">Select Course/Class</option>
                                             <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}</option>
                                             
                                         </select>
+                                        <div *ngIf="submitted && chapterForm.controls.selCourseId.errors" class="text-danger">
+                                            <div *ngIf="submitted && chapterForm.controls.selCourseId.errors.required">
+                                                Course is required
+                                            </div>
+                                        </div>
                                         <label class="focus-label">Course/Class *</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="select floating" id="subject_id" name="subject_id" [(ngModel)]="selSubjectId" required >
+                                        <select class="form-control  floating" id="subject_id" name="subject_id" [(ngModel)]="selSubjectId" formControlName="selSubId"
+                                        [ngClass]="{'is-invalid': submitted && chapterForm.controls.selSubId.errors}" >
                                             <option value="">Select Subject</option>
                                             <option *ngFor="let item of subjectData" [value]="item.id">{{ item.name }}</option>
                                         </select>
+                                        <div *ngIf="submitted && chapterForm.controls.selSubId.errors" class="text-danger">
+                                            <div *ngIf="submitted && chapterForm.controls.selSubId.errors.required">
+                                                Subject is required
+                                            </div>
+                                        </div>
                                         <label class="focus-label">Subject *</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus select-focus">
-                                        <textarea class="form-control floating textarea-height" id="chapter_description"
-                                            name="chapter_description" required></textarea>
+                                        <textarea class="form-control floating textarea-height select-focus" id="chapter_description" formControlName="description"
+                                            name="chapter_description" [ngClass]="{'is-invalid': submitted && chapterForm.controls.description.errors}" ></textarea>
+                                            <div *ngIf="submitted && chapterForm.controls.description.errors" class="text-danger">
+                                                <div *ngIf="submitted && chapterForm.controls.description.errors.required">
+                                                    Description is required
+                                                </div>
+                                            </div>
                                         <label class="focus-label">Description *</label>
+                                        
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
@@ -93,7 +115,7 @@
                                 </div>
                             </div>
                             <div class="submit-section">
-                                <button class="btn btn-primary submit-btn" type="submit" (click)="createChapter()">Submit</button>
+                                <button class="btn btn-primary submit-btn" type="submit">Submit</button>
                             </div>
                            
 
@@ -102,12 +124,12 @@
                 </div>
             </div>
         </div>
-        <div id="edit_chapter" class="modal custom-modal fade" role="dialog">
+        <div id="edit_chapter" class="modal custom-modal fade" role="dialog" *ngIf="isAddPopupVisible">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Edit Chapter</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -123,7 +145,7 @@
                                 </div>
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="select floating" id="edit_class_id" name="class_id" [ngModel]="selectedOption" (ngModelChange)="getSubByCourseID($event)"
+                                        <select class="form-control floating" id="edit_class_id" name="class_id" [ngModel]="selectedOption" (ngModelChange)="getSubByCourseID($event)"
                                              required>
                                             <option value="">Select Course/Class</option>
                                             <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}</option>
@@ -133,7 +155,7 @@
                                 </div>
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="select floating" id="edit_subject_id" name="subject_id"  [(ngModel)]="selSubjectId" required >
+                                        <select class="form-control floating" id="edit_subject_id" name="subject_id"  [(ngModel)]="selSubjectId" required >
                                             <option value="">Select Subject</option>
                                             <option *ngFor="let item of subjectData" [value]="item.id">{{ item.name }}</option>
                                         </select>
