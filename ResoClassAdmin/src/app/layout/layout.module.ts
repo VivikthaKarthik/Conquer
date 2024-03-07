@@ -20,7 +20,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { StudentsComponent } from '../components/students/students.component';
 import { AddstudentComponent } from '../components/addstudent/addstudent.component';
 import { EditstudentComponent } from '../components/editstudent/editstudent.component';
-
+import { DropdownComponent } from '../widgets/dropdown/dropdown.component';
+import { Select2Module } from 'ng-select2-component';
 
 @NgModule({
   declarations: [
@@ -31,10 +32,11 @@ import { EditstudentComponent } from '../components/editstudent/editstudent.comp
     ChaptersComponent,
     TopicsComponent,
     SubtopicsComponent,
-    GridComponent
-    , StudentsComponent,
+    GridComponent,
+    StudentsComponent,
     AddstudentComponent,
-    EditstudentComponent
+    EditstudentComponent,
+    DropdownComponent,
   ],
   imports: [
     CommonModule,
@@ -46,7 +48,8 @@ import { EditstudentComponent } from '../components/editstudent/editstudent.comp
     AgGridAngular,
     AgGridModule,
     ReactiveFormsModule,
+    Select2Module,
   ],
   exports: [SharedModule],
 })
-export class LayoutModule { }
+export class LayoutModule {}

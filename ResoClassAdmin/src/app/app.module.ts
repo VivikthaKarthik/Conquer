@@ -9,7 +9,6 @@ import { MasterService } from './services/master.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
-
 import { LayoutModule } from './layout/layout.module';
 import { NotificationComponent } from './notification/notification.component';
 import { UsersComponent } from './components/users/users.component';
@@ -21,7 +20,16 @@ import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, NotificationComponent, UsersComponent, AdduserComponent, EdituserComponent, ActionCellRendererComponent, NotFoundComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    NotificationComponent,
+    UsersComponent,
+    AdduserComponent,
+    EdituserComponent,
+    ActionCellRendererComponent,
+    NotFoundComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -29,10 +37,14 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     ReactiveFormsModule,
     FormsModule,
     ReactiveFormsModule,
-    LayoutModule
+    LayoutModule,
   ],
   exports: [LayoutModule],
-  providers: [AuthService, MasterService,  { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }],
+  providers: [
+    AuthService,
+    MasterService,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

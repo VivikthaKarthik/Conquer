@@ -16,9 +16,8 @@ export class AddstudentComponent {
   studentName: string = '';
   courses: Course[] | undefined;
   states: ListItem[] = [{ id: 0, name: 'Select State' }];
+  cities: ListItem[] = [{ id: 0, name: 'Select City' }];
   submitted = false;
-  labelText: string = '';
-  selectedstate: any | undefined;
 
   constructor(
     private fb: FormBuilder,
@@ -71,8 +70,27 @@ export class AddstudentComponent {
     });
   }
 
-  onStateChange() {
-    console.log('Dummy');
+  getCities(stateId: any) {
+    this.masterService
+      .getListItems('city', 'state', stateId)
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          var list = this.dataMappingService.mapToModel<ListItem>(
+            data.result,
+            (item) => ({
+              id: item.id,
+              name: item.name,
+            })
+          );
+          this.cities = this.cities.concat(list);
+        } else {
+          alert(data.message);
+        }
+      });
+  }
+
+  onStateChange(selectedId: any) {
+    this.getCities(selectedId);
   }
 
   getAllCourses() {

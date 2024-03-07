@@ -193,27 +193,24 @@
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
                             <select class="select floating" id="state" name="state" required formControlName="stateID"
-                                onchange="onStateChange()">
+                                (update)="onStateChange($event)">
                                 <option *ngFor="let state of states" [value]="state.id">{{ state.name }}</option>
                             </select>
                             <label class="focus-label">State *</label>
                         </div>
 
-                        <select id="state2" (change)="onStateChange()">
-                            <option value="1">State 1</option>
-                            <option value="2">State 2</option>
-                            <option value="3">State 3</option>
-                        </select>
+                        <app-dropdown [label]="'State'" [options]="states"
+                            (dropdownOnChange)="onStateChange($event)"></app-dropdown>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
                             <select class="select floating" id="city" name="city" required formControlName="cityID">
-                                <option value="">Select City</option>
-                                <option value="1">Vijayawada</option>
-                                <option value="2">Hyderabad</option>
+                                <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
                             </select>
                             <label class="focus-label">City *</label>
                         </div>
+
+                        <app-dropdown [label]="'City'" [options]="cities"></app-dropdown>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus">
