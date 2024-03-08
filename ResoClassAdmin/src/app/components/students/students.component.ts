@@ -209,7 +209,6 @@ export class StudentsComponent {
   }
 
   editGridRecord(id: any) {
-    debugger
     this.getStudentById(id);
 
   }

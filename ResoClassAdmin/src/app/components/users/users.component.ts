@@ -14,7 +14,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrl: './users.component.css'
+  styleUrl: './users.component.css',
 })
 export class UsersComponent {
   chapters: Chapters[] | undefined;
@@ -31,50 +31,43 @@ export class UsersComponent {
   isChecked: boolean = false;
   isAddPopupVisible: boolean = true;
 
-
-  admissionId: string = "";
-  studenrName: string = "";
-  fatherName: string = "";
-  motherName: string = "";
-  dateOfBirth: Date = new Date()
+  admissionId: string = '';
+  studenrName: string = '';
+  fatherName: string = '';
+  motherName: string = '';
+  dateOfBirth: Date = new Date();
   courseId: number = 0;
   admissionDate: Date = new Date();
-  MobileNumber: string = "";
-  EmailAddress: string = "";
-  AlternateMobileNumber: string = "";
-  AddressLine1: String = "";
-  AddressLine2: String = "";
-  Gender: string = "";
-  landMark: string = "";
+  MobileNumber: string = '';
+  EmailAddress: string = '';
+  AlternateMobileNumber: string = '';
+  AddressLine1: String = '';
+  AddressLine2: String = '';
+  Gender: string = '';
+  landMark: string = '';
   stateId: number = 0;
   cityId: number = 0;
 
-
   constructor(
     private masterService: MasterService,
-    private dataMappingService: DataMappingService, private dialog: MatDialog, public notificationService: NotificationService, private router: Router
-  ) { }
+    private dataMappingService: DataMappingService,
+    private dialog: MatDialog,
+    public notificationService: NotificationService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getAllUsers();
     this.getAllCourses();
-
   }
 
   editStudent(cId: any) {
-
     this.router.navigate(['/student'], { queryParams: { id: cId } });
   }
-  getAllUsers(){
-
-  }
-
-
-
+  getAllUsers() {}
 
   showConfirmation(id: any): void {
     Swal.fire({
-
       text: 'Do you really want to remove this course/class?',
       icon: 'warning',
       showCancelButton: true,
@@ -86,17 +79,12 @@ export class UsersComponent {
     }).then((result) => {
       if (result.isConfirmed) {
         this.deleteStudent(id);
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        );
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
       }
     });
   }
 
   deleteStudent(cId: any) {
-
     this.masterService
       .delete(cId, 'Chapter', 'Delete')
       .subscribe((data: any) => {
@@ -110,7 +98,6 @@ export class UsersComponent {
 
   // Event handler for file input change event
   onFileSelected(event: any): void {
-
     const file: File = event.target.files[0];
     if (file) {
       // Call the service method to read Excel file
@@ -119,7 +106,8 @@ export class UsersComponent {
       // this.excelService.uploadExcelFile(file,'Course', 'Upload');
       const formData = new FormData();
       formData.append('file', file);
-      this.masterService.post(formData, 'Students', 'Upload')
+      this.masterService
+        .post(formData, 'Students', 'Upload')
         .subscribe((data: any) => {
           if (data.isSuccess) {
             alert(data.result);
@@ -128,30 +116,26 @@ export class UsersComponent {
             alert(data.message);
           }
         });
-    }
-    else {
-      alert("Please select a File!")
+    } else {
+      alert('Please select a File!');
     }
   }
 
   getAllCourses() {
-    debugger
-    this.masterService.getAll('Course', 'GetAll')
-      .subscribe((data: any) => {
-
-        if (data.isSuccess) {
-          this.courseData = this.dataMappingService.mapToModel<Course>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-              thumbnail: item.thumbnail,
-            }))
-          console.log(this.courseData);
-        } else {
-          alert(data.message);
-        }
-      });
+    this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
+      if (data.isSuccess) {
+        this.courseData = this.dataMappingService.mapToModel<Course>(
+          data.result,
+          (item) => ({
+            id: item.id,
+            name: item.name,
+            thumbnail: item.thumbnail,
+          })
+        );
+        console.log(this.courseData);
+      } else {
+        alert(data.message);
+      }
+    });
   }
-
 }

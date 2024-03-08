@@ -80,7 +80,7 @@ export class SubjectComponent {
 
 
   getSubjectById(sId: any) {
-    debugger
+    
     this.getAllCourses();
     this.subjectId = sId;
     this.masterService
@@ -88,7 +88,7 @@ export class SubjectComponent {
       .subscribe((data: any) => {
 
         if (data.isSuccess) {
-          debugger
+          
           if (data.result != null && data.result.name != null) {
             this.subjectName = data.result.name;
             this.selectedValue = data.result.courseId;
@@ -104,7 +104,7 @@ export class SubjectComponent {
   }
 
   onSubmit() {
-    debugger
+    
     this.submitted = true;
     if (this.subjectForm.invalid) {
       return;
@@ -114,7 +114,7 @@ export class SubjectComponent {
   }
 
   createSubject() {
-    debugger
+    
     
     var subjectData = {
       name: this.subjectForm.value.name,
@@ -135,7 +135,7 @@ export class SubjectComponent {
 
 
   updateSubject() {
-    debugger
+    
     var objCourse = {
       id: this.subjectId,
       name: this.subjectName,
@@ -144,7 +144,7 @@ export class SubjectComponent {
     }
     this.masterService.put(objCourse, 'Subject', 'Update')
       .subscribe((data: any) => {
-        debugger
+        
         if (data.isSuccess) {
           this.getAllSubjects();
         } else {
@@ -192,7 +192,7 @@ export class SubjectComponent {
 
 
   onFileSelected(event: any): void {
-    debugger
+    
     const file: File = event.target.files[0];
     if (file) {
       const formData = new FormData();
@@ -213,11 +213,11 @@ export class SubjectComponent {
   }
 
   getAllCourses() {
-    debugger
+    
     this.masterService.getAll('Course', 'GetAll')
       .subscribe((data: any) => {
         if (data.isSuccess) {
-          debugger
+          
           this.courseData = this.dataMappingService.mapToModel<Course>(
             data.result,
             (item) => ({
@@ -244,7 +244,7 @@ export class SubjectComponent {
     ($('#edit_subject') as any).modal('hide');
   }
   onSelectionChange(event: any): void {
-    debugger
+    
     
     const selectedId = parseInt(event.target.value, 10); // Parse value to integer
     alert("The Sected Couese ID:"+ selectedId);

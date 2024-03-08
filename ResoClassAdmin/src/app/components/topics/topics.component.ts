@@ -85,7 +85,7 @@ export class TopicsComponent {
   }
 
   getAllTopics() {
-    debugger
+    
     this.masterService.getAll('Topic', 'GetAll')
       .subscribe((data: any) => {
         if (data.isSuccess) {
@@ -97,15 +97,15 @@ export class TopicsComponent {
   }
 
   getTopicById(Id: any) {
-    debugger
+    
     this.getAllChapters();
     this.topicId = Id;
     this.masterService
       .getById(Id, 'Topic', 'Get')
       .subscribe((data: any) => {
-        debugger
+        
         if (data.isSuccess) {
-          debugger
+          
           if (data.result != null && data.result.name != null) {
             this.topicName = data.result.name;
             this.selectedOption = data.result.chapterId;
@@ -124,7 +124,7 @@ export class TopicsComponent {
   }
 
   createTopic() {
-    debugger
+    
     var objChapter = {
       name: this.topicName,
       chapterId: this.chapterId,
@@ -134,7 +134,7 @@ export class TopicsComponent {
     }
     this.masterService.post(objChapter, 'Topic', 'Create')
       .subscribe((data: any) => {
-        debugger
+        
         if (data.isSuccess) {
           this.getAllTopics();
           this.showMessage();

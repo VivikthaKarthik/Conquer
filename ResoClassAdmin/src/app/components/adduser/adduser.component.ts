@@ -40,7 +40,6 @@ export class AdduserComponent {
     }
     this.masterService.post(objStudent, 'User', 'Create')
       .subscribe((data: any) => {
-        debugger
         if (data.isSuccess) {
           this.router.navigate(['/user']);
         } else {

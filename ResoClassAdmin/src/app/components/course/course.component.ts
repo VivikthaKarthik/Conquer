@@ -162,7 +162,6 @@ export class CourseComponent {
 
   // Event handler for file input change event
   onFileSelected(event: any): void {
-    debugger
     const file: File = event.target.files[0];
     if (file) {
       const formData = new FormData();
