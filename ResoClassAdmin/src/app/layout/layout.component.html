@@ -1,3 +1,6 @@
 <app-header></app-header>
 <app-sidebar></app-sidebar>
+<div class="loader-overlay" *ngIf="isLoading">
+  <div class="loader"></div>
+</div>
 <router-outlet></router-outlet>
