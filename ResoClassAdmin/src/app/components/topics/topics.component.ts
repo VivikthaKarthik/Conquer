@@ -180,6 +180,7 @@ export class TopicsComponent {
           alert(data.message);
         }
       });
+      window.location.reload();
   }
 
 

@@ -45,8 +45,8 @@ export class AddstudentComponent {
       addressLine1: ['', Validators.required],
       addressLine2: ['', Validators.required],
       landMark: [''],
-      stateID: [''],
-      cityID: [''],
+      // stateID: [''],
+      // cityID: [''],
       pinCode: [''],
 
       // Add more controls as needed
@@ -138,8 +138,8 @@ export class AddstudentComponent {
       CityId: 2,
       PinCode: this.studentForm.value.pinCode,
       Branchid: 'BRNCHOne',
-      // StateId: this.studentForm.value.stateId,
-      // City: this.studentForm.value.cityId
+      Password:'123'
+      
     };
     console.log(JSON.stringify(objStudent));
     this.masterService
@@ -152,4 +152,6 @@ export class AddstudentComponent {
         }
       });
   }
+
+  
 }

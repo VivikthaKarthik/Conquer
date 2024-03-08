@@ -18,4 +18,5 @@ export interface Student {
     CityId:number;
     PinCode:string;
     BranchId:string;
+    Password:string;
   }
