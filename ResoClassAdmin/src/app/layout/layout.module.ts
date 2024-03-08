@@ -22,7 +22,7 @@ import { AddstudentComponent } from '../components/addstudent/addstudent.compone
 import { EditstudentComponent } from '../components/editstudent/editstudent.component';
 import { DropdownComponent } from '../widgets/dropdown/dropdown.component';
 import { Select2Module } from 'ng-select2-component';
-
+import { LoaderComponent } from '../shared/loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +38,7 @@ import { Select2Module } from 'ng-select2-component';
     AddstudentComponent,
     EditstudentComponent,
     DropdownComponent,
+    LoaderComponent,
   ],
   imports: [
     CommonModule,
@@ -49,7 +50,7 @@ import { Select2Module } from 'ng-select2-component';
     AgGridAngular,
     AgGridModule,
     ReactiveFormsModule,
-    Select2Module
+    Select2Module,
   ],
   exports: [SharedModule],
 })

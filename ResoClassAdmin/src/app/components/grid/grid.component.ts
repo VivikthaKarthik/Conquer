@@ -65,9 +65,7 @@ export class GridComponent {
     this.gridColumns = this.gridColumns.concat(this.coloumnDef);
   }
 
-  onPaginationChanged(event: any) {
-    console.log('Current page:', event.api.paginationGetCurrentPage() + 1);
-  }
+  onPaginationChanged(event: any) {}
 
   getRowHeight(params: any) {
     const DEFAULT_ROW_HEIGHT = 25;
