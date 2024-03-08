@@ -9,7 +9,13 @@ import { Course } from '../../models/course';
 import { Subject } from '../../models/subject';
 import { NotificationService } from '../../services/notification.service';
 import { ColDef } from 'ag-grid-community';
-import { Form, FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import {
+  Form,
+  FormGroup,
+  FormControl,
+  Validators,
+  FormBuilder,
+} from '@angular/forms';
 declare var $: any;
 
 @Component({
@@ -33,15 +39,16 @@ export class ChaptersComponent {
   desc: string = '';
   colDefs: ColDef[] = [];
   chapterForm!: FormGroup;
+  chapterEditForm!: FormGroup;
   submitted: boolean = false;
   selectedId: number = 0;
-
 
   constructor(
     private masterService: MasterService,
     private dataMappingService: DataMappingService,
     private dialog: MatDialog,
-    public notificationService: NotificationService, private fb: FormBuilder
+    public notificationService: NotificationService,
+    private fb: FormBuilder
   ) {
     {
       this.colDefs.push({
@@ -67,10 +74,15 @@ export class ChaptersComponent {
         selCourseId: ['', Validators.required],
         selSubId: ['', Validators.required],
         description: ['', Validators.required],
-
       });
     }
 
+    this.chapterEditForm = this.fb.group({
+      name: ['', Validators.required],
+      selCourseId: ['', Validators.required],
+      selSubId: ['', Validators.required],
+      description: ['', Validators.required],
+    });
   }
 
   showMessage() {
@@ -92,28 +104,28 @@ export class ChaptersComponent {
   }
 
   getChaptersById(cId: number) {
-
     this.chapterId = cId;
-    this.masterService.getById(cId, 'Chapter', 'Get').subscribe((data: any) => {
-      if (data.isSuccess) {
-        if (data.result != null && data.result.name != null) {
-          this.chapterName = data.result.name;
-          this.selectedOption = data.courseId;
-          this.selSubjectId = data.subjectId;
-          this.isChecked = data.isRecommended;
-          this.desc = '';
-          ($('#edit_subject') as any).modal('show');
+    this.masterService
+      .getById(cId, 'Chapter', 'Get', 'chapterId')
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          if (data.result != null && data.result.name != null) {
+            this.chapterName = data.result.name;
+            this.selectedOption = data.courseId;
+            this.selSubjectId = data.subjectId;
+            this.isChecked = data.isRecommended;
+            this.desc = '';
+            this.getAllCoursesForEdit();
+          } else {
+            alert('Some error occured..! Plaese try again');
+          }
         } else {
-          alert('Some error occured..! Plaese try again');
+          alert(data.message);
         }
-      } else {
-        alert(data.message);
-      }
-    });
+      });
   }
 
   onSubmit() {
-
     this.submitted = true;
     if (this.chapterForm.invalid) {
       return;
@@ -121,6 +133,16 @@ export class ChaptersComponent {
       this.createChapter();
     }
   }
+
+  onEditSubmit() {
+    this.submitted = true;
+    if (this.chapterEditForm.invalid) {
+      return;
+    } else {
+      this.updateChapter();
+    }
+  }
+
   createChapter() {
     let subjID: number = Number(this.chapterForm.value.selSubId);
     var objChapter = {
@@ -128,12 +150,10 @@ export class ChaptersComponent {
       subjectId: subjID,
       thumbnail: 'https://www.neetprep.com/exam-info',
       isRecommended: this.isChecked,
-
     };
     this.masterService
       .post(objChapter, 'Chapter', 'Create')
       .subscribe((data: any) => {
-
         if (data.isSuccess) {
           this.getAllChapters();
           this.showMessage();
@@ -146,10 +166,11 @@ export class ChaptersComponent {
   }
 
   updateChapter() {
+    let subjID: number = Number(this.chapterEditForm.value.selSubId);
     var objCourse = {
       id: this.chapterId,
-      name: this.chapterName,
-      subjectId: this.selSubjectId,
+      name: this.chapterEditForm.value.name,
+      subjectId: subjID,
       thumbnail: 'https://www.neetprep.com/exam-info',
       isRecommended: this.isChecked,
     };
@@ -227,6 +248,24 @@ export class ChaptersComponent {
     });
   }
 
+  getAllCoursesForEdit() {
+    this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
+      if (data.isSuccess) {
+        this.courseData = this.dataMappingService.mapToModel<Course>(
+          data.result,
+          (item) => ({
+            id: item.id,
+            name: item.name,
+            thumbnail: item.thumbnail,
+          })
+        );
+        ($('#edit_chapter') as any).modal('show');
+      } else {
+        alert(data.message);
+      }
+    });
+  }
+
   getSubByCourseID(cId: number) {
     if (cId != undefined) {
       this.masterService
@@ -247,7 +286,6 @@ export class ChaptersComponent {
           }
         });
     }
-
   }
 
   onImageFileSelected(event: any): void {
@@ -276,7 +314,6 @@ export class ChaptersComponent {
 
   editGridRecord(id: any) {
     this.getChaptersById(id);
-
   }
 
   deleteGridRecord(id: any) {

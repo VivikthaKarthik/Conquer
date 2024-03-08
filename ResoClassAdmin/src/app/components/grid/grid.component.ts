@@ -37,7 +37,7 @@ export class GridComponent {
     //Set onPaginationChanged Event
     this.gridOptions = {
       pagination: true,
-      paginationPageSize: 5, // Number of rows per page
+      paginationPageSize: 7, // Number of rows per page
       onPaginationChanged: this.onPaginationChanged.bind(this),
     };
 

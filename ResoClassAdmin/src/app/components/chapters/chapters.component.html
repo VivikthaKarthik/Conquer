@@ -1,5 +1,5 @@
 <div class="main-wrapper">
-    
+
     <div class="page-wrapper">
         <div class="content container-fluid">
             <div class="page-header">
@@ -12,8 +12,8 @@
                         </ul>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_chapter" (click)="getAllCourses()"><i
-                                class="fa fa-plus"></i> Add Chapter</a>
+                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_chapter"
+                            (click)="getAllCourses()"><i class="fa fa-plus"></i> Add Chapter</a>
                     </div>
                 </div>
             </div>
@@ -22,12 +22,13 @@
                     <h4>Bulk Upload</h4>
                     <form class="import_div" id="importform" action="#" method="POST">
                         <input type="file" class="form-control" name="import_file" required>
-                        <button class="btn import-btn" type="submit" style="display: none;"><i class="las la-file-upload"></i> Import</button>
+                        <button class="btn import-btn" type="submit" style="display: none;"><i
+                                class="las la-file-upload"></i> Import</button>
                     </form>
                 </div>
                 <div class="col-md-12">
-                    <app-grid [data]="chaptersList" [coloumnDef]="colDefs" 
-                    (editRecord)="editGridRecord($event)" (deleteRecord)="deleteGridRecord($event)"></app-grid>
+                    <app-grid [data]="chaptersList" [coloumnDef]="colDefs" (editRecord)="editGridRecord($event)"
+                        (deleteRecord)="deleteGridRecord($event)"></app-grid>
                 </div>
             </div>
         </div>
@@ -35,7 +36,7 @@
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        
+
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -45,25 +46,30 @@
                             <div class="row">
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <input type="text" class="form-control floating select-focus" id="chapter_name" formControlName="name"
-                                            name="chapter_name" [ngClass]="{'is-invalid': submitted && chapterForm.controls.name.errors}">
-                                            <div *ngIf="submitted && chapterForm.controls.name.errors" class="text-danger">
-                                                <div *ngIf="submitted && chapterForm.controls.name.errors.required">
-                                                    Chapter Name Name is required
-                                                </div>
+                                        <input type="text" class="form-control floating select-focus" id="chapter_name"
+                                            formControlName="name" name="chapter_name"
+                                            [ngClass]="{'is-invalid': submitted && chapterForm.controls.name.errors}">
+                                        <div *ngIf="submitted && chapterForm.controls.name.errors" class="text-danger">
+                                            <div *ngIf="submitted && chapterForm.controls.name.errors.required">
+                                                Chapter Name Name is required
                                             </div>
+                                        </div>
                                         <label class="focus-label">Chapter Name *</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="form-control floating" id="class_id" name="class_id" [ngModel]="selectedOption" (ngModelChange)="getSubByCourseID($event)" formControlName="selCourseId"
-                                        [ngClass]="{'is-invalid': submitted && chapterForm.controls.selCourseId.errors}" >
+                                        <select class="form-control floating" id="class_id" name="class_id"
+                                            [ngModel]="selectedOption" (ngModelChange)="getSubByCourseID($event)"
+                                            formControlName="selCourseId"
+                                            [ngClass]="{'is-invalid': submitted && chapterForm.controls.selCourseId.errors}">
                                             <option value="">Select Course/Class</option>
-                                            <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}</option>
-                                            
+                                            <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}
+                                            </option>
+
                                         </select>
-                                        <div *ngIf="submitted && chapterForm.controls.selCourseId.errors" class="text-danger">
+                                        <div *ngIf="submitted && chapterForm.controls.selCourseId.errors"
+                                            class="text-danger">
                                             <div *ngIf="submitted && chapterForm.controls.selCourseId.errors.required">
                                                 Course is required
                                             </div>
@@ -73,12 +79,15 @@
                                 </div>
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="form-control  floating" id="subject_id" name="subject_id" [(ngModel)]="selSubjectId" formControlName="selSubId"
-                                        [ngClass]="{'is-invalid': submitted && chapterForm.controls.selSubId.errors}" >
+                                        <select class="form-control  floating" id="subject_id" name="subject_id"
+                                            [(ngModel)]="selSubjectId" formControlName="selSubId"
+                                            [ngClass]="{'is-invalid': submitted && chapterForm.controls.selSubId.errors}">
                                             <option value="">Select Subject</option>
-                                            <option *ngFor="let item of subjectData" [value]="item.id">{{ item.name }}</option>
+                                            <option *ngFor="let item of subjectData" [value]="item.id">{{ item.name }}
+                                            </option>
                                         </select>
-                                        <div *ngIf="submitted && chapterForm.controls.selSubId.errors" class="text-danger">
+                                        <div *ngIf="submitted && chapterForm.controls.selSubId.errors"
+                                            class="text-danger">
                                             <div *ngIf="submitted && chapterForm.controls.selSubId.errors.required">
                                                 Subject is required
                                             </div>
@@ -88,21 +97,24 @@
                                 </div>
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus select-focus">
-                                        <textarea class="form-control floating textarea-height select-focus" id="chapter_description" formControlName="description"
-                                            name="chapter_description" [ngClass]="{'is-invalid': submitted && chapterForm.controls.description.errors}" ></textarea>
-                                            <div *ngIf="submitted && chapterForm.controls.description.errors" class="text-danger">
-                                                <div *ngIf="submitted && chapterForm.controls.description.errors.required">
-                                                    Description is required
-                                                </div>
+                                        <textarea class="form-control floating textarea-height select-focus"
+                                            id="chapter_description" formControlName="description"
+                                            name="chapter_description"
+                                            [ngClass]="{'is-invalid': submitted && chapterForm.controls.description.errors}"></textarea>
+                                        <div *ngIf="submitted && chapterForm.controls.description.errors"
+                                            class="text-danger">
+                                            <div *ngIf="submitted && chapterForm.controls.description.errors.required">
+                                                Description is required
                                             </div>
+                                        </div>
                                         <label class="focus-label">Description *</label>
-                                        
+
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus select-focus">
-                                        <input type="file" class="form-control floating" id="thumbnail" name="thumbnail" (change)="onFileSelected($event)" accept="image/*"
-                                            required>
+                                        <input type="file" class="form-control floating" id="thumbnail" name="thumbnail"
+                                            (change)="onFileSelected($event)" accept="image/*" required>
                                         <label class="focus-label">Thumbnail *</label>
                                     </div>
                                     <div>
@@ -110,26 +122,28 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
-                                    <input type="checkbox" id="recommended" name="recommended" [(ngModel)]="isChecked"  required> Is Recommended?
+                                    <input type="checkbox" id="recommended" name="recommended" [(ngModel)]="isChecked"
+                                        required> Is Recommended?
                                     *
                                 </div>
                             </div>
                             <div class="submit-section">
                                 <button class="btn btn-primary submit-btn" type="submit">Submit</button>
                             </div>
-                           
+
 
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-        <div id="edit_chapter" class="modal custom-modal fade" role="dialog" *ngIf="isAddPopupVisible">
+        <div id="edit_chapter" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Edit Chapter</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                            (click)="closeModal()">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -145,19 +159,23 @@
                                 </div>
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="form-control floating" id="edit_class_id" name="class_id" [ngModel]="selectedOption" (ngModelChange)="getSubByCourseID($event)"
-                                             required>
+                                        <select class="form-control floating" id="edit_class_id" name="class_id"
+                                            [ngModel]="selectedOption" (ngModelChange)="getSubByCourseID($event)"
+                                            required>
                                             <option value="">Select Course/Class</option>
-                                            <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}</option>
+                                            <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}
+                                            </option>
                                         </select>
                                         <label class="focus-label">Course/Class *</label>
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="form-control floating" id="edit_subject_id" name="subject_id"  [(ngModel)]="selSubjectId" required >
+                                        <select class="form-control floating" id="edit_subject_id" name="subject_id"
+                                            [(ngModel)]="selSubjectId" required>
                                             <option value="">Select Subject</option>
-                                            <option *ngFor="let item of subjectData" [value]="item.id">{{ item.name }}</option>
+                                            <option *ngFor="let item of subjectData" [value]="item.id">{{ item.name }}
+                                            </option>
                                         </select>
                                         <label class="focus-label">Subject *</label>
                                     </div>
@@ -165,8 +183,8 @@
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus select-focus">
                                         <textarea class="form-control floating textarea-height"
-                                            id="edit_chapter_description" name="chapter_description"
-                                            required [(ngModel)]="desc"></textarea>
+                                            id="edit_chapter_description" name="chapter_description" required
+                                            [(ngModel)]="desc"></textarea>
                                         <label class="focus-label">Description *</label>
                                     </div>
                                 </div>
@@ -181,7 +199,8 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
-                                    <input type="checkbox" id="edit_recommended" name="edit_recommended" required [(ngModel)]="isChecked">> Is
+                                    <input type="checkbox" id="edit_recommended" name="edit_recommended" required
+                                        [(ngModel)]="isChecked"> Is
                                     Recommended? *
                                 </div>
                             </div>
