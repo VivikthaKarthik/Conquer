@@ -106,8 +106,8 @@ export class StudentsComponent {
   }
 
   getStudentById(cId: any) {
-
-    this.router.navigate(['/student'], { queryParams: { id: cId } });
+    
+    this.router.navigate(['/editstudent'], { queryParams: { id: cId } });
   }
   getAllStudents() {
      
@@ -209,6 +209,7 @@ export class StudentsComponent {
   }
 
   editGridRecord(id: any) {
+    debugger
     this.getStudentById(id);
 
   }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators,AbstractControl, ValidatorFn  } from '@angular/forms';
 import { MasterService } from '../../services/master.service';
 import { DataMappingService } from '../../services/data-mapping.service';
 import { Router } from '@angular/router';
@@ -18,6 +18,8 @@ export class AddstudentComponent {
   states: ListItem[] = [{ id: 0, name: 'Select State' }];
   cities: ListItem[] = [{ id: 0, name: 'Select City' }];
   submitted = false;
+  selectedOption: any;
+  selectedCity:any;
 
   constructor(
     private fb: FormBuilder,
@@ -38,15 +40,15 @@ export class AddstudentComponent {
       motherName: ['', Validators.required],
       dateofBirth: ['', Validators.required],
       gender: [''],
-      mobileNumber: ['', Validators.required],
-      altMobileNumber: [''],
+      mobileNumber: ['', [Validators.required, this.mobileNumberValidator()]],
+      altMobileNumber: ['', [Validators.required, this.mobileNumberValidator()]],
       email: [''],
-      classId: [''],
+      courseId: [''],
       addressLine1: ['', Validators.required],
       addressLine2: ['', Validators.required],
       landMark: [''],
-      // stateID: [''],
-      // cityID: [''],
+      stateId: [''],
+      cityId: [''],
       pinCode: [''],
 
       // Add more controls as needed
@@ -71,6 +73,7 @@ export class AddstudentComponent {
   }
 
   getCities(stateId: any) {
+    
     this.masterService
       .getListItems('city', 'state', stateId)
       .subscribe((data: any) => {
@@ -90,7 +93,13 @@ export class AddstudentComponent {
   }
 
   onStateChange(selectedId: any) {
+    
+    this.studentForm.controls.stateId = selectedId;
     this.getCities(selectedId);
+  }
+  onCityChange(selectedId: any) {
+    this.studentForm.controls.cityId = selectedId;
+    
   }
 
   getAllCourses() {
@@ -109,7 +118,12 @@ export class AddstudentComponent {
       }
     });
   }
-
+  mobileNumberValidator(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      const valid = /^[0-9]{10}$/.test(control.value);
+      return valid ? null : { 'invalidMobileNumber': { value: control.value } };
+    };
+  }
   onSubmit() {
     this.submitted = true;
     if (this.studentForm.invalid) {
@@ -119,12 +133,13 @@ export class AddstudentComponent {
     }
   }
   saveStudent() {
+   
     var objStudent = {
       AdmissionId: this.studentForm.value.admissionId,
       Name: this.studentForm.value.studentName,
       FatherName: this.studentForm.value.fatherName,
       MotherName: this.studentForm.value.motherName,
-      DateOfBirth: this.studentForm.value.dateOfBirth,
+      DateOfBirth: this.studentForm.value.dateofBirth,
       CourseId: this.studentForm.value.courseId,
       AdmissionDate: this.studentForm.value.admissionDate,
       MobileNumber: String(this.studentForm.value.mobileNumber),
@@ -134,11 +149,11 @@ export class AddstudentComponent {
       Gender: this.studentForm.value.gender,
       Landmark: this.studentForm.value.landMark,
       AddressLine2: this.studentForm.value.addressLine2,
-      StateId: 1,
-      CityId: 2,
+      StateId: this.studentForm.value.stateId,
+      CityId: this.studentForm.value.cityId,
       PinCode: this.studentForm.value.pinCode,
-      Branchid: 'BRNCHOne',
-      Password:'123'
+      Branchid: "Brnach1",
+      Password:"123"
       
     };
     console.log(JSON.stringify(objStudent));

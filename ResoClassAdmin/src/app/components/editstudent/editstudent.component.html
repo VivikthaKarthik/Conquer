@@ -18,48 +18,82 @@
                 <div class="row">
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="text" class="form-control floating" id="admission_id" name="admission_id" [(ngModel)]="admissionId"
-                                required>
+                            <input type="text" class="form-control floating" id="admission_id" name="admission_id" [(ngModel)]="admissionId" formControlName="admissionId"
+                            [ngClass]="{'is-invalid': submitted && studentForm.controls.admissionId.errors}">
                             <label class="focus-label">Admission ID *</label>
+                            <div *ngIf="submitted && studentForm.controls.admissionId.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.admissionId.errors.required">
+                                    Admission Id is required
+                                </div>
+                            </div>
                         </div>
+                        
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="date" class="form-control floating" id="admission_date" name="admission_date" [(ngModel)]="admissionDate"
-                                required>
+                            <input type="date" class="form-control floating" id="admission_date" name="admission_date" [(ngModel)]="admissionDate" formControlName="admissionDate"
+                            [ngClass]="{'is-invalid': submitted && studentForm.controls.admissionDate.errors}">
                             <label class="focus-label">Admission Date *</label>
+                            <div *ngIf="submitted && studentForm.controls.admissionDate.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.admissionDate.errors.required">
+                                    Admission Date is required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="text" class="form-control floating" id="student_name" name="student_name" [(ngModel)]="studenrName"
-                                required>
+                            <input type="text" class="form-control floating" id="student_name" name="student_name" [(ngModel)]="studenrName" formControlName="studentName"
+                            [ngClass]="{'is-invalid': submitted && studentForm.controls.studentName.errors}">
                             <label class="focus-label">Student Full Name *</label>
+                            <div *ngIf="submitted && studentForm.controls.studentName.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.studentName.errors.required">
+                                    Student Name is required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="text" class="form-control floating" id="father_name" name="father_name" [(ngModel)]="fatherName"
-                                required>
+                            <input type="text" class="form-control floating" id="father_name" name="father_name" [(ngModel)]="fatherName" formControlName="fatherName"
+                            [ngClass]="{'is-invalid': submitted && studentForm.controls.fatherName.errors}"
+                                >
                             <label class="focus-label">Father Name *</label>
+                            <div *ngIf="submitted && studentForm.controls.fatherName.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.fatherName.errors.required">
+                                    Father Name is required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
                             <input type="text" class="form-control floating" id="mother_name" name="mother_name" [(ngModel)]="motherName"
-                                required>
+                            formControlName="motherName"
+                            [ngClass]="{'is-invalid': submitted && studentForm.controls.motherName.errors}">
                             <label class="focus-label">Mother Name *</label>
+                            <div *ngIf="submitted && studentForm.controls.motherName.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.motherName.errors.required">
+                                    Mother Name is required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="date" class="form-control floating" id="dob" name="dob" required [(ngModel)]="dateOfBirth">
+                            <input type="date" class="form-control floating" id="dob" name="dob"  [(ngModel)]="dateOfBirth"  formControlName="dateofBirth"
+                            [ngClass]="{'is-invalid': submitted && studentForm.controls.dateofBirth.errors}">
                             <label class="focus-label">Date Of Birth *</label>
+                            <div *ngIf="submitted && studentForm.controls.dateofBirth.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.dateofBirth.errors.required">
+                                    Date of Birth is required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <select class="select floating" id="gender" name="gender" required [(ngModel)]="Gender">
+                            <select class="form-control floating" id="gender" name="gender" formControlName="gender" [(ngModel)]="Gender">
                                 <option value="">Select Gender</option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
@@ -69,80 +103,130 @@
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="number" class="form-control floating" id="mobile_number" name="mobile_number" [(ngModel)]="MobileNumber"
-                                required>
+                            <input type="number" class="form-control floating select-focus" id="mobile_number" [(ngModel)]="MobileNumber"
+                                name="mobile_number" formControlName="mobileNumber"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.mobileNumber.errors}">
                             <label class="focus-label">Mobile Number *</label>
+                           
+                            <div *ngIf="submitted && studentForm.controls['mobileNumber'].errors?.required"><span
+                                    style="color:red"> number is required</span>
+                            </div>
+                            <div *ngIf="submitted && studentForm.controls['mobileNumber'].errors?.invalidMobileNumber">
+                                <span style="color: red;">Invalid mobile number format</span>
+                            </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="number" class="form-control floating" id="alt_mobile_number" [(ngModel)]="AlternateMobileNumber"
-                                name="alt_mobile_number">
+                            <input type="number" class="form-control floating select-focus" id="alt_mobile_number" [(ngModel)]="AlternateMobileNumber"
+                                formControlName="altMobileNumber" name="alt_mobile_number">
                             <label class="focus-label">Alternate Mobile Number</label>
+                            <div *ngIf="submitted && studentForm.controls['altMobileNumber'].errors?.required"><span
+                                    style="color:red"> number is required</span>
+                            </div>
+                            <div
+                                *ngIf="submitted && studentForm.controls['altMobileNumber'].errors?.invalidMobileNumber">
+                                <span style="color: red;">Invalid Alternative Mobile Number format</span>
+                            </div>
                         </div>
                     </div>
+                    
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="email" class="form-control floating" id="email" name="email" [(ngModel)]="EmailAddress">
+                            <input type="email" class="form-control floating select-focus" id="email" name="email"
+                                formControlName="email">
                             <label class="focus-label">Email</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <div class="form-group form-focus select-focus" [(ngModel)]="courseId">
-                            <select class="select floating" id="class_id" name="class_id" required>
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id" [(ngModel)]="courseId"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.courseId.errors}"
+                                formControlName="courseId">
                                 <option value="">Select Course/Class</option>
-                                <option value="1">Class 11/NEET</option>
-                                <option value="2">Class 12/NEET</option>
+                                <option *ngFor="let item of courses" [value]="item.id">{{ item.name }}</option>
                             </select>
                             <label class="focus-label">Course/Class *</label>
+                            <div *ngIf="submitted && studentForm.controls.courseId.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.courseId.errors.required">
+                                    Course is required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-6">
                         <div class="form-group form-focus select-focus">
-                            <input type="text" class="form-control floating" id="address_line1" name="address_line1" [(ngModel)]="AddressLine1"
-                                required>
+                            <input type="text" class="form-control floating select-focus" id="address_line1" [(ngModel)]="AddressLine1"
+                                name="address_line1" formControlName="addressLine1"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.addressLine1.errors}">
                             <label class="focus-label">Address Line 1 *</label>
+                            <div *ngIf="submitted && studentForm.controls.addressLine1.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.addressLine1.errors.required">
+                                    AddessLane 1 is required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-6">
                         <div class="form-group form-focus select-focus">
-                            <input type="text" class="form-control floating" id="address_line2" name="address_line2" [(ngModel)]="AddressLine2"
-                                required>
+                            <input type="text" class="form-control floating select-focus" id="address_line2" [(ngModel)]="AddressLine2"
+                                name="address_line2" formControlName="addressLine2"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.addressLine2.errors}">
                             <label class="focus-label">Address Line 2 *</label>
+                            <div *ngIf="submitted && studentForm.controls.addressLine2.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.addressLine2.errors.required">
+                                    AddessLane 2 is required
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-6">
                         <div class="form-group form-focus select-focus">
-                            <input type="text" class="form-control floating" id="landmark" name="landmark" [(ngModel)]="landMark">
+                            <input type="text" class="form-control floating select-focus" id="landmark" name="landmark" [(ngModel)]="landMark"
+                                formControlName="landMark">
                             <label class="focus-label">Landmark</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <div class="form-group form-focus select-focus">
-                            <select class="select floating" id="state" name="state" onchange="getcities();" required [(ngModel)]="stateId">
-                                <option value="">Select State</option>
-                                <option value="1">Andhra Pradesh</option>
-                                <option value="2">Telangana</option>
+                        <div class="form-group form-focus select-focus" style="display: block;">
+                            <select class="form-control floating" id="state" name="state" [ngModel]="selectedOption"
+                                (ngModelChange)="getCities($event)" formControlName="stateId"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.stateId.errors}">
+                                <option *ngFor="let state of states" [value]="state.id">{{ state.name }}</option>
                             </select>
                             <label class="focus-label">State *</label>
                         </div>
+                        <div *ngIf="submitted && studentForm.controls.stateId.errors" class="text-danger">
+                            <div *ngIf="submitted && studentForm.controls.stateId.errors.required">
+                                State is required
+                            </div>
+                        </div>
+                       
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <div class="form-group form-focus select-focus" [(ngModel)]="cityId">
-                            <select class="select floating" id="city" name="city" required>
-                                <option value="">Select City</option>
-                                <option value="1">Vijayawada</option>
-                                <option value="2">Hyderabad</option>
+                        <div class="form-group form-focus select-focus" style="display: block;">
+                            <select class="form-control floating" id="city" name="city" [ngModel]="selectedCity" 
+                               formControlName="cityId" 
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.cityId.errors}">
+                                <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
                             </select>
                             <label class="focus-label">City *</label>
                         </div>
+                        <div *ngIf="submitted && studentForm.controls.cityId.errors" class="text-danger">
+                            <div *ngIf="submitted && studentForm.controls.cityId.errors.required">
+                                State is required
+                            </div>
+                        </div>
+                        
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="text" class="form-control floating" id="pincode" name="pincode" required [(ngModel)]="pincode">
+                            <input type="text" class="form-control floating select-focus" id="pincode" name="pincode" [(ngModel)]="pincode"
+                                required formControlName="pinCode">
                             <label class="focus-label">Pincode</label>
                         </div>
                     </div>
+                    
                 </div>
                 <div class="row">
                     <div class="col-sm-6 col-md-3">

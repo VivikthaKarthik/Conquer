@@ -3,7 +3,10 @@ import { MasterService } from '../../services/master.service';
 import { DataMappingService } from '../../services/data-mapping.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import { Course } from '../../models/course';
+import { ListItem } from '../../models/listItem';
+
 
 @Component({
   selector: 'app-editstudent',
@@ -12,7 +15,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 })
 export class EditstudentComponent {
   studentForm!: FormGroup;
-  studentId: any;
+  studentId: number = 0;
   admissionId: string = "";
   studenrName: string = "";
   fatherName: string = "";
@@ -31,6 +34,11 @@ export class EditstudentComponent {
   cityId: number = 0;
   pincode :string = "";
   submitted: boolean = false;
+  selectedOption: any;
+  selectedCity:any;
+  courses: Course[] = [];
+  states: ListItem[] = [{ id: 0, name: 'Select State' }];
+  cities: ListItem[] = [{ id: 0, name: 'Select City' }];
 
   constructor(
     private masterService: MasterService,
@@ -38,16 +46,48 @@ export class EditstudentComponent {
   ) { }
 
   ngOnInit() {
+    debugger
+    // this.getAllCourses();
+    // this.getStates();
     this.route.queryParams.subscribe(params => {
+      debugger
       const id = params['id'];
+      this.studentId = id;
       this.editStudent(id);
+    });
+
+    
+    this.studentForm = this.fb.group({
+      // Define your form controls here
+      admissionId: ['', Validators.required],
+      admissionDate: ['', Validators.required],
+      studentName: ['', Validators.required],
+      fatherName: ['', Validators.required],
+      motherName: ['', Validators.required],
+      dateofBirth: ['', Validators.required],
+      gender: [''],
+      mobileNumber: ['', [Validators.required, this.mobileNumberValidator()]],
+      altMobileNumber: ['', [Validators.required, this.mobileNumberValidator()]],
+      email: [''],
+      courseId: [''],
+      addressLine1: ['', Validators.required],
+      addressLine2: ['', Validators.required],
+      landMark: [''],
+      stateId: [''],
+      cityId: [''],
+      pinCode: [''],
+
+      // Add more controls as needed
     });
   }
 
-  editStudent(cId: any) {
-    this.courseId = cId;
+  editStudent(cId:any) {
+    debugger
+   
+    let num: number = Number(cId);
+    this.studentId = num;
     this.masterService
-      .getById(cId, 'Course', 'Get')
+      .getById(cId, 'Student', 'Get')
       .subscribe((data: any) => {
 
         if (data.isSuccess) {
@@ -90,7 +130,39 @@ export class EditstudentComponent {
       this.updateStudent();
     }
   }
+  getAllCourses() {
+    this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
+      if (data.isSuccess) {
+        this.courses = this.dataMappingService.mapToModel<Course>(
+          data.result,
+          (item) => ({
+            id: item.id,
+            name: item.name,
+            thumbnail: item.thumbnail,
+          })
+        );
+      } else {
+        alert(data.message);
+      }
+    });
+  }
 
+  getStates() {
+    this.masterService.getListItems('state', '', 0).subscribe((data: any) => {
+      if (data.isSuccess) {
+        var list = this.dataMappingService.mapToModel<ListItem>(
+          data.result,
+          (item) => ({
+            id: item.id,
+            name: item.name,
+          })
+        );
+        this.states = this.states.concat(list);
+      } else {
+        alert(data.message);
+      }
+    });
+  }
   updateStudent() {
     var objCourse = {
       id: this.studentId,
@@ -121,5 +193,30 @@ export class EditstudentComponent {
       });
      
   }
+  getCities(stateId: any) {
+    
+    this.masterService
+      .getListItems('city', 'state', stateId)
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          var list = this.dataMappingService.mapToModel<ListItem>(
+            data.result,
+            (item) => ({
+              id: item.id,
+              name: item.name,
+            })
+          );
+          this.cities = this.cities.concat(list);
+        } else {
+          alert(data.message);
+        }
+      });
+  }
 
+  mobileNumberValidator(): ValidatorFn {
+    return (control: AbstractControl): {[key: string]: any} | null => {
+      const valid = /^[0-9]{10}$/.test(control.value);
+      return valid ? null : { 'invalidMobileNumber': { value: control.value } };
+    };
+  }
 }
