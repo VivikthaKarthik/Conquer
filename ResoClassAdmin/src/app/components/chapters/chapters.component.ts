@@ -82,6 +82,7 @@ export class ChaptersComponent {
       selCourseId: ['', Validators.required],
       selSubId: ['', Validators.required],
       description: ['', Validators.required],
+      thumbnail: ['', Validators.required],
     });
   }
 
@@ -104,17 +105,20 @@ export class ChaptersComponent {
   }
 
   getChaptersById(cId: number) {
+    debugger
     this.chapterId = cId;
     this.masterService
       .getById(cId, 'Chapter', 'Get', 'chapterId')
       .subscribe((data: any) => {
+        debugger
         if (data.isSuccess) {
+          debugger
           if (data.result != null && data.result.name != null) {
             this.chapterName = data.result.name;
-            this.selectedOption = data.courseId;
-            this.selSubjectId = data.subjectId;
-            this.isChecked = data.isRecommended;
-            this.desc = '';
+            this.selectedOption = data.result.courseId;
+            this.selSubjectId = data.result.subjectId;
+            this.isChecked = data.result.isRecommended;
+            this.desc = data.result.description;
             this.getAllCoursesForEdit();
           } else {
             alert('Some error occured..! Plaese try again');
@@ -144,6 +148,7 @@ export class ChaptersComponent {
   }
 
   createChapter() {
+    debugger
     let subjID: number = Number(this.chapterForm.value.selSubId);
     var objChapter = {
       name: this.chapterForm.value.name,

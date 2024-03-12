@@ -47,12 +47,12 @@ export class EditstudentComponent {
 
   ngOnInit() {
     debugger
-    // this.getAllCourses();
-    // this.getStates();
+    this.getAllCourses();
+    this.getStates();
     this.route.queryParams.subscribe(params => {
       debugger
-      const id = params['id'];
-      this.studentId = id;
+      const id:string = params['id'];
+      this.studentId = 0;
       this.editStudent(id);
     });
 
@@ -76,18 +76,17 @@ export class EditstudentComponent {
       stateId: [''],
       cityId: [''],
       pinCode: [''],
+      studentId:['']
 
       // Add more controls as needed
     });
   }
 
-  editStudent(cId:any) {
+  editStudent(cId:string) {
     debugger
-   
-    let num: number = Number(cId);
-    this.studentId = num;
+    this.studentId = parseInt(cId);
     this.masterService
-      .getById(cId, 'Student', 'Get')
+      .getById(cId, 'Student', 'Get','studentId')
       .subscribe((data: any) => {
 
         if (data.isSuccess) {
@@ -99,16 +98,16 @@ export class EditstudentComponent {
             this.dateOfBirth= data.result.dateOfBirth;
             this.courseId= data.result.courseId;
             this.admissionDate= data.result.admissionDate;
-            this.MobileNumber= data.result.MobileNumber;
-            this.EmailAddress= data.result.EmailAddress;
-            this.AlternateMobileNumber= data.result.AlternateMobileNumber;
-            this.AddressLine1= data.result.AddressLine1;
-            this.AddressLine2= data.result.AddressLine2;
-            this.Gender= data.result.Gender;
-            this.landMark= data.result.landMark;
+            this.MobileNumber= data.result.mobileNumber;
+            this.EmailAddress= data.result.emailAddress;
+            this.AlternateMobileNumber= data.result.alternateMobileNumber;
+            this.AddressLine1= data.result.addressLine1;
+            this.AddressLine2= data.result.addressLine2;
+            this.Gender= data.result.gender;
+            this.landMark= data.result.landmark;
             this.stateId= data.result.stateId;
             this.cityId= data.result.cityId;
-            this.pincode = data.result.pincode;
+            this.pincode = data.result.pinCode;
           }
           else {
             alert('Some error occured..! Plaese try again');
@@ -164,7 +163,8 @@ export class EditstudentComponent {
     });
   }
   updateStudent() {
-    var objCourse = {
+    debugger
+    var studentData = {
       id: this.studentId,
       AdmissionId: this.admissionId,
       Name: this.studenrName,
@@ -181,9 +181,12 @@ export class EditstudentComponent {
       Landmark: this.landMark,
       AddressLine2: this.AddressLine2,
       StateId: this.stateId,
-      City: this.cityId
+      City: this.cityId,
+      PinCode:this.pincode,
+      BranchId:'1',
+      Password:'123'
     }
-    this.masterService.put(objCourse, 'Student', 'Update')
+    this.masterService.put(studentData, 'Student', 'Update')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.router.navigate(['/student']);

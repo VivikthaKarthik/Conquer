@@ -127,18 +127,17 @@ export class StudentsComponent {
 
 
   showConfirmation(id: any): void {
+    
     Swal.fire({
 
-      text: 'Do you really want to remove this course/class?',
+      text: 'Do you really want to remove this Student?',
       icon: 'warning',
       showCancelButton: true,
 
-      // confirmButtonText: 'Yes, delete it!',
-      // cancelButtonText: 'No, cancel!',
-      // confirmButtonColor: '#3085d6',
-      // cancelButtonColor: '#d33'
     }).then((result) => {
+      
       if (result.isConfirmed) {
+       
         this.deleteStudent(id);
         Swal.fire(
           'Deleted!',
@@ -149,10 +148,10 @@ export class StudentsComponent {
     });
   }
 
-  deleteStudent(cId: any) {
+  deleteStudent(cId: number) {
 
     this.masterService
-      .delete(cId, 'Chapter', 'Delete')
+      .delete(cId, 'Student', 'Delete')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.getAllStudents();
@@ -209,12 +208,13 @@ export class StudentsComponent {
   }
 
   editGridRecord(id: any) {
-    debugger
+    
     this.getStudentById(id);
 
   }
 
   deleteGridRecord(id: any) {
+    
     this.showConfirmation(id);
   }
 

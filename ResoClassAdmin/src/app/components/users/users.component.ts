@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
   styleUrl: './users.component.css',
 })
 export class UsersComponent {
+  usersList: Chapters[] = [];
   chapters: Chapters[] | undefined;
   subjects: Subject[] | undefined;
   students: Student[] | undefined;
@@ -64,7 +65,15 @@ export class UsersComponent {
   editStudent(cId: any) {
     this.router.navigate(['/student'], { queryParams: { id: cId } });
   }
-  getAllUsers() {}
+  getAllUsers() {
+    this.masterService.getAll('Chapter', 'GetAll').subscribe((data: any) => {
+      if (data.isSuccess) {
+        this.usersList = data.result;
+      } else {
+        alert(data.message);
+      }
+    });
+  }
 
   showConfirmation(id: any): void {
     Swal.fire({

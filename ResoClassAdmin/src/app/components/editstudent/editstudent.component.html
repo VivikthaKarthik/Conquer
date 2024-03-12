@@ -134,7 +134,7 @@
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
                             <input type="email" class="form-control floating select-focus" id="email" name="email"
-                                formControlName="email">
+                                formControlName="email" [(ngModel)]="EmailAddress">
                             <label class="focus-label">Email</label>
                         </div>
                     </div>
@@ -189,7 +189,7 @@
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus" style="display: block;">
-                            <select class="form-control floating" id="state" name="state" [ngModel]="selectedOption"
+                            <select class="form-control floating" id="state" name="state" [ngModel]="stateId"
                                 (ngModelChange)="getCities($event)" formControlName="stateId"
                                 [ngClass]="{'is-invalid': submitted && studentForm.controls.stateId.errors}">
                                 <option *ngFor="let state of states" [value]="state.id">{{ state.name }}</option>
@@ -205,7 +205,7 @@
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus" style="display: block;">
-                            <select class="form-control floating" id="city" name="city" [ngModel]="selectedCity" 
+                            <select class="form-control floating" id="city" name="city" [ngModel]="cityId" 
                                formControlName="cityId" 
                                 [ngClass]="{'is-invalid': submitted && studentForm.controls.cityId.errors}">
                                 <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
@@ -222,7 +222,7 @@
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
                             <input type="text" class="form-control floating select-focus" id="pincode" name="pincode" [(ngModel)]="pincode"
-                                required formControlName="pinCode">
+                                 formControlName="pinCode">
                             <label class="focus-label">Pincode</label>
                         </div>
                     </div>
@@ -234,7 +234,7 @@
                         </button>
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <input type="hidden" name="student_id" id="student_id">
+                        
                         <button class="btn btn-success btn-block" type="submit"> Update </button>
                     </div>
                 </div>

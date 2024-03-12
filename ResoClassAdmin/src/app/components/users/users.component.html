@@ -39,50 +39,8 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="table-responsive">
-                        <table class="table table-striped custom-table datatable">
-                            <thead>
-                                <tr>
-                                    <th class="no-sort"></th>
-                                    <th>S.No</th>
-                                    <th>First Name</th>
-                                    <th>Last Name</th>
-                                    <th>Email</th>
-                                    <th>Phone Number</th>
-                                    <th>Role</th>
-
-                                </tr>
-                            </thead>
-                            <tbody *ngFor="let student of students">
-                                <tr>
-                                    <td>
-                                        <button class="btn edit m-r-5" (click)="editStudent(student.Id);"
-                                            data-toggle="modal" data-target="#edit_course" type="button">
-                                            <i class="fa fa-pencil"></i>
-                                        </button>
-                                        <button class="btn delete m-r-5" (click)="showConfirmation(student.Id);"
-                                            type="button">
-                                            <i class="fa fa-trash-o"></i>
-                                        </button>
-                                    </td>
-                                    <td>{{student.Id}}</td>
-                                    <td>{{student.AdmissionId}}</td>
-                                    <td>{{student.Name}}</td>
-                                    <td>{{student.FatherName}}</td>
-                                    <td>{{student.MotherName}}</td>
-                                    <td>{{student.CourseId}}</td>
-                                    <td>{{student.Gender}}</td>
-                                    <td>{{student.AdmissionDate}}</td>
-                                    <td>{{student.DateOfBirth}}</td>
-                                    <td>{{student.MobileNumber}}</td>
-                                    <td>{{student.EmailAddress}}</td>
-                                    <td>{{student.AlternateMobileNumber}}</td>
-                                    <td>{{student.AddressLine1}}</td>
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    <!-- <app-grid [data]="chaptersList" [coloumnDef]="colDefs" (editRecord)="editGridRecord($event)"
+                        (deleteRecord)="deleteGridRecord($event)"></app-grid> -->
                 </div>
             </div>
         </div>
