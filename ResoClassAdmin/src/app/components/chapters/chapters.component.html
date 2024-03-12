@@ -148,7 +148,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="editform" [formGroup]="chapterEditForm" (ngSubmit)="onSubmit()">
+                        <form id="editform" [formGroup]="chapterEditForm" (ngSubmit)="onEditSubmit()">
                             <div class="row">
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
@@ -166,7 +166,7 @@
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
                                         <select class="form-control floating" id="edit_class_id" name="class_id" formControlName="selCourseId"
-                                            [ngModel]="selectedOption" (ngModelChange)="getSubByCourseID($event)"
+                                             [(ngModel)]="selectedOption" (ngModelChange)="getSubByCourseID($event)"
                                             [ngClass]="{'is-invalid': submitted && chapterEditForm.controls.selCourseId.errors}">
                                             <option value="">Select Course/Class</option>
                                             <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}

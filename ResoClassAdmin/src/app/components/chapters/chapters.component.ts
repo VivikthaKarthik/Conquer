@@ -92,6 +92,7 @@ export class ChaptersComponent {
 
   ngOnInit(): void {
     this.getAllChapters();
+    this.getAllSubjects();
   }
 
   getAllChapters() {
@@ -171,6 +172,7 @@ export class ChaptersComponent {
   }
 
   updateChapter() {
+    debugger
     let subjID: number = Number(this.chapterEditForm.value.selSubId);
     var objCourse = {
       id: this.chapterId,
@@ -182,6 +184,7 @@ export class ChaptersComponent {
     this.masterService
       .put(objCourse, 'Chapter', 'Update')
       .subscribe((data: any) => {
+        debugger
         if (data.isSuccess) {
           this.getAllChapters();
         } else {
@@ -239,6 +242,23 @@ export class ChaptersComponent {
     this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
       if (data.isSuccess) {
         this.courseData = this.dataMappingService.mapToModel<Course>(
+          data.result,
+          (item) => ({
+            id: item.id,
+            name: item.name,
+            thumbnail: item.thumbnail,
+          })
+        );
+        console.log(this.courseData);
+      } else {
+        alert(data.message);
+      }
+    });
+  }
+  getAllSubjects() {
+    this.masterService.getAll('Subject', 'GetAll').subscribe((data: any) => {
+      if (data.isSuccess) {
+        this.subjectData = this.dataMappingService.mapToModel<Subject>(
           data.result,
           (item) => ({
             id: item.id,
