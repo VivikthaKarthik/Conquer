@@ -23,6 +23,8 @@ import { EditstudentComponent } from '../components/editstudent/editstudent.comp
 import { DropdownComponent } from '../widgets/dropdown/dropdown.component';
 import { Select2Module } from 'ng-select2-component';
 import { LoaderComponent } from '../shared/loader/loader.component';
+import { HomeComponent } from '../components/home/home.component';
+import { VideosComponent } from '../components/videos/videos.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,8 @@ import { LoaderComponent } from '../shared/loader/loader.component';
     EditstudentComponent,
     DropdownComponent,
     LoaderComponent,
+    HomeComponent,
+    VideosComponent,
   ],
   imports: [
     CommonModule,

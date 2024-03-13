@@ -16,6 +16,7 @@ import { EditstudentComponent } from './components/editstudent/editstudent.compo
 import { UsersComponent } from './components/users/users.component';
 import { AdduserComponent } from './components/adduser/adduser.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { VideosComponent } from './components/videos/videos.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -25,6 +26,10 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     // pathMatch: 'full',
     children: [
+      {
+        path: '',
+        component: CourseComponent,
+      },
       {
         path: 'course',
         component: CourseComponent,
@@ -68,6 +73,10 @@ const routes: Routes = [
       {
         path: 'editstudent',
         component: EditstudentComponent,
+      },
+      {
+        path: 'videos',
+        component: VideosComponent,
       },
     ],
   },

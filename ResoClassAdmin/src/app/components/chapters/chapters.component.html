@@ -32,7 +32,7 @@
                 </div>
             </div>
         </div>
-        <div id="add_chapter" class="modal custom-modal fade" role="dialog" *ngIf="isAddPopupVisible">
+        <div id="add_chapter" class="modal custom-modal fade" role="dialog">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -153,11 +153,13 @@
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
                                         <input type="text" class="form-control floating" id="edit_chapter_name"
-                                            name="chapter_name"  [(ngModel)]="chapterName" formControlName="name"
+                                            name="chapter_name" [(ngModel)]="chapterName" formControlName="name"
                                             [ngClass]="{'is-invalid': submitted && chapterEditForm.controls.name.errors}">
                                         <label class="focus-label">Chapter Name *</label>
-                                        <div *ngIf="submitted && chapterEditForm.controls.admissionId.errors" class="text-danger">
-                                            <div *ngIf="submitted && chapterEditForm.controls.admissionId.errors.required">
+                                        <div *ngIf="submitted && chapterEditForm.controls.admissionId.errors"
+                                            class="text-danger">
+                                            <div
+                                                *ngIf="submitted && chapterEditForm.controls.admissionId.errors.required">
                                                 Chapter Name is required
                                             </div>
                                         </div>
@@ -165,16 +167,19 @@
                                 </div>
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="form-control floating" id="edit_class_id" name="class_id" formControlName="selCourseId"
-                                             [(ngModel)]="selectedOption" (ngModelChange)="getSubByCourseID($event)"
+                                        <select class="form-control floating" id="edit_class_id" name="class_id"
+                                            formControlName="selCourseId" [(ngModel)]="selectedOption"
+                                            (ngModelChange)="getSubByCourseID($event)"
                                             [ngClass]="{'is-invalid': submitted && chapterEditForm.controls.selCourseId.errors}">
                                             <option value="">Select Course/Class</option>
                                             <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}
                                             </option>
                                         </select>
                                         <label class="focus-label">Course/Class *</label>
-                                        <div *ngIf="submitted && chapterEditForm.controls.selCourseId.errors" class="text-danger">
-                                            <div *ngIf="submitted && chapterEditForm.controls.selCourseId.errors.required">
+                                        <div *ngIf="submitted && chapterEditForm.controls.selCourseId.errors"
+                                            class="text-danger">
+                                            <div
+                                                *ngIf="submitted && chapterEditForm.controls.selCourseId.errors.required">
                                                 Course is required
                                             </div>
                                         </div>
@@ -182,15 +187,16 @@
                                 </div>
                                 <div class="col-sm-6 col-md-4">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="form-control floating" id="edit_subject_id" name="subject_id" formControlName="selSubId"
-                                            [(ngModel)]="selSubjectId" 
+                                        <select class="form-control floating" id="edit_subject_id" name="subject_id"
+                                            formControlName="selSubId" [(ngModel)]="selSubjectId"
                                             [ngClass]="{'is-invalid': submitted && chapterEditForm.controls.selSubId.errors}">
                                             <option value="">Select Subject</option>
                                             <option *ngFor="let item of subjectData" [value]="item.id">{{ item.name }}
                                             </option>
                                         </select>
                                         <label class="focus-label">Subject *</label>
-                                        <div *ngIf="submitted && chapterEditForm.controls.selSubId.errors" class="text-danger">
+                                        <div *ngIf="submitted && chapterEditForm.controls.selSubId.errors"
+                                            class="text-danger">
                                             <div *ngIf="submitted && chapterEditForm.controls.selSubId.errors.required">
                                                 Subject is required
                                             </div>
@@ -200,12 +206,14 @@
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus select-focus">
                                         <textarea class="form-control floating textarea-height"
-                                            id="edit_chapter_description" name="chapter_description" 
-                                            [(ngModel)]="desc" formControlName="description" 
+                                            id="edit_chapter_description" name="chapter_description" [(ngModel)]="desc"
+                                            formControlName="description"
                                             [ngClass]="{'is-invalid': submitted && chapterEditForm.controls.description.errors}"></textarea>
                                         <label class="focus-label">Description *</label>
-                                        <div *ngIf="submitted && chapterEditForm.controls.description.errors" class="text-danger">
-                                            <div *ngIf="submitted && chapterEditForm.controls.description.errors.required">
+                                        <div *ngIf="submitted && chapterEditForm.controls.description.errors"
+                                            class="text-danger">
+                                            <div
+                                                *ngIf="submitted && chapterEditForm.controls.description.errors.required">
                                                 Description is required
                                             </div>
                                         </div>
@@ -213,12 +221,14 @@
                                 </div>
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus select-focus">
-                                        <input type="file" class="form-control floating" id="edit_thumbnail" formControlName="thumbnail"
-                                            name="thumbnail" onchange="readURL_edit(this)" 
+                                        <input type="file" class="form-control floating" id="edit_thumbnail"
+                                            formControlName="thumbnail" name="thumbnail" onchange="readURL_edit(this)"
                                             [ngClass]="{'is-invalid': submitted && chapterEditForm.controls.thumbnail.errors}">
                                         <label class="focus-label">Thumbnail *</label>
-                                        <div *ngIf="submitted && chapterEditForm.controls.thumbnail.errors" class="text-danger">
-                                            <div *ngIf="submitted && chapterEditForm.controls.thumbnail.errors.required">
+                                        <div *ngIf="submitted && chapterEditForm.controls.thumbnail.errors"
+                                            class="text-danger">
+                                            <div
+                                                *ngIf="submitted && chapterEditForm.controls.thumbnail.errors.required">
                                                 Thumbnail is required
                                             </div>
                                         </div>

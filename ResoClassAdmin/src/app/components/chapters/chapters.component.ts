@@ -65,6 +65,13 @@ export class ChaptersComponent {
         headerName: 'Thumbnail',
         field: 'thumbnail',
         filter: 'agTextColumnFilter',
+        cellRenderer: function (params: any) {
+          if (params && params.value) {
+            return `<img src="${params.value}" style="max-height: 100px; max-width: 100px;" />`;
+          } else {
+            return null;
+          }
+        },
       });
     }
     // Reactive-Form validations
@@ -106,14 +113,14 @@ export class ChaptersComponent {
   }
 
   getChaptersById(cId: number) {
-    debugger
+    debugger;
     this.chapterId = cId;
     this.masterService
       .getById(cId, 'Chapter', 'Get', 'chapterId')
       .subscribe((data: any) => {
-        debugger
+        debugger;
         if (data.isSuccess) {
-          debugger
+          debugger;
           if (data.result != null && data.result.name != null) {
             this.chapterName = data.result.name;
             this.selectedOption = data.result.courseId;
@@ -149,30 +156,29 @@ export class ChaptersComponent {
   }
 
   createChapter() {
-    debugger
     let subjID: number = Number(this.chapterForm.value.selSubId);
     var objChapter = {
       name: this.chapterForm.value.name,
       subjectId: subjID,
-      thumbnail: 'https://www.neetprep.com/exam-info',
       isRecommended: this.isChecked,
+      description: this.chapterForm.value.description,
     };
     this.masterService
-      .post(objChapter, 'Chapter', 'Create')
+      .postWithFile(objChapter, this.selectedFile, 'Chapter', 'Create')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.getAllChapters();
+          // ($('#add_chapter') as any).modal('hide');
           this.showMessage();
         } else {
           alert(data.message);
         }
       });
     this.isAddPopupVisible = false;
-    window.location.reload();
   }
 
   updateChapter() {
-    debugger
+    debugger;
     let subjID: number = Number(this.chapterEditForm.value.selSubId);
     var objCourse = {
       id: this.chapterId,
@@ -184,7 +190,6 @@ export class ChaptersComponent {
     this.masterService
       .put(objCourse, 'Chapter', 'Update')
       .subscribe((data: any) => {
-        debugger
         if (data.isSuccess) {
           this.getAllChapters();
         } else {
@@ -219,23 +224,23 @@ export class ChaptersComponent {
   }
 
   onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append('file', file);
-      this.masterService
-        .post(formData, 'Chapter', 'Upload')
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            alert(data.result);
-            this.getAllChapters();
-          } else {
-            alert(data.message);
-          }
-        });
-    } else {
-      alert('Please select a File!');
-    }
+    this.selectedFile = event.target.files[0];
+    // if (file) {
+    //   const formData = new FormData();
+    //   formData.append('file', file);
+    //   this.masterService
+    //     .post(formData, 'Chapter', 'Upload')
+    //     .subscribe((data: any) => {
+    //       if (data.isSuccess) {
+    //         alert(data.result);
+    //         this.getAllChapters();
+    //       } else {
+    //         alert(data.message);
+    //       }
+    //     });
+    // } else {
+    //   alert('Please select a File!');
+    // }
   }
 
   getAllCourses() {
@@ -249,7 +254,6 @@ export class ChaptersComponent {
             thumbnail: item.thumbnail,
           })
         );
-        console.log(this.courseData);
       } else {
         alert(data.message);
       }
@@ -317,6 +321,7 @@ export class ChaptersComponent {
     this.selectedFile = event.target.files[0];
   }
   uploadImage(): void {
+    alert();
     if (this.selectedFile) {
       this.masterService
         .uploadImage(this.selectedFile, 'Subject', 'Upload')
