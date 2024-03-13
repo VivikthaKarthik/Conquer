@@ -8,6 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NotificationService } from '../../services/notification.service';
 import { Router } from '@angular/router';
 import { Course } from '../../models/course';
+import { Video } from '../../models/video';
 
 @Component({
   selector: 'app-videos',
@@ -15,7 +16,7 @@ import { Course } from '../../models/course';
   styleUrl: './videos.component.css',
 })
 export class VideosComponent {
-  studentsList: Student[] = [];
+  videosList: Video[] = [];
   colDefs: ColDef[] = [];
   courseData: Course[] = [];
 
@@ -27,72 +28,64 @@ export class VideosComponent {
     private router: Router
   ) {
     this.colDefs.push({
-      headerName: 'S.NO',
-      field: 'id',
-      filter: 'agTextColumnFilter',
-      lockVisible: false,
-    });
-    this.colDefs.push({
-      headerName: 'Admission ID',
-      field: 'admissionId',
+      headerName: 'Title',
+      field: 'title',
       filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
-      headerName: 'Name',
-      field: 'name',
+      headerName: 'Thumbnail',
+      field: 'thumbnail',
+      filter: 'agTextColumnFilter',
+      cellRenderer: function (params: any) {
+        if (params && params.value) {
+          return `<img src="${params.value}" style="max-height: 100px; max-width: 100px;" />`;
+        } else {
+          return null;
+        }
+      },
+    });
+    this.colDefs.push({
+      headerName: 'Description',
+      field: 'description',
       filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
-      headerName: 'Father Name',
-      field: 'fatherName',
+      headerName: 'Source Url',
+      field: 'sourceUrl',
+      filter: 'agTextColumnFilter',
+      cellRenderer: function (params: any) {
+        if (params && params.value) {
+          return `<a href="${params.value}">Video</a>`;
+        } else {
+          return null;
+        }
+      },
+    });
+    this.colDefs.push({
+      headerName: 'Chapter',
+      field: 'chapter',
       filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
-      headerName: 'Mother Name',
-      field: 'motherName',
-      filter: 'agTextColumnFilter',
-    });
-    this.colDefs.push({
-      headerName: 'Class/Course',
-      field: 'courseId',
-      filter: 'agTextColumnFilter',
-    });
-    this.colDefs.push({
-      headerName: 'Gender',
-      field: 'gender',
+      headerName: 'Topic',
+      field: 'topic',
       filter: 'agTextColumnFilter',
     });
 
     this.colDefs.push({
-      headerName: 'Admission Date',
-      field: 'admissionDate',
+      headerName: 'Sub Topic',
+      field: 'subTopic',
       filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
-      headerName: 'Date of Birth',
-      field: 'dateOfBirth',
+      headerName: 'Home Display',
+      field: 'homeDisplay',
       filter: 'agTextColumnFilter',
     });
-    this.colDefs.push({
-      headerName: 'Mobile Number',
-      field: 'mobileNumber',
-      filter: 'agTextColumnFilter',
-    });
-    this.colDefs.push({
-      headerName: 'Email',
-      field: 'email',
-      filter: 'agTextColumnFilter',
-    });
-    this.colDefs.push({
-      headerName: 'Alternate Number',
-      field: 'alternateMobileNumber',
-      filter: 'agTextColumnFilter',
-    });
-    this.colDefs.push({
-      headerName: 'Address',
-      field: 'addressLine1',
-      filter: 'agTextColumnFilter',
-    });
+  }
+
+  ngOnInit(): void {
+    this.getAllVideos();
   }
 
   deleteStudent(cId: number) {
@@ -100,16 +93,16 @@ export class VideosComponent {
       .delete(cId, 'Student', 'Delete')
       .subscribe((data: any) => {
         if (data.isSuccess) {
-          this.getAllStudents();
+          this.getAllVideos();
         } else {
           alert(data.message);
         }
       });
   }
-  getAllStudents() {
-    this.masterService.getAll('Student', 'GetAll').subscribe((data: any) => {
+  getAllVideos() {
+    this.masterService.getAll('Video', 'GetAll').subscribe((data: any) => {
       if (data.isSuccess) {
-        this.studentsList = data.result;
+        this.videosList = data.result;
       } else {
         alert(data.message);
       }
