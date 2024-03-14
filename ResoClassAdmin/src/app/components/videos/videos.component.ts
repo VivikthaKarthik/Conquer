@@ -19,6 +19,8 @@ export class VideosComponent {
   videosList: Video[] = [];
   colDefs: ColDef[] = [];
   courseData: Course[] = [];
+  selectedFile: File | undefined;
+  showBulkUploadButton: boolean = false;
 
   constructor(
     private masterService: MasterService,
@@ -89,15 +91,13 @@ export class VideosComponent {
   }
 
   deleteVideo(cId: number) {
-    this.masterService
-      .delete(cId, 'Video', 'Delete')
-      .subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.getAllVideos();
-        } else {
-          alert(data.message);
-        }
-      });
+    this.masterService.delete(cId, 'Video', 'Delete').subscribe((data: any) => {
+      if (data.isSuccess) {
+        this.getAllVideos();
+      } else {
+        alert(data.message);
+      }
+    });
   }
   getAllVideos() {
     this.masterService.getAll('Video', 'GetAll').subscribe((data: any) => {
@@ -124,7 +124,13 @@ export class VideosComponent {
 
   // Event handler for file input change event
   onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
+    if (event.target.files !== undefined && event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
+      this.showBulkUploadButton = true;
+    } else {
+      this.selectedFile = undefined;
+      this.showBulkUploadButton = false;
+    }
   }
 
   editGridRecord(id: any) {

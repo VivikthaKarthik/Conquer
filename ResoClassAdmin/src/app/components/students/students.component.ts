@@ -15,7 +15,7 @@ import { ColDef } from 'ag-grid-community';
 @Component({
   selector: 'app-students',
   templateUrl: './students.component.html',
-  styleUrl: './students.component.css'
+  styleUrl: './students.component.css',
 })
 export class StudentsComponent {
   chapters: Chapters[] | undefined;
@@ -28,128 +28,136 @@ export class StudentsComponent {
   selectedOption: any;
   selSubjectId: number | undefined;
   selectedFile: File | undefined;
+  showBulkUploadButton: boolean = false;
   imageUrl: string | undefined;
   isChecked: boolean = false;
   isAddPopupVisible: boolean = true;
   colDefs: ColDef[] = [];
 
-
-  admissionId: string = "";
-  studenrName: string = "";
-  fatherName: string = "";
-  motherName: string = "";
-  dateOfBirth: Date = new Date()
+  admissionId: string = '';
+  studenrName: string = '';
+  fatherName: string = '';
+  motherName: string = '';
+  dateOfBirth: Date = new Date();
   courseId: number = 0;
   admissionDate: Date = new Date();
-  MobileNumber: string = "";
-  EmailAddress: string = "";
-  AlternateMobileNumber: string = "";
-  AddressLine1: String = "";
-  AddressLine2: String = "";
-  Gender: string = "";
-  landMark: string = "";
+  MobileNumber: string = '';
+  EmailAddress: string = '';
+  AlternateMobileNumber: string = '';
+  AddressLine1: String = '';
+  AddressLine2: String = '';
+  Gender: string = '';
+  landMark: string = '';
   stateId: number = 0;
   cityId: number = 0;
 
-
   constructor(
     private masterService: MasterService,
-    private dataMappingService: DataMappingService, private dialog: MatDialog, public notificationService: NotificationService, private router: Router
+    private dataMappingService: DataMappingService,
+    private dialog: MatDialog,
+    public notificationService: NotificationService,
+    private router: Router
   ) {
     this.colDefs.push({
-      headerName: 'S.NO', field: 'id', filter: 'agTextColumnFilter'
+      headerName: 'S.NO',
+      field: 'id',
+      filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
-      headerName: 'Admission ID', field: 'admissionId', filter: 'agTextColumnFilter'
+      headerName: 'Admission ID',
+      field: 'admissionId',
+      filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
-      headerName: 'Name', field: 'name', filter: 'agTextColumnFilter'
+      headerName: 'Name',
+      field: 'name',
+      filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
-      headerName: 'Father Name', field: 'fatherName', filter: 'agTextColumnFilter',
+      headerName: 'Father Name',
+      field: 'fatherName',
+      filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
-      headerName: 'Mother Name', field: 'motherName', filter: 'agTextColumnFilter',
+      headerName: 'Mother Name',
+      field: 'motherName',
+      filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
-      headerName: 'Class/Course', field: 'courseId', filter: 'agTextColumnFilter',
+      headerName: 'Class/Course',
+      field: 'courseId',
+      filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
-      headerName: 'Gender', field: 'gender', filter: 'agTextColumnFilter',
+      headerName: 'Gender',
+      field: 'gender',
+      filter: 'agTextColumnFilter',
     });
 
     this.colDefs.push({
-      headerName: 'Admission Date', field: 'admissionDate', filter: 'agTextColumnFilter',
+      headerName: 'Admission Date',
+      field: 'admissionDate',
+      filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
-      headerName: 'Date of Birth', field: 'dateOfBirth', filter: 'agTextColumnFilter',
+      headerName: 'Date of Birth',
+      field: 'dateOfBirth',
+      filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
-      headerName: 'Mobile Number', field: 'mobileNumber', filter: 'agTextColumnFilter',
+      headerName: 'Mobile Number',
+      field: 'mobileNumber',
+      filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
-      headerName: 'Email', field: 'email', filter: 'agTextColumnFilter',
+      headerName: 'Email',
+      field: 'email',
+      filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
-      headerName: 'Alternate Number', field: 'alternateMobileNumber', filter: 'agTextColumnFilter',
+      headerName: 'Alternate Number',
+      field: 'alternateMobileNumber',
+      filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
-      headerName: 'Address', field: 'addressLine1', filter: 'agTextColumnFilter',
+      headerName: 'Address',
+      field: 'addressLine1',
+      filter: 'agTextColumnFilter',
     });
-
   }
 
   ngOnInit(): void {
     this.getAllStudents();
     this.getAllCourses();
-
   }
 
   getStudentById(cId: any) {
-    
     this.router.navigate(['/editstudent'], { queryParams: { id: cId } });
   }
   getAllStudents() {
-     
-    this.masterService.getAll('Student', 'GetAll')
-      .subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.studentsList = data.result;
-        } else {
-          alert(data.message);
-        }
-      });
+    this.masterService.getAll('Student', 'GetAll').subscribe((data: any) => {
+      if (data.isSuccess) {
+        this.studentsList = data.result;
+      } else {
+        alert(data.message);
+      }
+    });
   }
 
-
-
-
-
-
   showConfirmation(id: any): void {
-    
     Swal.fire({
-
       text: 'Do you really want to remove this Student?',
       icon: 'warning',
       showCancelButton: true,
-
     }).then((result) => {
-      
       if (result.isConfirmed) {
-       
         this.deleteStudent(id);
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        );
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
       }
     });
   }
 
   deleteStudent(cId: number) {
-
     this.masterService
       .delete(cId, 'Student', 'Delete')
       .subscribe((data: any) => {
@@ -163,60 +171,38 @@ export class StudentsComponent {
 
   // Event handler for file input change event
   onFileSelected(event: any): void {
-
-    const file: File = event.target.files[0];
-    if (file) {
-      // Call the service method to read Excel file
-      // this.excelService.readExcelFile(file);
-      // // If you need to upload the file to a backend
-      // this.excelService.uploadExcelFile(file,'Course', 'Upload');
-      const formData = new FormData();
-      formData.append('file', file);
-      this.masterService.post(formData, 'Students', 'Upload')
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            alert(data.result);
-            this.getAllStudents();
-          } else {
-            alert(data.message);
-          }
-        });
-    }
-    else {
-      alert("Please select a File!")
+    if (event.target.files !== undefined && event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
+      this.showBulkUploadButton = true;
+    } else {
+      this.selectedFile = undefined;
+      this.showBulkUploadButton = false;
     }
   }
 
   getAllCourses() {
-     
-    this.masterService.getAll('Course', 'GetAll')
-      .subscribe((data: any) => {
-
-        if (data.isSuccess) {
-          this.courseData = this.dataMappingService.mapToModel<Course>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-              thumbnail: item.thumbnail,
-            }))
-          console.log(this.courseData);
-        } else {
-          alert(data.message);
-        }
-      });
+    this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
+      if (data.isSuccess) {
+        this.courseData = this.dataMappingService.mapToModel<Course>(
+          data.result,
+          (item) => ({
+            id: item.id,
+            name: item.name,
+            thumbnail: item.thumbnail,
+          })
+        );
+        console.log(this.courseData);
+      } else {
+        alert(data.message);
+      }
+    });
   }
 
   editGridRecord(id: any) {
-    
     this.getStudentById(id);
-
   }
 
   deleteGridRecord(id: any) {
-    
     this.showConfirmation(id);
   }
-
-
 }

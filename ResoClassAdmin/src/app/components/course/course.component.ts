@@ -23,6 +23,8 @@ export class CourseComponent {
   submitted: boolean = false;
   labelText: string = 'Couse Name is Required';
   isAddPopupVisible: boolean = true;
+  showBulkUploadButton: boolean = false;
+  selectedFile: File | undefined;
 
   constructor(
     private masterService: MasterService,
@@ -52,8 +54,7 @@ export class CourseComponent {
     // Reactive-Form validations
     {
       this.courseForm = this.formBuilder.group({
-        name:['', Validators.required],
-       
+        name: ['', Validators.required],
       });
     }
   }
@@ -88,7 +89,6 @@ export class CourseComponent {
     });
   }
   onSubmit() {
-    
     this.submitted = true;
     if (this.courseForm.invalid) {
       return;
@@ -96,7 +96,6 @@ export class CourseComponent {
       this.createCourse();
     }
   }
- 
 
   createCourse() {
     var objCourse = {
@@ -112,8 +111,8 @@ export class CourseComponent {
           alert(data.message);
         }
       });
-      this.isAddPopupVisible = false;
-      window.location.reload();
+    this.isAddPopupVisible = false;
+    window.location.reload();
   }
 
   updateCourse() {
@@ -162,22 +161,12 @@ export class CourseComponent {
 
   // Event handler for file input change event
   onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append('file', file);
-      this.masterService
-        .post(formData, 'Course', 'Upload')
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            alert(data.result);
-            this.getAllCourses();
-          } else {
-            alert(data.message);
-          }
-        });
+    if (event.target.files !== undefined && event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
+      this.showBulkUploadButton = true;
     } else {
-      alert('Please select a File!');
+      this.selectedFile = undefined;
+      this.showBulkUploadButton = false;
     }
   }
 

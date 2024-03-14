@@ -21,8 +21,9 @@
                 <div class="col-md-6 pad_b_20">
                     <h4>Bulk Upload</h4>
                     <form class="import_div" id="importform" action="#" method="POST">
-                        <input type="file" class="form-control" name="import_file" required>
-                        <button class="btn import-btn" type="submit" style="display: none;"><i
+                        <input type="file" class="form-control" name="import_file" required
+                            (change)="onFileSelected($event)" />
+                        <button class="btn import-btn" type="submit" *ngIf="showBulkUploadButton"><i
                                 class="las la-file-upload"></i> Import</button>
                     </form>
                 </div>

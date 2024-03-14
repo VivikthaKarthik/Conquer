@@ -33,6 +33,7 @@ export class ChaptersComponent {
   selectedOption: any;
   selSubjectId: number = 0;
   selectedFile: File | undefined;
+  showBulkUploadButton: boolean = false;
   imageUrl: string | undefined;
   isChecked: boolean = false;
   isAddPopupVisible: boolean = true;
@@ -156,7 +157,7 @@ export class ChaptersComponent {
   }
 
   createChapter() {
-    debugger
+    debugger;
     let subjID: number = Number(this.chapterForm.value.selSubId);
     var objChapter = {
       name: this.chapterForm.value.name,
@@ -167,7 +168,7 @@ export class ChaptersComponent {
     this.masterService
       .postWithFile(objChapter, this.selectedFile, 'Chapter', 'Create')
       .subscribe((data: any) => {
-        debugger
+        debugger;
         if (data.isSuccess) {
           this.getAllChapters();
           // ($('#add_chapter') as any).modal('hide');
@@ -227,23 +228,13 @@ export class ChaptersComponent {
   }
 
   onFileSelected(event: any): void {
-    this.selectedFile = event.target.files[0];
-    // if (file) {
-    //   const formData = new FormData();
-    //   formData.append('file', file);
-    //   this.masterService
-    //     .post(formData, 'Chapter', 'Upload')
-    //     .subscribe((data: any) => {
-    //       if (data.isSuccess) {
-    //         alert(data.result);
-    //         this.getAllChapters();
-    //       } else {
-    //         alert(data.message);
-    //       }
-    //     });
-    // } else {
-    //   alert('Please select a File!');
-    // }
+    if (event.target.files !== undefined && event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
+      this.showBulkUploadButton = true;
+    } else {
+      this.selectedFile = undefined;
+      this.showBulkUploadButton = false;
+    }
   }
 
   getAllCourses() {

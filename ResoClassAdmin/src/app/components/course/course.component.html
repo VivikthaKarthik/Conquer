@@ -23,14 +23,14 @@
           <h4>Bulk Upload</h4>
           <form class="import_div" id="importform" action="#" method="POST">
             <input type="file" class="form-control" name="import_file" required (change)="onFileSelected($event)" />
-            <button class="btn import-btn" type="submit" style="display: none;">
+            <button class="btn import-btn" type="submit" *ngIf="showBulkUploadButton">
               <i class="las la-file-upload"></i> Import
             </button>
           </form>
         </div>
         <div class="col-md-12">
-          <app-grid [data]="courseList" [coloumnDef]="colDefs" 
-          (editRecord)="editGridRecord($event)" (deleteRecord)="deleteGridRecord($event)"></app-grid>
+          <app-grid [data]="courseList" [coloumnDef]="colDefs" (editRecord)="editGridRecord($event)"
+            (deleteRecord)="deleteGridRecord($event)"></app-grid>
         </div>
       </div>
     </div>
@@ -44,24 +44,24 @@
             </button>
           </div>
           <div class="modal-body">
-            <form id="addform" [formGroup]="courseForm" (ngSubmit)="onSubmit()" >
+            <form id="addform" [formGroup]="courseForm" (ngSubmit)="onSubmit()">
               <div class="row">
                 <div class="col-sm-12 col-md-12">
                   <div class="form-group">
                     <label>Course Name <span class="text-danger">*</span></label>
-                    <input class="form-control" type="text" id="course_name" name="course_name" [(ngModel)]="courseName" formControlName="name"
-                    [ngClass]="{'is-invalid': submitted && courseForm.controls.name.errors}" />
+                    <input class="form-control" type="text" id="course_name" name="course_name" [(ngModel)]="courseName"
+                      formControlName="name" [ngClass]="{'is-invalid': submitted && courseForm.controls.name.errors}" />
                     <div *ngIf="submitted && courseForm.controls.name.errors" class="text-danger">
                       <div *ngIf="submitted && courseForm.controls.name.errors.required">
-                          Course Name is required
+                        Course Name is required
                       </div>
-                  </div>
-                     
+                    </div>
+
                   </div>
                 </div>
               </div>
               <div class="submit-section">
-                <button class="btn btn-primary submit-btn" type="submit" >
+                <button class="btn btn-primary submit-btn" type="submit">
                   Submit
                 </button>
               </div>
