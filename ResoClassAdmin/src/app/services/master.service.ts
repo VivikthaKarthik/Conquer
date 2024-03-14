@@ -46,6 +46,20 @@ export class MasterService {
     return this.http.post(`${this.baseUrl}/${type}/${apiName}`, formData);
   }
 
+  putWithFile(
+    request: any,
+    thumbnailFile: File | undefined,
+    type: string,
+    apiName: string
+  ) {
+    const formData = new FormData();
+    formData.append('request', JSON.stringify(request));
+    if (thumbnailFile !== undefined) {
+      formData.append('thumbnail', thumbnailFile);
+    }
+    return this.http.put(`${this.baseUrl}/${type}/${apiName}`, formData);
+  }
+
   put(obj: any, type: string, apiName: string) {
     return this.http.put(`${this.baseUrl}/${type}/${apiName}/${obj.id}`, obj);
   }

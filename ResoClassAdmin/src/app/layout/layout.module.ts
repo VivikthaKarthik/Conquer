@@ -25,6 +25,8 @@ import { Select2Module } from 'ng-select2-component';
 import { LoaderComponent } from '../shared/loader/loader.component';
 import { HomeComponent } from '../components/home/home.component';
 import { VideosComponent } from '../components/videos/videos.component';
+import { AddvideosComponent } from '../components/addvideos/addvideos.component';
+import { EditvideoComponent } from '../components/editvideo/editvideo.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,8 @@ import { VideosComponent } from '../components/videos/videos.component';
     LoaderComponent,
     HomeComponent,
     VideosComponent,
+    AddvideosComponent,
+    EditvideoComponent,
   ],
   imports: [
     CommonModule,

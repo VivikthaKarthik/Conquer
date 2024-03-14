@@ -39,6 +39,7 @@ export class GridComponent {
       pagination: true,
       paginationPageSize: 7, // Number of rows per page
       onPaginationChanged: this.onPaginationChanged.bind(this),
+      suppressHorizontalScroll:false,
     };
 
     //Add Default Column with Edit and Delete Buttons

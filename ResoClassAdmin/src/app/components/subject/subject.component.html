@@ -63,7 +63,7 @@
                                 </div>
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group form-focus select-focus">
-                                        <select class="select floating" id="class_id" name="class_id"
+                                        <select class="form-control floating" id="class_id" name="class_id"
                                             (change)="onSelectionChange($event)" formControlName="course">
                                             <option value="">Select Course/Class</option>
                                             <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}
@@ -77,6 +77,16 @@
                                             </div>
                                         </div>
                                         <label class="focus-label">Course/Class *</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <input type="file" class="form-control floating" id="thumbnail" name="thumbnail"
+                                            (change)="onFileSelected($event)" accept="image/*" required>
+                                        <label class="focus-label">Thumbnail *</label>
+                                    </div>
+                                    <div>
+                                        <img src="assets/img/size_thumb.png" id="add_thumb_image">
                                     </div>
                                 </div>
                             </div>
@@ -119,6 +129,16 @@
                                             </option>
                                         </select>
                                         <label class="focus-label">Course/Class *</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group form-focus select-focus">
+                                        <input type="file" class="form-control floating" id="thumbnail" name="thumbnail"
+                                            (change)="onFileSelected($event)" accept="image/*" required>
+                                        <label class="focus-label">Thumbnail *</label>
+                                    </div>
+                                    <div>
+                                        <img src="assets/img/size_thumb.png" id="add_thumb_image">
                                     </div>
                                 </div>
                             </div>

@@ -1,0 +1,178 @@
+<div class="main-wrapper">
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="page-title">Videos</h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Videos</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <form [formGroup]="editVideoForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="text" class="form-control floating" id="video_title" name="video_title"
+                                formControlName="title"
+                                [ngClass]="{'is-invalid': submitted && editVideoForm.controls.title.errors}">
+                            <label class="focus-label">Video Title *</label>
+                            <div *ngIf="submitted && editVideoForm.controls.title.errors" class="text-danger">
+                                <div *ngIf="submitted && editVideoForm.controls.title.errors.required">
+                                    Video Tittle is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-8">
+                        <div class="form-group form-focus select-focus">
+                            <textarea class="form-control floating" style="width:100%" id="description"
+                                name="description" formControlName="description"
+                                [ngClass]="{'is-invalid': submitted && editVideoForm.controls.description.errors}"></textarea>
+                            <label class="focus-label">Description *</label>
+                            <div *ngIf="submitted && editVideoForm.controls.description.errors" class="text-danger">
+                                <div *ngIf="submitted && editVideoForm.controls.description.errors.required">
+                                    Description is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="file" class="form-control floating" id="thumbnail" name="thumbnail"
+                                onchange="readURL(this)" formControlName="thumbnail"
+                                [ngClass]="{'is-invalid': submitted && editVideoForm.controls.thumbnail.errors}">
+                            <label class="focus-label">Thumbnail *</label>
+                            <div *ngIf="submitted && editVideoForm.controls.thumbnail.errors" class="text-danger">
+                                <div *ngIf="submitted && editVideoForm.controls.thumbnail.errors.required">
+                                    Thumbnail is required
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="text" class="form-control floating" id="source_url" name="source_url"
+                                formControlName="sourceUrl"
+                                [ngClass]="{'is-invalid': submitted && editVideoForm.controls.sourceUrl.errors}" />
+                            <label class="focus-label">Source Url *</label>
+                            <div *ngIf="submitted && editVideoForm.controls.sourceUrl.errors" class="text-danger">
+                                <div *ngIf="submitted && editVideoForm.controls.sourceUrl.errors.required">
+                                    Source URL is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                                [ngClass]="{'is-invalid': submitted && editVideoForm.controls.selCourses.errors}"
+                                formControlName="selCourses">
+                                <option value="">Select Course/Class</option>
+                                <option *ngFor="let item of courses" [value]="item.id">{{ item.name }}</option>
+                            </select>
+                            <label class="focus-label">Course/Class *</label>
+                            <div *ngIf="submitted && editVideoForm.controls.selCourses.errors" class="text-danger">
+                                <div *ngIf="submitted && editVideoForm.controls.selCourses.errors.required">
+                                    Course is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                                [ngClass]="{'is-invalid': submitted && editVideoForm.controls.selSubjects.errors}"
+                                [ngModel]="selectedOption" (ngModelChange)="getSubjectsByCourseId($event)"
+                                formControlName="selSubjects">
+                                <option value="">Select Subject</option>
+                                <option *ngFor="let item of subjects" [value]="item.id">{{ item.name }}</option>
+                            </select>
+                            <label class="focus-label">Subject *</label>
+                            <div *ngIf="submitted && editVideoForm.controls.selSubjects.errors" class="text-danger">
+                                <div *ngIf="submitted && editVideoForm.controls.selSubjects.errors.required">
+                                    Subject is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                                [ngClass]="{'is-invalid': submitted && editVideoForm.controls.selChapters.errors}"
+                                [ngModel]="selectedOption" (ngModelChange)="getChaptersBySubjectId($event)"
+                                formControlName="chapter">
+                                <option value="">Select Chapter</option>
+                                <option *ngFor="let item of chapters" [value]="item.id">{{ item.name }}</option>
+                            </select>
+                            <label class="focus-label">Chapter *</label>
+                            <div *ngIf="submitted && editVideoForm.controls.selChapters.errors" class="text-danger">
+                                <div *ngIf="submitted && editVideoForm.controls.selChapters.errors.required">
+                                    Chapter is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                                [ngClass]="{'is-invalid': submitted && editVideoForm.controls.selTopics.errors}"
+                                [ngModel]="selectedOption" (ngModelChange)="getTopicsByChapterId($event)"
+                                formControlName="selTopics">
+                                <option value="">Select Topic</option>
+                                <option *ngFor="let item of topics" [value]="item.id">{{ item.name }}</option>
+                            </select>
+                            <label class="focus-label">Topic *</label>
+                            <div *ngIf="submitted && editVideoForm.controls.selTopics.errors" class="text-danger">
+                                <div *ngIf="submitted && editVideoForm.controls.selTopics.errors.required">
+                                    Topic is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                                [ngClass]="{'is-invalid': submitted && editVideoForm.controls.selSubTopics.errors}"
+                                [ngModel]="selectedOption" (ngModelChange)="getSubTopicsByTopicId($event)"
+                                formControlName="selTopics">
+                                <option value="">Select Sub Topic</option>
+                                <option *ngFor="let item of subTopics" [value]="item.id">{{ item.name }}</option>
+                            </select>
+                            <label class="focus-label">Topic *</label>
+                            <div *ngIf="submitted && editVideoForm.controls.selSubTopics.errors" class="text-danger">
+                                <div *ngIf="submitted && editVideoForm.controls.selSubTopics.errors.required">
+                                    Sub Topic is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <label for="home_display" class="focus-label ml-2">Home Display</label>
+                            <input type="checkbox" class="" id="home_display" name="home_display">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <button class="btn btn-danger btn-block" type="button" onclick="window.history.back();"> Cancel
+                        </button>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <button class="btn btn-success btn-block" type="submit"> Submit </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>

@@ -19,6 +19,7 @@ declare var $: any;
   styleUrl: './topics.component.css'
 })
 export class TopicsComponent {
+  
   topicsList: Topic[] = [];
   chapters: Chapters[] = [];
   topicName: string = "";
@@ -58,7 +59,16 @@ export class TopicsComponent {
         headerName: 'Thumbnail', field: 'thumbnail', filter: 'agTextColumnFilter',
       });
       this.colDefs.push({
-        headerName: 'Description', field: 'description', filter: 'agTextColumnFilter',
+        headerName: 'Thumbnail',
+        field: 'thumbnail',
+        filter: 'agTextColumnFilter',
+        cellRenderer: function (params: any) {
+          if (params && params.value) {
+            return `<img src="${params.value}" style="max-height: 100px; max-width: 100px;" />`;
+          } else {
+            return null;
+          }
+        },
       });
     }
     // Reactive-Form validations
@@ -125,14 +135,13 @@ export class TopicsComponent {
 
   createTopic() {
     
-    var objChapter = {
+    var topicData = {
       name: this.topicName,
       chapterId: this.chapterId,
-      thumbnail: "https://www.neetprep.com/exam-info",
       description: this.description
 
     }
-    this.masterService.post(objChapter, 'Topic', 'Create')
+    this.masterService.postWithFile(topicData,this.selectedFile ,'Topic', 'Create')
       .subscribe((data: any) => {
         
         if (data.isSuccess) {
@@ -148,16 +157,15 @@ export class TopicsComponent {
 
 
   updateTopic() {
-    var objCourse = {
+    var topicData = {
       id: this.topicId,
       name: this.topicName,
       chapterId: this.selectedOption,
-      thumbnail: "https://www.neetprep.com/exam-info",
-      description: this.description
-
+     description: this.description
 
     }
-    this.masterService.put(objCourse, 'Topic', 'Update')
+    if(this.selectedFile != null){
+      this.masterService.putWithFile(topicData,this.selectedFile, 'Topic', 'Update')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.getAllTopics();
@@ -165,6 +173,18 @@ export class TopicsComponent {
           alert(data.message);
         }
       });
+    }
+    else{
+      this.masterService.put(topicData, 'Topic', 'Update')
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.getAllTopics();
+        } else {
+          alert(data.message);
+        }
+      });
+    }
+    
     this.isAddPopupVisible = false;
     window.location.reload();
   }

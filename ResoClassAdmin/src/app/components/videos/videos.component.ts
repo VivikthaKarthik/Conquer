@@ -88,9 +88,9 @@ export class VideosComponent {
     this.getAllVideos();
   }
 
-  deleteStudent(cId: number) {
+  deleteVideo(cId: number) {
     this.masterService
-      .delete(cId, 'Student', 'Delete')
+      .delete(cId, 'Video', 'Delete')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.getAllVideos();
@@ -111,12 +111,12 @@ export class VideosComponent {
 
   showConfirmation(id: any): void {
     Swal.fire({
-      text: 'Do you really want to remove this Student?',
+      text: 'Do you really want to remove this Video?',
       icon: 'warning',
       showCancelButton: true,
     }).then((result) => {
       if (result.isConfirmed) {
-        this.deleteStudent(id);
+        this.deleteVideo(id);
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
       }
     });
@@ -128,7 +128,7 @@ export class VideosComponent {
   }
 
   editGridRecord(id: any) {
-    this.router.navigate(['/editstudent'], { queryParams: { id: id } });
+    this.router.navigate(['/editvideo'], { queryParams: { id: id } });
   }
 
   deleteGridRecord(id: any) {

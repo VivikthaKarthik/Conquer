@@ -19,6 +19,8 @@ import { ActionCellRendererComponent } from './components/action-cell-renderer/a
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,6 +31,8 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     EdituserComponent,
     ActionCellRendererComponent,
     NotFoundComponent,
+    
+    
   ],
   imports: [
     BrowserModule,

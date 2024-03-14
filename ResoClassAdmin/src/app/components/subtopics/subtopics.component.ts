@@ -60,7 +60,16 @@ export class SubtopicsComponent {
         headerName: 'Topic', field: 'chapter', filter: 'agTextColumnFilter',
       });
       this.colDefs.push({
-        headerName: 'Thumbnail', field: 'thumbnail', filter: 'agTextColumnFilter',
+        headerName: 'Thumbnail',
+        field: 'thumbnail',
+        filter: 'agTextColumnFilter',
+        cellRenderer: function (params: any) {
+          if (params && params.value) {
+            return `<img src="${params.value}" style="max-height: 100px; max-width: 100px;" />`;
+          } else {
+            return null;
+          }
+        },
       });
      
     }
@@ -168,7 +177,8 @@ export class SubtopicsComponent {
       topicId: this.selectedOption,
       
     }
-    this.masterService.put(objCourse, 'SubTopic', 'Update')
+    if(this.selectedFile != null){
+      this.masterService.put(objCourse, 'SubTopic', 'Update')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.getAllTopics();
@@ -176,6 +186,18 @@ export class SubtopicsComponent {
           alert(data.message);
         }
       });
+    }
+    else{
+      this.masterService.putWithFile(objCourse,this.selectedFile, 'SubTopic', 'Update')
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.getAllTopics();
+        } else {
+          alert(data.message);
+        }
+      });
+    }
+    
     this.isAddPopupVisible = false;
     window.location.reload();
   }

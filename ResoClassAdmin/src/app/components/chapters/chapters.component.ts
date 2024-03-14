@@ -156,6 +156,7 @@ export class ChaptersComponent {
   }
 
   createChapter() {
+    debugger
     let subjID: number = Number(this.chapterForm.value.selSubId);
     var objChapter = {
       name: this.chapterForm.value.name,
@@ -166,6 +167,7 @@ export class ChaptersComponent {
     this.masterService
       .postWithFile(objChapter, this.selectedFile, 'Chapter', 'Create')
       .subscribe((data: any) => {
+        debugger
         if (data.isSuccess) {
           this.getAllChapters();
           // ($('#add_chapter') as any).modal('hide');
@@ -175,6 +177,7 @@ export class ChaptersComponent {
         }
       });
     this.isAddPopupVisible = false;
+    window.location.reload();
   }
 
   updateChapter() {

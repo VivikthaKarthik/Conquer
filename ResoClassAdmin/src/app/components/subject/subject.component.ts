@@ -30,6 +30,7 @@ export class SubjectComponent {
   submitted: boolean = false;
   selectedId: number = 0;
   selectedOption: any;
+  selectedFile: File | undefined;
 
 
   constructor(
@@ -44,7 +45,16 @@ export class SubjectComponent {
         headerName: 'Subject', field: 'name', filter: 'agTextColumnFilter'
       });
       this.colDefs.push({
-        headerName: 'Thumbnail', field: 'thumbnail', filter: 'agTextColumnFilter',
+        headerName: 'Thumbnail',
+        field: 'thumbnail',
+        filter: 'agTextColumnFilter',
+        cellRenderer: function (params: any) {
+          if (params && params.value) {
+            return `<img src="${params.value}" style="max-height: 100px; max-width: 100px;" />`;
+          } else {
+            return null;
+          }
+        },
       });
     }
     // Reactive-Form validations
@@ -121,7 +131,7 @@ export class SubjectComponent {
       thumbnail: 'NA',
       courseId: this.selectedId
     }
-    this.masterService.post(subjectData, 'Subject', 'Create')
+    this.masterService.postWithFile(subjectData,this.selectedFile, 'Subject', 'Create')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.getAllSubjects();
@@ -136,13 +146,24 @@ export class SubjectComponent {
 
   updateSubject() {
     
-    var objCourse = {
+    var subjectData = {
       id: this.subjectId,
       name: this.subjectName,
-      thumbnail: "Subject Thumbnail",
+      
       courseId: parseInt(this.selectedValue)
     }
-    this.masterService.put(objCourse, 'Subject', 'Update')
+    if(this.selectedFile != null){
+      this.masterService.putWithFile(subjectData,this.selectedFile, 'Subject', 'Update')
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.getAllSubjects();
+        } else {
+          alert(data.message);
+        }
+      });
+    }
+    else{
+      this.masterService.put(subjectData, 'Subject', 'Update')
       .subscribe((data: any) => {
         
         if (data.isSuccess) {
@@ -151,6 +172,8 @@ export class SubjectComponent {
           alert(data.message);
         }
       });
+    }
+    
     this.isAddPopupVisible = false;
     window.location.reload();
   }
@@ -192,24 +215,24 @@ export class SubjectComponent {
 
 
   onFileSelected(event: any): void {
-    
+    this.selectedFile = event.target.files[0];
     const file: File = event.target.files[0];
-    if (file) {
-      const formData = new FormData();
-      formData.append('file', file);
-      this.masterService.post(formData, 'Subject', 'Upload')
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            alert(data.result);
-            this.getAllSubjects();
-          } else {
-            alert(data.message);
-          }
-        });
-    }
-    else {
-      alert("Please select a File!")
-    }
+    // if (file) {
+    //   const formData = new FormData();
+    //   formData.append('file', file);
+    //   this.masterService.post(formData, 'Subject', 'Upload')
+    //     .subscribe((data: any) => {
+    //       if (data.isSuccess) {
+    //         alert(data.result);
+    //         this.getAllSubjects();
+    //       } else {
+    //         alert(data.message);
+    //       }
+    //     });
+    // }
+    // else {
+    //   alert("Please select a File!")
+    // }
   }
 
   getAllCourses() {
