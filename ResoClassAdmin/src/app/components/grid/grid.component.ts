@@ -57,7 +57,7 @@ export class GridComponent {
     //Add Default Column Definition
     this.defaultColDef = {
       flex: 1,
-      minWidth: 100,
+      minWidth: 120,
       sortable: true,
       filter: true,
       suppressMovable: true,

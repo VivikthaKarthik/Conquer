@@ -34,7 +34,7 @@ export class VideosComponent {
     });
     this.colDefs.push({
       headerName: 'Thumbnail',
-      field: 'thumbnail',
+      field: 'thumbNail',
       filter: 'agTextColumnFilter',
       cellRenderer: function (params: any) {
         if (params && params.value) {
