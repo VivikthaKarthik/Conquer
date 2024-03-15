@@ -99,4 +99,10 @@ export class MasterService {
   getAllByObject(obj: any, type: string, apiName: string) {
     return this.http.post(`${this.baseUrl}/${type}/${apiName}`, obj);
   }
+
+  getAssessmentsByStudentId(id: any, type: string, apiName: string, idParamName: string = 'id') {
+    return this.http.get(
+      `${this.baseUrl}/${type}/${apiName}?${idParamName}=${id}`
+    );
+  }
 }

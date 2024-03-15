@@ -29,6 +29,10 @@ import { AddvideosComponent } from '../components/addvideos/addvideos.component'
 import { EditvideoComponent } from '../components/editvideo/editvideo.component';
 import { QuestionbankComponent } from '../components/questionbank/questionbank.component';
 import { AddquestionbankComponent } from '../components/addquestionbank/addquestionbank.component';
+import { StudentwiseanalysisComponent } from '../components/studentwiseanalysis/studentwiseanalysis.component';
+import { ViewanalysisComponent } from '../components/viewanalysis/viewanalysis.component';
+
+
 
 @NgModule({
   declarations: [
@@ -51,6 +55,8 @@ import { AddquestionbankComponent } from '../components/addquestionbank/addquest
     EditvideoComponent,
     QuestionbankComponent,
     AddquestionbankComponent,
+    StudentwiseanalysisComponent,
+    ViewanalysisComponent,
   ],
   imports: [
     CommonModule,

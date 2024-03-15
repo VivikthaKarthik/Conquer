@@ -22,6 +22,8 @@ import { EdituserComponent } from './edituser/edituser.component';
 import { EditvideoComponent } from './components/editvideo/editvideo.component';
 import { QuestionbankComponent } from './components/questionbank/questionbank.component';
 import { AddquestionbankComponent } from './components/addquestionbank/addquestionbank.component';
+import { StudentwiseanalysisComponent } from './components/studentwiseanalysis/studentwiseanalysis.component';
+import { ViewanalysisComponent } from './components/viewanalysis/viewanalysis.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -101,6 +103,14 @@ const routes: Routes = [
       {
         path: 'addquestionbank',
         component: AddquestionbankComponent,
+      },
+      {
+        path: 'studentwiseanalysis',
+        component: StudentwiseanalysisComponent,
+      },
+      {
+        path: 'viewanalysis',
+        component: ViewanalysisComponent,
       }
     ],
   },
@@ -115,4 +125,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

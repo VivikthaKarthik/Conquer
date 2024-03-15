@@ -20,6 +20,7 @@ export class GridComponent {
   @Output() deleteRecord = new EventEmitter();
   @Input() data: any[] = [];
   @Input() coloumnDef: any[] = [];
+  @Input() isButtonRequired: boolean = false;
   gridOptions!: GridOptions;
   gridApi!: GridApi;
   gridColumns: ColDef[] = [];
@@ -39,21 +40,23 @@ export class GridComponent {
       pagination: true,
       paginationPageSize: 7, // Number of rows per page
       onPaginationChanged: this.onPaginationChanged.bind(this),
-      suppressHorizontalScroll:false,
+      suppressHorizontalScroll: false,
     };
 
     //Add Default Column with Edit and Delete Buttons
-    this.gridColumns.push({
-      headerName: '',
-      maxWidth: 120,
-      resizable: false,
-      filter: false,
-      cellRenderer: ActionCellRendererComponent,
-      cellRendererParams: {
-        editRow: (id: any) => this.editRow(id),
-        deleteRow: (id: any) => this.deleteRow(id),
-      },
-    });
+    if (!this.isButtonRequired) {
+      this.gridColumns.push({
+        headerName: '',
+        maxWidth: 120,
+        resizable: false,
+        filter: false,
+        cellRenderer: ActionCellRendererComponent,
+        cellRendererParams: {
+          editRow: (id: any) => this.editRow(id),
+          deleteRow: (id: any) => this.deleteRow(id),
+        },
+      });
+    }
 
     //Add Default Column Definition
     this.defaultColDef = {
@@ -68,9 +71,27 @@ export class GridComponent {
   ngOnInit(): void {
     //Add Grid Columns after Default Column
     this.gridColumns = this.gridColumns.concat(this.coloumnDef);
+
+
+    if (this.isButtonRequired) {
+      this.gridColumns.push({
+        headerName: '',
+        maxWidth: 120,
+        resizable: false,
+        filter: false,
+        cellRenderer: function (params: any) {
+          if (params && params.value) {
+            return `<button class="btn btn-sm btn-success" type="button" (click)="viewAnalysis()">View Analysis</button>`;
+
+          } else {
+            return null;
+          }
+        },
+      });
+    }
   }
 
-  onPaginationChanged(event: any) {}
+  onPaginationChanged(event: any) { }
 
   getRowHeight(params: any) {
     const DEFAULT_ROW_HEIGHT = 25;

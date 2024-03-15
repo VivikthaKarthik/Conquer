@@ -1,0 +1,64 @@
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Practice Analysis</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Student-wise Practice Analysis</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <form [formGroup]="analysisForm">
+                <div class="row" style="margin-left: 10px;">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                                [ngClass]="{'is-invalid': submitted && analysisForm.controls.selCourses.errors}"
+                                [ngModel]="selectedOption" (ngModelChange)="getStudentByCourse($event)"
+                                formControlName="selCourses">
+                                <option value="">Select Course/Class</option>
+                                <option *ngFor="let item of courses" [value]="item.id">{{ item.name }}</option>
+                            </select>
+                            <label class="focus-label">Course/Class *</label>
+                            <div *ngIf="submitted && analysisForm.controls.selCourses.errors" class="text-danger">
+                                <div *ngIf="submitted && analysisForm.controls.selCourses.errors.required">
+                                    Course is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                                [ngClass]="{'is-invalid': submitted && analysisForm.controls.selStudent.errors}"
+                                [ngModel]="selectedOption" (ngModelChange)="getStudentID($event)"
+                                formControlName="selStudent">
+                                <option value="">Select Student</option>
+                                <option *ngFor="let item of student" [value]="item.id">{{ item.name }}</option>
+                            </select>
+                            <label class="focus-label">Student*</label>
+                            <div *ngIf="submitted && analysisForm.controls.selStudent.errors" class="text-danger">
+                                <div *ngIf="submitted && analysisForm.controls.selStudent.errors.required">
+                                    Student is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <button class="btn btn-primary submit-btn btn-sm" type="submit" (click)="onSubmit()">Get Practice Sessions</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <app-grid [data]="assesmentList" [coloumnDef]="colDefs" [isButtonRequired]='true' (editRecord)="editGridRecord($event)"
+                    (deleteRecord)="deleteGridRecord($event)"></app-grid>
+            </div>
+        </div>
+    </div>
+</div>

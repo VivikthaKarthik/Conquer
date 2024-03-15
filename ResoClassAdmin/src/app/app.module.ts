@@ -32,10 +32,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     EdituserComponent,
     ActionCellRendererComponent,
     NotFoundComponent,
-    
-    
-    
-  ],
+],
   imports: [
     BrowserModule,
     AppRoutingModule,
