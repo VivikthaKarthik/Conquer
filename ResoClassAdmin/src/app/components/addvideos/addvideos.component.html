@@ -109,7 +109,7 @@
                             <select class="form-control floating" id="class_id" name="class_id"
                                 [ngClass]="{'is-invalid': submitted && addVideoForm.controls.selChapters.errors}"
                                 [ngModel]="selectedOption" (ngModelChange)="getTopicsByChapterId($event)"
-                                formControlName="chapter">
+                                formControlName="selChapters">
                                 <option value="">Select Chapter</option>
                                 <option *ngFor="let item of chapters" [value]="item.id">{{ item.name }}</option>
                             </select>
@@ -147,7 +147,7 @@
                                 <option value="">Select Sub Topic</option>
                                 <option *ngFor="let item of subTopics" [value]="item.id">{{ item.name }}</option>
                             </select>
-                            <label class="focus-label">Topic *</label>
+                            <label class="focus-label"> Sub Topic *</label>
                             <div *ngIf="submitted && addVideoForm.controls.selSubTopics.errors" class="text-danger">
                                 <div *ngIf="submitted && addVideoForm.controls.selSubTopics.errors.required">
                                     Sub Topic is required
