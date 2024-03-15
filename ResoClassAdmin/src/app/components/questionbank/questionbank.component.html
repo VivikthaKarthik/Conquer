@@ -111,14 +111,15 @@
         </div>
         <div class="row">
             <div class="col">
-                <div class="col-auto float-right ml-auto">
-                    <a href="#" class="btn warning-delete"><i class="fa fa-trash-o"></i> Delete all Questions</a>
+                <div class="col-auto float-right ml-auto" *ngIf="questionList.length > 0">
+                    <a class="btn warning-delete" (click)="deleteAllQuestions()"><i class="fa fa-trash-o"></i> Delete
+                        all Questions</a>
                 </div>
             </div>
             <div class="col-md-12" *ngFor="let item of questionList; index as i">
                 <div class="mt-4">
                     <div class="flex-display">
-                        <a href="#" class="btn warning-delete"><i class="fa fa-trash-o"
+                        <a class="btn warning-delete"><i class="fa fa-trash-o"
                                 (click)="deleteQuestion(item.id)"></i></a>
                         <h4 class="ml-1"> {{i + 1}})<span [innerHTML]="item.question"></span>
                         </h4>

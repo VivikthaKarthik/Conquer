@@ -160,7 +160,32 @@ export class QuestionbankComponent {
     }
   }
   deleteQuestion(id: number) {
-    alert(id);
+    if (id > 0) {
+      var data = [];
+      data.push(id);
+      this.masterService
+        .post(data, 'Assessment', 'DeleteQuestions')
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.getAllQuestions();
+          } else {
+            alert(data.message);
+          }
+        });
+    }
+  }
+
+  deleteAllQuestions() {
+    var data = this.questionList.map(({ id }) => id);
+    this.masterService
+      .post(data, 'Assessment', 'DeleteQuestions')
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.getAllQuestions();
+        } else {
+          alert(data.message);
+        }
+      });
   }
   // getSubTopicsByTopicId(Id: number) {
   //   this.topicId = Id;
