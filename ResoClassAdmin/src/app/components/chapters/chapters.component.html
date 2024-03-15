@@ -19,13 +19,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6 pad_b_20">
-                    <h4>Bulk Upload</h4>
-                    <form class="import_div" id="importform" action="#" method="POST">
-                        <input type="file" class="form-control" name="import_file" required
-                            (change)="onFileSelected($event)" />
-                        <button class="btn import-btn" type="submit" *ngIf="showBulkUploadButton"><i
-                                class="las la-file-upload"></i> Import</button>
-                    </form>
+                    <app-bulk-upload (onFileUpload)="OnDocumentUpload($event)"></app-bulk-upload>
                 </div>
                 <div class="col-md-12">
                     <app-grid [data]="chaptersList" [coloumnDef]="colDefs" (editRecord)="editGridRecord($event)"
@@ -113,19 +107,10 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
-                                    <div class="form-group form-focus select-focus">
-                                        <input type="file" class="form-control floating" id="thumbnail" name="thumbnail"
-                                            (change)="onFileSelected($event)" accept="image/*" required>
-                                        <label class="focus-label">Thumbnail *</label>
-                                    </div>
-                                    <div>
-                                        <img src="assets/img/size_thumb.png" id="add_thumb_image">
-                                    </div>
+                                    <app-image-upload (onFileUpload)="OnImageUpload($event)"></app-image-upload>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
-                                    <input type="checkbox" id="recommended" name="recommended" [(ngModel)]="isChecked"
-                                        required> Is Recommended?
-                                    *
+                                    <input type="checkbox" id="recommended" name="recommended"> Is Recommended?
                                 </div>
                             </div>
                             <div class="submit-section">
@@ -221,27 +206,11 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
-                                    <div class="form-group form-focus select-focus">
-                                        <input type="file" class="form-control floating" id="edit_thumbnail"
-                                            formControlName="thumbnail" name="thumbnail" onchange="readURL_edit(this)"
-                                            [ngClass]="{'is-invalid': submitted && chapterEditForm.controls.thumbnail.errors}">
-                                        <label class="focus-label">Thumbnail *</label>
-                                        <div *ngIf="submitted && chapterEditForm.controls.thumbnail.errors"
-                                            class="text-danger">
-                                            <div
-                                                *ngIf="submitted && chapterEditForm.controls.thumbnail.errors.required">
-                                                Thumbnail is required
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <img src="assets/img/size_thumb.png" id="edit_thumb_image">
-                                    </div>
+                                    <app-image-upload (onFileUpload)="OnImageUpload($event)"></app-image-upload>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
-                                    <input type="checkbox" id="edit_recommended" name="edit_recommended" required
-                                        [(ngModel)]="isChecked"> Is
-                                    Recommended? *
+                                    <input type="checkbox" id="edit_recommended" name="edit_recommended"> Is
+                                    Recommended?
                                 </div>
                             </div>
                             <div class="submit-section">
