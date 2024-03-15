@@ -10,13 +10,14 @@
                     </ul>
                 </div>
                 <div class="col-auto float-right ml-auto">
-                    <a routerLink="/addquestionbank" class="btn add-btn" data-toggle="modal" data-target="#add_question"><i class="fa fa-plus"></i> Add Questions</a>
+                    <a routerLink="/addquestionbank" class="btn add-btn" data-toggle="modal"
+                        data-target="#add_question"><i class="fa fa-plus"></i> Add Questions</a>
                 </div>
             </div>
         </div>
         <div class="row">
-            <form class="col-12" [formGroup]="questionbankForm" (ngSubmit)="onSubmit()"> 
-                <div class="row"> 
+            <form class="col-12" [formGroup]="questionbankForm" (ngSubmit)="onSubmit()">
+                <div class="row">
                     <div class="col-sm-6 col-md-4">
                         <div class="form-group form-focus select-focus">
                             <select class="form-control floating" id="class_id" name="class_id"
@@ -72,8 +73,7 @@
                         <div class="form-group form-focus select-focus">
                             <select class="form-control floating" id="class_id" name="class_id"
                                 [ngClass]="{'is-invalid': submitted && questionbankForm.controls.selTopics.errors}"
-                                [ngModel]="selectedOption" (ngModelChange)="getSubTopicsByTopicId($event)"
-                                formControlName="selTopics">
+                                [ngModel]="selectedOption" formControlName="selTopics">
                                 <option value="">Select Topic</option>
                                 <option *ngFor="let item of topics" [value]="item.id">{{ item.name }}</option>
                             </select>
@@ -89,12 +89,11 @@
                         <div class="form-group form-focus select-focus">
                             <select class="form-control floating" id="class_id" name="class_id"
                                 [ngClass]="{'is-invalid': submitted && questionbankForm.controls.selSubTopics.errors}"
-                                
                                 formControlName="selTopics">
                                 <option value="">Select Sub Topic</option>
                                 <option *ngFor="let item of subTopics" [value]="item.id">{{ item.name }}</option>
                             </select>
-                            <label class="focus-label">Topic *</label>
+                            <label class="focus-label">Sub Topic *</label>
                             <div *ngIf="submitted && questionbankForm.controls.selSubTopics.errors" class="text-danger">
                                 <div *ngIf="submitted && questionbankForm.controls.selSubTopics.errors.required">
                                     Sub Topic is required
@@ -103,11 +102,11 @@
                         </div>
                     </div>
 
-                    <div class="col-sm-6 col-md-2">   
+                    <div class="col-sm-6 col-md-2">
                         <button class="btn btn-primary submit-btn btn-sm" type="submit">Get Questions</button>
-                    </div> 
+                    </div>
                 </div>
-                
+
             </form>
         </div>
         <div class="row">
@@ -116,25 +115,33 @@
                     <a href="#" class="btn warning-delete"><i class="fa fa-trash-o"></i> Delete all Questions</a>
                 </div>
             </div>
-            <div class="col-md-12"  *ngFor="let item of questionList">
+            <div class="col-md-12" *ngFor="let item of questionList; index as i">
                 <div class="mt-4">
-                  <div class="flex-display">
-                      <a href="#" class="btn warning-delete"><i class="fa fa-trash-o"></i></a>  
-                      <h4 class="ml-1"> 1)<div [innerHTML]="item.question"></div></h4>
-                  </div>
-                  <ul class="ans_panel">
-                      <li> 1)<div [innerHTML]="item.firstAnswer"></div></li>
-                      <li> 2)<div [innerHTML]="item.secondAnswer"></div></li>
-                      <li> 3)<div [innerHTML]="item.thirdAnswer"></div></li>
-                      <li> 4)<div [innerHTML]="item.fourthAnswer"></div></li>
-                  </ul>
-                  <div class="d-flex">
-                      <h5> Correct Answer: <span>{{item.correctAnswer}}</span></h5>
-                      <h5 class="ml-5"> Difficulty level: <span class="badge bg-inverse-success"><div [innerHTML]="item.difficultyLevel"></div></span></h5>
-                  </div>
+                    <div class="flex-display">
+                        <a href="#" class="btn warning-delete"><i class="fa fa-trash-o"
+                                (click)="deleteQuestion(item.id)"></i></a>
+                        <h4 class="ml-1"> {{i + 1}})<span [innerHTML]="item.question"></span>
+                        </h4>
+                    </div>
+                    <ul class="ans_panel">
+                        <li> 1)<span [innerHTML]="item.firstAnswer"></span>
+                        </li>
+                        <li> 2)<span [innerHTML]="item.secondAnswer"></span>
+                        </li>
+                        <li> 3)<span [innerHTML]="item.thirdAnswer"></span>
+                        </li>
+                        <li> 4)<span [innerHTML]="item.fourthAnswer"></span>
+                        </li>
+                    </ul>
+                    <div class="d-flex">
+                        <h5> Correct Answer: <span>{{item.correctAnswer}}</span></h5>
+                        <h5 class="ml-5"> Difficulty level: <span class="badge bg-inverse-success">
+                                <span [innerHTML]="item.difficultyLevel"></span>
+                            </span></h5>
+                    </div>
                 </div>
-                </div>
+            </div>
         </div>
     </div>
-    
+
 </div>

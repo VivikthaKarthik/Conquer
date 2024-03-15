@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  AbstractControl,
+  ValidatorFn,
+} from '@angular/forms';
 import { MasterService } from '../../services/master.service';
 import { DataMappingService } from '../../services/data-mapping.service';
 import { Router } from '@angular/router';
@@ -9,20 +15,21 @@ import { Chapters } from '../../models/chapters';
 import { Topic } from '../../models/topic';
 import { SubTopic } from '../../models/subtopics';
 import { ListItem } from '../../models/listItem';
+import { identifierName } from '@angular/compiler';
 
 @Component({
   selector: 'app-addquestionbank',
   templateUrl: './addquestionbank.component.html',
-  styleUrl: './addquestionbank.component.css'
+  styleUrl: './addquestionbank.component.css',
 })
 export class AddquestionbankComponent {
   addQBForm!: FormGroup;
   videoTitle: string = '';
-  courses: Course[] | undefined;
-  subjects: Subject[] | undefined;
-  chapters: Chapters[] | undefined;
-  topics: Topic[] | undefined;
-  subTopics: SubTopic[] | undefined;
+  courses: ListItem[] | undefined;
+  subjects: ListItem[] | undefined;
+  chapters: ListItem[] | undefined;
+  topics: ListItem[] | undefined;
+  subTopics: ListItem[] | undefined;
   selectedFile: File | undefined;
   submitted = false;
   selectedOption: any;
@@ -33,32 +40,27 @@ export class AddquestionbankComponent {
     private masterService: MasterService,
     private dataMappingService: DataMappingService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.getCourses();
 
     this.addQBForm = this.fb.group({
-
       selCourses: ['', Validators.required],
       selSubjects: ['', Validators.required],
       selChapters: ['', Validators.required],
-      selTopics: ['', Validators.required],
-      selSubTopics: ['', Validators.required],
-      questionPaper: ['', Validators.required],
+      selTopics: [''],
     });
   }
 
   getCourses() {
-    
-    this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
+    this.masterService.getListItems('Course', '', 0).subscribe((data: any) => {
       if (data.isSuccess) {
-        this.courses = this.dataMappingService.mapToModel<Course>(
+        this.courses = this.dataMappingService.mapToModel<ListItem>(
           data.result,
           (item) => ({
             id: item.id,
             name: item.name,
-            thumbnail: item.thumbnail,
           })
         );
       } else {
@@ -68,82 +70,84 @@ export class AddquestionbankComponent {
   }
 
   getSubjectsByCourseId(Id: number) {
-    this.masterService.getById(Id, 'Subject', 'GetSubjectsByCourseId', 'courseId').subscribe((data: any) => {
-      if (data.isSuccess) {
-        this.subjects = this.dataMappingService.mapToModel<Subject>(
-          data.result,
-          (item) => ({
-            id: item.id,
-            name: item.name,
-            thumbnail: item.thumbnail,
-          })
-        );
-
-      } else {
-        alert(data.message);
-      }
-    });
+    if (Id !== undefined) {
+      this.masterService
+        .getListItems('Subject', 'Course', Id)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.subjects = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
+    }
   }
 
   getChaptersBySubjectId(Id: number) {
-    debugger
-    this.masterService.getById(Id, 'Chapters', 'GetChaptersBySubjectId', 'subjectId').subscribe((data: any) => {
-      if (data.isSuccess) {
-        debugger
-        this.chapters = this.dataMappingService.mapToModel<Chapters>(
-          data.result,
-          (item) => ({
-            id: item.id,
-            name: item.name,
-            thumbnail: item.thumbnail,
-            subjectId: item.subjectId
-          })
-        );
-
-      } else {
-        alert(data.message);
-      }
-    });
+    if (Id !== undefined) {
+      this.masterService
+        .getListItems('Chapter', 'Subject', Id)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.chapters = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
+    }
   }
   getTopicsByChapterId(Id: number) {
-    this.masterService.getById(Id, 'Topic', 'GetTopicsByChapterId', 'topicId').subscribe((data: any) => {
-      if (data.isSuccess) {
-        this.topics = this.dataMappingService.mapToModel<Topic>(
-          data.result,
-          (item) => ({
-            id: item.id,
-            name: item.name,
-            thumbnail: item.thumbnail,
-            chapter: item.chapter,
-            description: item.description,
-          })
-        );
-
-      } else {
-        alert(data.message);
-      }
-    });
+    if (Id !== undefined) {
+      this.masterService
+        .getListItems('Topic', 'Chapter', Id)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.topics = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
+    }
   }
 
-  getSubTopicsByTopicId(Id: number) {
-    this.masterService.getById(Id, 'SubTopic', 'GetSubTopicsByTopicId', 'subTopicId').subscribe((data: any) => {
-      if (data.isSuccess) {
-        this.subTopics = this.dataMappingService.mapToModel<SubTopic>(
-          data.result,
-          (item) => ({
-            id: item.id,
-            name: item.name,
-            thumbnail: item.thumbnail,
-            TopicId: item.TopicId
-          })
-        );
-
-      } else {
-        alert(data.message);
-      }
-    });
-  }
-  onImageFileSelected(event: any): void {
+  // getSubTopicsByTopicId(Id: number) {
+  //   if (Id !== undefined) {
+  //     this.masterService
+  //       .getListItems('SubTopic', 'Topic', Id)
+  //       .subscribe((data: any) => {
+  //         if (data.isSuccess) {
+  //           this.subTopics = this.dataMappingService.mapToModel<ListItem>(
+  //             data.result,
+  //             (item) => ({
+  //               id: item.id,
+  //               name: item.name,
+  //             })
+  //           );
+  //         } else {
+  //           alert(data.message);
+  //         }
+  //       });
+  //   }
+  // }
+  onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];
   }
   onSubmit() {
@@ -155,42 +159,31 @@ export class AddquestionbankComponent {
     }
   }
   uploadVideo() {
-    
     var videoData = {
-      Course: this.addQBForm.value.selCourses,
-      Subject: this.addQBForm.value.selSubjects,
-      Chapter: this.addQBForm.value.selChapters,
-      Topic: this.addQBForm.value.selTopics,
-      SubTopic: this.addQBForm.value.selSubTopics,
+      CourseId: this.addQBForm.value.selCourses,
+      SubjectId: this.addQBForm.value.selSubjects,
+      ChapterId: this.addQBForm.value.selChapters,
+      TopicId: this.addQBForm.value.selTopics,
+      SubTopicId: 0,
       HomeDisplay: this.addQBForm.value.homeDisplay,
-
     };
-    if(this.selectedFile != null){
+    if (this.selectedFile != null) {
       this.masterService
-      .postWithFile(videoData, this.selectedFile, 'Assessment', 'Create')
-      .subscribe((data: any) => {
-        debugger;
-        if (data.isSuccess) {
-          this.router.navigate(['/questionbank']);
-        } else {
-          alert(data.message);
-        }
-      });
+        .UploadQuestions(
+          videoData,
+          this.selectedFile,
+          'QuestionBank',
+          'UploadQuestions'
+        )
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.router.navigate(['/questionbank']);
+          } else {
+            alert(data.message);
+          }
+        });
+    } else {
+      alert('Please select a file to upload');
     }
-    else{
-      this.masterService
-      .post(videoData, 'Video', 'Create')
-      .subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.router.navigate(['/questionbank']);
-        } else {
-          alert(data.message);
-        }
-      });
-    }
-    
   }
-
-
-
 }

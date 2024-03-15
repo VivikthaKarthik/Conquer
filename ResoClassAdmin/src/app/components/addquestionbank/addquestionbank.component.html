@@ -54,7 +54,7 @@
                             <select class="form-control floating" id="class_id" name="class_id"
                                 [ngClass]="{'is-invalid': submitted && addQBForm.controls.selChapters.errors}"
                                 [ngModel]="selectedOption" (ngModelChange)="getTopicsByChapterId($event)"
-                                formControlName="chapter">
+                                formControlName="selChapters">
                                 <option value="">Select Chapter</option>
                                 <option *ngFor="let item of chapters" [value]="item.id">{{ item.name }}</option>
                             </select>
@@ -70,7 +70,7 @@
                         <div class="form-group form-focus select-focus">
                             <select class="form-control floating" id="class_id" name="class_id"
                                 [ngClass]="{'is-invalid': submitted && addQBForm.controls.selTopics.errors}"
-                                [ngModel]="selectedOption" (ngModelChange)="getSubTopicsByTopicId($event)"
+                                [ngModel]="selectedOption"
                                 formControlName="selTopics">
                                 <option value="">Select Topic</option>
                                 <option *ngFor="let item of topics" [value]="item.id">{{ item.name }}</option>
@@ -85,11 +85,12 @@
                     </div>
                     <div class="col-sm-6 col-md-4">
                         <div class="form-group form-focus select-focus">
-                            <input type="file" class="form-control floating" id="question_paper" name="question_paper" required>
+                            <input type="file" class="form-control floating" id="question_paper" name="question_paper"
+                            (change)="onFileSelected($event)" required>
                             <label class="focus-label">Upload Question *</label>
                         </div>
                     </div>
-                   
+
                 </div>
                 <div class="row">
                     <div class="col-sm-6 col-md-3">
@@ -105,42 +106,3 @@
     </div>
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

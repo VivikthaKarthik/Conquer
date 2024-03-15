@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class MasterService {
   //private baseUrl: string = 'https://dsquad.services/api';
-  //private baseUrl: string = 'https://api.resoclass.com/api';
-  private baseUrl: string = 'https://localhost:7292/api';
+  private baseUrl: string = 'https://api.resoclass.com/api';
+  // private baseUrl: string = 'https://localhost:7292/api';
   constructor(private http: HttpClient) {}
 
   getAll(type: string, apiName: string) {
@@ -41,6 +41,21 @@ export class MasterService {
     formData.append('request', JSON.stringify(request));
     if (thumbnailFile !== undefined) {
       formData.append('thumbnail', thumbnailFile);
+    }
+
+    return this.http.post(`${this.baseUrl}/${type}/${apiName}`, formData);
+  }
+
+  UploadQuestions(
+    request: any,
+    thumbnailFile: File | undefined,
+    type: string,
+    apiName: string
+  ) {
+    const formData = new FormData();
+    formData.append('request', JSON.stringify(request));
+    if (thumbnailFile !== undefined) {
+      formData.append('document', thumbnailFile);
     }
 
     return this.http.post(`${this.baseUrl}/${type}/${apiName}`, formData);
@@ -82,8 +97,6 @@ export class MasterService {
     return this.http.post(`${this.baseUrl}/${type}/${apiName}`, formData);
   }
   getAllByObject(obj: any, type: string, apiName: string) {
-    return this.http.post(
-      `${this.baseUrl}/${type}/${apiName}`,obj
-    );
+    return this.http.post(`${this.baseUrl}/${type}/${apiName}`, obj);
   }
 }

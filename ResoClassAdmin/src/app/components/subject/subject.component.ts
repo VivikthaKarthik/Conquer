@@ -14,6 +14,7 @@ import {
   FormBuilder,
 } from '@angular/forms';
 import { ColDef } from 'ag-grid-community';
+import { ListItem } from '../../models/listItem';
 declare var $: any;
 
 @Component({
@@ -25,7 +26,7 @@ export class SubjectComponent {
   subjectList: Subject[] = [];
   subjectName: string = '';
   subjectId: any;
-  courseData: Course[] = [];
+  courseData: ListItem[] = [];
   isPopupVisible: any;
   selectedValue: string = '';
   isAddPopupVisible: boolean = true;
@@ -90,14 +91,13 @@ export class SubjectComponent {
   }
 
   getSubjectById(sId: any) {
-    this.getAllCourses();
     this.subjectId = sId;
     this.masterService.getById(sId, 'Subject', 'Get').subscribe((data: any) => {
       if (data.isSuccess) {
         if (data.result != null && data.result.name != null) {
           this.subjectName = data.result.name;
           this.selectedValue = data.result.courseId;
-          ($('#edit_chapter') as any).modal('show');
+          this.getAllCoursesForEdit();
         } else {
           alert('Some error occured..! Plaese try again');
         }
@@ -204,17 +204,32 @@ export class SubjectComponent {
   }
 
   getAllCourses() {
-    this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
+    this.masterService.getListItems('Course', '', 0).subscribe((data: any) => {
       if (data.isSuccess) {
-        this.courseData = this.dataMappingService.mapToModel<Course>(
+        this.courseData = this.dataMappingService.mapToModel<ListItem>(
           data.result,
           (item) => ({
             id: item.id,
             name: item.name,
-            thumbnail: item.thumbnail,
           })
         );
-        console.log(this.courseData);
+      } else {
+        alert(data.message);
+      }
+    });
+  }
+
+  getAllCoursesForEdit() {
+    this.masterService.getListItems('Course', '', 0).subscribe((data: any) => {
+      if (data.isSuccess) {
+        this.courseData = this.dataMappingService.mapToModel<ListItem>(
+          data.result,
+          (item) => ({
+            id: item.id,
+            name: item.name,
+          })
+        );
+        ($('#edit_subject') as any).modal('show');
       } else {
         alert(data.message);
       }
@@ -233,7 +248,6 @@ export class SubjectComponent {
   }
   onSelectionChange(event: any): void {
     const selectedId = parseInt(event.target.value, 10); // Parse value to integer
-    alert('The Sected Couese ID:' + selectedId);
     this.selectedId = selectedId;
   }
 }
