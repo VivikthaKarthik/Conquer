@@ -31,6 +31,8 @@ import { QuestionbankComponent } from '../components/questionbank/questionbank.c
 import { AddquestionbankComponent } from '../components/addquestionbank/addquestionbank.component';
 import { BulkUploadComponent } from '../widgets/bulk-upload/bulk-upload.component';
 import { ImageUploadComponent } from '../widgets/image-upload/image-upload.component';
+import { StudentwiseanalysisComponent } from '../components/studentwiseanalysis/studentwiseanalysis.component';
+import { ViewanalysisComponent } from '../components/viewanalysis/viewanalysis.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,8 @@ import { ImageUploadComponent } from '../widgets/image-upload/image-upload.compo
     AddquestionbankComponent,
     BulkUploadComponent,
     ImageUploadComponent,
+    StudentwiseanalysisComponent,
+    ViewanalysisComponent
   ],
   imports: [
     CommonModule,
