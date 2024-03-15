@@ -1,0 +1,146 @@
+<div class="main-wrapper">
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="page-title">Question Bank</h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                            <li class="breadcrumb-item active">Question Bank</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <form [formGroup]="addQBForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                                [ngClass]="{'is-invalid': submitted && addQBForm.controls.selCourses.errors}"
+                                [ngModel]="selectedOption" (ngModelChange)="getSubjectsByCourseId($event)"
+                                formControlName="selCourses">
+                                <option value="">Select Course/Class</option>
+                                <option *ngFor="let item of courses" [value]="item.id">{{ item.name }}</option>
+                            </select>
+                            <label class="focus-label">Course/Class *</label>
+                            <div *ngIf="submitted && addQBForm.controls.selCourses.errors" class="text-danger">
+                                <div *ngIf="submitted && addQBForm.controls.selCourses.errors.required">
+                                    Course is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                                [ngClass]="{'is-invalid': submitted && addQBForm.controls.selSubjects.errors}"
+                                [ngModel]="selectedOption" (ngModelChange)="getChaptersBySubjectId($event)"
+                                formControlName="selSubjects">
+                                <option value="">Select Subject</option>
+                                <option *ngFor="let item of subjects" [value]="item.id">{{ item.name }}</option>
+                            </select>
+                            <label class="focus-label">Subject *</label>
+                            <div *ngIf="submitted && addQBForm.controls.selSubjects.errors" class="text-danger">
+                                <div *ngIf="submitted && addQBForm.controls.selSubjects.errors.required">
+                                    Subject is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                                [ngClass]="{'is-invalid': submitted && addQBForm.controls.selChapters.errors}"
+                                [ngModel]="selectedOption" (ngModelChange)="getTopicsByChapterId($event)"
+                                formControlName="chapter">
+                                <option value="">Select Chapter</option>
+                                <option *ngFor="let item of chapters" [value]="item.id">{{ item.name }}</option>
+                            </select>
+                            <label class="focus-label">Chapter *</label>
+                            <div *ngIf="submitted && addQBForm.controls.selChapters.errors" class="text-danger">
+                                <div *ngIf="submitted && addQBForm.controls.selChapters.errors.required">
+                                    Chapter is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                                [ngClass]="{'is-invalid': submitted && addQBForm.controls.selTopics.errors}"
+                                [ngModel]="selectedOption" (ngModelChange)="getSubTopicsByTopicId($event)"
+                                formControlName="selTopics">
+                                <option value="">Select Topic</option>
+                                <option *ngFor="let item of topics" [value]="item.id">{{ item.name }}</option>
+                            </select>
+                            <label class="focus-label">Topic *</label>
+                            <div *ngIf="submitted && addQBForm.controls.selTopics.errors" class="text-danger">
+                                <div *ngIf="submitted && addQBForm.controls.selTopics.errors.required">
+                                    Topic is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="file" class="form-control floating" id="question_paper" name="question_paper" required>
+                            <label class="focus-label">Upload Question *</label>
+                        </div>
+                    </div>
+                   
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <button class="btn btn-danger btn-block" type="button" onclick="window.history.back();"> Cancel
+                        </button>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <button class="btn btn-success btn-block" type="submit"> Submit </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

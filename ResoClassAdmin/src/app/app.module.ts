@@ -21,6 +21,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +32,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     EdituserComponent,
     ActionCellRendererComponent,
     NotFoundComponent,
+    
     
     
   ],

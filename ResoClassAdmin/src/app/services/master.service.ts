@@ -81,4 +81,9 @@ export class MasterService {
     formData.append('image', imageFile);
     return this.http.post(`${this.baseUrl}/${type}/${apiName}`, formData);
   }
+  getAllByObject(obj: any, type: string, apiName: string) {
+    return this.http.post(
+      `${this.baseUrl}/${type}/${apiName}`,obj
+    );
+  }
 }

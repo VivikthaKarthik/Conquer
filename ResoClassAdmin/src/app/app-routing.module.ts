@@ -20,6 +20,8 @@ import { VideosComponent } from './components/videos/videos.component';
 import { AddvideosComponent } from './components/addvideos/addvideos.component';
 import { EdituserComponent } from './edituser/edituser.component';
 import { EditvideoComponent } from './components/editvideo/editvideo.component';
+import { QuestionbankComponent } from './components/questionbank/questionbank.component';
+import { AddquestionbankComponent } from './components/addquestionbank/addquestionbank.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -89,6 +91,16 @@ const routes: Routes = [
       {
         path: 'editvideo',
         component: EditvideoComponent,
+      }
+      ,
+      {
+        path: 'questionbank',
+        component: QuestionbankComponent,
+      }
+      ,
+      {
+        path: 'addquestionbank',
+        component: AddquestionbankComponent,
       }
     ],
   },

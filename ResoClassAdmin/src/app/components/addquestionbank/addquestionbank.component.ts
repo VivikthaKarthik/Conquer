@@ -10,21 +10,20 @@ import { Topic } from '../../models/topic';
 import { SubTopic } from '../../models/subtopics';
 import { ListItem } from '../../models/listItem';
 
-
 @Component({
-  selector: 'app-addvideos',
-  templateUrl: './addvideos.component.html',
-  styleUrl: './addvideos.component.css'
+  selector: 'app-addquestionbank',
+  templateUrl: './addquestionbank.component.html',
+  styleUrl: './addquestionbank.component.css'
 })
-export class AddvideosComponent {
-  addVideoForm!: FormGroup;
+export class AddquestionbankComponent {
+  addQBForm!: FormGroup;
   videoTitle: string = '';
   courses: Course[] | undefined;
   subjects: Subject[] | undefined;
   chapters: Chapters[] | undefined;
   topics: Topic[] | undefined;
   subTopics: SubTopic[] | undefined;
-
+  selectedFile: File | undefined;
   submitted = false;
   selectedOption: any;
   selectedCity: any;
@@ -39,22 +38,19 @@ export class AddvideosComponent {
   ngOnInit(): void {
     this.getCourses();
 
-    this.addVideoForm = this.fb.group({
+    this.addQBForm = this.fb.group({
 
-      title: ['', Validators.required],
-      description: ['', Validators.required],
-      thumbnail: ['', Validators.required],
-      sourceUrl: ['', Validators.required],
       selCourses: ['', Validators.required],
       selSubjects: ['', Validators.required],
       selChapters: ['', Validators.required],
       selTopics: ['', Validators.required],
       selSubTopics: ['', Validators.required],
-      homeDisplay: [''],
+      questionPaper: ['', Validators.required],
     });
   }
 
   getCourses() {
+    
     this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
       if (data.isSuccess) {
         this.courses = this.dataMappingService.mapToModel<Course>(
@@ -90,8 +86,10 @@ export class AddvideosComponent {
   }
 
   getChaptersBySubjectId(Id: number) {
+    debugger
     this.masterService.getById(Id, 'Chapters', 'GetChaptersBySubjectId', 'subjectId').subscribe((data: any) => {
       if (data.isSuccess) {
+        debugger
         this.chapters = this.dataMappingService.mapToModel<Chapters>(
           data.result,
           (item) => ({
@@ -108,10 +106,8 @@ export class AddvideosComponent {
     });
   }
   getTopicsByChapterId(Id: number) {
-   
     this.masterService.getById(Id, 'Topic', 'GetTopicsByChapterId', 'topicId').subscribe((data: any) => {
       if (data.isSuccess) {
-        
         this.topics = this.dataMappingService.mapToModel<Topic>(
           data.result,
           (item) => ({
@@ -147,40 +143,54 @@ export class AddvideosComponent {
       }
     });
   }
-
+  onImageFileSelected(event: any): void {
+    this.selectedFile = event.target.files[0];
+  }
   onSubmit() {
     this.submitted = true;
-    if (this.addVideoForm.invalid) {
+    if (this.addQBForm.invalid) {
       return;
     } else {
       this.uploadVideo();
     }
   }
   uploadVideo() {
-
+    
     var videoData = {
-      title: this.addVideoForm.value.title,
-      thumbnail: this.addVideoForm.value.thumbnail,
-      description: this.addVideoForm.value.description,
-      sourceUrl: this.addVideoForm.value.sourceUrl,
-      Course: this.addVideoForm.value.selCourses,
-      Subject: this.addVideoForm.value.selSubjects,
-      Chapter: this.addVideoForm.value.selChapters,
-      Topic: this.addVideoForm.value.selTopics,
-      SubTopic: this.addVideoForm.value.selSubTopics,
-      HomeDisplay: this.addVideoForm.value.homeDisplay,
+      Course: this.addQBForm.value.selCourses,
+      Subject: this.addQBForm.value.selSubjects,
+      Chapter: this.addQBForm.value.selChapters,
+      Topic: this.addQBForm.value.selTopics,
+      SubTopic: this.addQBForm.value.selSubTopics,
+      HomeDisplay: this.addQBForm.value.homeDisplay,
 
     };
-    console.log(JSON.stringify(videoData));
-    this.masterService
-      .post(videoData, 'Video', 'Create')
+    if(this.selectedFile != null){
+      this.masterService
+      .postWithFile(videoData, this.selectedFile, 'Assessment', 'Create')
       .subscribe((data: any) => {
+        debugger;
         if (data.isSuccess) {
-          this.router.navigate(['/videos']);
+          this.router.navigate(['/questionbank']);
         } else {
           alert(data.message);
         }
       });
+    }
+    else{
+      this.masterService
+      .post(videoData, 'Video', 'Create')
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.router.navigate(['/questionbank']);
+        } else {
+          alert(data.message);
+        }
+      });
+    }
+    
   }
+
+
 
 }

@@ -1,0 +1,140 @@
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Question Bank</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Question Bank</li>
+                    </ul>
+                </div>
+                <div class="col-auto float-right ml-auto">
+                    <a routerLink="/addquestionbank" class="btn add-btn" data-toggle="modal" data-target="#add_question"><i class="fa fa-plus"></i> Add Questions</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <form class="col-12" [formGroup]="questionbankForm" (ngSubmit)="onSubmit()"> 
+                <div class="row"> 
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                                [ngClass]="{'is-invalid': submitted && questionbankForm.controls.selCourses.errors}"
+                                [ngModel]="selectedOption" (ngModelChange)="getSubjectsByCourseId($event)"
+                                formControlName="selCourses">
+                                <option value="">Select Course/Class</option>
+                                <option *ngFor="let item of courses" [value]="item.id">{{ item.name }}</option>
+                            </select>
+                            <label class="focus-label">Course/Class *</label>
+                            <div *ngIf="submitted && questionbankForm.controls.selCourses.errors" class="text-danger">
+                                <div *ngIf="submitted && questionbankForm.controls.selCourses.errors.required">
+                                    Course is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                                [ngClass]="{'is-invalid': submitted && questionbankForm.controls.selSubjects.errors}"
+                                [ngModel]="selectedOption" (ngModelChange)="getChaptersBySubjectId($event)"
+                                formControlName="selSubjects">
+                                <option value="">Select Subject</option>
+                                <option *ngFor="let item of subjects" [value]="item.id">{{ item.name }}</option>
+                            </select>
+                            <label class="focus-label">Subject *</label>
+                            <div *ngIf="submitted && questionbankForm.controls.selSubjects.errors" class="text-danger">
+                                <div *ngIf="submitted && questionbankForm.controls.selSubjects.errors.required">
+                                    Subject is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                                [ngClass]="{'is-invalid': submitted && questionbankForm.controls.selChapters.errors}"
+                                [ngModel]="selectedOption" (ngModelChange)="getTopicsByChapterId($event)"
+                                formControlName="selChapters">
+                                <option value="">Select Chapter</option>
+                                <option *ngFor="let item of chapters" [value]="item.id">{{ item.name }}</option>
+                            </select>
+                            <label class="focus-label">Chapter *</label>
+                            <div *ngIf="submitted && questionbankForm.controls.selChapters.errors" class="text-danger">
+                                <div *ngIf="submitted && questionbankForm.controls.selChapters.errors.required">
+                                    Chapter is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                                [ngClass]="{'is-invalid': submitted && questionbankForm.controls.selTopics.errors}"
+                                [ngModel]="selectedOption" (ngModelChange)="getSubTopicsByTopicId($event)"
+                                formControlName="selTopics">
+                                <option value="">Select Topic</option>
+                                <option *ngFor="let item of topics" [value]="item.id">{{ item.name }}</option>
+                            </select>
+                            <label class="focus-label">Topic *</label>
+                            <div *ngIf="submitted && questionbankForm.controls.selTopics.errors" class="text-danger">
+                                <div *ngIf="submitted && questionbankForm.controls.selTopics.errors.required">
+                                    Topic is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                                [ngClass]="{'is-invalid': submitted && questionbankForm.controls.selSubTopics.errors}"
+                                
+                                formControlName="selTopics">
+                                <option value="">Select Sub Topic</option>
+                                <option *ngFor="let item of subTopics" [value]="item.id">{{ item.name }}</option>
+                            </select>
+                            <label class="focus-label">Topic *</label>
+                            <div *ngIf="submitted && questionbankForm.controls.selSubTopics.errors" class="text-danger">
+                                <div *ngIf="submitted && questionbankForm.controls.selSubTopics.errors.required">
+                                    Sub Topic is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-2">   
+                        <button class="btn btn-primary submit-btn btn-sm" type="submit">Get Questions</button>
+                    </div> 
+                </div>
+                
+            </form>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="col-auto float-right ml-auto">
+                    <a href="#" class="btn warning-delete"><i class="fa fa-trash-o"></i> Delete all Questions</a>
+                </div>
+            </div>
+            <div class="col-md-12"  *ngFor="let item of questionList">
+                <div class="mt-4">
+                  <div class="flex-display">
+                      <a href="#" class="btn warning-delete"><i class="fa fa-trash-o"></i></a>  
+                      <h4 class="ml-1"> 1)<div [innerHTML]="item.question"></div></h4>
+                  </div>
+                  <ul class="ans_panel">
+                      <li> 1)<div [innerHTML]="item.firstAnswer"></div></li>
+                      <li> 2)<div [innerHTML]="item.secondAnswer"></div></li>
+                      <li> 3)<div [innerHTML]="item.thirdAnswer"></div></li>
+                      <li> 4)<div [innerHTML]="item.fourthAnswer"></div></li>
+                  </ul>
+                  <div class="d-flex">
+                      <h5> Correct Answer: <span>{{item.correctAnswer}}</span></h5>
+                      <h5 class="ml-5"> Difficulty level: <span class="badge bg-inverse-success"><div [innerHTML]="item.difficultyLevel"></div></span></h5>
+                  </div>
+                </div>
+                </div>
+        </div>
+    </div>
+    
+</div>

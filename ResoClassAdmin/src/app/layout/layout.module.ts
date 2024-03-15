@@ -27,6 +27,8 @@ import { HomeComponent } from '../components/home/home.component';
 import { VideosComponent } from '../components/videos/videos.component';
 import { AddvideosComponent } from '../components/addvideos/addvideos.component';
 import { EditvideoComponent } from '../components/editvideo/editvideo.component';
+import { QuestionbankComponent } from '../components/questionbank/questionbank.component';
+import { AddquestionbankComponent } from '../components/addquestionbank/addquestionbank.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { EditvideoComponent } from '../components/editvideo/editvideo.component'
     VideosComponent,
     AddvideosComponent,
     EditvideoComponent,
+    QuestionbankComponent,
+    AddquestionbankComponent,
   ],
   imports: [
     CommonModule,

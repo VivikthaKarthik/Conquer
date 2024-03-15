@@ -10,20 +10,26 @@ import { Topic } from '../../models/topic';
 import { SubTopic } from '../../models/subtopics';
 import { ListItem } from '../../models/listItem';
 
-
 @Component({
-  selector: 'app-addvideos',
-  templateUrl: './addvideos.component.html',
-  styleUrl: './addvideos.component.css'
+  selector: 'app-questionbank',
+  templateUrl: './questionbank.component.html',
+  styleUrl: './questionbank.component.css'
 })
-export class AddvideosComponent {
-  addVideoForm!: FormGroup;
+export class QuestionbankComponent {
+  questionList: any[] = [];
+  questionbankForm!: FormGroup;
   videoTitle: string = '';
   courses: Course[] | undefined;
   subjects: Subject[] | undefined;
   chapters: Chapters[] | undefined;
   topics: Topic[] | undefined;
   subTopics: SubTopic[] | undefined;
+
+  courseId: number = 0;
+  subjectId: number = 0;
+  chapterId: number = 0;
+  topicId: number = 0;
+  subTopicId: number = 0;
 
   submitted = false;
   selectedOption: any;
@@ -38,22 +44,42 @@ export class AddvideosComponent {
 
   ngOnInit(): void {
     this.getCourses();
-
-    this.addVideoForm = this.fb.group({
-
-      title: ['', Validators.required],
-      description: ['', Validators.required],
-      thumbnail: ['', Validators.required],
-      sourceUrl: ['', Validators.required],
+    this.questionbankForm = this.fb.group({
       selCourses: ['', Validators.required],
       selSubjects: ['', Validators.required],
       selChapters: ['', Validators.required],
-      selTopics: ['', Validators.required],
-      selSubTopics: ['', Validators.required],
-      homeDisplay: [''],
+      selTopics: [''],
+      selSubTopics: [''],
+
     });
   }
 
+  onSubmit() {
+    this.submitted = true;
+    if (this.questionbankForm.invalid) {
+      return;
+    } else {
+      this.getAllQuestions();
+    }
+  }
+  getAllQuestions() {
+    var questionaData = {
+      courseId: this.courseId,
+      subjectId: this.subjectId,
+      chapterId: this.chapterId,
+      topicId: this.topicId,
+      subTopicId: this.subTopicId,
+      
+
+    };
+    this.masterService.getAllByObject(questionaData,'Assessment', 'GetAllQuestions').subscribe((data: any) => {
+      if (data.isSuccess) {
+        this.questionList = data.result;
+      } else {
+        alert(data.message);
+      }
+    });
+  }
   getCourses() {
     this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
       if (data.isSuccess) {
@@ -72,8 +98,11 @@ export class AddvideosComponent {
   }
 
   getSubjectsByCourseId(Id: number) {
+    debugger
+    this.courseId = Id;
     this.masterService.getById(Id, 'Subject', 'GetSubjectsByCourseId', 'courseId').subscribe((data: any) => {
       if (data.isSuccess) {
+        debugger
         this.subjects = this.dataMappingService.mapToModel<Subject>(
           data.result,
           (item) => ({
@@ -90,8 +119,10 @@ export class AddvideosComponent {
   }
 
   getChaptersBySubjectId(Id: number) {
-    this.masterService.getById(Id, 'Chapters', 'GetChaptersBySubjectId', 'subjectId').subscribe((data: any) => {
+    this.subjectId = Id;
+    this.masterService.getById(Id, 'Chapter', 'GetChaptersBySubjectId', 'subjectId').subscribe((data: any) => {
       if (data.isSuccess) {
+        debugger
         this.chapters = this.dataMappingService.mapToModel<Chapters>(
           data.result,
           (item) => ({
@@ -108,10 +139,10 @@ export class AddvideosComponent {
     });
   }
   getTopicsByChapterId(Id: number) {
-   
+    this.chapterId = Id;
     this.masterService.getById(Id, 'Topic', 'GetTopicsByChapterId', 'topicId').subscribe((data: any) => {
       if (data.isSuccess) {
-        
+        debugger
         this.topics = this.dataMappingService.mapToModel<Topic>(
           data.result,
           (item) => ({
@@ -130,6 +161,7 @@ export class AddvideosComponent {
   }
 
   getSubTopicsByTopicId(Id: number) {
+    this.topicId = Id;
     this.masterService.getById(Id, 'SubTopic', 'GetSubTopicsByTopicId', 'subTopicId').subscribe((data: any) => {
       if (data.isSuccess) {
         this.subTopics = this.dataMappingService.mapToModel<SubTopic>(
@@ -148,39 +180,5 @@ export class AddvideosComponent {
     });
   }
 
-  onSubmit() {
-    this.submitted = true;
-    if (this.addVideoForm.invalid) {
-      return;
-    } else {
-      this.uploadVideo();
-    }
-  }
-  uploadVideo() {
-
-    var videoData = {
-      title: this.addVideoForm.value.title,
-      thumbnail: this.addVideoForm.value.thumbnail,
-      description: this.addVideoForm.value.description,
-      sourceUrl: this.addVideoForm.value.sourceUrl,
-      Course: this.addVideoForm.value.selCourses,
-      Subject: this.addVideoForm.value.selSubjects,
-      Chapter: this.addVideoForm.value.selChapters,
-      Topic: this.addVideoForm.value.selTopics,
-      SubTopic: this.addVideoForm.value.selSubTopics,
-      HomeDisplay: this.addVideoForm.value.homeDisplay,
-
-    };
-    console.log(JSON.stringify(videoData));
-    this.masterService
-      .post(videoData, 'Video', 'Create')
-      .subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.router.navigate(['/videos']);
-        } else {
-          alert(data.message);
-        }
-      });
-  }
 
 }

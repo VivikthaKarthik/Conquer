@@ -74,6 +74,7 @@
                         <div class="form-group form-focus select-focus">
                             <select class="form-control floating" id="class_id" name="class_id"
                                 [ngClass]="{'is-invalid': submitted && addVideoForm.controls.selCourses.errors}"
+                                [ngModel]="selectedOption" (ngModelChange)="getSubjectsByCourseId($event)"
                                 formControlName="selCourses">
                                 <option value="">Select Course/Class</option>
                                 <option *ngFor="let item of courses" [value]="item.id">{{ item.name }}</option>
@@ -90,7 +91,7 @@
                         <div class="form-group form-focus select-focus">
                             <select class="form-control floating" id="class_id" name="class_id"
                                 [ngClass]="{'is-invalid': submitted && addVideoForm.controls.selSubjects.errors}"
-                                [ngModel]="selectedOption" (ngModelChange)="getSubjectsByCourseId($event)"
+                                [ngModel]="selectedOption" (ngModelChange)="getChaptersBySubjectId($event)"
                                 formControlName="selSubjects">
                                 <option value="">Select Subject</option>
                                 <option *ngFor="let item of subjects" [value]="item.id">{{ item.name }}</option>
@@ -107,7 +108,7 @@
                         <div class="form-group form-focus select-focus">
                             <select class="form-control floating" id="class_id" name="class_id"
                                 [ngClass]="{'is-invalid': submitted && addVideoForm.controls.selChapters.errors}"
-                                [ngModel]="selectedOption" (ngModelChange)="getChaptersBySubjectId($event)"
+                                [ngModel]="selectedOption" (ngModelChange)="getTopicsByChapterId($event)"
                                 formControlName="chapter">
                                 <option value="">Select Chapter</option>
                                 <option *ngFor="let item of chapters" [value]="item.id">{{ item.name }}</option>
@@ -124,7 +125,7 @@
                         <div class="form-group form-focus select-focus">
                             <select class="form-control floating" id="class_id" name="class_id"
                                 [ngClass]="{'is-invalid': submitted && addVideoForm.controls.selTopics.errors}"
-                                [ngModel]="selectedOption" (ngModelChange)="getTopicsByChapterId($event)"
+                                [ngModel]="selectedOption" (ngModelChange)="getSubTopicsByTopicId($event)"
                                 formControlName="selTopics">
                                 <option value="">Select Topic</option>
                                 <option *ngFor="let item of topics" [value]="item.id">{{ item.name }}</option>
@@ -141,7 +142,7 @@
                         <div class="form-group form-focus select-focus">
                             <select class="form-control floating" id="class_id" name="class_id"
                                 [ngClass]="{'is-invalid': submitted && addVideoForm.controls.selSubTopics.errors}"
-                                [ngModel]="selectedOption" (ngModelChange)="getSubTopicsByTopicId($event)"
+                                
                                 formControlName="selTopics">
                                 <option value="">Select Sub Topic</option>
                                 <option *ngFor="let item of subTopics" [value]="item.id">{{ item.name }}</option>
