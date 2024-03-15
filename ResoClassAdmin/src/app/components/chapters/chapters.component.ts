@@ -33,7 +33,8 @@ export class ChaptersComponent {
   subjectData: ListItem[] = [];
   selectedOption: any;
   selSubjectId: number = 0;
-  selectedFile: File | undefined;
+  selectedImage: File | undefined;
+  selectedDocument: File | undefined;
   showBulkUploadButton: boolean = false;
   imageUrl: string | undefined;
   isChecked: boolean = false;
@@ -92,7 +93,6 @@ export class ChaptersComponent {
       selCourseId: ['', Validators.required],
       selSubId: ['', Validators.required],
       description: ['', Validators.required],
-      thumbnail: ['', Validators.required],
     });
   }
 
@@ -150,6 +150,11 @@ export class ChaptersComponent {
     }
   }
 
+  OnRecommendedChange(event: any) {
+    alert();
+    this.isChecked = event.isChecked;
+  }
+
   createChapter() {
     let subjID: number = Number(this.chapterForm.value.selSubId);
     var objChapter = {
@@ -158,8 +163,9 @@ export class ChaptersComponent {
       isRecommended: this.isChecked,
       description: this.chapterForm.value.description,
     };
+
     this.masterService
-      .postWithFile(objChapter, this.selectedFile, 'Chapter', 'Create')
+      .postWithFile(objChapter, this.selectedImage, 'Chapter', 'Create')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.getAllChapters();
@@ -168,27 +174,42 @@ export class ChaptersComponent {
         }
       });
     this.isAddPopupVisible = false;
+
     window.location.reload();
   }
 
   updateChapter() {
     let subjID: number = Number(this.chapterEditForm.value.selSubId);
-    var objCourse = {
+    var objChapter = {
       id: this.chapterId,
       name: this.chapterEditForm.value.name,
       subjectId: subjID,
-      thumbnail: 'https://www.neetprep.com/exam-info',
+      description: this.chapterForm.value.description,
       isRecommended: this.isChecked,
     };
-    this.masterService
-      .put(objCourse, 'Chapter', 'Update')
-      .subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.getAllChapters();
-        } else {
-          alert(data.message);
-        }
-      });
+    if (this.selectedImage !== undefined) {
+      this.masterService
+        .putWithFile(objChapter, this.selectedImage, 'Chapter', 'Update')
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.getAllChapters();
+          } else {
+            alert(data.message);
+          }
+        });
+      this.isAddPopupVisible = false;
+    } else {
+      this.masterService
+        .put(objChapter, 'Chapter', 'Update')
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.getAllChapters();
+          } else {
+            alert(data.message);
+          }
+        });
+    }
+    window.location.reload();
   }
 
   deleteChapters(cId: any) {
@@ -216,28 +237,11 @@ export class ChaptersComponent {
     });
   }
 
-  onFileSelected(event: any): void {
-    if (event.target.files !== undefined && event.target.files.length > 0) {
-      this.selectedFile = event.target.files[0];
-      this.showBulkUploadButton = true;
-
-      const files = event.target.files;
-      if (files.length === 0) return;
-
-      const mimeType = files[0].type;
-      if (mimeType.match(/image\/*/) == null) {
-        alert('Only images are supported.');
-        return;
-      }
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.thumbnailUrl = e.target.result;
-      };
-      reader.readAsDataURL(files[0]);
-    } else {
-      this.selectedFile = undefined;
-      this.showBulkUploadButton = false;
-    }
+  OnImageUpload(event: any): void {
+    this.selectedImage = event;
+  }
+  OnDocumentUpload(event: any): void {
+    this.selectedDocument = event;
   }
 
   getAllCourses() {
