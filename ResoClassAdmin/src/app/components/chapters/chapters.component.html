@@ -23,8 +23,9 @@
                     <form class="import_div" id="importform" action="#" method="POST">
                         <input type="file" class="form-control" name="import_file" required
                             (change)="onFileSelected($event)" />
-                        <button class="btn import-btn" type="submit" *ngIf="showBulkUploadButton"><i
-                                class="las la-file-upload"></i> Import</button>
+                        <button class="btn import-btn" type="submit" *ngIf="showBulkUploadButton">
+                            <i class="las la-file-upload"></i> Import
+                        </button>
                     </form>
                 </div>
                 <div class="col-md-12">
@@ -119,7 +120,8 @@
                                         <label class="focus-label">Thumbnail *</label>
                                     </div>
                                     <div>
-                                        <img src="assets/img/size_thumb.png" id="add_thumb_image">
+                                        <img style="height: 150px;width: 150px;" src={{thumbnailUrl}}
+                                            id="add_thumb_image">
                                     </div>
                                 </div>
                                 <div class="col-sm-6 col-md-6">
