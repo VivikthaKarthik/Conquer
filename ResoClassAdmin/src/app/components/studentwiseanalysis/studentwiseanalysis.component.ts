@@ -9,13 +9,10 @@ import {
 import { MasterService } from '../../services/master.service';
 import { DataMappingService } from '../../services/data-mapping.service';
 import { Router } from '@angular/router';
-import { Course } from '../../models/course';
-import { Subject } from '../../models/subject';
 import { Chapters } from '../../models/chapters';
-import { Topic } from '../../models/topic';
-import { SubTopic } from '../../models/subtopics';
 import { ListItem } from '../../models/listItem';
 import { ColDef } from 'ag-grid-community';
+import { DynamicbuttoncellrenderComponent } from '../dynamicbuttoncellrender/dynamicbuttoncellrender.component'; 
 
 @Component({
   selector: 'app-studentwiseanalysis',
