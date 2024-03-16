@@ -10,6 +10,7 @@ import { ColDef } from 'ag-grid-community';
 import { GridApi, GridOptions } from 'ag-grid-community';
 import { ActionCellRendererComponent } from '../action-cell-renderer/action-cell-renderer.component';
 import { Router } from '@angular/router';
+import { DynamicbuttoncellrenderComponent } from '../dynamicbuttoncellrender/dynamicbuttoncellrender.component';
 
 @Component({
   selector: 'app-grid',
@@ -19,8 +20,10 @@ import { Router } from '@angular/router';
 export class GridComponent {
   @Output() editRecord = new EventEmitter();
   @Output() deleteRecord = new EventEmitter();
+  @Output() viewRecord = new EventEmitter();
   @Input() data: any[] = [];
   @Input() coloumnDef: any[] = [];
+  @Input() showAnalysis: boolean = false;
   gridOptions!: GridOptions;
   gridApi!: GridApi;
   gridColumns: ColDef[] = [];
@@ -43,19 +46,6 @@ export class GridComponent {
       suppressHorizontalScroll: false,
     };
 
-    //Add Default Column with Edit and Delete Buttons
-    this.gridColumns.push({
-      headerName: '',
-      minWidth: 120,
-      resizable: false,
-      filter: false,
-      cellRenderer: ActionCellRendererComponent,
-      cellRendererParams: {
-        editRow: (id: any) => this.editRow(id),
-        deleteRow: (id: any) => this.deleteRow(id),
-      },
-    });
-
     //Add Default Column Definition
     this.defaultColDef = {
       flex: 1,
@@ -67,8 +57,40 @@ export class GridComponent {
   }
 
   ngOnInit(): void {
+    //Add Default Column with Edit and Delete Buttons
+    if (!this.showAnalysis) {
+      this.gridColumns.push({
+        headerName: '',
+        minWidth: 150,
+        resizable: false,
+        filter: false,
+        cellRenderer: ActionCellRendererComponent,
+        cellRendererParams: {
+          editRow: (id: any) => this.editRow(id),
+          deleteRow: (id: any) => this.deleteRow(id),
+        },
+      });
+    }
+
     //Add Grid Columns after Default Column
     this.gridColumns = this.gridColumns.concat(this.coloumnDef);
+
+    if (this.showAnalysis) {
+      this.gridColumns.push({
+        headerName: '',
+        minWidth: 120,
+        resizable: false,
+        filter: false,
+        cellRenderer: DynamicbuttoncellrenderComponent,
+        cellRendererParams: {
+          viewRow: (id: any) => this.viewRow(id),
+        },
+      });
+    }
+  }
+
+  viewRow(id: any) {
+    this.viewRecord.emit(id);
   }
 
   onPaginationChanged(event: any) {}
@@ -87,10 +109,5 @@ export class GridComponent {
 
   deleteRow(id: number): void {
     this.deleteRecord.emit(id);
-  }
-
-  viewAnalysis() {
-    alert('ViewAnalysis');
-    this.router.navigate(['/viewanalysis']);
   }
 }

@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-dynamicbuttoncellrender',
   templateUrl: './dynamicbuttoncellrender.component.html',
-  styleUrl: './dynamicbuttoncellrender.component.css'
+  styleUrl: './dynamicbuttoncellrender.component.css',
 })
 export class DynamicbuttoncellrenderComponent {
   params: any;
@@ -12,8 +12,7 @@ export class DynamicbuttoncellrenderComponent {
     this.params = params;
   }
 
-  view(): void {
-    this.params.viewrow(this.params.data.id);
+  viewRow(): void {
+    this.params.viewRow(this.params.data.id);
   }
-
 }

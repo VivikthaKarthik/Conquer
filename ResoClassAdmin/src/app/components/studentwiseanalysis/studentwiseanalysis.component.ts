@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { Chapters } from '../../models/chapters';
 import { ListItem } from '../../models/listItem';
 import { ColDef } from 'ag-grid-community';
-import { DynamicbuttoncellrenderComponent } from '../dynamicbuttoncellrender/dynamicbuttoncellrender.component'; 
+import { DynamicbuttoncellrenderComponent } from '../dynamicbuttoncellrender/dynamicbuttoncellrender.component';
 
 @Component({
   selector: 'app-studentwiseanalysis',
@@ -24,10 +24,9 @@ export class StudentwiseanalysisComponent {
   videoTitle: string = '';
   courses: ListItem[] | undefined;
   student: ListItem[] | undefined;
-  assesmentList: Chapters[] = [];
+  assesmentList: any[] = [];
   selStudentId: number = 0;
   colDefs: ColDef[] = [];
-  showButton: boolean = true;
 
   submitted = false;
   selectedOption: any;
@@ -61,20 +60,9 @@ export class StudentwiseanalysisComponent {
         field: 'attemptedQuestions',
         filter: 'agTextColumnFilter',
       });
-
-      this.colDefs.push({
-        headerName: '',
-        maxWidth: 120,
-        resizable: false,
-        filter: false,
-        cellRenderer: function (params: any) {
-          return `<button class="btn btn-sm btn-success" type="button" onclick="viewAnalysis()">View Analysis</button>`;
-        },
-      });
     }
   }
-  viewAnalysis() {
-    alert('ViewAnalysis');
+  viewAnalysis(event: any) {
     this.router.navigate(['/viewanalysis']);
   }
 
@@ -127,24 +115,24 @@ export class StudentwiseanalysisComponent {
   }
 
   onSubmit() {
-    this.getStudentAnalysis(this.selStudentId);
+     this.masterService
+       .getAssessmentsByStudentId(this.selStudentId, 'Assessment', 'GetAssessmentsByStudentId')
+       .subscribe((data: any) => {
+         if (data.isSuccess) {
+           this.assesmentList = data.result;
+         } else {
+           alert(data.message);
+         }
+       });
   }
 
   getStudentAnalysis(Id: number) {
-    this.masterService
-      .getAssessmentsByStudentId(Id, 'Assessment', 'GetAssessmentsByStudentId')
-      .subscribe((data: any) => {
-        debugger;
-        if (data.isSuccess) {
-          debugger;
-          this.assesmentList = data.result;
-        } else {
-          alert(data.message);
-        }
-      });
+    
   }
 
   editGridRecord(id: any) {}
 
   deleteGridRecord(id: any) {}
+
+  viewGridRecord(id: any) {}
 }

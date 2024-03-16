@@ -18,6 +18,7 @@ import { GridComponent } from './components/grid/grid.component';
 import { ActionCellRendererComponent } from './components/action-cell-renderer/action-cell-renderer.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { DynamicbuttoncellrenderComponent } from './components/dynamicbuttoncellrender/dynamicbuttoncellrender.component';
 
 
 @NgModule({
@@ -29,6 +30,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     AdduserComponent,
     EdituserComponent,
     ActionCellRendererComponent,
+    DynamicbuttoncellrenderComponent,
     NotFoundComponent,
     
   ],

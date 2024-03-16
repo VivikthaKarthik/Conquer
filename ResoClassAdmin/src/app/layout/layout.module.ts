@@ -33,7 +33,6 @@ import { BulkUploadComponent } from '../widgets/bulk-upload/bulk-upload.componen
 import { ImageUploadComponent } from '../widgets/image-upload/image-upload.component';
 import { StudentwiseanalysisComponent } from '../components/studentwiseanalysis/studentwiseanalysis.component';
 import { ViewanalysisComponent } from '../components/viewanalysis/viewanalysis.component';
-import { DynamicbuttoncellrenderComponent } from '../components/dynamicbuttoncellrender/dynamicbuttoncellrender.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +59,6 @@ import { DynamicbuttoncellrenderComponent } from '../components/dynamicbuttoncel
     ImageUploadComponent,
     StudentwiseanalysisComponent,
     ViewanalysisComponent,
-    DynamicbuttoncellrenderComponent,
   ],
   imports: [
     CommonModule,
