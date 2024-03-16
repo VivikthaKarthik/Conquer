@@ -119,8 +119,6 @@
             <div class="col-md-12" *ngFor="let item of questionList; index as i">
                 <div class="mt-4">
                     <div class="flex-display">
-                        <a class="btn warning-delete"><i class="fa fa-trash-o"
-                                (click)="deleteQuestion(item.id)"></i></a>
                         <h4 class="ml-1"> {{i + 1}})<span [innerHTML]="item.question"></span>
                         </h4>
                     </div>
@@ -139,6 +137,10 @@
                         <h5 class="ml-5"> Difficulty level: <span class="badge bg-inverse-success">
                                 <span [innerHTML]="item.difficultyLevel"></span>
                             </span></h5>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm warning-delete" type="button"
+                            (click)="deleteQuestion(item.id)">Delete</button>
                     </div>
                 </div>
             </div>

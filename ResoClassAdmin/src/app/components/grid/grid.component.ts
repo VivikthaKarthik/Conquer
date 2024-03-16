@@ -46,7 +46,7 @@ export class GridComponent {
     //Add Default Column with Edit and Delete Buttons
     this.gridColumns.push({
       headerName: '',
-      maxWidth: 120,
+      minWidth: 120,
       resizable: false,
       filter: false,
       cellRenderer: ActionCellRendererComponent,
