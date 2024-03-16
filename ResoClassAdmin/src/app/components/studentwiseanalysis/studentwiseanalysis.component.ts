@@ -62,8 +62,8 @@ export class StudentwiseanalysisComponent {
       });
     }
   }
-  viewAnalysis(event: any) {
-    this.router.navigate(['/viewanalysis']);
+  viewAnalysis(Id: any) {
+    this.router.navigate(['/viewanalysis'], { queryParams: { id: Id } });
   }
 
   ngOnInit(): void {

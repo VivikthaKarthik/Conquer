@@ -8,7 +8,7 @@
                         <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
                         <li class="breadcrumb-item">Student-wise Practice Analysis</li>
                         <li class="breadcrumb-item">Student 1</li>
-                        <li class="breadcrumb-item active">Practice Session: SESS00001</li>
+                        <li class="breadcrumb-item active">Practice Session:{{assessment.assessmentId}}</li>
                     </ul>
                 </div>
             </div>
@@ -18,41 +18,37 @@
             <div class="col-md-4 col-lg-4 col-xl-4 d-flex">
                 <div class="card flex-fill">
                     <div class="card-body">
-                        <h4 class="card-title">Practice Session: SESS0001</h4>
-                        <h4 class="card-title">Practiced On: 13 March 2024 03: 00 PM</h4>
+                        <h4 class="card-title">Practice Session: {{assessment.assessmentId}}</h4>
+                        <h4 class="card-title">Practiced On: {{assessment.practicedOn}}</h4>
                         <div class="statistics">
                             <div class="row">
                                 <div class="col-md-4 col-4 text-center">
                                     <div class="stats-box mb-4 bg-primary">
                                         <p class="text-white">Attempted</p>
-                                        <h3 class="text-white">20</h3>
+                                        <h3 class="text-white">{{assessment.totalAttempted}}</h3>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-4 text-center">
                                     <div class="stats-box mb-4 bg-success">
                                         <p class="text-white">Correct</p>
-                                        <h3 class="text-white">15</h3>
+                                        <h3 class="text-white">{{assessment.correctAnswers}}</h3>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-4 text-center">
                                     <div class="stats-box mb-4 bg-danger">
                                         <p class="text-white">Wrong</p>
-                                        <h3 class="text-white">5</h3>
+                                        <h3 class="text-white">{{assessment.wrongAnswers}}</h3>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <h4 class="card-title">Practiced from Chapters:</h4>
-                        <div>
-                            <p>Living World</p>
-                            <p>Cell and Characters</p>
-                            <p>Units of Cell</p>
+                        <div >
+                            <p *ngFor="let chapter of assessment.practicedFromChapters">{{chapter.name}}</p>
                         </div>
                         <h4 class="card-title">Practiced from Topics:</h4>
                         <div>
-                            <p>Topic 1 in living world</p>
-                            <p>This is another topic</p>
-                            <p>This is one more another topic</p>
+                            <p *ngFor="let topics of assessment.practicedFromTopics">{{topics.name}}</p>
                         </div>
                     </div>
                 </div>
@@ -64,38 +60,27 @@
                         <h4 class="card-title">Analysis on Correct Answers</h4>
                         <h4 class="card-title">Difficulty Level Analysis:</h4>
                         <div class="statistics">
-                            <div class="row">
-                                <div class="col-md-4 col-4 text-center">
-                                    <div class="stats-box mb-4 bg-success">
-                                        <p class="text-white">Easy</p>
-                                        <h3 class="text-white">4</h3>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-4 text-center">
-                                    <div class="stats-box mb-4 bg-primary">
-                                        <p class="text-white">Medium</p>
-                                        <h3 class="text-white">8</h3>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-4 text-center">
-                                    <div class="stats-box mb-4 bg-danger">
-                                        <p class="text-white">Difficult</p>
-                                        <h3 class="text-white">3</h3>
+                            <div class="row" >
+                                <div class="col-md-4 col-4 text-center" *ngFor="let dlevel of assessment.correctAnswersAnalysis.difficultyLevelAnalysis">
+                                    <div [ngClass]="{'stats-box mb-4 bg-success':dlevel.name == 'Easy', 'stats-box mb-4 bg-primary': dlevel.name == 'Medium', 'stats-box mb-4 bg-danger':dlevel.name == 'Difficult'}">
+                                        <p class="text-white">{{dlevel.name}}</p>
+                                        <h3 class="text-white">{{dlevel.questionsCount}}</h3>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <h4 class="card-title">Chapter-Wise Analysis:</h4>
                         <div>
-                            <p>Living World <span class="float-right">4</span></p>
-                            <p>Cell and Characters <span class="float-right">8</span></p>
-                            <p>Units of Cell <span class="float-right">3</span></p>
+                            <p *ngFor="let item of assessment.correctAnswersAnalysis.chapterWiseAnalysis" >
+                                {{item.name}} 
+                                <span class="float-right">{{item.questionsCount}}</span></p>
+                           
                         </div>
                         <h4 class="card-title">Topic-Wise Analysis:</h4>
                         <div>
-                            <p>Topic 1 in living world <span class="float-right">4</span></p>
-                            <p>This is another topic <span class="float-right">8</span></p>
-                            <p>This is one more another topic <span class="float-right">3</span></p>
+                            <p *ngFor="let item of assessment.correctAnswersAnalysis.topicWiseAnalysis" >
+                                {{item.name}} 
+                                <span class="float-right">{{item.questionsCount}}</span></p>
                         </div>
                     </div>
                 </div>
@@ -108,37 +93,25 @@
                         <h4 class="card-title">Difficulty Level Analysis:</h4>
                         <div class="statistics">
                             <div class="row">
-                                <div class="col-md-4 col-4 text-center">
-                                    <div class="stats-box mb-4 bg-success">
-                                        <p class="text-white">Easy</p>
-                                        <h3 class="text-white">4</h3>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-4 text-center">
-                                    <div class="stats-box mb-4 bg-primary">
-                                        <p class="text-white">Medium</p>
-                                        <h3 class="text-white">8</h3>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-4 text-center">
-                                    <div class="stats-box mb-4 bg-danger">
-                                        <p class="text-white">Difficult</p>
-                                        <h3 class="text-white">3</h3>
+                                <div class="col-md-4 col-4 text-center" *ngFor="let dlevel of assessment.wrongAnswersAnalysis.difficultyLevelAnalysis">
+                                    <div [ngClass]="{'stats-box mb-4 bg-success':dlevel.name == 'Easy', 'stats-box mb-4 bg-primary': dlevel.name == 'Medium', 'stats-box mb-4 bg-danger':dlevel.name == 'Difficult'}">
+                                        <p class="text-white">{{dlevel.name}}</p>
+                                        <h3 class="text-white">{{dlevel.questionsCount}}</h3>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <h4 class="card-title">Chapter-Wise Analysis:</h4>
                         <div>
-                            <p>Living World <span class="float-right">4</span></p>
-                            <p>Cell and Characters <span class="float-right">8</span></p>
-                            <p>Units of Cell <span class="float-right">3</span></p>
+                            <p *ngFor="let item of assessment.wrongAnswersAnalysis.chapterWiseAnalysis" >
+                                {{item.name}} 
+                                <span class="float-right">{{item.questionsCount}}</span></p>
                         </div>
                         <h4 class="card-title">Topic-Wise Analysis:</h4>
                         <div>
-                            <p>Topic 1 in living world <span class="float-right">4</span></p>
-                            <p>This is another topic <span class="float-right">8</span></p>
-                            <p>This is one more another topic <span class="float-right">3</span></p>
+                            <p *ngFor="let item of assessment.wrongAnswersAnalysis.topicWiseAnalysis" >
+                                {{item.name}} 
+                                <span class="float-right">{{item.questionsCount}}</span></p>
                         </div>
                     </div>
                 </div>

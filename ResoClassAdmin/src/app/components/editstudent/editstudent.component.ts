@@ -46,11 +46,11 @@ export class EditstudentComponent {
   ) { }
 
   ngOnInit() {
-    debugger
+    
     this.getAllCourses();
     this.getStates();
     this.route.queryParams.subscribe(params => {
-      debugger
+     
       const id:string = params['id'];
       this.studentId = 0;
       this.editStudent(id);
