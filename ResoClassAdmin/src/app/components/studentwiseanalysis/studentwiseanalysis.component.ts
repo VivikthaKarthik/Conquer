@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  AbstractControl,
+  ValidatorFn,
+} from '@angular/forms';
 import { MasterService } from '../../services/master.service';
 import { DataMappingService } from '../../services/data-mapping.service';
 import { Router } from '@angular/router';
@@ -14,7 +20,7 @@ import { ColDef } from 'ag-grid-community';
 @Component({
   selector: 'app-studentwiseanalysis',
   templateUrl: './studentwiseanalysis.component.html',
-  styleUrl: './studentwiseanalysis.component.css'
+  styleUrl: './studentwiseanalysis.component.css',
 })
 export class StudentwiseanalysisComponent {
   analysisForm!: FormGroup;
@@ -24,6 +30,7 @@ export class StudentwiseanalysisComponent {
   assesmentList: Chapters[] = [];
   selStudentId: number = 0;
   colDefs: ColDef[] = [];
+  showButton: boolean = true;
 
   submitted = false;
   selectedOption: any;
@@ -56,10 +63,21 @@ export class StudentwiseanalysisComponent {
         headerName: 'Attempted Questions',
         field: 'attemptedQuestions',
         filter: 'agTextColumnFilter',
-      });      
+      });
+
+      this.colDefs.push({
+        headerName: '',
+        maxWidth: 120,
+        resizable: false,
+        filter: false,
+        cellRenderer: function (params: any) {
+          return `<button class="btn btn-sm btn-success" type="button" onclick="viewAnalysis()">View Analysis</button>`;
+        },
+      });
     }
-  } viewAnalysis() {
-    alert("ViewAnalysis");
+  }
+  viewAnalysis() {
+    alert('ViewAnalysis');
     this.router.navigate(['/viewanalysis']);
   }
 
@@ -67,10 +85,8 @@ export class StudentwiseanalysisComponent {
     this.getCourses();
 
     this.analysisForm = this.fb.group({
-
       selCourses: ['', Validators.required],
       selStudent: ['', Validators.required],
-
     });
   }
 
@@ -91,7 +107,6 @@ export class StudentwiseanalysisComponent {
   }
 
   getStudentByCourse(Id: number) {
-    
     if (Id !== undefined) {
       this.masterService
         .getListItems('Student', 'Course', Id)
@@ -110,14 +125,11 @@ export class StudentwiseanalysisComponent {
         });
     }
   }
-  getStudentID(Id: number){
-    
+  getStudentID(Id: number) {
     this.selStudentId = Id;
-
   }
 
   onSubmit() {
-  
     this.getStudentAnalysis(this.selStudentId);
   }
 
@@ -125,9 +137,9 @@ export class StudentwiseanalysisComponent {
     this.masterService
       .getAssessmentsByStudentId(Id, 'Assessment', 'GetAssessmentsByStudentId')
       .subscribe((data: any) => {
-        debugger
+        debugger;
         if (data.isSuccess) {
-          debugger
+          debugger;
           this.assesmentList = data.result;
         } else {
           alert(data.message);
@@ -135,12 +147,7 @@ export class StudentwiseanalysisComponent {
       });
   }
 
-  editGridRecord(id: any) {
+  editGridRecord(id: any) {}
 
-  }
-
-  deleteGridRecord(id: any) {
-
-  }
-
+  deleteGridRecord(id: any) {}
 }

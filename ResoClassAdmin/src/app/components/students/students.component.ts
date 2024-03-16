@@ -33,6 +33,11 @@ export class StudentsComponent {
   isChecked: boolean = false;
   isAddPopupVisible: boolean = true;
   colDefs: ColDef[] = [];
+  pageName: string = 'Student';
+
+  OnDocumentUpload(event: any): void {
+    this.getAllStudents();
+  }
 
   admissionId: string = '';
   studenrName: string = '';

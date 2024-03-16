@@ -88,18 +88,15 @@ const routes: Routes = [
       {
         path: 'addvideo',
         component: AddvideosComponent,
-      }
-      ,
+      },
       {
         path: 'editvideo',
         component: EditvideoComponent,
-      }
-      ,
+      },
       {
         path: 'questionbank',
         component: QuestionbankComponent,
-      }
-      ,
+      },
       {
         path: 'addquestionbank',
         component: AddquestionbankComponent,
@@ -111,7 +108,7 @@ const routes: Routes = [
       {
         path: 'viewanalysis',
         component: ViewanalysisComponent,
-      }
+      },
     ],
   },
   {
@@ -125,4 +122,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -50,6 +50,11 @@ export class SubtopicsComponent {
   submitted: boolean = false;
   selectedId: number = 0;
   subTopicId: number = 0;
+  pageName: string = 'SubTopic';
+
+  OnDocumentUpload(event: any): void {
+    this.getAllSubTopics();
+  }
 
   constructor(
     private masterService: MasterService,

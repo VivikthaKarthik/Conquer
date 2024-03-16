@@ -105,31 +105,6 @@ export class UsersComponent {
       });
   }
 
-  // Event handler for file input change event
-  onFileSelected(event: any): void {
-    const file: File = event.target.files[0];
-    if (file) {
-      // Call the service method to read Excel file
-      // this.excelService.readExcelFile(file);
-      // // If you need to upload the file to a backend
-      // this.excelService.uploadExcelFile(file,'Course', 'Upload');
-      const formData = new FormData();
-      formData.append('file', file);
-      this.masterService
-        .post(formData, 'Students', 'Upload')
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            alert(data.result);
-            this.getAllUsers();
-          } else {
-            alert(data.message);
-          }
-        });
-    } else {
-      alert('Please select a File!');
-    }
-  }
-
   getAllCourses() {
     this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
       if (data.isSuccess) {

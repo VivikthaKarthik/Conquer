@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators,AbstractControl, ValidatorFn  } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  AbstractControl,
+  ValidatorFn,
+} from '@angular/forms';
 import { MasterService } from '../../services/master.service';
 import { DataMappingService } from '../../services/data-mapping.service';
 import { Router } from '@angular/router';
@@ -19,7 +25,8 @@ export class AddstudentComponent {
   cities: ListItem[] = [{ id: 0, name: 'Select City' }];
   submitted = false;
   selectedOption: any;
-  selectedCity:any;
+  selectedCity: any;
+  pageName: string = 'Student';
 
   constructor(
     private fb: FormBuilder,
@@ -41,7 +48,10 @@ export class AddstudentComponent {
       dateofBirth: ['', Validators.required],
       gender: [''],
       mobileNumber: ['', [Validators.required, this.mobileNumberValidator()]],
-      altMobileNumber: ['', [Validators.required, this.mobileNumberValidator()]],
+      altMobileNumber: [
+        '',
+        [Validators.required, this.mobileNumberValidator()],
+      ],
       email: [''],
       courseId: [''],
       addressLine1: ['', Validators.required],
@@ -73,7 +83,6 @@ export class AddstudentComponent {
   }
 
   getCities(stateId: any) {
-    
     this.masterService
       .getListItems('city', 'state', stateId)
       .subscribe((data: any) => {
@@ -93,13 +102,11 @@ export class AddstudentComponent {
   }
 
   onStateChange(selectedId: any) {
-    
     this.studentForm.controls.stateId = selectedId;
     this.getCities(selectedId);
   }
   onCityChange(selectedId: any) {
     this.studentForm.controls.cityId = selectedId;
-    
   }
 
   getAllCourses() {
@@ -119,9 +126,9 @@ export class AddstudentComponent {
     });
   }
   mobileNumberValidator(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
       const valid = /^[0-9]{10}$/.test(control.value);
-      return valid ? null : { 'invalidMobileNumber': { value: control.value } };
+      return valid ? null : { invalidMobileNumber: { value: control.value } };
     };
   }
   onSubmit() {
@@ -133,7 +140,6 @@ export class AddstudentComponent {
     }
   }
   saveStudent() {
-   
     var objStudent = {
       AdmissionId: this.studentForm.value.admissionId,
       Name: this.studentForm.value.studentName,
@@ -152,9 +158,8 @@ export class AddstudentComponent {
       StateId: this.studentForm.value.stateId,
       CityId: this.studentForm.value.cityId,
       PinCode: this.studentForm.value.pinCode,
-      Branchid: "Brnach1",
-      Password:"123"
-      
+      Branchid: 'Brnach1',
+      Password: '123',
     };
     console.log(JSON.stringify(objStudent));
     this.masterService
@@ -168,5 +173,7 @@ export class AddstudentComponent {
       });
   }
 
-  
+  OnDocumentUpload(event: any): void {
+    this.router.navigate(['/student']);
+  }
 }

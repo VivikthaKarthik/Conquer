@@ -21,7 +21,11 @@ export class VideosComponent {
   courseData: Course[] = [];
   selectedFile: File | undefined;
   showBulkUploadButton: boolean = false;
+  pageName: string = 'Video';
 
+  OnDocumentUpload(event: any): void {
+    this.getAllVideos();
+  }
   constructor(
     private masterService: MasterService,
     private dataMappingService: DataMappingService,

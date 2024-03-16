@@ -46,6 +46,7 @@ export class ChaptersComponent {
   submitted: boolean = false;
   selectedId: number = 0;
   thumbnailUrl: string = 'assets/img/size_thumb.png';
+  pageName: string = 'Chapter';
 
   constructor(
     private masterService: MasterService,
@@ -241,7 +242,7 @@ export class ChaptersComponent {
     this.selectedImage = event;
   }
   OnDocumentUpload(event: any): void {
-    this.selectedDocument = event;
+    this.getAllChapters();
   }
 
   getAllCourses() {

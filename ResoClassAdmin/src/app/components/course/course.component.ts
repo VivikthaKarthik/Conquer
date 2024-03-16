@@ -25,6 +25,11 @@ export class CourseComponent {
   isAddPopupVisible: boolean = true;
   showBulkUploadButton: boolean = false;
   selectedFile: File | undefined;
+  pageName: string = 'Course';
+
+  OnDocumentUpload(event: any): void {
+    this.getAllCourses();
+  }
 
   constructor(
     private masterService: MasterService,

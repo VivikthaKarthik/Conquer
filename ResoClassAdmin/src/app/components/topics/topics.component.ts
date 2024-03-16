@@ -44,7 +44,12 @@ export class TopicsComponent {
   colDefs: ColDef[] = [];
   topicForm!: FormGroup;
   submitted: boolean = false;
-  selectedId: number = 0;
+  selectedId: number = 0;  
+  pageName: string = 'Topic';
+
+  OnDocumentUpload(event: any): void {
+    this.getAllTopics();
+  }
 
   constructor(
     private masterService: MasterService,

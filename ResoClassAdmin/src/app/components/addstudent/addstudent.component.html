@@ -13,13 +13,8 @@
                         </ul>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <h4>Bulk Upload</h4>
-                        <form class="import_div" id="importform" action="#" method="POST">
-                            <input type="file" class="form-control" name="import_file" required>
-                            <button class="btn import-btn" type="submit" style="display: none;"><i
-                                    class="las la-file-upload"></i>
-                                Import</button>
-                        </form>
+                        <app-bulk-upload [pageName]="pageName"
+                            (onFileUpload)="OnDocumentUpload($event)"></app-bulk-upload>
                     </div>
                 </div>
             </div>
@@ -224,8 +219,8 @@
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus" style="display: block;">
-                            <select class="form-control floating" id="city" name="city" [ngModel]="selectedCity" 
-                               formControlName="cityId" 
+                            <select class="form-control floating" id="city" name="city" [ngModel]="selectedCity"
+                                formControlName="cityId"
                                 [ngClass]="{'is-invalid': submitted && studentForm.controls.cityId.errors}">
                                 <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
                             </select>

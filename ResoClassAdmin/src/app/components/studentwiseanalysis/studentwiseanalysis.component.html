@@ -49,15 +49,16 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-4">
-                        <button class="btn btn-primary submit-btn btn-sm" type="submit" (click)="onSubmit()">Get Practice Sessions</button>
+                        <button class="btn btn-primary submit-btn btn-sm" type="submit" (click)="onSubmit()">Get
+                            Practice Sessions</button>
                     </div>
                 </div>
             </form>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <app-grid [data]="assesmentList" [coloumnDef]="colDefs" [isButtonRequired]='true' (editRecord)="editGridRecord($event)"
-                    (deleteRecord)="deleteGridRecord($event)"></app-grid>
+                showButton:boolean=true;
+                <app-grid [data]="assesmentList" [coloumnDef]="colDefs"></app-grid>
             </div>
         </div>
     </div>

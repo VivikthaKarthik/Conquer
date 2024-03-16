@@ -37,6 +37,11 @@ export class SubjectComponent {
   selectedOption: any;
   selectedFile: File | undefined;
   showBulkUploadButton: boolean = false;
+  pageName: string = 'Subject';
+
+  OnDocumentUpload(event: any): void {
+    this.getAllSubjects();
+  }
 
   constructor(
     private masterService: MasterService,

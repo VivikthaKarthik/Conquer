@@ -9,6 +9,7 @@ import {
 import { ColDef } from 'ag-grid-community';
 import { GridApi, GridOptions } from 'ag-grid-community';
 import { ActionCellRendererComponent } from '../action-cell-renderer/action-cell-renderer.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-grid',
@@ -20,13 +21,12 @@ export class GridComponent {
   @Output() deleteRecord = new EventEmitter();
   @Input() data: any[] = [];
   @Input() coloumnDef: any[] = [];
-  @Input() isButtonRequired: boolean = false;
   gridOptions!: GridOptions;
   gridApi!: GridApi;
   gridColumns: ColDef[] = [];
   defaultColDef: any = {};
 
-  constructor() {
+  constructor(private router: Router) {
     //Set onGridReady Event
     this.gridOptions = {
       onGridReady: (params) => {
@@ -44,19 +44,17 @@ export class GridComponent {
     };
 
     //Add Default Column with Edit and Delete Buttons
-    if (!this.isButtonRequired) {
-      this.gridColumns.push({
-        headerName: '',
-        maxWidth: 120,
-        resizable: false,
-        filter: false,
-        cellRenderer: ActionCellRendererComponent,
-        cellRendererParams: {
-          editRow: (id: any) => this.editRow(id),
-          deleteRow: (id: any) => this.deleteRow(id),
-        },
-      });
-    }
+    this.gridColumns.push({
+      headerName: '',
+      maxWidth: 120,
+      resizable: false,
+      filter: false,
+      cellRenderer: ActionCellRendererComponent,
+      cellRendererParams: {
+        editRow: (id: any) => this.editRow(id),
+        deleteRow: (id: any) => this.deleteRow(id),
+      },
+    });
 
     //Add Default Column Definition
     this.defaultColDef = {
@@ -71,27 +69,9 @@ export class GridComponent {
   ngOnInit(): void {
     //Add Grid Columns after Default Column
     this.gridColumns = this.gridColumns.concat(this.coloumnDef);
-
-
-    if (this.isButtonRequired) {
-      this.gridColumns.push({
-        headerName: '',
-        maxWidth: 120,
-        resizable: false,
-        filter: false,
-        cellRenderer: function (params: any) {
-          if (params && params.value) {
-            return `<button class="btn btn-sm btn-success" type="button" (click)="viewAnalysis()">View Analysis</button>`;
-
-          } else {
-            return null;
-          }
-        },
-      });
-    }
   }
 
-  onPaginationChanged(event: any) { }
+  onPaginationChanged(event: any) {}
 
   getRowHeight(params: any) {
     const DEFAULT_ROW_HEIGHT = 25;
@@ -107,5 +87,10 @@ export class GridComponent {
 
   deleteRow(id: number): void {
     this.deleteRecord.emit(id);
+  }
+
+  viewAnalysis() {
+    alert('ViewAnalysis');
+    this.router.navigate(['/viewanalysis']);
   }
 }
