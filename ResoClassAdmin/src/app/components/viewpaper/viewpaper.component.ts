@@ -13,20 +13,23 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-viewpaper',
   templateUrl: './viewpaper.component.html',
-  styleUrl: './viewpaper.component.css'
+  styleUrl: './viewpaper.component.css',
 })
 export class ViewpaperComponent {
   questionList: any[] = [];
-  examId:number = 0;
+  examId: number = 0;
   constructor(
     private masterService: MasterService,
-    private dataMappingService: DataMappingService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder
-  ) { }
+    private dataMappingService: DataMappingService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       const id: string = params['id'];
-      this.examId = parseInt(id)
+      this.examId = parseInt(id);
       this.getAllQuestions();
     });
   }
@@ -48,7 +51,7 @@ export class ViewpaperComponent {
       var data = [];
       data.push(id);
       this.masterService
-        .post(data, 'Assessment', 'DeleteQuestions')
+        .post(data, 'ScheduledExam', 'DeleteQuestions')
         .subscribe((data: any) => {
           if (data.isSuccess) {
             this.getAllQuestions();
@@ -62,7 +65,7 @@ export class ViewpaperComponent {
   deleteAllQuestions() {
     var data = this.questionList.map(({ id }) => id);
     this.masterService
-      .post(data, 'Assessment', 'DeleteQuestions')
+      .post(data, 'ScheduledExam', 'DeleteQuestions')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.getAllQuestions();

@@ -38,7 +38,8 @@ import { ExamresultsComponent } from '../components/examresults/examresults.comp
 import { AddexamComponent } from '../components/addexam/addexam.component';
 import { EditexamComponent } from '../components/editexam/editexam.component';
 import { ViewpaperComponent } from '../components/viewpaper/viewpaper.component';
-
+import { ViewresultsComponent } from '../components/viewresults/viewresults.component';
+import { DesignationsComponent } from '../components/designations/designations.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,8 @@ import { ViewpaperComponent } from '../components/viewpaper/viewpaper.component'
     AddexamComponent,
     EditexamComponent,
     ViewpaperComponent,
+    ViewresultsComponent,
+    DesignationsComponent,
   ],
   imports: [
     CommonModule,

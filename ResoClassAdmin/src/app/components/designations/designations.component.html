@@ -1,0 +1,71 @@
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Designations</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+            <li class="breadcrumb-item active">Designations</li>
+          </ul>
+        </div>
+        <div class="col-auto float-right ml-auto">
+          <a href="adddesignation.html" class="btn add-btn"><i class="fa fa-plus"></i> Add Designation</a>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table table-striped custom-table datatable">
+            <thead>
+              <tr>
+                <th class="no-sort"></th>
+                <th>S. No.</th>
+                <th>Designation</th>
+                <th>Added By</th>
+                <th>Added Date</th>
+                <th>Last Modified</th>
+                <th>Modified Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <button class="btn edit m-r-5" id="1" onclick="editrecord(this.id);" type="button"><i
+                      class="fa fa-pencil"></i></button>
+                  <button class="btn delete m-r-5" id="1" onclick="deleterecord(this.id);" type="button"><i
+                      class="fa fa-trash-o"></i></button>
+                </td>
+                <td>
+                  1.
+                </td>
+                <td>Super Admin</td>
+                <td>Admin</td>
+                <td>24 Feb 2024, 16:45 PM</td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  <button class="btn edit m-r-5" id="2" onclick="editrecord(this.id);" type="button"><i
+                      class="fa fa-pencil"></i></button>
+                  <button class="btn delete m-r-5" id="2" onclick="deleterecord(this.id);" type="button"><i
+                      class="fa fa-trash-o"></i></button>
+                </td>
+                <td>
+                  2.
+                </td>
+                <td>Sub Admin</td>
+                <td>Admin</td>
+                <td>24 Feb 2024, 16:45 PM</td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

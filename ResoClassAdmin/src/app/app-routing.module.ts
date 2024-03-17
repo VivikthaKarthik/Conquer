@@ -27,6 +27,9 @@ import { ViewanalysisComponent } from './components/viewanalysis/viewanalysis.co
 import { ExamsComponent } from './components/exams/exams.component';
 import { AddexamComponent } from './components/addexam/addexam.component';
 import { ViewpaperComponent } from './components/viewpaper/viewpaper.component';
+import { ExamresultsComponent } from './components/examresults/examresults.component';
+import { ViewresultsComponent } from './components/viewresults/viewresults.component';
+import { DesignationsComponent } from './components/designations/designations.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -124,7 +127,22 @@ const routes: Routes = [
         path: 'viewpaper',
         component: ViewpaperComponent,
       },
-      
+      {
+        path: 'examresult',
+        component: ExamresultsComponent,
+      },
+      {
+        path: 'viewresult',
+        component: ViewresultsComponent,
+      },
+      {
+        path: 'designations',
+        component: DesignationsComponent,
+      },
+      {
+        path: 'users',
+        component: UsersComponent,
+      },
     ],
   },
   {

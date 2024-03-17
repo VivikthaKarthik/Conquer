@@ -1,1 +1,90 @@
-<p>examresults works!</p>
+<div class="page-wrapper">
+  <div class="content container-fluid">
+    <div class="page-header">
+      <div class="row align-items-center">
+        <div class="col">
+          <h3 class="page-title">Results</h3>
+          <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="dashboard.html">Dashboard</a></li>
+            <li class="breadcrumb-item active">Exam Results</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <form class="col-12" id="addform">
+        <div class="row">
+          <div class="col-sm-6 col-md-2">
+            <div class="form-group form-focus select-focus">
+              <select class="form-control floating" id="class_id_sel" name="class_id_sel" required>
+                <option value="">Select Course/Class</option>
+                <option value="1">Class 11/NEET</option>
+                <option value="2">Class 12/NEET</option>
+              </select>
+              <label class="focus-label">Course/Class *</label>
+            </div>
+          </div>
+
+          <div class="col-sm-6 col-md-2">
+            <div class="form-group form-focus select-focus">
+              <select class="form-control floating" id="subject_id_sel" name="subject_id_sel">
+                <option value="">Select Subject</option>
+                <option value="1">Botany</option>
+                <option value="2">Zoology</option>
+              </select>
+              <label class="focus-label">Subject</label>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-2">
+            <button class="btn btn-primary submit-btn btn-sm" type="submit">Get Exams</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="table-responsive">
+          <table class="table table-striped custom-table datatable">
+            <thead>
+              <tr>
+                <th>S.No.</th>
+                <th>Exam Name</th>
+                <th>Exam Start Time</th>
+                <th>Exam End Time</th>
+                <th>Course/Class</th>
+                <th>Subject</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Mock Test for Trignometry</td>
+                <td>20 March 2024 03:00 PM</td>
+                <td>20 March 2024 04:00 PM</td>
+                <td>Class 11/JEE</td>
+                <td>Mathematics</td>
+                <td>
+                  <button class="btn btn-sm btn-success" type="button" routerLink="/viewresult">View
+                    Result</button>
+                </td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Mock Test for Living</td>
+                <td>21 March 2024 03:00 PM</td>
+                <td>21 March 2024 04:00 PM</td>
+                <td>Class 11/NEET</td>
+                <td>Botany</td>
+                <td>
+                  <button class="btn btn-sm btn-success" type="button" routerLink="/viewresult">View
+                    Result</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
