@@ -33,6 +33,12 @@ import { BulkUploadComponent } from '../widgets/bulk-upload/bulk-upload.componen
 import { ImageUploadComponent } from '../widgets/image-upload/image-upload.component';
 import { StudentwiseanalysisComponent } from '../components/studentwiseanalysis/studentwiseanalysis.component';
 import { ViewanalysisComponent } from '../components/viewanalysis/viewanalysis.component';
+import { ExamsComponent } from '../components/exams/exams.component';
+import { ExamresultsComponent } from '../components/examresults/examresults.component';
+import { AddexamComponent } from '../components/addexam/addexam.component';
+import { EditexamComponent } from '../components/editexam/editexam.component';
+import { ViewpaperComponent } from '../components/viewpaper/viewpaper.component';
+
 
 @NgModule({
   declarations: [
@@ -59,6 +65,11 @@ import { ViewanalysisComponent } from '../components/viewanalysis/viewanalysis.c
     ImageUploadComponent,
     StudentwiseanalysisComponent,
     ViewanalysisComponent,
+    ExamsComponent,
+    ExamresultsComponent,
+    AddexamComponent,
+    EditexamComponent,
+    ViewpaperComponent,
   ],
   imports: [
     CommonModule,

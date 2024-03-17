@@ -68,7 +68,7 @@ export class QuestionbankComponent {
     }
   }
   getAllQuestions() {
-    var questionaData = {
+    var questionData = {
       courseId: this.questionbankForm.value.selCourses,
       subjectId: this.questionbankForm.value.selSubjects,
       chapterId: this.questionbankForm.value.selChapters,
@@ -76,7 +76,7 @@ export class QuestionbankComponent {
       subTopicId: 0,
     };
     this.masterService
-      .getAllByObject(questionaData, 'Assessment', 'GetAllQuestions')
+      .getAllByObject(questionData, 'Assessment', 'GetAllQuestions')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.questionList = data.result;

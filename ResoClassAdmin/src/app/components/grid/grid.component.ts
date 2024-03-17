@@ -24,6 +24,7 @@ export class GridComponent {
   @Input() data: any[] = [];
   @Input() coloumnDef: any[] = [];
   @Input() showAnalysis: boolean = false;
+  @Input() showOperations: boolean = false;
   gridOptions!: GridOptions;
   gridApi!: GridApi;
   gridColumns: ColDef[] = [];
@@ -83,11 +84,29 @@ export class GridComponent {
         filter: false,
         cellRenderer: DynamicbuttoncellrenderComponent,
         cellRendererParams: {
+          name:'View Analysis',
           viewRow: (id: any) => this.viewRow(id),
         },
       });
     }
+
+    //Add Default Column with Edit and Delete Buttons
+  if (this.showOperations) {
+    this.gridColumns.push({
+      headerName: '',
+      minWidth: 150,
+      resizable: false,
+      filter: false,
+      cellRenderer: DynamicbuttoncellrenderComponent,
+        cellRendererParams: {
+          name:'View Paper',
+          viewRow: (id: any) => this.viewRow(id),
+        },
+    });
   }
+  }
+
+  
 
   viewRow(id: any) {
     this.viewRecord.emit(id);

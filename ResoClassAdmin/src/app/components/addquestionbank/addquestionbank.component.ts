@@ -155,11 +155,11 @@ export class AddquestionbankComponent {
     if (this.addQBForm.invalid) {
       return;
     } else {
-      this.uploadVideo();
+      this.uploadQuestion();
     }
   }
-  uploadVideo() {
-    var videoData = {
+  uploadQuestion() {
+    var qbData = {
       CourseId: this.addQBForm.value.selCourses,
       SubjectId: this.addQBForm.value.selSubjects,
       ChapterId: this.addQBForm.value.selChapters,
@@ -170,7 +170,7 @@ export class AddquestionbankComponent {
     if (this.selectedFile != null) {
       this.masterService
         .UploadQuestions(
-          videoData,
+          qbData,
           this.selectedFile,
           'QuestionBank',
           'UploadQuestions'

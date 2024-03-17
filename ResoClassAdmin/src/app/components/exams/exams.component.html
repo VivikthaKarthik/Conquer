@@ -1,0 +1,26 @@
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Exams</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="dashboard.html">Assesments</a></li>
+                        <li class="breadcrumb-item active">Exams</li>
+                    </ul>
+                </div>
+                <div class="col-auto float-right ml-auto">
+                    <a routerLink="/addexam" class="btn add-btn" data-toggle="modal" data-target="#add_exam"><i
+                            class="fa fa-plus"></i> Add Exam</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <app-grid [data]="examsList" [coloumnDef]="colDefs" [showOperations]="true" (viewRecord)="viewQuestionPaper($event)"
+                   ></app-grid>
+            </div>
+        </div>
+    </div>
+</div>

@@ -6,10 +6,11 @@ import { Component } from '@angular/core';
   styleUrl: './dynamicbuttoncellrender.component.css',
 })
 export class DynamicbuttoncellrenderComponent {
+  buttonName: string = 'View Analysis';
   params: any;
-
   agInit(params: any): void {
     this.params = params;
+    this.buttonName = this.params.name;
   }
 
   viewRow(): void {

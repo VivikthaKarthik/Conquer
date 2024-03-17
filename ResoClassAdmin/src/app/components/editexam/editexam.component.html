@@ -1,0 +1,183 @@
+<div class="main-wrapper">
+
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="page-title">Exams</h3>
+                        <ul class="breadcrumb">
+
+                            <li class="breadcrumb-item"><a href="/students">Exams</a></li>
+                            <li class="breadcrumb-item">Add Exams</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <form [formGroup]="editExamForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="text" class="form-control floating select-focus" id="Exam_Name"
+                                name="Exam_Name" formControlName="examname"
+                                [ngClass]="{'is-invalid': submitted && editExamForm.controls.examname.errors}">
+                            <label class="focus-label">Exam Name *</label>
+                            <div *ngIf="submitted && editExamForm.controls.examname.errors" class="text-danger">
+                                <div *ngIf="submitted && editExamForm.controls.examname.errors.required">
+                                    Exam Name is required
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="date" class="form-control floating select-focus" id="exam_start_Date"
+                                name="exam_start_Date" formControlName="examstartdate"
+                                [ngClass]="{'is-invalid': submitted && editExamForm.controls.examstartdate.errors}">
+                            <label class="focus-label">Exam Start Date *</label>
+                            <div *ngIf="submitted && editExamForm.controls.examstartdate.errors" class="text-danger">
+                                <div *ngIf="submitted && editExamForm.controls.examstartdate.errors.required">
+                                    Exam Start Date is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="time" class="form-control floating select-focus" id="exam_start_time"
+                                name="exam_start_time" formControlName="examstarttime"
+                                [ngClass]="{'is-invalid': submitted && editExamForm.controls.examstarttime.errors}">
+                            <label class="focus-label">Exam Start Time *</label>
+                            <div *ngIf="submitted && editExamForm.controls.examstarttime.errors" class="text-danger">
+                                <div *ngIf="submitted && editExamForm.controls.examstarttime.errors.required">
+                                    Exam Start Time is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="date" class="form-control floating select-focus" id="exam_end_Date"
+                                name="exam_end_Date" formControlName="examenddate"
+                                [ngClass]="{'is-invalid': submitted && editExamForm.controls.examenddate.errors}">
+                            <label class="focus-label">Exam End Date *</label>
+                            <div *ngIf="submitted && editExamForm.controls.examenddate.errors" class="text-danger">
+                                <div *ngIf="submitted && editExamForm.controls.examenddate.errors.required">
+                                    Exam End Date is required
+                                </div>
+                            </div>
+                            <div *ngIf="editExamForm.controls.examenddate.errors?.endDateTimeInvalid"
+                                class="error-message" >
+                                <label style="color:red;">End Date Time must be greater than Start Date Time.</label> 
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="time" class="form-control floating select-focus" id="exam_end_time"
+                                name="exam_end_time" formControlName="examendtime"
+                                [ngClass]="{'is-invalid': submitted && editExamForm.controls.examendtime.errors}">
+                            <label class="focus-label">Exam End Time *</label>
+                            <div *ngIf="submitted && editExamForm.controls.examendtime.errors" class="text-danger">
+                                <div *ngIf="submitted && editExamForm.controls.examendtime.errors.required">
+                                    Exam End Time is required
+                                </div>
+                            </div>
+                            <div *ngIf="editExamForm.hasError('endTimeInvalid') && (editExamForm.controls.examendtime.dirty || editExamForm.controls.examendtime.touched)">
+                                End time must be greater than start time.
+                              </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="number" class="form-control floating" id="question_marks" name="question_marks"
+                                formControlName="questionmarks">
+                            <label class="focus-label">Marks for each Question</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="number" class="form-control floating" id="negative_marks" name="negative_marks"
+                                formControlName="negativemarks">
+                            <label class="focus-label">Marks for negative making</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="number" class="form-control floating" id="max_time_allowed"
+                                name="max_time_allowed" formControlName="maxtimeallowed">
+                            <label class="focus-label">Marks allowed time in mins </label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                                [ngModel]="selectedOption" (ngModelChange)="getSubByCourseID($event)"
+                                formControlName="selCourseId"
+                                [ngClass]="{'is-invalid': submitted && editExamForm.controls.selCourseId.errors}">
+                                <option value="">Select Course/Class</option>
+                                <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}
+                                </option>
+
+                            </select>
+                            <div *ngIf="submitted && editExamForm.controls.selCourseId.errors" class="text-danger">
+                                <div *ngIf="submitted && editExamForm.controls.selCourseId.errors.required">
+                                    Course is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Course/Class *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control  floating" id="subject_id" name="subject_id"
+                                [(ngModel)]="selSubjectId" formControlName="selSubId"
+                                [ngClass]="{'is-invalid': submitted && editExamForm.controls.selSubId.errors}">
+                                <option value="">Select Subject</option>
+                                <option *ngFor="let item of subjectData" [value]="item.id">{{ item.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && editExamForm.controls.selSubId.errors" class="text-danger">
+                                <div *ngIf="submitted && editExamForm.controls.selSubId.errors.required">
+                                    Subject is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Subject *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="file" class="form-control floating" id="question_paper" name="question_paper"
+                                formControlName="uploadquestionpaper"  (change)="onFileSelected($event)"
+                                >
+                            <label class="focus-label">Upload Question Paper *</label>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <button class="btn btn-danger btn-block" type="button" onclick="window.history.back();"> Cancel
+                        </button>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <button class="btn btn-success btn-block" type="submit"> Submit </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div style="width: 100%; text-align: center; position: fixed; z-index: 9998889; top: 250px; left: 0px; text-align: center; display:none"
+    id="loader">
+    <img src="assets/img/loading.gif" style="width: 150px; height: auto">
+</div>

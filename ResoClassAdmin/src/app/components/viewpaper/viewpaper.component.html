@@ -1,0 +1,54 @@
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Exams</h3>
+                    <ul class="breadcrumb">
+                       <li class="breadcrumb-item active">Question Bank</li>
+                    </ul>
+                </div>
+              
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="col-auto float-right ml-auto" *ngIf="questionList.length > 0">
+                    <a class="btn warning-delete" (click)="deleteAllQuestions()"><i class="fa fa-trash-o"></i> Delete
+                        all Questions</a>
+                </div>
+            </div>
+            <div class="col-md-12" *ngFor="let item of questionList; index as i">
+                <div class="mt-4">
+                    <div class="flex-display">
+                        <h4 class="ml-1"> {{i + 1}})<span [innerHTML]="item.question"></span>
+                        </h4>
+                    </div>
+                    <ul class="ans_panel">
+                        <li> 1)<span [innerHTML]="item.firstAnswer"></span>
+                        </li>
+                        <li> 2)<span [innerHTML]="item.secondAnswer"></span>
+                        </li>
+                        <li> 3)<span [innerHTML]="item.thirdAnswer"></span>
+                        </li>
+                        <li> 4)<span [innerHTML]="item.fourthAnswer"></span>
+                        </li>
+                    </ul>
+                    <div class="d-flex">
+                        <h5> Correct Answer: <span>{{item.correctAnswer}}</span></h5>
+                        <h5 class="ml-5"> Difficulty level: <span class="badge bg-inverse-success">
+                                <span [innerHTML]="item.difficultyLevel"></span>
+                            </span></h5>
+                    </div>
+                    <div>
+                        <button class="btn btn-sm warning-delete" type="button"
+                            (click)="deleteQuestion(item.id)">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

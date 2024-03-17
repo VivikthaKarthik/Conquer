@@ -24,6 +24,9 @@ import { QuestionbankComponent } from './components/questionbank/questionbank.co
 import { AddquestionbankComponent } from './components/addquestionbank/addquestionbank.component';
 import { StudentwiseanalysisComponent } from './components/studentwiseanalysis/studentwiseanalysis.component';
 import { ViewanalysisComponent } from './components/viewanalysis/viewanalysis.component';
+import { ExamsComponent } from './components/exams/exams.component';
+import { AddexamComponent } from './components/addexam/addexam.component';
+import { ViewpaperComponent } from './components/viewpaper/viewpaper.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -109,6 +112,19 @@ const routes: Routes = [
         path: 'viewanalysis',
         component: ViewanalysisComponent,
       },
+      {
+        path: 'exams',
+        component: ExamsComponent,
+      },
+      {
+        path: 'addexam',
+        component: AddexamComponent,
+      },
+      {
+        path: 'viewpaper',
+        component: ViewpaperComponent,
+      },
+      
     ],
   },
   {
