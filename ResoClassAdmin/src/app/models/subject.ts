@@ -1,7 +1,7 @@
 export interface Subject {
-    id: number;
-    name: string;
-    thumbnail: string;
-    // courseId:number;
-    // courseName:string;
-  }
+  id: number;
+  name: string;
+  class: string;
+  course: string;
+  colorCode: string;
+}

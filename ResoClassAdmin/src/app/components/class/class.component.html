@@ -1,0 +1,143 @@
+<div class="main-wrapper">
+  <div class="page-wrapper">
+    <div class="content container-fluid">
+      <div class="page-header">
+        <div class="row align-items-center">
+          <div class="col">
+            <h3 class="page-title">Classes</h3>
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item">
+                <a href="/dashboard">Dashboard</a>
+              </li>
+              <li class="breadcrumb-item active">Classes</li>
+            </ul>
+          </div>
+          <div class="col-auto float-right ml-auto">
+            <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_class"><i class="fa fa-plus"></i> Add
+              Class</a>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 pad_b_20">
+          <app-bulk-upload [pageName]="pageName" (onFileUpload)="OnDocumentUpload($event)"></app-bulk-upload>
+        </div>
+        <div class="col-md-12">
+          <app-grid [data]="classList" [coloumnDef]="colDefs" (editRecord)="editGridRecord($event)"
+            (deleteRecord)="deleteGridRecord($event)"></app-grid>
+        </div>
+      </div>
+    </div>
+    <div id="add_class" class="modal custom-modal fade" role="dialog" *ngIf="isAddPopupVisible">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add Class</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="addform" [formGroup]="classForm" (ngSubmit)="onSubmit()">
+              <div class="row">
+                <div class="col-sm-6 col-md-6">
+                  <div class="form-group form-focus">
+                    <input type="text" class="form-control floating" id="class_name" name="class_name"
+                      formControlName="name" [ngClass]="{'is-invalid': submitted && classForm.controls.name.errors}">
+                    <div *ngIf="submitted && classForm.controls.name.errors" class="text-danger">
+                      <div *ngIf="submitted && classForm.controls.name.errors.required">
+                        Class Name is required
+                      </div>
+                    </div>
+                    <label class="focus-label">Class Name *</label>
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-6">
+                  <div class="form-group form-focus select-focus">
+                    <select class="form-control floating" id="class_id" name="class_id"
+                      (change)="onSelectionChange($event)" formControlName="course">
+                      <option value="">Select Course</option>
+                      <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}
+                      </option>
+
+
+                    </select>
+                    <div *ngIf="submitted && classForm.controls.name.errors" class="text-danger">
+                      <div *ngIf="submitted && classForm.controls.name.errors.required">
+                        Course Name is required
+                      </div>
+                    </div>
+                    <label class="focus-label">Course *</label>
+                  </div>
+                </div>
+              </div>
+              <div class="submit-section">
+                <button class="btn btn-primary submit-btn" type="submit">
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="edit_class" class="modal custom-modal fade" role="dialog">
+      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Edit Class</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeModal()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="editform">
+              <div class="row">
+                <div class="col-sm-6 col-md-6">
+                  <div class="form-group form-focus">
+                    <input type="text" class="form-control floating" id="edit_class_name" name="class_name"
+                      formControlName="name" [ngClass]="{'is-invalid': submitted && classForm.controls.name.errors}"
+                      [(ngModel)]="className">
+                    <div *ngIf="submitted && classForm.controls.name.errors" class="text-danger">
+                      <div *ngIf="submitted && classForm.controls.name.errors.required">
+                        Class Name is required
+                      </div>
+                    </div>
+                    <label class="focus-label">Class Name *</label>
+                  </div>
+                  <div class="form-group">
+                    <label>Course Name <span class="text-danger">*</span></label>
+                    <input class="form-control" value="" type="text" id="edit_course_name" name="course_name"
+                      [(ngModel)]="className" required />
+                  </div>
+                </div>
+                <div class="col-sm-6 col-md-6">
+                  <div class="form-group form-focus select-focus">
+                    <select class="form-control floating" id="edit_class_id" name="edit_class_id"
+                      (change)="onSelectionChange($event)" formControlName="course">
+                      <option value="">Select Course</option>
+                      <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}
+                      </option>
+                    </select>
+                    <div *ngIf="submitted && classForm.controls.name.errors" class="text-danger">
+                      <div *ngIf="submitted && classForm.controls.name.errors.required">
+                        Course Name is required
+                      </div>
+                    </div>
+                    <label class="focus-label">Course *</label>
+                  </div>
+                </div>
+              </div>
+              <div class="submit-section">
+                <input type="hidden" id="class_id" name="class_id" />
+                <button class="btn btn-primary submit-btn" type="submit" (click)="updateClass()">
+                  Update
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

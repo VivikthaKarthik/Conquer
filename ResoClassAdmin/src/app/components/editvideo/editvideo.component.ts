@@ -1,8 +1,14 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  AbstractControl,
+  ValidatorFn,
+} from '@angular/forms';
 import { MasterService } from '../../services/master.service';
 import { DataMappingService } from '../../services/data-mapping.service';
-import { Router,ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Course } from '../../models/course';
 import { Subject } from '../../models/subject';
 import { Chapters } from '../../models/chapters';
@@ -10,11 +16,10 @@ import { Topic } from '../../models/topic';
 import { SubTopic } from '../../models/subtopics';
 import { ListItem } from '../../models/listItem';
 
-
 @Component({
   selector: 'app-editvideo',
   templateUrl: './editvideo.component.html',
-  styleUrl: './editvideo.component.css'
+  styleUrl: './editvideo.component.css',
 })
 export class EditvideoComponent {
   editVideoForm!: FormGroup;
@@ -26,38 +31,37 @@ export class EditvideoComponent {
   subTopics: SubTopic[] | undefined;
 
   id: number = 0;
-  title: string = "";
-  thumbnail: string = "";
-  description: string = "";
-  sourceUrl: string = "";
-  chapter: string = "";
-  topic: string = "";
-  subTopic: string = "";
+  title: string = '';
+  thumbnail: string = '';
+  description: string = '';
+  sourceUrl: string = '';
+  chapter: string = '';
+  topic: string = '';
+  subTopic: string = '';
   homeDisplay: boolean = false;
   submitted = false;
   selectedOption: any;
   selectedCity: any;
-  videoId:number = 0;
+  videoId: number = 0;
 
   constructor(
     private fb: FormBuilder,
     private masterService: MasterService,
     private dataMappingService: DataMappingService,
-    private router: Router,private route: ActivatedRoute,
-  ) { }
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.getCourses();
-    this.route.queryParams.subscribe(params => {
-      debugger
-      const id:string = params['id'];
+    this.route.queryParams.subscribe((params) => {
+      debugger;
+      const id: string = params['id'];
       this.videoId = 0;
       this.editVideo(id);
     });
 
-
     this.editVideoForm = this.fb.group({
-
       title: ['', Validators.required],
       description: ['', Validators.required],
       thumbnail: ['', Validators.required],
@@ -89,101 +93,104 @@ export class EditvideoComponent {
   }
 
   getSubjectsByCourseId(Id: number) {
-    this.masterService.getById(Id, 'Subject', 'GetSubjectsByCourseId', 'courseId').subscribe((data: any) => {
-      if (data.isSuccess) {
-        this.subjects = this.dataMappingService.mapToModel<Subject>(
-          data.result,
-          (item) => ({
-            id: item.id,
-            name: item.name,
-            thumbnail: item.thumbnail,
-          })
-        );
-
-      } else {
-        alert(data.message);
-      }
-    });
+    this.masterService
+      .getById(Id, 'Subject', 'GetSubjectsByCourseId', 'courseId')
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.subjects = this.dataMappingService.mapToModel<Subject>(
+            data.result,
+            (item) => ({
+              id: item.id,
+              name: item.name,
+              class: item.class,
+              course: item.course,
+              colorCode: item.colorCode,
+            })
+          );
+        } else {
+          alert(data.message);
+        }
+      });
   }
 
   getChaptersBySubjectId(Id: number) {
-    this.masterService.getById(Id, 'Chapters', 'GetChaptersBySubjectId', 'subjectId').subscribe((data: any) => {
-      if (data.isSuccess) {
-        this.chapters = this.dataMappingService.mapToModel<Chapters>(
-          data.result,
-          (item) => ({
-            id: item.id,
-            name: item.name,
-            thumbnail: item.thumbnail,
-            subjectId: item.subjectId
-          })
-        );
-
-      } else {
-        alert(data.message);
-      }
-    });
+    this.masterService
+      .getById(Id, 'Chapters', 'GetChaptersBySubjectId', 'subjectId')
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.chapters = this.dataMappingService.mapToModel<Chapters>(
+            data.result,
+            (item) => ({
+              id: item.id,
+              name: item.name,
+              thumbnail: item.thumbnail,
+              subjectId: item.subjectId,
+            })
+          );
+        } else {
+          alert(data.message);
+        }
+      });
   }
   getTopicsByChapterId(Id: number) {
-    this.masterService.getById(Id, 'Topic', 'GetTopicsByChapterId', 'topicId').subscribe((data: any) => {
-      if (data.isSuccess) {
-        this.topics = this.dataMappingService.mapToModel<Topic>(
-          data.result,
-          (item) => ({
-            id: item.id,
-            name: item.name,
-            thumbnail: item.thumbnail,
-            chapter: item.chapter,
-            description: item.description,
-          })
-        );
-
-      } else {
-        alert(data.message);
-      }
-    });
+    this.masterService
+      .getById(Id, 'Topic', 'GetTopicsByChapterId', 'topicId')
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.topics = this.dataMappingService.mapToModel<Topic>(
+            data.result,
+            (item) => ({
+              id: item.id,
+              name: item.name,
+              thumbnail: item.thumbnail,
+              chapter: item.chapter,
+              description: item.description,
+            })
+          );
+        } else {
+          alert(data.message);
+        }
+      });
   }
 
   getSubTopicsByTopicId(Id: number) {
-    this.masterService.getById(Id, 'SubTopic', 'GetSubTopicsByTopicId', 'subTopicId').subscribe((data: any) => {
-      if (data.isSuccess) {
-        this.subTopics = this.dataMappingService.mapToModel<SubTopic>(
-          data.result,
-          (item) => ({
-            id: item.id,
-            name: item.name,
-            thumbnail: item.thumbnail,
-            TopicId: item.TopicId
-          })
-        );
-
-      } else {
-        alert(data.message);
-      }
-    });
+    this.masterService
+      .getById(Id, 'SubTopic', 'GetSubTopicsByTopicId', 'subTopicId')
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.subTopics = this.dataMappingService.mapToModel<SubTopic>(
+            data.result,
+            (item) => ({
+              id: item.id,
+              name: item.name,
+              thumbnail: item.thumbnail,
+              TopicId: item.TopicId,
+            })
+          );
+        } else {
+          alert(data.message);
+        }
+      });
   }
 
-  editVideo(Id:string) {
-    debugger
+  editVideo(Id: string) {
+    debugger;
     this.videoId = parseInt(Id);
     this.masterService
-      .getById(Id, 'Video', 'Get','videoId')
+      .getById(Id, 'Video', 'Get', 'videoId')
       .subscribe((data: any) => {
-
         if (data.isSuccess) {
           if (data.result != null && data.result.name != null) {
             this.id = data.result.id;
-            this.title= data.result.title;
-            this.thumbnail= data.result.thumbnail;
-            this.description= data.result.description;
-            this.sourceUrl = data.result. sourceUrl;
-            this.chapter= data.result.chapter;
-            this.topic= data.result.topic;
-            this.subTopic= data.result.subTopic;
-            this.homeDisplay= data.result.homeDisplay;
-            
-          }
-          else {
+            this.title = data.result.title;
+            this.thumbnail = data.result.thumbnail;
+            this.description = data.result.description;
+            this.sourceUrl = data.result.sourceUrl;
+            this.chapter = data.result.chapter;
+            this.topic = data.result.topic;
+            this.subTopic = data.result.subTopic;
+            this.homeDisplay = data.result.homeDisplay;
+          } else {
             alert('Some error occured..! Plaese try again');
           }
         } else {
@@ -201,7 +208,6 @@ export class EditvideoComponent {
     }
   }
   updateVideo() {
-
     var videoData = {
       title: this.editVideoForm.value.title,
       thumbnail: this.editVideoForm.value.thumbnail,
@@ -213,7 +219,6 @@ export class EditvideoComponent {
       Topic: this.editVideoForm.value.selTopics,
       SubTopic: this.editVideoForm.value.selSubTopics,
       HomeDisplay: this.editVideoForm.value.homeDisplay,
-
     };
     console.log(JSON.stringify(videoData));
     this.masterService

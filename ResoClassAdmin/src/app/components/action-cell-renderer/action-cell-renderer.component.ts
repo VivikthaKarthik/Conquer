@@ -13,7 +13,6 @@ export class ActionCellRendererComponent {
   }
 
   editRow(): void {
-    alert('Common Component');
     this.params.editRow(this.params.data.id);
   }
 

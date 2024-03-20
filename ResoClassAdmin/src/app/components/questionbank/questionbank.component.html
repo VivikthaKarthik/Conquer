@@ -22,7 +22,7 @@
                         <div class="form-group form-focus select-focus">
                             <select class="form-control floating" id="class_id" name="class_id"
                                 [ngClass]="{'is-invalid': submitted && questionbankForm.controls.selCourses.errors}"
-                                [ngModel]="selectedOption" (ngModelChange)="getSubjectsByCourseId($event)"
+                                [ngModel]="selectedOption" (ngModelChange)="getClassesByCourseId($event)"
                                 formControlName="selCourses">
                                 <option value="">Select Course/Class</option>
                                 <option *ngFor="let item of courses" [value]="item.id">{{ item.name }}</option>
@@ -31,6 +31,23 @@
                             <div *ngIf="submitted && questionbankForm.controls.selCourses.errors" class="text-danger">
                                 <div *ngIf="submitted && questionbankForm.controls.selCourses.errors.required">
                                     Course is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                                [ngClass]="{'is-invalid': submitted && questionbankForm.controls.selClass.errors}"
+                                [ngModel]="selectedOption" (ngModelChange)="getSubjectsByClassId($event)"
+                                formControlName="selClass">
+                                <option value="">Select Class</option>
+                                <option *ngFor="let item of classes" [value]="item.id">{{ item.name }}</option>
+                            </select>
+                            <label class="focus-label">Class *</label>
+                            <div *ngIf="submitted && questionbankForm.controls.selClass.errors" class="text-danger">
+                                <div *ngIf="submitted && questionbankForm.controls.selClass.errors.required">
+                                    Class is required
                                 </div>
                             </div>
                         </div>
@@ -73,7 +90,8 @@
                         <div class="form-group form-focus select-focus">
                             <select class="form-control floating" id="class_id" name="class_id"
                                 [ngClass]="{'is-invalid': submitted && questionbankForm.controls.selTopics.errors}"
-                                [ngModel]="selectedOption" formControlName="selTopics">
+                                [ngModel]="selectedOption" (ngModelChange)="getSubTopicsByTopicId($event)"
+                                formControlName="selTopics">
                                 <option value="">Select Topic</option>
                                 <option *ngFor="let item of topics" [value]="item.id">{{ item.name }}</option>
                             </select>
@@ -87,9 +105,9 @@
                     </div>
                     <div class="col-sm-6 col-md-4">
                         <div class="form-group form-focus select-focus">
-                            <select class="form-control floating" id="class_id" name="class_id"
+                            <select class="form-control floating" id="subTopic_id" name="subTopic_id"
                                 [ngClass]="{'is-invalid': submitted && questionbankForm.controls.selSubTopics.errors}"
-                                formControlName="selTopics">
+                                formControlName="selSubTopics">
                                 <option value="">Select Sub Topic</option>
                                 <option *ngFor="let item of subTopics" [value]="item.id">{{ item.name }}</option>
                             </select>

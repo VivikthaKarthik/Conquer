@@ -27,7 +27,7 @@ declare var $: any;
 })
 export class SubtopicsComponent {
   topicsList: Topic[] = [];
-  subTopicsList: Topic[] = [];
+  subTopicsList: any[] = [];
   chapters: Chapters[] = [];
   topics: Topic[] = [];
   topicName: string = '';
@@ -70,13 +70,8 @@ export class SubtopicsComponent {
         filter: 'agTextColumnFilter',
       });
       this.colDefs.push({
-        headerName: 'SubTopic',
+        headerName: 'Name',
         field: 'name',
-        filter: 'agTextColumnFilter',
-      });
-      this.colDefs.push({
-        headerName: 'Topic',
-        field: 'chapter',
         filter: 'agTextColumnFilter',
       });
       this.colDefs.push({
@@ -90,6 +85,53 @@ export class SubtopicsComponent {
             return null;
           }
         },
+      });
+      this.colDefs.push({
+        headerName: 'Description',
+        field: 'description',
+        filter: 'agTextColumnFilter',
+      });
+      this.colDefs.push({
+        headerName: 'Source Url',
+        field: 'sourceUrl',
+        filter: 'agTextColumnFilter',
+        cellRenderer: function (params: any) {
+          if (params && params.value) {
+            return `<a href="${params.value}">Video</a>`;
+          } else {
+            return null;
+          }
+        },
+      });
+      this.colDefs.push({
+        headerName: 'Topic',
+        field: 'topic',
+        filter: 'agTextColumnFilter',
+      });
+      this.colDefs.push({
+        headerName: 'Chapter',
+        field: 'chapter',
+        filter: 'agTextColumnFilter',
+      });
+      this.colDefs.push({
+        headerName: 'Subject',
+        field: 'subject',
+        filter: 'agTextColumnFilter',
+      });
+      this.colDefs.push({
+        headerName: 'Class',
+        field: 'class',
+        filter: 'agTextColumnFilter',
+      });
+      this.colDefs.push({
+        headerName: 'Course',
+        field: 'course',
+        filter: 'agTextColumnFilter',
+      });
+      this.colDefs.push({
+        headerName: 'Home Display',
+        field: 'homeDisplay',
+        filter: 'agTextColumnFilter',
       });
     }
     // Reactive-Form validations
@@ -110,7 +152,7 @@ export class SubtopicsComponent {
     this.chapterId = this.selectedValue;
   }
   ngOnInit(): void {
-    this.getAllTopics();
+    this.getAllSubTopics();
   }
   getAllSubTopics() {
     this.masterService.getAll('SubTopic', 'GetAll').subscribe((data: any) => {

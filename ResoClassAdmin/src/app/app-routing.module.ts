@@ -30,6 +30,7 @@ import { ViewpaperComponent } from './components/viewpaper/viewpaper.component';
 import { ExamresultsComponent } from './components/examresults/examresults.component';
 import { ViewresultsComponent } from './components/viewresults/viewresults.component';
 import { DesignationsComponent } from './components/designations/designations.component';
+import { ClassComponent } from './components/class/class.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -46,6 +47,10 @@ const routes: Routes = [
       {
         path: 'course',
         component: CourseComponent,
+      },
+      {
+        path: 'class',
+        component: ClassComponent,
       },
       {
         path: 'subject',

@@ -44,7 +44,7 @@ export class TopicsComponent {
   colDefs: ColDef[] = [];
   topicForm!: FormGroup;
   submitted: boolean = false;
-  selectedId: number = 0;  
+  selectedId: number = 0;
   pageName: string = 'Topic';
 
   OnDocumentUpload(event: any): void {
@@ -75,8 +75,18 @@ export class TopicsComponent {
         filter: 'agTextColumnFilter',
       });
       this.colDefs.push({
-        headerName: 'Thumbnail',
-        field: 'thumbnail',
+        headerName: 'Subject',
+        field: 'subject',
+        filter: 'agTextColumnFilter',
+      });
+      this.colDefs.push({
+        headerName: 'Class',
+        field: 'class',
+        filter: 'agTextColumnFilter',
+      });
+      this.colDefs.push({
+        headerName: 'Course',
+        field: 'course',
         filter: 'agTextColumnFilter',
       });
       this.colDefs.push({

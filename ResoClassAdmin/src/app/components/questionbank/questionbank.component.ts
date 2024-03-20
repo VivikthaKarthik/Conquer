@@ -26,6 +26,7 @@ export class QuestionbankComponent {
   questionbankForm!: FormGroup;
   videoTitle: string = '';
   courses: ListItem[] | undefined;
+  classes: ListItem[] | undefined;
   subjects: ListItem[] | undefined;
   chapters: ListItem[] | undefined;
   topics: ListItem[] | undefined;
@@ -52,10 +53,11 @@ export class QuestionbankComponent {
     this.getCourses();
     this.questionbankForm = this.fb.group({
       selCourses: ['', Validators.required],
+      selClass: ['', Validators.required],
       selSubjects: ['', Validators.required],
       selChapters: ['', Validators.required],
       selTopics: [''],
-      selSubTopics: [''],
+      selSubTopics: ['', Validators.required],
     });
   }
 
@@ -101,13 +103,33 @@ export class QuestionbankComponent {
     });
   }
 
-  getSubjectsByCourseId(Id: number) {
+  getSubjectsByClassId(Id: number) {
     if (Id !== undefined) {
       this.masterService
-        .getListItems('Subject', 'Course', Id)
+        .getListItems('Subject', 'Class', Id)
         .subscribe((data: any) => {
           if (data.isSuccess) {
             this.subjects = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
+    }
+  }
+
+  getClassesByCourseId(Id: number) {
+    if (Id !== undefined) {
+      this.masterService
+        .getListItems('Class', 'Course', Id)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.classes = this.dataMappingService.mapToModel<ListItem>(
               data.result,
               (item) => ({
                 id: item.id,
@@ -140,6 +162,7 @@ export class QuestionbankComponent {
         });
     }
   }
+
   getTopicsByChapterId(Id: number) {
     if (Id !== undefined) {
       this.masterService
@@ -147,6 +170,42 @@ export class QuestionbankComponent {
         .subscribe((data: any) => {
           if (data.isSuccess) {
             this.topics = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
+
+      this.masterService
+        .getListItems('SubTopic', 'Chapter', Id)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.subTopics = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
+    }
+  }
+
+  getSubTopicsByTopicId(Id: number) {
+    if (Id !== undefined) {
+      this.masterService
+        .getListItems('SubTopic', 'Topic', Id)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.subTopics = this.dataMappingService.mapToModel<ListItem>(
               data.result,
               (item) => ({
                 id: item.id,
@@ -187,23 +246,4 @@ export class QuestionbankComponent {
         }
       });
   }
-  // getSubTopicsByTopicId(Id: number) {
-  //   this.topicId = Id;
-  //   this.masterService.getById(Id, 'SubTopic', 'GetSubTopicsByTopicId', 'subTopicId').subscribe((data: any) => {
-  //     if (data.isSuccess) {
-  //       this.subTopics = this.dataMappingService.mapToModel<SubTopic>(
-  //         data.result,
-  //         (item) => ({
-  //           id: item.id,
-  //           name: item.name,
-  //           thumbnail: item.thumbnail,
-  //           TopicId: item.TopicId
-  //         })
-  //       );
-
-  //     } else {
-  //       alert(data.message);
-  //     }
-  //   });
-  // }
 }

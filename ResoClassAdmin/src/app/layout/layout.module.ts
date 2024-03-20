@@ -40,6 +40,7 @@ import { EditexamComponent } from '../components/editexam/editexam.component';
 import { ViewpaperComponent } from '../components/viewpaper/viewpaper.component';
 import { ViewresultsComponent } from '../components/viewresults/viewresults.component';
 import { DesignationsComponent } from '../components/designations/designations.component';
+import { ClassComponent } from '../components/class/class.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +74,7 @@ import { DesignationsComponent } from '../components/designations/designations.c
     ViewpaperComponent,
     ViewresultsComponent,
     DesignationsComponent,
+    ClassComponent,
   ],
   imports: [
     CommonModule,

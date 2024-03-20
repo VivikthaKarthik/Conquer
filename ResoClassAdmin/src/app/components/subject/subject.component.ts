@@ -54,6 +54,7 @@ export class SubjectComponent {
         headerName: 'ID',
         field: 'id',
         filter: 'agTextColumnFilter',
+        lockVisible: true,
       });
       this.colDefs.push({
         headerName: 'Subject',
@@ -61,16 +62,19 @@ export class SubjectComponent {
         filter: 'agTextColumnFilter',
       });
       this.colDefs.push({
-        headerName: 'Thumbnail',
-        field: 'thumbnail',
+        headerName: 'Class',
+        field: 'class',
         filter: 'agTextColumnFilter',
-        cellRenderer: function (params: any) {
-          if (params && params.value) {
-            return `<img src="${params.value}" style="max-height: 100px; max-width: 100px;" />`;
-          } else {
-            return null;
-          }
-        },
+      });
+      this.colDefs.push({
+        headerName: 'Course',
+        field: 'course',
+        filter: 'agTextColumnFilter',
+      });
+      this.colDefs.push({
+        headerName: 'Color Code',
+        field: 'colorCode',
+        filter: 'agTextColumnFilter',
       });
     }
     // Reactive-Form validations

@@ -67,6 +67,21 @@ export class ChaptersComponent {
         filter: 'agTextColumnFilter',
       });
       this.colDefs.push({
+        headerName: 'Subject',
+        field: 'subject',
+        filter: 'agTextColumnFilter',
+      });
+      this.colDefs.push({
+        headerName: 'Class',
+        field: 'class',
+        filter: 'agTextColumnFilter',
+      });
+      this.colDefs.push({
+        headerName: 'Course',
+        field: 'course',
+        filter: 'agTextColumnFilter',
+      });
+      this.colDefs.push({
         headerName: 'Thumbnail',
         field: 'thumbnail',
         filter: 'agTextColumnFilter',

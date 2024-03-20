@@ -26,6 +26,7 @@ export class AddquestionbankComponent {
   addQBForm!: FormGroup;
   videoTitle: string = '';
   courses: ListItem[] | undefined;
+  classes: ListItem[] | undefined;
   subjects: ListItem[] | undefined;
   chapters: ListItem[] | undefined;
   topics: ListItem[] | undefined;
@@ -47,9 +48,11 @@ export class AddquestionbankComponent {
 
     this.addQBForm = this.fb.group({
       selCourses: ['', Validators.required],
+      selClass: ['', Validators.required],
       selSubjects: ['', Validators.required],
       selChapters: ['', Validators.required],
       selTopics: [''],
+      selSubTopics: ['', Validators.required],
     });
   }
 
@@ -68,11 +71,30 @@ export class AddquestionbankComponent {
       }
     });
   }
-
-  getSubjectsByCourseId(Id: number) {
+  getClassesByCourseId(Id: number) {
     if (Id !== undefined) {
       this.masterService
-        .getListItems('Subject', 'Course', Id)
+        .getListItems('Class', 'Course', Id)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.classes = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
+    }
+  }
+
+  getSubjectsByClassId(Id: number) {
+    if (Id !== undefined) {
+      this.masterService
+        .getListItems('Subject', 'Class', Id)
         .subscribe((data: any) => {
           if (data.isSuccess) {
             this.subjects = this.dataMappingService.mapToModel<ListItem>(
@@ -125,28 +147,45 @@ export class AddquestionbankComponent {
             alert(data.message);
           }
         });
+
+      this.masterService
+        .getListItems('SubTopic', 'Chapter', Id)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.subTopics = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
     }
   }
 
-  // getSubTopicsByTopicId(Id: number) {
-  //   if (Id !== undefined) {
-  //     this.masterService
-  //       .getListItems('SubTopic', 'Topic', Id)
-  //       .subscribe((data: any) => {
-  //         if (data.isSuccess) {
-  //           this.subTopics = this.dataMappingService.mapToModel<ListItem>(
-  //             data.result,
-  //             (item) => ({
-  //               id: item.id,
-  //               name: item.name,
-  //             })
-  //           );
-  //         } else {
-  //           alert(data.message);
-  //         }
-  //       });
-  //   }
-  // }
+  getSubTopicsByTopicId(Id: number) {
+    if (Id !== undefined) {
+      this.masterService
+        .getListItems('SubTopic', 'Topic', Id)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.subTopics = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
+    }
+  }
+
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];
   }
@@ -161,10 +200,11 @@ export class AddquestionbankComponent {
   uploadQuestion() {
     var qbData = {
       CourseId: this.addQBForm.value.selCourses,
+      ClassId: this.addQBForm.value.selClass,
       SubjectId: this.addQBForm.value.selSubjects,
       ChapterId: this.addQBForm.value.selChapters,
       TopicId: this.addQBForm.value.selTopics,
-      SubTopicId: 0,
+      SubTopicId: this.addQBForm.value.selSubTopics,
       HomeDisplay: this.addQBForm.value.homeDisplay,
     };
     if (this.selectedFile != null) {
