@@ -20,6 +20,8 @@ import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { DynamicbuttoncellrenderComponent } from './components/dynamicbuttoncellrender/dynamicbuttoncellrender.component';
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -31,6 +33,9 @@ import { DynamicbuttoncellrenderComponent } from './components/dynamicbuttoncell
     ActionCellRendererComponent,
     DynamicbuttoncellrenderComponent,
     NotFoundComponent,
+   
+    
+    
   ],
   imports: [
     BrowserModule,

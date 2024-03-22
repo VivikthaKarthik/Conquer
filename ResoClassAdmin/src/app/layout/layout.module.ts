@@ -41,6 +41,9 @@ import { ViewpaperComponent } from '../components/viewpaper/viewpaper.component'
 import { ViewresultsComponent } from '../components/viewresults/viewresults.component';
 import { DesignationsComponent } from '../components/designations/designations.component';
 import { ClassComponent } from '../components/class/class.component';
+import { AddsubjectComponent } from '../components/addsubject/addsubject.component';
+import { EditsubjectComponent } from '../components/editsubject/editsubject.component';
+
 
 @NgModule({
   declarations: [
@@ -75,6 +78,8 @@ import { ClassComponent } from '../components/class/class.component';
     ViewresultsComponent,
     DesignationsComponent,
     ClassComponent,
+    AddsubjectComponent,
+    EditsubjectComponent,
   ],
   imports: [
     CommonModule,

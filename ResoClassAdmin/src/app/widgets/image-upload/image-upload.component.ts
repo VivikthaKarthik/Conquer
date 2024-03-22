@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-image-upload',
@@ -10,7 +10,13 @@ export class ImageUploadComponent {
   thumbnailUrl: string = 'assets/img/size_thumb.png';
   @Output() onFileUpload = new EventEmitter();
   showBulkUploadButton: boolean = false;
+  @Input() imageURL : string | undefined;
 
+  constructor(){
+    if(this.imageURL !== undefined)
+    this.thumbnailUrl = this.imageURL;
+  }
+  
   onFileSelected(event: any): void {
     if (event.target.files !== undefined && event.target.files.length > 0) {
       this.showBulkUploadButton = true;

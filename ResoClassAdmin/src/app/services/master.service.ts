@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class MasterService {
   //private baseUrl: string = 'https://dsquad.services/api';
-  private baseUrl: string = 'https://api.resoclass.com/api';
-  // private baseUrl: string = 'https://localhost:7292/api';
+  //private baseUrl: string = 'https://api.resoclass.com/api';
+   private baseUrl: string = 'https://localhost:7292/api';
   constructor(private http: HttpClient) {}
 
   getAll(type: string, apiName: string) {
@@ -38,7 +38,7 @@ export class MasterService {
     apiName: string
   ) {
     const formData = new FormData();
-    formData.append('request', JSON.stringify(request));
+    formData.append('requestDto', JSON.stringify(request));
     if (thumbnailFile !== undefined) {
       formData.append('thumbnail', thumbnailFile);
     }
@@ -68,11 +68,11 @@ export class MasterService {
     apiName: string
   ) {
     const formData = new FormData();
-    formData.append('request', JSON.stringify(request));
+    formData.append('requestDto', JSON.stringify(request));
     if (thumbnailFile !== undefined) {
       formData.append('thumbnail', thumbnailFile);
     }
-    return this.http.put(`${this.baseUrl}/${type}/${apiName}`, formData);
+    return this.http.put(`${this.baseUrl}/${type}/${apiName}/${request.id}`, formData);
   }
 
   put(obj: any, type: string, apiName: string) {

@@ -12,10 +12,7 @@
                         </ul>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <button ty="button" class="btn add-btn" data-toggle="modal" data-target="#add_subject"
-                            (click)="getAllCourses()"><i class="fa fa-plus"></i> Add Subject</button>
-                        <!-- <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_subject" (click)="getAllCourses()"><i
-                                class="fa fa-plus"></i> Add Subject</a> -->
+                        <a routerLink="/addsubject" class="btn add-btn"><i class="fa fa-plus"></i> Add Subject</a>
                     </div>
                 </div>
             </div>
@@ -29,123 +26,6 @@
                 </div>
             </div>
         </div>
-        <div id="add_subject" class="modal custom-modal fade popup" role="dialog" [ngClass]="{'show': isPopupVisible}"
-            *ngIf="isAddPopupVisible">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Add Subject</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                            (click)="closeModal()">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="addform" [formGroup]="subjectForm" (ngSubmit)="onSubmit()">
-                            <div class="row">
-                                <div class="col-sm-6 col-md-6">
-                                    <div class="form-group form-focus">
-                                        <input type="text" class="form-control floating" id="subject_name"
-                                            name="subject_name" formControlName="name"
-                                            [ngClass]="{'is-invalid': submitted && subjectForm.controls.name.errors}">
-                                        <div *ngIf="submitted && subjectForm.controls.name.errors" class="text-danger">
-                                            <div *ngIf="submitted && subjectForm.controls.name.errors.required">
-                                                Course Name is required
-                                            </div>
-                                        </div>
-                                        <label class="focus-label">Subject Name *</label>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6">
-                                    <div class="form-group form-focus select-focus">
-                                        <select class="form-control floating" id="class_id" name="class_id"
-                                            (change)="onSelectionChange($event)" formControlName="course">
-                                            <option value="">Select Course/Class</option>
-                                            <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}
-                                            </option>
 
-
-                                        </select>
-                                        <div *ngIf="submitted && subjectForm.controls.name.errors" class="text-danger">
-                                            <div *ngIf="submitted && subjectForm.controls.name.errors.required">
-                                                Course Name is required
-                                            </div>
-                                        </div>
-                                        <label class="focus-label">Course/Class *</label>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6">
-                                    <div class="form-group form-focus select-focus">
-                                        <input type="file" class="form-control floating" id="thumbnail" name="thumbnail"
-                                            (change)="onFileSelected($event)" accept="image/*" required>
-                                        <label class="focus-label">Thumbnail *</label>
-                                    </div>
-                                    <div>
-                                        <img src="assets/img/size_thumb.png" id="add_thumb_image">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="submit-section">
-                                <button class="btn btn-primary submit-btn" type="submit">Submit</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-        <div id="edit_subject" class="modal custom-modal fade" role="dialog" *ngIf="isAddPopupVisible">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit Subject</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                            (click)="closeModal()">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="editform">
-                            <div class="row">
-                                <div class="col-sm-6 col-md-6">
-                                    <div class="form-group form-focus">
-                                        <input type="text" class="form-control floating" id="edit_subject_name"
-                                            [(ngModel)]="subjectName" name="subject_name">
-                                        <label class="focus-label">Subject Name *</label>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6">
-                                    <div class="form-group form-focus select-focus">
-                                        <select class="select floating" id="edit_class_id" name="class_id"
-                                            [(ngModel)]="selectedValue">
-                                            <option value="">Select Course/Class</option>
-                                            <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}
-                                            </option>
-                                        </select>
-                                        <label class="focus-label">Course/Class *</label>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6">
-                                    <div class="form-group form-focus select-focus">
-                                        <input type="file" class="form-control floating" id="thumbnail" name="thumbnail"
-                                            (change)="onFileSelected($event)" accept="image/*" required>
-                                        <label class="focus-label">Thumbnail *</label>
-                                    </div>
-                                    <div>
-                                        <img src="assets/img/size_thumb.png" id="add_thumb_image">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="submit-section">
-                                <input type="hidden" id="subject_id" name="subject_id">
-                                <button class="btn btn-primary submit-btn" type="submit"
-                                    (click)="updateSubject()">Update</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>

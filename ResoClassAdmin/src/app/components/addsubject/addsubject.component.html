@@ -1,0 +1,87 @@
+<div class="main-wrapper">
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="page-title"><a href="/subjects">Subjects</a></h3>
+                        <ul class="breadcrumb">
+
+                            <li class="breadcrumb-item">Add Subject</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <form [formGroup]="addSubjectForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group form-focus  select-focus">
+                            <input type="text" class="form-control floating" id="subject_name" name="subject_name"
+                                formControlName="name"
+                                [ngClass]="{'is-invalid': submitted && addSubjectForm.controls.name.errors}">
+                            <div *ngIf="submitted && addSubjectForm.controls.name.errors" class="text-danger">
+                                <div *ngIf="submitted && addSubjectForm.controls.name.errors.required">
+                                    Course Name is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Subject Name *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                            [ngClass]="{'is-invalid': submitted && addSubjectForm.controls.course.errors}"
+                                [ngModel]="selectedOption" (ngModelChange)="getClassesByCourseId($event)"
+                                formControlName="course">
+                                <option value="">Select Course</option>
+                                <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}
+                                </option>
+
+
+                            </select>
+                            <div *ngIf="submitted && addSubjectForm.controls.course.errors" class="text-danger">
+                                <div *ngIf="submitted && addSubjectForm.controls.course.errors.required">
+                                    Course Name is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Course *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control floating" id="class_id" name="class_id"
+                            [ngClass]="{'is-invalid': submitted && addSubjectForm.controls.class.errors}"
+                                (change)="onSelectionChange($event)" formControlName="class">
+                                <option value="">Select Class</option>
+                                <option *ngFor="let item of classData" [value]="item.id">{{ item.name }}
+                                </option>
+
+
+                            </select>
+                            <div *ngIf="submitted && addSubjectForm.controls.class.errors" class="text-danger">
+                                <div *ngIf="submitted && addSubjectForm.controls.class.errors.required">
+                                    Class is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Class *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <app-image-upload (onFileUpload)="onFileSelected($event)"></app-image-upload>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <button class="btn btn-danger btn-block" type="button" onclick="window.history.back();"> Cancel
+                        </button>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <button class="btn btn-success btn-block" type="submit"> Submit </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

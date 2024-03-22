@@ -6,6 +6,7 @@ import { ConfirmdialogComponent } from '../../confirmdialog/confirmdialog.compon
 import { MatDialog } from '@angular/material/dialog';
 import Swal from 'sweetalert2';
 import { Course } from '../../models/course';
+import { Router } from '@angular/router';
 import {
   Form,
   FormGroup,
@@ -47,7 +48,8 @@ export class SubjectComponent {
     private masterService: MasterService,
     private fb: FormBuilder,
     private dataMappingService: DataMappingService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {
     {
       this.colDefs.push({
@@ -99,22 +101,10 @@ export class SubjectComponent {
     });
   }
 
-  getSubjectById(sId: any) {
-    this.subjectId = sId;
-    this.masterService.getById(sId, 'Subject', 'Get').subscribe((data: any) => {
-      if (data.isSuccess) {
-        if (data.result != null && data.result.name != null) {
-          this.subjectName = data.result.name;
-          this.selectedValue = data.result.courseId;
-          this.getAllCoursesForEdit();
-        } else {
-          alert('Some error occured..! Plaese try again');
-        }
-      } else {
-        alert(data.message);
-      }
-    });
+  getSubjectById(Id: any) {
+    this.router.navigate(['/editsubject'], { queryParams: { id: Id } });
   }
+  
 
   onSubmit() {
     this.submitted = true;

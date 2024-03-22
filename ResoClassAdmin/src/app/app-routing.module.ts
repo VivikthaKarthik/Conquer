@@ -31,6 +31,8 @@ import { ExamresultsComponent } from './components/examresults/examresults.compo
 import { ViewresultsComponent } from './components/viewresults/viewresults.component';
 import { DesignationsComponent } from './components/designations/designations.component';
 import { ClassComponent } from './components/class/class.component';
+import { AddsubjectComponent } from './components/addsubject/addsubject.component';
+import { EditsubjectComponent } from './components/editsubject/editsubject.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -147,6 +149,14 @@ const routes: Routes = [
       {
         path: 'users',
         component: UsersComponent,
+      },
+      {
+        path: 'addsubject',
+        component: AddsubjectComponent,
+      },
+      {
+        path: 'editsubject',
+        component: EditsubjectComponent,
       },
     ],
   },

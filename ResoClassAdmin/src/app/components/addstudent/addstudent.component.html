@@ -5,17 +5,13 @@
             <div class="page-header">
                 <div class="row align-items-center">
                     <div class="col">
-                        <h3 class="page-title">Students</h3>
+                        <h3 class="page-title"><a href="/students">Students</a></h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="/students">Students</a></li>
+                           
                             <li class="breadcrumb-item">Add Students</li>
                         </ul>
                     </div>
-                    <div class="col-auto float-right ml-auto">
-                        <app-bulk-upload [pageName]="pageName"
-                            (onFileUpload)="OnDocumentUpload($event)"></app-bulk-upload>
-                    </div>
+                  
                 </div>
             </div>
             <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
