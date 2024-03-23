@@ -17,11 +17,12 @@ import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
 })
 export class DropdownComponent {
   @Input() label: string | undefined;
+  @Input() id: string | undefined;
   @Input() options: ListItem[] | undefined;
-  @Output() dropdownOnChange = new EventEmitter();
   @Input() control!: AbstractControl;
   @Input() submitted = false;
   @Input() ErrorMessage: string | undefined;
+  @Output() dropdownOnChange = new EventEmitter();
 
   // data: any = [
   //   {

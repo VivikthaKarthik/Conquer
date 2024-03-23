@@ -1,0 +1,11 @@
+<div class="form-group form-focus select-focus">
+  <input type="text" #textBoxItem class="form-control floating select-focus" id="{{id}}" name="{{id}}"
+    formControlName="control" [ngClass]="{'is-invalid': submitted && control.errors}" (change)="update($event)">
+  <label class="focus-label">{{label}} *</label>
+  <div *ngIf="submitted && control.errors" class="text-danger">
+    <div *ngIf="submitted && control.errors.required">
+      {{ErrorMessage}}
+    </div>
+  </div>
+
+</div>

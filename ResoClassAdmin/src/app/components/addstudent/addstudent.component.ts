@@ -112,6 +112,10 @@ export class AddstudentComponent {
     this.studentForm.controls.cityId.setValue(selectedId);
   }
 
+  OnAdmissionIdChange(value: any) {
+    this.studentForm.controls.admissionId.setValue(value);
+  }
+
   getAllCourses() {
     this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
       if (data.isSuccess) {
