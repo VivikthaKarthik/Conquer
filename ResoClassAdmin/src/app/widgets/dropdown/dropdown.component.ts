@@ -31,8 +31,14 @@ export class DropdownComponent {
   // ];
 
   update(selectedId: any) {
-    if (selectedId > 0) this.dropdownOnChange.emit(selectedId);
-    else this.dropdownOnChange.emit(undefined);
+    if (selectedId > 0) {
+      this.control.setValue(selectedId);
+      this.dropdownOnChange.emit(selectedId);
+    }
+    else {
+      this.control.setValue(undefined);
+      this.dropdownOnChange.emit(undefined);
+    }
   }
 
   ngOnInit() {

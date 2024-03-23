@@ -9,6 +9,7 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
 import { ValidationsService } from '../../services/validations.service';
 import { ListItem } from '../../models/listItem';
 declare var $: any;
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-class',
@@ -40,14 +41,15 @@ export class ClassComponent {
     private dataMappingService: DataMappingService,
     private dialog: MatDialog,
     private formBuilder: FormBuilder,
-    private validations: ValidationsService
+    private validations: ValidationsService,
+    private router: Router
   ) {
     {
-      this.colDefs.push({
-        headerName: 'Class ID',
-        field: 'id',
-        filter: 'agTextColumnFilter',
-      });
+      // this.colDefs.push({
+      //   headerName: 'Class ID',
+      //   field: 'id',
+      //   filter: 'agTextColumnFilter',
+      // });
       this.colDefs.push({
         headerName: 'Class',
         field: 'name',
@@ -111,53 +113,8 @@ export class ClassComponent {
       }
     });
   }
-  onSubmit() {
-    this.submitted = true;
-    if (this.classForm.invalid) {
-      return;
-    } else {
-      this.createClass();
-    }
-  }
-
-  createClass() {
-    var objClass = {
-      name: this.classForm.value.name,
-      thumbnail: 'NA',
-      courseId: this.classForm.value.course,
-    };
-    this.masterService
-      .post(objClass, 'Class', 'Create')
-      .subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.getAllClasses();
-          window.location.reload();
-        } else {
-          alert(data.message);
-        }
-      });
-    this.isAddPopupVisible = false;
-  }
-
-  updateClass() {
-    var objClass = {
-      id: this.classId,
-      name: this.classForm.value.name,
-      thumbnail: 'NA',
-      courseId: parseInt(this.selectedValue),
-    };
-    this.masterService
-      .put(objClass, 'Class', 'Update')
-      .subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.getAllClasses();
-          ($('#edit_class') as any).modal('hide');
-        } else {
-          alert(data.message);
-          ($('#edit_class') as any).modal('hide');
-        }
-      });
-  }
+  
+ 
 
   deleteClass(cId: any) {
     this.masterService.delete(cId, 'Class', 'Delete').subscribe((data: any) => {
@@ -193,8 +150,8 @@ export class ClassComponent {
     }
   }
 
-  editGridRecord(id: any) {
-    this.getClassById(id);
+  editGridRecord(Id: any) {
+    this.router.navigate(['/editclass'], { queryParams: { id: Id } });
   }
 
   deleteGridRecord(id: any) {

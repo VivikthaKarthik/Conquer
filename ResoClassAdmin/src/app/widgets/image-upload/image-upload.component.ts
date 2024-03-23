@@ -17,6 +17,7 @@ export class ImageUploadComponent {
   thumbnailUrl: string = 'assets/img/size_thumb.png';
   @Output() onFileUpload = new EventEmitter();
   @Input() imageURL: string | undefined;
+  @Input() width: string | undefined;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.imageURL !== undefined && this.imageURL !== null) {

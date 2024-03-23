@@ -1,1 +1,85 @@
-<p>editchapter works!</p>
+<div class="main-wrapper">
+
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="page-title"><a href="/chapter">Chapter</a></h3>
+                        <ul class="breadcrumb">
+                            <li class="breadcrumb-item">Edit Chapter</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <form [formGroup]="editChapterForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <app-textbox [label]="'Chapter Name '" [id]="'chapter_name'"
+                                [control]="editChapterForm.controls.name" [ErrorMessage]="'Name  is required'"
+                                [submitted]="submitted"></app-textbox>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <app-dropdown [label]="'Course'" [options]="courseData"
+                                [control]="editChapterForm.controls.selCourseId"
+                                (dropdownOnChange)="getClsByCourseId($event)" [ErrorMessage]="'Course is required'"
+                                [submitted]="submitted"></app-dropdown>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <app-dropdown [label]="'Class'" [options]="classData"
+                                [control]="editChapterForm.controls.selClassId"
+                                (dropdownOnChange)="getSubByClsID($event)" [ErrorMessage]="'Class is required'"
+                                [submitted]="submitted"></app-dropdown>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <app-dropdown [label]="'Subject'" [options]="subjectData"
+                                [control]="editChapterForm.controls.selSubId" [ErrorMessage]="'Subject is required'"
+                                [submitted]="submitted"></app-dropdown>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <app-textarea [label]="'Description'" [id]="'chapter_description'"
+                            [control]="editChapterForm.controls.description" [ErrorMessage]="'Description  is required'"
+                            [submitted]="submitted"></app-textarea>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-sm-6 col-md-6">
+                        <app-image-upload (onFileUpload)="onFileSelected($event)"
+                        [imageURL]="selectedImageURL"></app-image-upload>
+                    </div>
+                    <input type="checkbox" id="recommended" name="recommended"> Is Recommended?
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <button class="btn btn-danger btn-block" type="button" onclick="window.history.back();"> Cancel
+                        </button>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <button class="btn btn-success btn-block" type="submit"> Submit </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div style="width: 100%; text-align: center; position: fixed; z-index: 9998889; top: 250px; left: 0px; text-align: center; display:none"
+    id="loader">
+    <img src="assets/img/loading.gif" style="width: 150px; height: auto">
+</div>

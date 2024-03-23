@@ -10,6 +10,7 @@ import { Subject } from '../../models/subject';
 import { NotificationService } from '../../services/notification.service';
 import { Topic } from '../../models/topic';
 import { ColDef } from 'ag-grid-community';
+import { Router } from '@angular/router';
 import {
   Form,
   FormGroup,
@@ -56,14 +57,15 @@ export class TopicsComponent {
     private dataMappingService: DataMappingService,
     private dialog: MatDialog,
     public notificationService: NotificationService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {
     {
-      this.colDefs.push({
-        headerName: 'ID',
-        field: 'id',
-        filter: 'agTextColumnFilter',
-      });
+      // this.colDefs.push({
+      //   headerName: 'ID',
+      //   field: 'id',
+      //   filter: 'agTextColumnFilter',
+      // });
       this.colDefs.push({
         headerName: 'Topic',
         field: 'name',
@@ -102,13 +104,8 @@ export class TopicsComponent {
         },
       });
     }
-    // Reactive-Form validations
-    {
-      this.topicForm = this.fb.group({
-        name: ['', Validators.required],
-        chapterId: ['', Validators.required],
-      });
-    }
+    
+    
   }
 
   showMessage() {
@@ -132,79 +129,7 @@ export class TopicsComponent {
     });
   }
 
-  getTopicById(Id: any) {
-    this.getAllChapters();
-    this.topicId = Id;
-    this.masterService.getById(Id, 'Topic', 'Get').subscribe((data: any) => {
-      if (data.isSuccess) {
-        if (data.result != null && data.result.name != null) {
-          this.topicName = data.result.name;
-          this.selectedOption = data.result.chapterId;
-          this.thumbnail = data.result.thumbnail;
-          this.description = data.result.description;
-          ($('#edit_topic') as any).modal('show');
-        } else {
-          alert('Some error occured..! Plaese try again');
-        }
-      } else {
-        alert(data.message);
-      }
-    });
-  }
-
-  createTopic() {
-    var topicData = {
-      name: this.topicName,
-      chapterId: this.chapterId,
-      description: this.description,
-    };
-    this.masterService
-      .postWithFile(topicData, this.selectedFile, 'Topic', 'Create')
-      .subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.getAllTopics();
-          this.showMessage();
-        } else {
-          alert(data.message);
-        }
-      });
-    this.isAddPopupVisible = false;
-    window.location.reload();
-  }
-
-  updateTopic() {
-    var topicData = {
-      id: this.topicId,
-      name: this.topicName,
-      chapterId: this.selectedOption,
-      description: this.description,
-    };
-    if (this.selectedFile != null) {
-      this.masterService
-        .putWithFile(topicData, this.selectedFile, 'Topic', 'Update')
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            this.getAllTopics();
-          } else {
-            alert(data.message);
-          }
-        });
-    } else {
-      this.masterService
-        .put(topicData, 'Topic', 'Update')
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            this.getAllTopics();
-          } else {
-            alert(data.message);
-          }
-        });
-    }
-
-    this.isAddPopupVisible = false;
-    window.location.reload();
-  }
-
+  
   deleteTopic(cId: any) {
     this.masterService.delete(cId, 'Topic', 'Delete').subscribe((data: any) => {
       if (data.isSuccess) {
@@ -240,42 +165,16 @@ export class TopicsComponent {
     }
   }
 
-  getAllChapters() {
-    this.masterService.getAll('Chapter', 'GetAll').subscribe((data: any) => {
-      if (data.isSuccess) {
-        this.chapters = this.dataMappingService.mapToModel<Chapters>(
-          data.result,
-          (item) => ({
-            id: item.id,
-            name: item.name,
-            thumbnail: item.thumbnail,
-            subjectId: item.subjectId,
-          })
-        );
-      } else {
-        alert(data.message);
-      }
-    });
+
+
+  editGridRecord(Id: any) {
+    this.router.navigate(['/edittopic'], { queryParams: { id: Id } });
   }
 
-  editGridRecord(id: any) {
-    this.getTopicById(id);
-  }
 
   deleteGridRecord(id: any) {
     this.showConfirmation(id);
   }
 
-  onSubmit() {
-    this.submitted = true;
-    if (this.topicForm.invalid) {
-      return;
-    } else {
-      this.createTopic();
-    }
-  }
-
-  closeModal() {
-    ($('#edit_topic') as any).modal('hide');
-  }
+  
 }

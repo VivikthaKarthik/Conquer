@@ -9,6 +9,7 @@ import { Course } from '../../models/course';
 import { Subject } from '../../models/subject';
 import { NotificationService } from '../../services/notification.service';
 import { ColDef } from 'ag-grid-community';
+import { Router } from '@angular/router';
 import {
   Form,
   FormGroup,
@@ -27,19 +28,19 @@ declare var $: any;
 export class ChaptersComponent {
   chaptersList: Chapters[] = [];
   subjects: Subject[] = [];
-  chapterName: string = '';
+ 
   chapterId: any;
   courseData: ListItem[] = [];
   subjectData: ListItem[] = [];
-  selectedOption: any;
-  selSubjectId: number = 0;
+  
+ 
   selectedImage: File | undefined;
   selectedDocument: File | undefined;
   showBulkUploadButton: boolean = false;
   imageUrl: string | undefined;
   isChecked: boolean = false;
   isAddPopupVisible: boolean = true;
-  desc: string = '';
+
   colDefs: ColDef[] = [];
   chapterForm!: FormGroup;
   chapterEditForm!: FormGroup;
@@ -53,14 +54,15 @@ export class ChaptersComponent {
     private dataMappingService: DataMappingService,
     private dialog: MatDialog,
     public notificationService: NotificationService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {
     {
-      this.colDefs.push({
-        headerName: 'ID',
-        field: 'id',
-        filter: 'agTextColumnFilter',
-      });
+      // this.colDefs.push({
+      //   headerName: 'ID',
+      //   field: 'id',
+      //   filter: 'agTextColumnFilter',
+      // });
       this.colDefs.push({
         headerName: 'Chapter',
         field: 'name',
@@ -126,45 +128,9 @@ export class ChaptersComponent {
     });
   }
 
-  getChaptersById(cId: number) {
-    this.chapterId = cId;
-    this.masterService
-      .getById(cId, 'Chapter', 'Get', 'chapterId')
-      .subscribe((data: any) => {
-        if (data.isSuccess) {
-          if (data.result != null && data.result.name != null) {
-            this.chapterName = data.result.name;
-            this.selectedOption = data.result.courseId;
-            this.selSubjectId = data.result.subjectId;
-            this.isChecked = data.result.isRecommended;
-            this.desc = data.result.description;
-            this.getAllCoursesForEdit();
-          } else {
-            alert('Some error occured..! Plaese try again');
-          }
-        } else {
-          alert(data.message);
-        }
-      });
-  }
+ 
 
-  onSubmit() {
-    this.submitted = true;
-    if (this.chapterForm.invalid) {
-      return;
-    } else {
-      this.createChapter();
-    }
-  }
-
-  onEditSubmit() {
-    this.submitted = true;
-    if (this.chapterEditForm.invalid) {
-      return;
-    } else {
-      this.updateChapter();
-    }
-  }
+  
 
   OnRecommendedChange(event: any) {
     alert();
@@ -194,39 +160,7 @@ export class ChaptersComponent {
     window.location.reload();
   }
 
-  updateChapter() {
-    let subjID: number = Number(this.chapterEditForm.value.selSubId);
-    var objChapter = {
-      id: this.chapterId,
-      name: this.chapterEditForm.value.name,
-      subjectId: subjID,
-      description: this.chapterForm.value.description,
-      isRecommended: this.isChecked,
-    };
-    if (this.selectedImage !== undefined) {
-      this.masterService
-        .putWithFile(objChapter, this.selectedImage, 'Chapter', 'Update')
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            this.getAllChapters();
-          } else {
-            alert(data.message);
-          }
-        });
-      this.isAddPopupVisible = false;
-    } else {
-      this.masterService
-        .put(objChapter, 'Chapter', 'Update')
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            this.getAllChapters();
-          } else {
-            alert(data.message);
-          }
-        });
-    }
-    window.location.reload();
-  }
+
 
   deleteChapters(cId: any) {
     this.masterService
@@ -313,8 +247,8 @@ export class ChaptersComponent {
     }
   }
 
-  editGridRecord(id: any) {
-    this.getChaptersById(id);
+  editGridRecord(Id: any) {
+    this.router.navigate(['/editchapter'], { queryParams: { id: Id } });
   }
 
   deleteGridRecord(id: any) {

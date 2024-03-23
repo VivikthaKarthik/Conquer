@@ -19,12 +19,10 @@ import { ActionCellRendererComponent } from './components/action-cell-renderer/a
 import { AuthInterceptor } from './interceptor/auth.interceptor';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { DynamicbuttoncellrenderComponent } from './components/dynamicbuttoncellrender/dynamicbuttoncellrender.component';
-import { AddchapterComponent } from './components/addchapter/addchapter.component';
-import { EditchapterComponent } from './components/editchapter/editchapter.component';
-import { AddtopicComponent } from './components/addtopic/addtopic.component';
-import { EdittopicComponent } from './components/edittopic/edittopic.component';
-import { AddsubtopicComponent } from './components/addsubtopic/addsubtopic.component';
-import { EditsubtopicComponent } from './components/editsubtopic/editsubtopic.component';
+
+import { TextareaComponent } from './widgets/textarea/textarea.component';
+import { AddclassComponent } from './components/addclass/addclass.component';
+import { EditclassComponent } from './components/editclass/editclass.component';
 
 
 
@@ -39,6 +37,8 @@ import { EditsubtopicComponent } from './components/editsubtopic/editsubtopic.co
     ActionCellRendererComponent,
     DynamicbuttoncellrenderComponent,
     NotFoundComponent,
+   
+   
     
   ],
   imports: [

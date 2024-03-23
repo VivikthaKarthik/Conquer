@@ -18,7 +18,7 @@
                 <div class="row">
                     <div class="col-sm-6 col-md-3">
                         <app-textbox [label]="'Admission Id'" [id]="'admission_id'"
-                            [control]="studentForm.controls.admissionId" (textboxOnChange)="OnAdmissionIdChange($event)"
+                            [control]="studentForm.controls.admissionId" 
                             [ErrorMessage]="'Admission Id is required'" [submitted]="submitted"></app-textbox>
                     </div>
                     <div class="col-sm-6 col-md-3">
@@ -193,7 +193,7 @@
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <app-dropdown [label]="'City'" [id]="'cityId'" [options]="cities"
-                            [control]="studentForm.controls.cityId" (dropdownOnChange)="onCityChange($event)"
+                            [control]="studentForm.controls.cityId"
                             [ErrorMessage]="'City is required'" [submitted]="submitted"></app-dropdown>
                     </div>
                     <div class="col-sm-6 col-md-3">

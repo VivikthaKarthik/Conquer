@@ -1,0 +1,11 @@
+<div class="form-group form-focus select-focus">
+    <textarea class="form-control floating textarea-height select-focus" id="{{id}}" name="{{id}}"
+        formControlName="control" value="{{control.value}}" [ngClass]="{'is-invalid': submitted && control.errors}" (change)="update($event)">    
+    </textarea>
+    <div *ngIf="submitted && control.errors" class="text-danger">
+        <div *ngIf="submitted && control.errors.required">
+            {{ErrorMessage}}
+        </div>
+    </div>
+    <label class="focus-label">{{label}} *</label>
+</div>

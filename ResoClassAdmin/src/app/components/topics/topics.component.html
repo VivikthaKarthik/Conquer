@@ -12,8 +12,7 @@
                         </ul>
                     </div>
                     <div class="col-auto float-right ml-auto">
-                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_chapter"
-                            (click)="getAllChapters()"><i class="fa fa-plus"></i> Add Topics</a>
+                        <a routerLink="/addtopic" class="btn add-btn"><i class="fa fa-plus"></i> Add Topic</a>
                     </div>
                 </div>
             </div>
@@ -27,148 +26,7 @@
                 </div>
             </div>
         </div>
-        <div id="add_chapter" class="modal custom-modal fade" role="dialog" *ngIf="isAddPopupVisible">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
+        
 
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                            (click)="closeModal()">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="addform" [formGroup]="topicForm" (ngSubmit)="onSubmit()">
-                            <div class="row">
-                                <div class="col-sm-6 col-md-4">
-                                    <div class="form-group form-focus select-focus">
-                                        <input type="text" class="form-control floating select-focus" id="chapter_name"
-                                            formControlName="name" [(ngModel)]="topicName" name="chapter_name"
-                                            [ngClass]="{'is-invalid': submitted && topicForm.controls.name.errors}">
-                                        <div *ngIf="submitted && topicForm.controls.name.errors" class="text-danger">
-                                            <div *ngIf="submitted && topicForm.controls.name.errors.required">
-                                                Topic Name is required
-                                            </div>
-                                        </div>
-                                        <label class="focus-label">Topic Name *</label>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-4">
-                                    <div class="form-group form-focus select-focus">
-                                        <select class="form-control floating" id="class_id" name="class_id"
-                                            formControlName="chapterId" [(ngModel)]="selectedValue"
-                                            (change)="onSelectChange($event)"
-                                            [ngClass]="{'is-invalid': submitted && topicForm.controls.chapterId.errors}">
-                                            <option value="">Select Chapter</option>
-                                            <option *ngFor="let item of chapters" [value]="item.id">{{ item.name }}
-                                            </option>
-
-                                        </select>
-                                        <div *ngIf="submitted && topicForm.controls.name.errors" class="text-danger">
-                                            <div *ngIf="submitted && topicForm.controls.name.errors.required">
-                                                Course is Name is required
-                                            </div>
-                                        </div>
-                                        <label class="focus-label">Chapter *</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6 col-md-6">
-                                    <div class="form-group form-focus select-focus">
-                                        <textarea class="form-control floating textarea-height" id="chapter_description"
-                                            [(ngModel)]="description" name="chapter_description" required></textarea>
-                                        <label class="focus-label">Description</label>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6">
-                                    <div class="form-group form-focus select-focus">
-                                        <input type="file" class="form-control floating" id="thumbnail" name="thumbnail"
-                                            (change)="onFileSelected($event)" accept="image/*" required>
-                                        <label class="focus-label">Thumbnail *</label>
-                                    </div>
-                                    <div>
-                                        <img src="assets/img/size_thumb.png" id="add_thumb_image">
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6">
-                                    <input type="checkbox" id="recommended" name="recommended" [(ngModel)]="isChecked"
-                                        required> Is Recommended?
-                                    *
-                                </div>
-                            </div>
-                            <div class="submit-section">
-                                <button class="btn btn-primary submit-btn" type="submit">Submit</button>
-                            </div>
-
-
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="edit_topic" class="modal custom-modal fade" role="dialog">
-            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit Topic</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                            (click)="closeModal()">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="editform">
-                            <div class="row">
-                                <div class="col-sm-6 col-md-4">
-                                    <div class="form-group form-focus select-focus">
-                                        <input type="text" class="form-control floating" id="edit_Topic_name"
-                                            [(ngModel)]="topicName" name="Topic_name" required>
-                                        <label class="focus-label">Topic Name *</label>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-4">
-                                    <div class="form-group form-focus select-focus">
-                                        <select class="form-control floating" id="class_id" name="class_id"
-                                            [ngModel]="selectedOption" [(ngModel)]="selectedOption" required>
-                                            <option value="">Select Chapter</option>
-                                            <option *ngFor="let item of chapters" [value]="item.id">{{ item.name }}
-                                            </option>
-
-                                        </select>
-                                        <label class="focus-label">Chapter *</label>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6 col-md-6">
-                                    <div class="form-group form-focus select-focus">
-                                        <textarea class="form-control floating textarea-height"
-                                            [(ngModel)]="description" id="edit_chapter_description"
-                                            name="chapter_description" required></textarea>
-                                        <label class="focus-label">Description *</label>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6 col-md-6">
-                                    <div class="form-group form-focus select-focus">
-                                        <input type="file" class="form-control floating" id="edit_thumbnail"
-                                            name="thumbnail" onchange="readURL_edit(this)" required
-                                            [(ngModel)]="thumbnail">
-                                        <label class="focus-label">Thumbnail *</label>
-                                    </div>
-                                    <div>
-                                        <img src="assets/img/size_thumb.png" id="edit_thumb_image">
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="submit-section">
-                                <input type="hidden" name="chapter_id" id="chapter_id">
-                                <button class="btn btn-primary submit-btn" type="submit"
-                                    (click)="updateTopic()">Update</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>

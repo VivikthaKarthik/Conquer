@@ -49,6 +49,10 @@ import { AddtopicComponent } from '../components/addtopic/addtopic.component';
 import { EdittopicComponent } from '../components/edittopic/edittopic.component';
 import { AddsubtopicComponent } from '../components/addsubtopic/addsubtopic.component';
 import { EditsubtopicComponent } from '../components/editsubtopic/editsubtopic.component';
+import { TextboxComponent } from '../widgets/textbox/textbox.component';
+import { TextareaComponent } from '../widgets/textarea/textarea.component';
+import { AddclassComponent } from '../components/addclass/addclass.component';
+import { EditclassComponent } from '../components/editclass/editclass.component';
 
 
 @NgModule({
@@ -92,8 +96,10 @@ import { EditsubtopicComponent } from '../components/editsubtopic/editsubtopic.c
     EdittopicComponent,
     AddsubtopicComponent,
     EditsubtopicComponent,
-   
-    
+   TextboxComponent,
+   TextareaComponent,
+   AddclassComponent,
+   EditclassComponent,
     
   ],
   imports: [

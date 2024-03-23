@@ -52,12 +52,12 @@ export class SubjectComponent {
     private router: Router
   ) {
     {
-      this.colDefs.push({
-        headerName: 'ID',
-        field: 'id',
-        filter: 'agTextColumnFilter',
-        lockVisible: true,
-      });
+      // this.colDefs.push({
+      //   headerName: 'ID',
+      //   field: 'id',
+      //   filter: 'agTextColumnFilter',
+      //   lockVisible: true,
+      // });
       this.colDefs.push({
         headerName: 'Subject',
         field: 'name',

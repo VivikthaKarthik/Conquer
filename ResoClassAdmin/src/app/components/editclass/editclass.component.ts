@@ -2,43 +2,46 @@ import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn, } from '@angular/forms';
 import { MasterService } from '../../services/master.service';
 import { DataMappingService } from '../../services/data-mapping.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Course } from '../../models/course';
 import { ListItem } from '../../models/listItem';
 import Swal from 'sweetalert2';
 import { Subject } from '../../models/subject';
+
+
 @Component({
-  selector: 'app-addsubject',
-  templateUrl: './addsubject.component.html',
-  styleUrl: './addsubject.component.css'
+  selector: 'app-editclass',
+  templateUrl: './editclass.component.html',
+  styleUrl: './editclass.component.css'
 })
-export class AddsubjectComponent {
-  subjectList: Subject[] = [];
-  subjectName: string = '';
-  subjectId: any;
-  courseData: ListItem[] = [];
-  classData: ListItem[] = [];
-  isPopupVisible: any;
+export class EditclassComponent {
+  editclassForm!: FormGroup;
+  classList: any[] = [];
   selectedValue: string = '';
-  addSubjectForm!: FormGroup;
+  className: string = '';
+  classId: any;
   submitted: boolean = false;
-  selectedId: number = 0;
-  selectedOption: any;
-  selectedFile: File | undefined;
-  
-  pageName: string = 'Subject';
+  labelText: string = 'Class Name is Required';
+  isAddPopupVisible: boolean = true;
   showBulkUploadButton: boolean = false;
+  selectedFile: File | undefined;
+  pageName: string = 'Class';
+  selectedId: number = 0;
+  courseData: ListItem[] = [];
+
+
 
   constructor(
     private masterService: MasterService,
     private fb: FormBuilder,
     private dataMappingService: DataMappingService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute,
 
   ) {
     // Reactive-Form validations
     {
-      this.addSubjectForm = this.fb.group({
+      this.editclassForm = this.fb.group({
         name: ['', Validators.required],
         course: ['', Validators.required],
         class: ['', Validators.required],
@@ -47,37 +50,58 @@ export class AddsubjectComponent {
   }
 
   ngOnInit(): void {
-    this.getAllCourses();
+    this.getCourses();
+    this.route.queryParams.subscribe((params) => {
+      const id: string = params['id'];
+      this.classId = id;
+      this.getClassById(id);
+    });
+  }
+
+  getClassById(cId: any) {
+    this.classId = cId;
+    this.masterService.getById(cId, 'Class', 'Get').subscribe((data: any) => {
+      if (data.isSuccess) {
+        if (data.result != null && data.result.name != null) {
+          this.editclassForm.controls.name.setValue(data.result.name);
+          this.editclassForm.controls.course.setValue(data.result.course);
+        } else {
+          alert('Some error occured..! Plaese try again');
+        }
+      } else {
+        alert(data.message);
+      }
+    });
   }
   
   onSubmit() {
     this.submitted = true;
-    if (this.addSubjectForm.invalid) {
+    if (this.editclassForm.invalid) {
       return;
     } else {
-      this.createSubject();
+      this.updateClass();
     }
   }
 
-  createSubject() {
-   
-    var subjectData = {
-      name: this.addSubjectForm.value.name,
-      courseId:this.addSubjectForm.value.course,
+  updateClass() {
+    var objClass = {
+      id: this.classId,
+      name: this.editclassForm.value.name,
       thumbnail: 'NA',
-      classId:this.addSubjectForm.value.class,
+      courseId: parseInt(this.selectedValue),
     };
     this.masterService
-      .postWithFile(subjectData, this.selectedFile, 'Subject', 'Create')
+      .put(objClass, 'Class', 'Update')
       .subscribe((data: any) => {
         if (data.isSuccess) {
-          this.router.navigate(['/subject']);
+         
         } else {
           alert(data.message);
+         
         }
       });
-   
   }
+
 
   onSelectionChange(event: any): void {
     const selectedId = parseInt(event.target.value, 10); // Parse value to integer
@@ -87,7 +111,7 @@ export class AddsubjectComponent {
     this.selectedFile = event;
   }
 
-  getAllCourses() {
+  getCourses() {
     this.masterService.getListItems('Course', '', 0).subscribe((data: any) => {
       if (data.isSuccess) {
         this.courseData = this.dataMappingService.mapToModel<ListItem>(
@@ -103,23 +127,5 @@ export class AddsubjectComponent {
     });
   }
 
-  getClassesByCourseId(Id: number) {
-    if (Id !== undefined) {
-      this.masterService
-        .getListItems('Class', 'Course', Id)
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            this.classData = this.dataMappingService.mapToModel<ListItem>(
-              data.result,
-              (item) => ({
-                id: item.id,
-                name: item.name,
-              })
-            );
-          } else {
-            alert(data.message);
-          }
-        });
-    }
-  }
+
 }

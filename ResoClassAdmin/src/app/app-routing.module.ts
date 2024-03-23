@@ -39,6 +39,8 @@ import { AddtopicComponent } from './components/addtopic/addtopic.component';
 import { EdittopicComponent } from './components/edittopic/edittopic.component';
 import { AddsubtopicComponent } from './components/addsubtopic/addsubtopic.component';
 import { EditsubtopicComponent } from './components/editsubtopic/editsubtopic.component';
+import { AddclassComponent } from './components/addclass/addclass.component';
+import { EditclassComponent } from './components/editclass/editclass.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -59,6 +61,14 @@ const routes: Routes = [
       {
         path: 'class',
         component: ClassComponent,
+      },
+      {
+        path: 'addclass',
+        component: AddclassComponent,
+      },
+      {
+        path: 'editclass',
+        component: EditclassComponent,
       },
       {
         path: 'subject',
