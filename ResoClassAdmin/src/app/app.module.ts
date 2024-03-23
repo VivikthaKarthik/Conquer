@@ -32,10 +32,7 @@ import { DynamicbuttoncellrenderComponent } from './components/dynamicbuttoncell
     EdituserComponent,
     ActionCellRendererComponent,
     DynamicbuttoncellrenderComponent,
-    NotFoundComponent,
-   
-    
-    
+    NotFoundComponent,    
   ],
   imports: [
     BrowserModule,
