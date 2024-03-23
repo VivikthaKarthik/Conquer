@@ -57,8 +57,8 @@ export class AddstudentComponent {
       addressLine1: ['', Validators.required],
       addressLine2: ['', Validators.required],
       landMark: [''],
-      stateId: [''],
-      cityId: [''],
+      stateId: ['', Validators.required],
+      cityId: ['', Validators.required],
       pinCode: [''],
 
       // Add more controls as needed
@@ -83,6 +83,7 @@ export class AddstudentComponent {
   }
 
   getCities(stateId: any) {
+    this.cities = [];
     this.masterService
       .getListItems('city', 'state', stateId)
       .subscribe((data: any) => {
@@ -94,6 +95,7 @@ export class AddstudentComponent {
               name: item.name,
             })
           );
+          this.cities.push({ id: 0, name: 'Select City' });
           this.cities = this.cities.concat(list);
         } else {
           alert(data.message);
@@ -102,11 +104,12 @@ export class AddstudentComponent {
   }
 
   onStateChange(selectedId: any) {
-    this.studentForm.controls.stateId = selectedId;
+    this.studentForm.controls.stateId.setValue(selectedId);
     this.getCities(selectedId);
   }
+
   onCityChange(selectedId: any) {
-    this.studentForm.controls.cityId = selectedId;
+    this.studentForm.controls.cityId.setValue(selectedId);
   }
 
   getAllCourses() {

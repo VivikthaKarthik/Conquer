@@ -6,7 +6,6 @@
                     <div class="col">
                         <h3 class="page-title"><a href="/subjects">Subjects</a></h3>
                         <ul class="breadcrumb">
-
                             <li class="breadcrumb-item">Edit Subject</li>
                         </ul>
                     </div>
@@ -17,8 +16,8 @@
                 <div class="row">
                     <div class="col-sm-6 col-md-6">
                         <div class="form-group form-focus select-focus">
-                            <input type="text" class="form-control floating" id="edit_subject_name"
-                                [(ngModel)]="subjectName" name="subject_name" formControlName="name">
+                            <input type="text" class="form-control floating" id="edit_subject_name" name="subject_name"
+                                formControlName="name">
                             <label class="focus-label">Subject Name *</label>
                         </div>
                     </div>
@@ -26,8 +25,7 @@
                         <div class="form-group form-focus select-focus">
                             <select class="form-control floating" id="class_id" name="class_id"
                                 [ngClass]="{'is-invalid': submitted && editSubjectForm.controls.course.errors}"
-                                [ngModel]="selectedValue" (ngModelChange)="getClassesByCourseId($event)"
-                                formControlName="course">
+                                (ngModelChange)="getClassesByCourseId($event)" formControlName="course">
                                 <option value="">Select Course</option>
                                 <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}
                                 </option>
@@ -44,7 +42,7 @@
                     </div>
                     <div class="col-sm-6 col-md-6">
                         <div class="form-group form-focus select-focus">
-                            <select class="form-control floating" id="class_id" name="class_id" [ngModel]="selectedOption"
+                            <select class="form-control floating" id="class_id" name="class_id"
                                 [ngClass]="{'is-invalid': submitted && editSubjectForm.controls.class.errors}"
                                 (change)="onSelectionChange($event)" formControlName="class">
                                 <option value="">Select Class</option>
@@ -62,7 +60,8 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-6">
-                        <app-image-upload (onFileUpload)="onFileSelected($event)" [imageURL]="selectedImageURL" [ngModel]="selectedImageURL"></app-image-upload>
+                        <app-image-upload (onFileUpload)="onFileSelected($event)"
+                            [imageURL]="selectedImageURL"></app-image-upload>
                     </div>
                 </div>
                 <div class="row">
@@ -71,7 +70,7 @@
                         </button>
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        
+
                         <button class="btn btn-success btn-block" type="submit"> Update </button>
                     </div>
                 </div>

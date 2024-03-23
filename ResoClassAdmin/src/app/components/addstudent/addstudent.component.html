@@ -7,11 +7,11 @@
                     <div class="col">
                         <h3 class="page-title"><a href="/students">Students</a></h3>
                         <ul class="breadcrumb">
-                           
+
                             <li class="breadcrumb-item">Add Students</li>
                         </ul>
                     </div>
-                  
+
                 </div>
             </div>
             <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
@@ -197,37 +197,14 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <div class="form-group form-focus select-focus" style="display: block;">
-                            <select class="form-control floating" id="state" name="state" [ngModel]="selectedOption"
-                                (ngModelChange)="getCities($event)" formControlName="stateId"
-                                [ngClass]="{'is-invalid': submitted && studentForm.controls.stateId.errors}">
-                                <option *ngFor="let state of states" [value]="state.id">{{ state.name }}</option>
-                            </select>
-                            <label class="focus-label">State *</label>
-                        </div>
-                        <div *ngIf="submitted && studentForm.controls.stateId.errors" class="text-danger">
-                            <div *ngIf="submitted && studentForm.controls.stateId.errors.required">
-                                State is required
-                            </div>
-                        </div>
-                        <!-- <app-dropdown [label]="'State'" [options]="states" 
-                            (dropdownOnChange)="onStateChange($event)"></app-dropdown> -->
+                        <app-dropdown [label]="'State'" [options]="states" [control]="studentForm.controls.stateId"
+                            (dropdownOnChange)="onStateChange($event)" [ErrorMessage]="'State is required'"
+                            [submitted]="submitted"></app-dropdown>
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <div class="form-group form-focus select-focus" style="display: block;">
-                            <select class="form-control floating" id="city" name="city" [ngModel]="selectedCity"
-                                formControlName="cityId"
-                                [ngClass]="{'is-invalid': submitted && studentForm.controls.cityId.errors}">
-                                <option *ngFor="let city of cities" [value]="city.id">{{ city.name }}</option>
-                            </select>
-                            <label class="focus-label">City *</label>
-                        </div>
-                        <div *ngIf="submitted && studentForm.controls.cityId.errors" class="text-danger">
-                            <div *ngIf="submitted && studentForm.controls.cityId.errors.required">
-                                State is required
-                            </div>
-                        </div>
-                        <!-- <app-dropdown [label]="'City'" [options]="cities" (dropdownOnChange)="onCityChange($event)" ></app-dropdown> -->
+                        <app-dropdown [label]="'City'" [options]="cities" [control]="studentForm.controls.cityId"
+                            (dropdownOnChange)="onCityChange($event)" [ErrorMessage]="'City is required'"
+                            [submitted]="submitted"></app-dropdown>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">

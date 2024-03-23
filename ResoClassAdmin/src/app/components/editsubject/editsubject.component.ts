@@ -3,7 +3,13 @@ import { MasterService } from '../../services/master.service';
 import { DataMappingService } from '../../services/data-mapping.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { AbstractControl, FormBuilder, FormGroup, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormGroup,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { Course } from '../../models/course';
 import { ListItem } from '../../models/listItem';
 import { Subject } from '../../models/subject';
@@ -11,7 +17,7 @@ import { Subject } from '../../models/subject';
 @Component({
   selector: 'app-editsubject',
   templateUrl: './editsubject.component.html',
-  styleUrl: './editsubject.component.css'
+  styleUrl: './editsubject.component.css',
 })
 export class EditsubjectComponent {
   subjectList: Subject[] = [];
@@ -28,12 +34,14 @@ export class EditsubjectComponent {
   selectedFile: File | undefined;
   pageName: string = 'Subject';
   showBulkUploadButton: boolean = false;
-  selectedImageURL:any;
+  selectedImageURL: any;
 
   constructor(
     private masterService: MasterService,
-    private dataMappingService: DataMappingService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder
-
+    private dataMappingService: DataMappingService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private fb: FormBuilder
   ) {
     // Reactive-Form validations
     {
@@ -41,30 +49,26 @@ export class EditsubjectComponent {
         name: ['', Validators.required],
         course: ['', Validators.required],
         class: ['', Validators.required],
-       
       });
     }
   }
   ngOnInit(): void {
     this.getAllCourses();
-    this.route.queryParams.subscribe(params => {
-
+    this.route.queryParams.subscribe((params) => {
       const id: string = params['id'];
       this.subjectId = id;
       this.getSubjectById(id);
     });
   }
   getSubjectById(sId: any) {
-    
     this.subjectId = sId;
     this.masterService.getById(sId, 'Subject', 'Get').subscribe((data: any) => {
       if (data.isSuccess) {
         if (data.result != null && data.result.name != null) {
-          this.subjectName = data.result.name;
-          this.selectedValue = data.result.courseId;
-          this.selectedOption = data.result.classId;
           this.selectedImageURL = data.result.thumbnail;
-        
+          this.editSubjectForm.controls.course.setValue(data.result.courseId);
+          this.editSubjectForm.controls.class.setValue(data.result.classId);
+          this.editSubjectForm.controls.name.setValue(data.result.name);
         } else {
           alert('Some error occured..! Plaese try again');
         }
@@ -108,13 +112,10 @@ export class EditsubjectComponent {
     }
   }
   onSubmit() {
-    
     this.submitted = true;
     if (this.editSubjectForm.invalid) {
-
-      return
-    }
-    else {
+      return;
+    } else {
       this.updateSubject(this.subjectId);
     }
   }
@@ -124,12 +125,17 @@ export class EditsubjectComponent {
       id: this.subjectId,
       name: this.subjectName,
       courseId: parseInt(this.selectedValue),
-      classId :parseInt(this.selectedOption),
-      thumbnail:"NA"
+      classId: parseInt(this.selectedOption),
+      thumbnail: 'NA',
     };
     if (this.selectedFile != null) {
       this.masterService
-        .putWithFile(subjectData, this.selectedFile, 'Subject', 'UpdateWithFile')
+        .putWithFile(
+          subjectData,
+          this.selectedFile,
+          'Subject',
+          'UpdateWithFile'
+        )
         .subscribe((data: any) => {
           if (data.isSuccess) {
             this.router.navigate(['/subject']);
@@ -148,9 +154,6 @@ export class EditsubjectComponent {
           }
         });
     }
-
-
-
   }
 
   onFileSelected(event: any): void {
@@ -160,5 +163,4 @@ export class EditsubjectComponent {
     const selectedId = parseInt(event.target.value, 10); // Parse value to integer
     this.selectedId = selectedId;
   }
-
 }
