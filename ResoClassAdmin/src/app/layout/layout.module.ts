@@ -43,6 +43,12 @@ import { DesignationsComponent } from '../components/designations/designations.c
 import { ClassComponent } from '../components/class/class.component';
 import { AddsubjectComponent } from '../components/addsubject/addsubject.component';
 import { EditsubjectComponent } from '../components/editsubject/editsubject.component';
+import { AddchapterComponent } from '../components/addchapter/addchapter.component';
+import { EditchapterComponent } from '../components/editchapter/editchapter.component';
+import { AddtopicComponent } from '../components/addtopic/addtopic.component';
+import { EdittopicComponent } from '../components/edittopic/edittopic.component';
+import { AddsubtopicComponent } from '../components/addsubtopic/addsubtopic.component';
+import { EditsubtopicComponent } from '../components/editsubtopic/editsubtopic.component';
 
 
 @NgModule({
@@ -80,6 +86,15 @@ import { EditsubjectComponent } from '../components/editsubject/editsubject.comp
     ClassComponent,
     AddsubjectComponent,
     EditsubjectComponent,
+    AddchapterComponent,
+    EditchapterComponent,
+    AddtopicComponent,
+    EdittopicComponent,
+    AddsubtopicComponent,
+    EditsubtopicComponent,
+   
+    
+    
   ],
   imports: [
     CommonModule,

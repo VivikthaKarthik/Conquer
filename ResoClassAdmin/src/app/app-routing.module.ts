@@ -33,6 +33,12 @@ import { DesignationsComponent } from './components/designations/designations.co
 import { ClassComponent } from './components/class/class.component';
 import { AddsubjectComponent } from './components/addsubject/addsubject.component';
 import { EditsubjectComponent } from './components/editsubject/editsubject.component';
+import { EditchapterComponent } from './components/editchapter/editchapter.component';
+import { AddchapterComponent } from './components/addchapter/addchapter.component';
+import { AddtopicComponent } from './components/addtopic/addtopic.component';
+import { EdittopicComponent } from './components/edittopic/edittopic.component';
+import { AddsubtopicComponent } from './components/addsubtopic/addsubtopic.component';
+import { EditsubtopicComponent } from './components/editsubtopic/editsubtopic.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -59,16 +65,48 @@ const routes: Routes = [
         component: SubjectComponent,
       },
       {
+        path: 'addsubject',
+        component: AddsubjectComponent,
+      },
+      {
+        path: 'editsubject',
+        component: EditsubjectComponent,
+      },
+      {
         path: 'chapter',
         component: ChaptersComponent,
+      },
+      {
+        path: 'addchapter',
+        component: AddchapterComponent,
+      },
+      {
+        path: 'editchapter',
+        component: EditchapterComponent,
       },
       {
         path: 'topic',
         component: TopicsComponent,
       },
       {
+        path: 'addtopic',
+        component: AddtopicComponent,
+      },
+      {
+        path: 'edittopic',
+        component: EdittopicComponent,
+      },
+      {
         path: 'subtopic',
         component: SubtopicsComponent,
+      },
+      {
+        path: 'addsubtopic',
+        component: AddsubtopicComponent,
+      },
+      {
+        path: 'editsubtopic',
+        component: EditsubtopicComponent,
       },
       {
         path: 'student',
@@ -150,14 +188,8 @@ const routes: Routes = [
         path: 'users',
         component: UsersComponent,
       },
-      {
-        path: 'addsubject',
-        component: AddsubjectComponent,
-      },
-      {
-        path: 'editsubject',
-        component: EditsubjectComponent,
-      },
+      
+      
     ],
   },
   {
