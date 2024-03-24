@@ -63,11 +63,11 @@ export class StudentsComponent {
     public notificationService: NotificationService,
     private router: Router
   ) {
-    this.colDefs.push({
-      headerName: 'S.NO',
-      field: 'id',
-      filter: 'agTextColumnFilter',
-    });
+    // this.colDefs.push({
+    //   headerName: 'S.NO',
+    //   field: 'id',
+    //   filter: 'agTextColumnFilter',
+    // });
     this.colDefs.push({
       headerName: 'Admission ID',
       field: 'admissionId',

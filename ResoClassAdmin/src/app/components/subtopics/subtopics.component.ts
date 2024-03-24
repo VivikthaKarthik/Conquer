@@ -64,11 +64,11 @@ export class SubtopicsComponent {
     private fb: FormBuilder
   ) {
     {
-      this.colDefs.push({
-        headerName: 'ID',
-        field: 'id',
-        filter: 'agTextColumnFilter',
-      });
+      // this.colDefs.push({
+      //   headerName: 'ID',
+      //   field: 'id',
+      //   filter: 'agTextColumnFilter',
+      // });
       this.colDefs.push({
         headerName: 'Name',
         field: 'name',
