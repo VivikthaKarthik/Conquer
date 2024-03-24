@@ -17,6 +17,7 @@ declare var $: any;
 export class CourseComponent {
   courseList: any[] = [];
   colDefs: ColDef[] = [];
+  homeTiles: any | undefined;
   courseName: string = '';
   courseId: any;
   courseForm: FormGroup;
@@ -39,11 +40,11 @@ export class CourseComponent {
     private validations: ValidationsService
   ) {
     {
-      this.colDefs.push({
-        headerName: 'Course ID',
-        field: 'id',
-        filter: 'agTextColumnFilter',
-      });
+      // this.colDefs.push({
+      //   headerName: 'Course ID',
+      //   field: 'id',
+      //   filter: 'agTextColumnFilter',
+      // });
       this.colDefs.push({
         headerName: 'Course',
         field: 'name',
@@ -66,6 +67,19 @@ export class CourseComponent {
 
   ngOnInit(): void {
     this.getAllCourses();
+    this.getHomeTilesData();
+  }
+
+  getHomeTilesData() {
+    this.masterService
+      .getAll('Home', 'GetCurriculumCount')
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.homeTiles = data.result;
+        } else {
+          alert(data.message);
+        }
+      });
   }
 
   getAllCourses() {
