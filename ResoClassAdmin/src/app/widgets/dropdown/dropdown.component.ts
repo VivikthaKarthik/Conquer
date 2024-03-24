@@ -41,9 +41,7 @@ export class DropdownComponent {
     }
   }
 
-  ngOnInit() {
-    // this.data[0].options.push(this.options);
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges): void {
     // this.data[0].options = [];

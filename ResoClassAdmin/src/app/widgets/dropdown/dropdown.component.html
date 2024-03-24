@@ -2,9 +2,10 @@
 <select2 class="form-control floating" [data]="data" style="height: 50px;" (update)="update('value1', $event)"></select2> -->
 
 <div class="form-group form-focus select-focus" style="display: block;">
-  <select #dropdownItem class="form-control floating" id="{{id}}" name="{{id}}" formControlName="control" 
+  <select #dropdownItem class="form-control floating" id="{{id}}" name="{{id}}" formControlName="control"
     [ngClass]="{'is-invalid': submitted && control.errors}"  (change)="update(dropdownItem.value)">
-    <option *ngFor="let item of options" [value]="item.id">{{ item.name }}</option>
+    <option *ngFor="let item of options" [attr.selected]="control.value == item.id ? true : null" [value]="item.id">{{
+      item.name }}</option>
   </select>
   <label class="focus-label">{{label}} *</label>
 </div>
