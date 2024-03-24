@@ -52,7 +52,7 @@ export class AddquestionbankComponent {
       selSubjects: ['', Validators.required],
       selChapters: ['', Validators.required],
       selTopics: [''],
-      selSubTopics: ['', Validators.required],
+      selSubTopics: [''],
     });
   }
 
@@ -217,6 +217,7 @@ export class AddquestionbankComponent {
         )
         .subscribe((data: any) => {
           if (data.isSuccess) {
+            alert(data.result);
             this.router.navigate(['/questionbank']);
           } else {
             alert(data.message);
