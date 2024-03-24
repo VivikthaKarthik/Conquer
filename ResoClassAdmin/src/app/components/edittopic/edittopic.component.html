@@ -7,7 +7,7 @@
                     <div class="col">
                         <h3 class="page-title"><a href="/topic">Topic</a></h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item">Add Topic</li>
+                            <li class="breadcrumb-item">Edit Topic</li>
                         </ul>
                     </div>
 
@@ -16,19 +16,13 @@
             <form [formGroup]="editTopicForm" (ngSubmit)="onSubmit()">
                 <div class="row">
                     <div class="col-sm-6 col-md-4">
-                        <div class="form-group form-focus select-focus">
-                            <app-textbox [label]="'Topic Name '" [id]="'topic_name'"
-                                [control]="editTopicForm.controls.name" [ErrorMessage]="'Name  is required'"
-                                [submitted]="submitted"></app-textbox>
-                        </div>
+                        <app-textbox [label]="'Topic Name'" [id]="'topic_name'" [control]="editTopicForm.controls.name"
+                            [ErrorMessage]="'Name  is required'" [submitted]="submitted"></app-textbox>
                     </div>
                     <div class="col-sm-6 col-md-4">
-                        <div class="form-group form-focus select-focus">
-                            <app-dropdown [label]="'Course'" [options]="courseData"
-                                [control]="editTopicForm.controls.selCourseId"
-                                (dropdownOnChange)="getClsByCourseId($event)" [ErrorMessage]="'Course is required'"
-                                [submitted]="submitted"></app-dropdown>
-                        </div>
+                        <app-dropdown [label]="'Course'" [options]="courseData"
+                            [control]="editTopicForm.controls.selCourseId" (dropdownOnChange)="getClsByCourseId($event)"
+                            [ErrorMessage]="'Course is required'" [submitted]="submitted"></app-dropdown>
                     </div>
 
                 </div>
@@ -36,20 +30,16 @@
                 <div class="row">
 
                     <div class="col-sm-6 col-md-4">
-                        <div class="form-group form-focus select-focus">
-                            <app-dropdown [label]="'Class'" [options]="classData"
-                                [control]="editTopicForm.controls.selClassId" (dropdownOnChange)="getSubByClsID($event)"
-                                [ErrorMessage]="'Class is required'" [submitted]="submitted"></app-dropdown>
-                        </div>
+                        <app-dropdown [label]="'Class'" [options]="classData"
+                            [control]="editTopicForm.controls.selClassId" (dropdownOnChange)="getSubByClsID($event)"
+                            [ErrorMessage]="'Class is required'" [submitted]="submitted"></app-dropdown>
                     </div>
 
                     <div class="col-sm-6 col-md-4">
-                        <div class="form-group form-focus select-focus">
-                            <app-dropdown [label]="'Subject'" [options]="subjectData"
-                                (dropdownOnChange)="getChaptersBySubID($event)"
-                                [control]="editTopicForm.controls.selSubjectId" [ErrorMessage]="'Subject is required'"
-                                [submitted]="submitted"></app-dropdown>
-                        </div>
+                        <app-dropdown [label]="'Subject'" [options]="subjectData"
+                            (dropdownOnChange)="getChaptersBySubID($event)"
+                            [control]="editTopicForm.controls.selSubjectId" [ErrorMessage]="'Subject is required'"
+                            [submitted]="submitted"></app-dropdown>
                     </div>
 
 
@@ -59,19 +49,10 @@
                     <div class="col-sm-6 col-md-4">
                         <div class="form-group form-focus select-focus">
                             <app-dropdown [label]="'Chapter'" [options]="chapterData"
-                                (dropdownOnChange)="getTopicsByChapterID($event)"
                                 [control]="editTopicForm.controls.selChapterId" [ErrorMessage]="'Chapter is required'"
                                 [submitted]="submitted"></app-dropdown>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-md-4">
-                        <div class="form-group form-focus select-focus">
-                            <app-dropdown [label]="'Topic'" [options]="topicData"
-                                [control]="editTopicForm.controls.selTopicId" [ErrorMessage]="'Topic is required'"
-                                [submitted]="submitted"></app-dropdown>
-                        </div>
-                    </div>
-
 
                 </div>
                 <div class="row">
@@ -82,7 +63,8 @@
 
                     </div>
                     <div class="col-sm-6 col-md-6">
-                        <app-image-upload (onFileUpload)="onFileSelected($event)"></app-image-upload>
+                        <app-image-upload (onFileUpload)="onFileSelected($event)"
+                            [imageURL]="selectedImageURL"></app-image-upload>
                     </div>
 
 

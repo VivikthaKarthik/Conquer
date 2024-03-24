@@ -4,6 +4,7 @@ import { MasterService } from '../../services/master.service';
 import { DataMappingService } from '../../services/data-mapping.service';
 import { Router } from '@angular/router';
 import { Course } from '../../models/course';
+import { ListItem } from '../../models/listItem';
 
 
 @Component({
@@ -13,32 +14,54 @@ import { Course } from '../../models/course';
 })
 export class AdduserComponent {
 
-  form: FormGroup;
+  addUserForm!: FormGroup;
   studentName: string = "";
   courses: Course[] | undefined;
- 
+  submitted = false;
+  rolesData: ListItem[] = [];
+  branchData: ListItem[] = [];
+
 
   constructor(private fb: FormBuilder, private masterService: MasterService, private dataMappingService: DataMappingService, private router: Router) {
-    this.form = this.fb.group({
-      // Define your form controls here
-      firstName: ['',],
-      lastName: [''],
-      role: [''],
-      email: [''],
+    
+  }
+
+  ngOnInit(): void {
+    this.getRoles();
+    this.getBranches();
+
+    this.addUserForm = this.fb.group({
       
+      firstName: ['', Validators.required],
+      lastName: [''],
+      role: ['', Validators.required],
+      email: ['', Validators.required],
+      branch: ['', Validators.required],
+      password:['', Validators.required],
+      phoneNumber:['', Validators.required],
     });
   }
 
   onSubmit() {
-
-    var objStudent = {
-      FirstName: this.form.value.firstName,
-      LastName: this.form.value.lastName,
-      Role: this.form.value.role,
-      Email: this.form.value.email,
-      
+    this.submitted = true;
+    if (this.addUserForm.invalid) {
+      return;
+    } else {
+      this.saveUser();
     }
-    this.masterService.post(objStudent, 'User', 'Create')
+  }
+
+  saveUser() {
+
+    var userData = {
+      firstName: this.addUserForm.value.firstName,
+      lastName: this.addUserForm.value.lastName,
+      role: this.addUserForm.value.role,
+      email: this.addUserForm.value.email,
+      branch: this.addUserForm.value.branch,
+
+    }
+    this.masterService.post(userData, 'User', 'Create')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.router.navigate(['/user']);
@@ -47,6 +70,37 @@ export class AdduserComponent {
         }
       });
 
+  }
+
+  getRoles() {
+    this.masterService.getListItems('Role', '', 0).subscribe((data: any) => {
+      if (data.isSuccess) {
+        this.rolesData = this.dataMappingService.mapToModel<ListItem>(
+          data.result,
+          (item) => ({
+            id: item.id,
+            name: item.name,
+          })
+        );
+      } else {
+        alert(data.message);
+      }
+    });
+  }
+  getBranches() {
+    this.masterService.getListItems('Branch', '', 0).subscribe((data: any) => {
+      if (data.isSuccess) {
+        this.branchData = this.dataMappingService.mapToModel<ListItem>(
+          data.result,
+          (item) => ({
+            id: item.id,
+            name: item.name,
+          })
+        );
+      } else {
+        alert(data.message);
+      }
+    });
   }
 
 }

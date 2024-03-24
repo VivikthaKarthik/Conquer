@@ -46,7 +46,7 @@ export class EditclassComponent {
       this.editclassForm = this.fb.group({
         name: ['', Validators.required],
         course: ['', Validators.required],
-        class: ['', Validators.required],
+       
       });
     }
   }
@@ -89,13 +89,13 @@ export class EditclassComponent {
     var objClass = {
       id: this.classId,
       name: this.editclassForm.value.name,
-      thumbnail: 'NA',
-      courseId: parseInt(this.selectedValue),
+      courseId: this.editclassForm.value.course,
     };
     this.masterService
       .put(objClass, 'Class', 'Update')
       .subscribe((data: any) => {
         if (data.isSuccess) {
+          this.router.navigate(['/class']);
         } else {
           alert(data.message);
         }

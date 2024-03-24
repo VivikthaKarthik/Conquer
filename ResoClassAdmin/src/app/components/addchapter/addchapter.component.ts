@@ -23,6 +23,7 @@ export class AddchapterComponent {
   classData: ListItem[] = [];
   selectedFile: File | undefined;
   isChecked:boolean=true;
+  selectedImageURL: any;
 
   constructor(
     private masterService: MasterService,

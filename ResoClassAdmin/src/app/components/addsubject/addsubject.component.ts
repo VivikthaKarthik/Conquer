@@ -48,6 +48,7 @@ export class AddsubjectComponent {
 
   ngOnInit(): void {
     this.getAllCourses();
+    this.getClassesByCourseId(0);
   }
   
   onSubmit() {
@@ -104,7 +105,7 @@ export class AddsubjectComponent {
   }
 
   getClassesByCourseId(Id: number) {
-    if (Id !== undefined) {
+    if (Id !== undefined && Id !== 0) {
       this.masterService
         .getListItems('Class', 'Course', Id)
         .subscribe((data: any) => {
@@ -120,6 +121,21 @@ export class AddsubjectComponent {
             alert(data.message);
           }
         });
+    }
+    else{
+      this.masterService.getListItems('Class', '', 0).subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.classData = this.dataMappingService.mapToModel<ListItem>(
+            data.result,
+            (item) => ({
+              id: item.id,
+              name: item.name,
+            })
+          );
+        } else {
+          alert(data.message);
+        }
+      });
     }
   }
 }

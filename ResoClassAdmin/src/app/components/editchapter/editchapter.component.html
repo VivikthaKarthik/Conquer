@@ -14,6 +14,7 @@
                 </div>
             </div>
             <form [formGroup]="editChapterForm" (ngSubmit)="onSubmit()">
+
                 <div class="row">
                     <div class="col-sm-6 col-md-4">
                         <div class="form-group form-focus select-focus">
@@ -30,6 +31,9 @@
                                 [submitted]="submitted"></app-dropdown>
                         </div>
                     </div>
+                </div>
+
+                <div class="row">
                     <div class="col-sm-6 col-md-4">
                         <div class="form-group form-focus select-focus">
                             <app-dropdown [label]="'Class'" [options]="classData"
@@ -38,10 +42,6 @@
                                 [submitted]="submitted"></app-dropdown>
                         </div>
                     </div>
-                </div>
-
-                <div class="row">
-
                     <div class="col-sm-6 col-md-4">
                         <div class="form-group form-focus select-focus">
                             <app-dropdown [label]="'Subject'" [options]="subjectData"
@@ -49,21 +49,22 @@
                                 [submitted]="submitted"></app-dropdown>
                         </div>
                     </div>
+                </div>
+
+                <div class="row">
                     <div class="col-sm-6 col-md-6">
                         <app-textarea [label]="'Description'" [id]="'chapter_description'"
                             [control]="editChapterForm.controls.description" [ErrorMessage]="'Description  is required'"
                             [submitted]="submitted"></app-textarea>
-
+                
                     </div>
-
+                    <div class="col-sm-6 col-md-6">
+                        <app-image-upload (onFileUpload)="onFileSelected($event)" [imageURL]="selectedImageURL"></app-image-upload>
+                    </div>
+                
                 </div>
 
                 <div class="row">
-
-                    <div class="col-sm-6 col-md-6">
-                        <app-image-upload (onFileUpload)="onFileSelected($event)"
-                        [imageURL]="selectedImageURL"></app-image-upload>
-                    </div>
                     <input type="checkbox" id="recommended" name="recommended"> Is Recommended?
                 </div>
                 <div class="row">

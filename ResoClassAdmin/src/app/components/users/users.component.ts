@@ -10,6 +10,8 @@ import { Subject } from '../../models/subject';
 import { Student } from '../../models/student';
 import { NotificationService } from '../../services/notification.service';
 import { Router } from '@angular/router';
+import { ColDef } from 'ag-grid-community';
+import { User } from '../../models/User';
 
 @Component({
   selector: 'app-users',
@@ -17,10 +19,9 @@ import { Router } from '@angular/router';
   styleUrl: './users.component.css',
 })
 export class UsersComponent {
-  usersList: Chapters[] = [];
   chapters: Chapters[] | undefined;
   subjects: Subject[] | undefined;
-  students: Student[] | undefined;
+  userList: User[] = [];
   chapterName: string = '';
   studentId: any;
   courseData: Course[] = [];
@@ -28,26 +29,25 @@ export class UsersComponent {
   selectedOption: any;
   selSubjectId: number | undefined;
   selectedFile: File | undefined;
+  showBulkUploadButton: boolean = false;
   imageUrl: string | undefined;
   isChecked: boolean = false;
   isAddPopupVisible: boolean = true;
+  colDefs: ColDef[] = [];
+  pageName: string = 'Student';
 
-  admissionId: string = '';
-  studenrName: string = '';
-  fatherName: string = '';
-  motherName: string = '';
-  dateOfBirth: Date = new Date();
-  courseId: number = 0;
-  admissionDate: Date = new Date();
-  MobileNumber: string = '';
-  EmailAddress: string = '';
-  AlternateMobileNumber: string = '';
-  AddressLine1: String = '';
-  AddressLine2: String = '';
-  Gender: string = '';
-  landMark: string = '';
-  stateId: number = 0;
-  cityId: number = 0;
+  OnDocumentUpload(event: any): void {
+    this.getUsers();
+  }
+
+  firstName: string = '';
+  lastName: string = '';
+  email: string = '';
+  phoneNumber: string = '';
+  roleId: number = 0;
+  password: string = '';
+  lastLoginDate: Date = new Date();
+ 
 
   constructor(
     private masterService: MasterService,
@@ -55,20 +55,49 @@ export class UsersComponent {
     private dialog: MatDialog,
     public notificationService: NotificationService,
     private router: Router
-  ) {}
+  ) {
+    
+    this.colDefs.push({
+      headerName: 'Fist Name',
+      field: 'firstName',
+      filter: 'agTextColumnFilter',
+    });
+    this.colDefs.push({
+      headerName: 'Last Name',
+      field: 'lastName',
+      filter: 'agTextColumnFilter',
+    });
+    this.colDefs.push({
+      headerName: 'Email',
+      field: 'email',
+      filter: 'agTextColumnFilter',
+    });
+    this.colDefs.push({
+      headerName: 'Phone Number',
+      field: 'phoneNumber',
+      filter: 'agTextColumnFilter',
+    });
+    this.colDefs.push({
+      headerName: 'Role',
+      field: 'role',
+      filter: 'agTextColumnFilter',
+    });
+
+    
+  }
 
   ngOnInit(): void {
-    this.getAllUsers();
-    this.getAllCourses();
+    this.getUsers();
+    
   }
 
-  editStudent(cId: any) {
-    this.router.navigate(['/student'], { queryParams: { id: cId } });
+  getStudentById(cId: any) {
+    this.router.navigate(['/editstudent'], { queryParams: { id: cId } });
   }
-  getAllUsers() {
-    this.masterService.getAll('Chapter', 'GetAll').subscribe((data: any) => {
+  getUsers() {
+    this.masterService.getAll('User', 'GetAll').subscribe((data: any) => {
       if (data.isSuccess) {
-        this.usersList = data.result;
+        this.userList = data.result;
       } else {
         alert(data.message);
       }
@@ -77,32 +106,38 @@ export class UsersComponent {
 
   showConfirmation(id: any): void {
     Swal.fire({
-      text: 'Do you really want to remove this course/class?',
+      text: 'Do you really want to remove this User?',
       icon: 'warning',
       showCancelButton: true,
-
-      // confirmButtonText: 'Yes, delete it!',
-      // cancelButtonText: 'No, cancel!',
-      // confirmButtonColor: '#3085d6',
-      // cancelButtonColor: '#d33'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.deleteStudent(id);
+        this.delete(id);
         Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
       }
     });
   }
 
-  deleteStudent(cId: any) {
+  delete(cId: number) {
     this.masterService
-      .delete(cId, 'Chapter', 'Delete')
+      .delete(cId, 'User', 'Delete')
       .subscribe((data: any) => {
         if (data.isSuccess) {
-          this.getAllUsers();
+          this.getUsers();
         } else {
           alert(data.message);
         }
       });
+  }
+
+  // Event handler for file input change event
+  onFileSelected(event: any): void {
+    if (event.target.files !== undefined && event.target.files.length > 0) {
+      this.selectedFile = event.target.files[0];
+      this.showBulkUploadButton = true;
+    } else {
+      this.selectedFile = undefined;
+      this.showBulkUploadButton = false;
+    }
   }
 
   getAllCourses() {
@@ -121,5 +156,13 @@ export class UsersComponent {
         alert(data.message);
       }
     });
+  }
+
+  editGridRecord(id: any) {
+    this.getStudentById(id);
+  }
+
+  deleteGridRecord(id: any) {
+    this.showConfirmation(id);
   }
 }

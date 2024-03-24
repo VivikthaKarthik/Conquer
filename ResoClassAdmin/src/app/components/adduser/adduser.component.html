@@ -7,54 +7,81 @@
                     <div class="col">
                         <h3 class="page-title">Users</h3>
                         <ul class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>
-                            <li class="breadcrumb-item"><a href="/students">User</a></li>
+
+                            <li class="breadcrumb-item"><a href="#">Organization</a></li>
                             <li class="breadcrumb-item">Add User</li>
                         </ul>
                     </div>
-                    <div class="col-auto float-right ml-auto">
-                        <h4>Bulk Upload</h4>
-                        <form class="import_div" id="importform" action="#" method="POST">
-                            <input type="file" class="form-control" name="import_file" required>
-                            <button class="btn import-btn" type="submit"><i class="las la-file-upload"></i>
-                                Import</button>
-                        </form>
-                    </div>
+
                 </div>
             </div>
-            <form action="#!" id="addform" [formGroup]="form" (ngSubmit)="onSubmit()">
+            <form [formGroup]="addUserForm" (ngSubmit)="onSubmit()">
                 <div class="row">
                     <div class="col-sm-6 col-md-3">
-                        <div class="form-group form-focus">
-                            <input type="text" class="form-control floating" id="first_Name" name="first_Name"
-                                formControlName="firstName" required>
-                            <label class="focus-label">First Name *</label>
-                        </div>
+                        <app-textbox [label]="'First Name'" [id]="'first_Name'"
+                            [control]="addUserForm.controls.firstName" [ErrorMessage]="'First Name is required'"
+                            [submitted]="submitted"></app-textbox>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <app-textbox [label]="'Last Name'" [id]="'last_Name'" [control]="addUserForm.controls.lastName"
+                            [submitted]="submitted"></app-textbox>
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="date" class="form-control floating" id="last_Name" name="last_Name"
-                                formControlName="lastName" required>
-                            <label class="focus-label">Last Name *</label>
-                        </div>
-                    </div>
-
-
-                    <div class="col-sm-6 col-md-3">
-                        <div class="form-group form-focus">
                             <input type="email" class="form-control floating" id="email" name="email"
-                                formControlName="email">
-                            <label class="focus-label">Email</label>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-md-3">
-                        <div class="form-group form-focus select-focus">
-                            <input type="date" class="form-control floating" id="user_Role" name="user_Role"
-                                formControlName="role" required>
-                            <label class="focus-label">Role *</label>
+                                formControlName="email" required
+                                [ngClass]="{'is-invalid': submitted && addUserForm.controls.email.errors}">
+                            <div *ngIf="submitted && addUserForm.controls.email.errors" class="text-danger">
+                                <div *ngIf="submitted && addUserForm.controls.email.errors.required">
+                                    Email is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Email *</label>
                         </div>
                     </div>
 
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <app-textbox [label]="'Phone Number'" [id]="'phone_number'"
+                            [control]="addUserForm.controls.phoneNumber" [ErrorMessage]="'Phone Number is required'"
+                            [submitted]="submitted"></app-textbox>
+
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus">
+                        
+                            <input type="password" class="form-control floating" id="password" name="password"
+                                formControlName="password" required
+                                [ngClass]="{'is-invalid': submitted && addUserForm.controls.password.errors}">
+                            <div *ngIf="submitted && addUserForm.controls.password.errors" class="text-danger">
+                                <div *ngIf="submitted && addUserForm.controls.password.errors.required">
+                                    Password is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Password *</label>
+                        </div>
+                        </div>
+
+                    
+
+
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <app-dropdown [label]="'Role'" [id]="'User_Role'" [options]="rolesData"
+                            [control]="addUserForm.controls.role" [ErrorMessage]="'Role is required'"
+                            [submitted]="submitted"></app-dropdown>
+
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <app-dropdown [label]="'Branch'" [id]="'User_Branch'" [options]="branchData"
+                            [control]="addUserForm.controls.branch" [ErrorMessage]="'Branch is required'"
+                            [submitted]="submitted"></app-dropdown>
+
+
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6 col-md-3">

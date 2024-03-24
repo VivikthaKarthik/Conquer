@@ -20,7 +20,9 @@ import { ListItem } from '../../models/listItem';
 export class AddstudentComponent {
   studentForm!: FormGroup;
   studentName: string = '';
-  courses: Course[] | undefined;
+ 
+  courseData:ListItem[] = [{ id: 0, name: 'Select Course' }];
+  classData:ListItem[] = [{ id: 0, name: 'Select Class' }];
   states: ListItem[] = [{ id: 0, name: 'Select State' }];
   cities: ListItem[] = [{ id: 0, name: 'Select City' }];
   submitted = false;
@@ -36,7 +38,7 @@ export class AddstudentComponent {
   ) {}
 
   ngOnInit(): void {
-    this.getAllCourses();
+    this.getCourses();
     this.getStates();
     this.studentForm = this.fb.group({
       // Define your form controls here
@@ -53,7 +55,8 @@ export class AddstudentComponent {
         [Validators.required, this.mobileNumberValidator()],
       ],
       email: [''],
-      courseId: [''],
+      courseId: ['',Validators.required],
+      classId: ['',Validators.required],
       addressLine1: ['', Validators.required],
       addressLine2: ['', Validators.required],
       landMark: [''],
@@ -108,21 +111,54 @@ export class AddstudentComponent {
   }
   
 
-  getAllCourses() {
-    this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
+  getCourses() {
+    this.masterService.getListItems('Course', '', 0).subscribe((data: any) => {
       if (data.isSuccess) {
-        this.courses = this.dataMappingService.mapToModel<Course>(
+        this.courseData = this.dataMappingService.mapToModel<ListItem>(
           data.result,
           (item) => ({
             id: item.id,
             name: item.name,
-            thumbnail: item.thumbnail,
           })
         );
       } else {
         alert(data.message);
       }
     });
+  }
+  getClsByCourseId(Id: number) {
+    if (Id !== undefined && Id !== 0) {
+      this.masterService
+        .getListItems('Class', 'Course', Id)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.classData = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
+    }
+    else{
+      this.masterService.getListItems('Class', '', 0).subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.classData = this.dataMappingService.mapToModel<ListItem>(
+            data.result,
+            (item) => ({
+              id: item.id,
+              name: item.name,
+            })
+          );
+        } else {
+          alert(data.message);
+        }
+      });
+    }
   }
   mobileNumberValidator(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -146,6 +182,7 @@ export class AddstudentComponent {
       MotherName: this.studentForm.value.motherName,
       DateOfBirth: this.studentForm.value.dateofBirth,
       CourseId: this.studentForm.value.courseId,
+      ClassId:this.studentForm.value.classId,
       AdmissionDate: this.studentForm.value.admissionDate,
       MobileNumber: String(this.studentForm.value.mobileNumber),
       EmailAddress: this.studentForm.value.email,
@@ -157,8 +194,8 @@ export class AddstudentComponent {
       StateId: this.studentForm.value.stateId,
       CityId: this.studentForm.value.cityId,
       PinCode: this.studentForm.value.pinCode,
-      Branchid: 'Brnach1',
-      Password: '123',
+      Branchid: '1000001',
+      Password: 'Reso@123',
     };
     console.log(JSON.stringify(objStudent));
     this.masterService

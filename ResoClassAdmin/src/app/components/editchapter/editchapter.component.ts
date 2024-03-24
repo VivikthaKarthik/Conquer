@@ -45,7 +45,9 @@ export class EditchapterComponent {
 
   ngOnInit(): void {
     this.getCourses();
-  
+    this.getClsByCourseId(0);
+    this.getSubByClsID(0);
+
     this.route.queryParams.subscribe((params) => {
       const id: string = params['id'];
       this.chapterId = parseInt(id);
@@ -92,9 +94,14 @@ export class EditchapterComponent {
       }
     });
   }
-  
+
+
+  onFileSelected(event: any): void {
+    this.selectedFile = event;
+  }
+
   getClsByCourseId(Id: number) {
-    if (Id !== undefined) {
+    if (Id !== undefined && Id !== 0) {
       this.masterService
         .getListItems('Class', 'Course', Id)
         .subscribe((data: any) => {
@@ -111,9 +118,24 @@ export class EditchapterComponent {
           }
         });
     }
+    else {
+      this.masterService.getListItems('Class', '', 0).subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.classData = this.dataMappingService.mapToModel<ListItem>(
+            data.result,
+            (item) => ({
+              id: item.id,
+              name: item.name,
+            })
+          );
+        } else {
+          alert(data.message);
+        }
+      });
+    }
   }
   getSubByClsID(Id: number) {
-    if (Id !== undefined) {
+    if (Id !== undefined && Id !== 0) {
       this.masterService
         .getListItems('Subject', 'Class', Id)
         .subscribe((data: any) => {
@@ -130,10 +152,21 @@ export class EditchapterComponent {
           }
         });
     }
-  }
-
-  onFileSelected(event: any): void {
-    this.selectedFile = event;
+    else {
+      this.masterService.getListItems('Subject', '', 0).subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.subjectData = this.dataMappingService.mapToModel<ListItem>(
+            data.result,
+            (item) => ({
+              id: item.id,
+              name: item.name,
+            })
+          );
+        } else {
+          alert(data.message);
+        }
+      });
+    }
   }
 
   onSubmit() {
@@ -149,9 +182,10 @@ export class EditchapterComponent {
     var objChapter = {
       id: this.chapterId,
       name: this.editChapterForm.value.name,
-      subjectId: subjID,
+      subjectId: this.editChapterForm.value.selSubId,
       description: this.editChapterForm.value.description,
       isRecommended: this.isChecked,
+      thumbnail: "NA",
     };
     if (this.selectedFile !== undefined) {
       this.masterService
@@ -163,7 +197,7 @@ export class EditchapterComponent {
             alert(data.message);
           }
         });
-     
+
     } else {
       this.masterService
         .put(objChapter, 'Chapter', 'Update')

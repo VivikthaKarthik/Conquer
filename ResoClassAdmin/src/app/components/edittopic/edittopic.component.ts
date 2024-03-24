@@ -41,7 +41,6 @@ export class EdittopicComponent {
       selClassId: ['', Validators.required],
       selSubjectId: ['', Validators.required],
       selChapterId: ['', Validators.required],
-      selTopicId: ['', Validators.required],
       description: ['', Validators.required],
     
     });
@@ -51,6 +50,10 @@ export class EdittopicComponent {
 
   ngOnInit(): void {
     this.getCourses();
+    this.getClsByCourseId(0);
+    this.getSubByClsID(0);
+    this.getChaptersBySubID(0);
+    
   
     this.route.queryParams.subscribe((params) => {
       const id: string = params['id'];
@@ -68,8 +71,7 @@ export class EdittopicComponent {
           this.editTopicForm.controls.selCourseId.setValue(data.result.courseId);
           this.editTopicForm.controls.selClassId.setValue(data.result.classId);
           this.editTopicForm.controls.selSubjectId.setValue(data.result.subjectId);
-          this.editTopicForm.controls.selChapterId.setValue(data.result.selChapterId);
-          this.editTopicForm.controls.selTopicId.setValue(data.result.selTopicId);
+          this.editTopicForm.controls.selChapterId.setValue(data.result.chapterId);
           this.editTopicForm.controls.description.setValue(data.result.description);
 
           
@@ -97,8 +99,12 @@ export class EdittopicComponent {
       }
     });
   }
+  
+  
+ 
+  
   getClsByCourseId(Id: number) {
-    if (Id !== undefined) {
+    if (Id !== undefined && Id !== 0) {
       this.masterService
         .getListItems('Class', 'Course', Id)
         .subscribe((data: any) => {
@@ -115,9 +121,24 @@ export class EdittopicComponent {
           }
         });
     }
+    else{
+      this.masterService.getListItems('Class', '', 0).subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.classData = this.dataMappingService.mapToModel<ListItem>(
+            data.result,
+            (item) => ({
+              id: item.id,
+              name: item.name,
+            })
+          );
+        } else {
+          alert(data.message);
+        }
+      });
+    }
   }
   getSubByClsID(Id: number) {
-    if (Id !== undefined) {
+    if (Id !== undefined && Id !== 0) {
       this.masterService
         .getListItems('Subject', 'Class', Id)
         .subscribe((data: any) => {
@@ -134,9 +155,24 @@ export class EdittopicComponent {
           }
         });
     }
+    else{
+      this.masterService.getListItems('Subject', '', 0).subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.subjectData = this.dataMappingService.mapToModel<ListItem>(
+            data.result,
+            (item) => ({
+              id: item.id,
+              name: item.name,
+            })
+          );
+        } else {
+          alert(data.message);
+        }
+      });
+    }
   }
   getChaptersBySubID(Id: number) {
-    if (Id !== undefined) {
+    if (Id !== undefined && Id !== 0) {
       this.masterService
         .getListItems('Chapter', 'Subject', Id)
         .subscribe((data: any) => {
@@ -153,28 +189,26 @@ export class EdittopicComponent {
           }
         });
     }
-  }
-  getTopicsByChapterID(Id: number) {
-    if (Id !== undefined) {
-      this.masterService
-        .getListItems('Topic', 'Chapter', Id)
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            this.topicData = this.dataMappingService.mapToModel<ListItem>(
-              data.result,
-              (item) => ({
-                id: item.id,
-                name: item.name,
-              })
-            );
-          } else {
-            alert(data.message);
-          }
-        });
+    else{
+      this.masterService.getListItems('Chapter', '', 0).subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.chapterData = this.dataMappingService.mapToModel<ListItem>(
+            data.result,
+            (item) => ({
+              id: item.id,
+              name: item.name,
+            })
+          );
+        } else {
+          alert(data.message);
+        }
+      });
     }
   }
+ 
 
   onFileSelected(event: any): void {
+    debugger
     this.selectedFile = event;
   }
 
@@ -193,6 +227,7 @@ export class EdittopicComponent {
       name: this.editTopicForm.value.name,
       chapterId: this.editTopicForm.value.selChapterId,
       description: this.editTopicForm.value.description,
+      thumbnail:"na"
     };
     if (this.selectedFile != null) {
       this.masterService

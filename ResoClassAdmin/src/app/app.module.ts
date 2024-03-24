@@ -31,9 +31,7 @@ import { EditclassComponent } from './components/editclass/editclass.component';
     AppComponent,
     LoginComponent,
     NotificationComponent,
-    UsersComponent,
-    AdduserComponent,
-    EdituserComponent,
+    
     ActionCellRendererComponent,
     DynamicbuttoncellrenderComponent,
     NotFoundComponent,

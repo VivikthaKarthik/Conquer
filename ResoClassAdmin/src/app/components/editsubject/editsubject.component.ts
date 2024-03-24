@@ -54,6 +54,7 @@ export class EditsubjectComponent {
   }
   ngOnInit(): void {
     this.getAllCourses();
+    this.getClassesByCourseId(0);
     this.route.queryParams.subscribe((params) => {
       const id: string = params['id'];
       this.subjectId = id;
@@ -93,7 +94,7 @@ export class EditsubjectComponent {
     });
   }
   getClassesByCourseId(Id: number) {
-    if (Id !== undefined) {
+    if (Id !== undefined && Id !== 0) {
       this.masterService
         .getListItems('Class', 'Course', Id)
         .subscribe((data: any) => {
@@ -110,7 +111,23 @@ export class EditsubjectComponent {
           }
         });
     }
+    else{
+      this.masterService.getListItems('Class', '', 0).subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.classData = this.dataMappingService.mapToModel<ListItem>(
+            data.result,
+            (item) => ({
+              id: item.id,
+              name: item.name,
+            })
+          );
+        } else {
+          alert(data.message);
+        }
+      });
+    }
   }
+  
   onSubmit() {
     this.submitted = true;
     if (this.editSubjectForm.invalid) {
@@ -122,10 +139,10 @@ export class EditsubjectComponent {
 
   updateSubject(id: any) {
     var subjectData = {
-      id: this.subjectId,
-      name: this.subjectName,
-      courseId: parseInt(this.selectedValue),
-      classId: parseInt(this.selectedOption),
+      id: id,
+      name: this.editSubjectForm.value.name,
+      courseId: this.editSubjectForm.value.course,
+      classId: this.editSubjectForm.value.class,
       thumbnail: 'NA',
     };
     if (this.selectedFile != null) {

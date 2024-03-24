@@ -16,23 +16,8 @@ import { ListItem } from '../../models/listItem';
 export class EditstudentComponent {
   studentForm!: FormGroup;
   studentId: number = 0;
-  admissionId: string = "";
-  studenrName: string = "";
-  fatherName: string = "";
-  motherName: string = "";
-  dateOfBirth: Date = new Date()
-  courseId: number = 0;
-  admissionDate: Date = new Date();
-  MobileNumber: string = "";
-  EmailAddress: string = "";
-  AlternateMobileNumber: string = "";
-  AddressLine1: String = "";
-  AddressLine2: String = "";
-  Gender: string = "";
-  landMark: string = "";
-  stateId: number = 0;
-  cityId: number = 0;
-  pincode :string = "";
+  courseData:ListItem[] = [{ id: 0, name: 'Select Course' }];
+  classData:ListItem[] = [{ id: 0, name: 'Select Class' }];
   submitted: boolean = false;
   selectedOption: any;
   selectedCity:any;
@@ -47,7 +32,8 @@ export class EditstudentComponent {
 
   ngOnInit() {
     
-    this.getAllCourses();
+    this.getCourses();
+    this.getClsByCourseId(0);
     this.getStates();
     this.route.queryParams.subscribe(params => {
      
@@ -69,7 +55,8 @@ export class EditstudentComponent {
       mobileNumber: ['', [Validators.required, this.mobileNumberValidator()]],
       altMobileNumber: ['', [Validators.required, this.mobileNumberValidator()]],
       email: [''],
-      courseId: [''],
+      courseId: ['', Validators.required],
+      classId: ['', Validators.required],
       addressLine1: ['', Validators.required],
       addressLine2: ['', Validators.required],
       landMark: [''],
@@ -91,23 +78,24 @@ export class EditstudentComponent {
 
         if (data.isSuccess) {
           if (data.result != null && data.result.name != null) {
-            this.studenrName = data.result.name;
-            this.admissionId= data.result.admissionId;
-            this.fatherName= data.result.fatherName;
-            this.motherName= data.result.motherName;
-            this.dateOfBirth= data.result.dateOfBirth;
-            this.courseId= data.result.courseId;
-            this.admissionDate= data.result.admissionDate;
-            this.MobileNumber= data.result.mobileNumber;
-            this.EmailAddress= data.result.emailAddress;
-            this.AlternateMobileNumber= data.result.alternateMobileNumber;
-            this.AddressLine1= data.result.addressLine1;
-            this.AddressLine2= data.result.addressLine2;
-            this.Gender= data.result.gender;
-            this.landMark= data.result.landmark;
-            this.stateId= data.result.stateId;
-            this.cityId= data.result.cityId;
-            this.pincode = data.result.pinCode;
+            this.studentForm.controls.studentName.setValue(data.result.name);
+            this.studentForm.controls.admissionId.setValue(data.result.admissionId);
+            this.studentForm.controls.fatherName.setValue(data.result.fatherName);
+            this.studentForm.controls.motherName.setValue(data.result.motherName);
+            this.studentForm.controls.dateofBirth.setValue(data.result.dateOfBirth);
+            this.studentForm.controls.courseId.setValue(data.result.courseId);
+            this.studentForm.controls.classId.setValue(data.result.classId);
+            this.studentForm.controls.admissionDate.setValue(data.result.admissionDate);
+            this.studentForm.controls.mobileNumber.setValue(data.result.mobileNumber);
+            this.studentForm.controls.emailAddress.setValue(data.result.emailAddress);
+            this.studentForm.controls.alternateMobileNumber.setValue(data.result.alternateMobileNumber);
+            this.studentForm.controls.addressLine1.setValue(data.result.addressLine1);
+            this.studentForm.controls.addressLine2.setValue(data.result.addressLine2);
+            this.studentForm.controls.gender.setValue(data.result.gender);
+            this.studentForm.controls.landMark.setValue(data.result.landmark);
+            this.studentForm.controls.stateId.setValue(data.result.stateId);
+            this.studentForm.controls.cityId.setValue(data.result.cityId);
+            this.studentForm.controls.pinCode.setValue(data.result.pinCode);
           }
           else {
             alert('Some error occured..! Plaese try again');
@@ -128,22 +116,6 @@ export class EditstudentComponent {
     else {
       this.updateStudent();
     }
-  }
-  getAllCourses() {
-    this.masterService.getAll('Course', 'GetAll').subscribe((data: any) => {
-      if (data.isSuccess) {
-        this.courses = this.dataMappingService.mapToModel<Course>(
-          data.result,
-          (item) => ({
-            id: item.id,
-            name: item.name,
-            thumbnail: item.thumbnail,
-          })
-        );
-      } else {
-        alert(data.message);
-      }
-    });
   }
 
   getStates() {
@@ -166,24 +138,25 @@ export class EditstudentComponent {
     debugger
     var studentData = {
       id: this.studentId,
-      AdmissionId: this.admissionId,
-      Name: this.studenrName,
-      FatherName: this.fatherName,
-      MotherName: this.motherName,
-      DateOfBirth: this.dateOfBirth,
-      CourseId: this.courseId,
-      AdmissionDate: this.admissionDate,
-      MobileNumber: this.MobileNumber,
-      EmailAddress: this.EmailAddress,
-      AlternateMobileNumber: this.AlternateMobileNumber,
-      AddressLine1: this.AddressLine1,
-      Gender: this.Gender,
-      Landmark: this.landMark,
-      AddressLine2: this.AddressLine2,
-      StateId: this.stateId,
-      City: this.cityId,
-      PinCode:this.pincode,
-      BranchId:'1',
+      AdmissionId: this.studentForm.controls.admissionId,
+      Name: this.studentForm.controls.studentName,
+      FatherName:  this.studentForm.controls.fatherName,
+      MotherName:  this.studentForm.controls.motherName,
+      DateOfBirth: this.studentForm.controls.dateofBirth,
+      CourseId: this.studentForm.controls.courseId,
+      ClassId:this.studentForm.controls.classId,
+      AdmissionDate: this.studentForm.controls.admissionDate,
+      MobileNumber: this.studentForm.controls.mobileNumber,
+      EmailAddress: this.studentForm.controls.emailAddress,
+      AlternateMobileNumber: this.studentForm.controls.alternateMobileNumber,
+      AddressLine1: this.studentForm.controls.addressLine1,
+      Gender: this.studentForm.controls.addressLine2,
+      Landmark: this.studentForm.controls.landMark,
+      AddressLine2: this.studentForm.controls.landMark,
+      StateId: this.studentForm.controls.stateId,
+      City:  this.studentForm.controls.cityId,
+      PinCode:this.studentForm.controls.pinCode,
+      BranchId:'1000001',
       Password:'123'
     }
     this.masterService.put(studentData, 'Student', 'Update')
@@ -195,6 +168,21 @@ export class EditstudentComponent {
         }
       });
      
+  }
+  getCourses() {
+    this.masterService.getListItems('Course', '', 0).subscribe((data: any) => {
+      if (data.isSuccess) {
+        this.courseData = this.dataMappingService.mapToModel<ListItem>(
+          data.result,
+          (item) => ({
+            id: item.id,
+            name: item.name,
+          })
+        );
+      } else {
+        alert(data.message);
+      }
+    });
   }
   getCities(stateId: any) {
     
@@ -215,7 +203,43 @@ export class EditstudentComponent {
         }
       });
   }
-
+  onStateChange(selectedId: any) {
+    this.getCities(selectedId);
+  }
+  getClsByCourseId(Id: number) {
+    if (Id !== undefined && Id !== 0) {
+      this.masterService
+        .getListItems('Class', 'Course', Id)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.classData = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
+    }
+    else{
+      this.masterService.getListItems('Class', '', 0).subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.classData = this.dataMappingService.mapToModel<ListItem>(
+            data.result,
+            (item) => ({
+              id: item.id,
+              name: item.name,
+            })
+          );
+        } else {
+          alert(data.message);
+        }
+      });
+    }
+  }
   mobileNumberValidator(): ValidatorFn {
     return (control: AbstractControl): {[key: string]: any} | null => {
       const valid = /^[0-9]{10}$/.test(control.value);

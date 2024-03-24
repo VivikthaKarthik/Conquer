@@ -37,7 +37,7 @@ export class AddtopicComponent {
       selClassId: ['', Validators.required],
       selSubjectId: ['', Validators.required],
       selChapterId: ['', Validators.required],
-      selTopicId: ['', Validators.required],
+     
       description: ['', Validators.required],
     
     });
