@@ -24,6 +24,8 @@ export class EditstudentComponent {
   courses: Course[] = [];
   states: ListItem[] = [{ id: 0, name: 'Select State' }];
   cities: ListItem[] = [{ id: 0, name: 'Select City' }];
+  originalDateTime : string = "";
+  formatedDateTime: string = "";
 
   constructor(
     private masterService: MasterService,
@@ -35,6 +37,7 @@ export class EditstudentComponent {
     this.getCourses();
     this.getClsByCourseId(0);
     this.getStates();
+    this.getCities(0);
     this.route.queryParams.subscribe(params => {
      
       const id:string = params['id'];
@@ -68,9 +71,11 @@ export class EditstudentComponent {
       // Add more controls as needed
     });
   }
+  
+
 
   editStudent(cId:string) {
-    debugger
+    
     this.studentId = parseInt(cId);
     this.masterService
       .getById(cId, 'Student', 'Get','studentId')
@@ -82,10 +87,10 @@ export class EditstudentComponent {
             this.studentForm.controls.admissionId.setValue(data.result.admissionId);
             this.studentForm.controls.fatherName.setValue(data.result.fatherName);
             this.studentForm.controls.motherName.setValue(data.result.motherName);
-            this.studentForm.controls.dateofBirth.setValue(data.result.dateOfBirth);
+            this.studentForm.controls.dateofBirth.setValue(data.result.dateOfBirth.substr(0,10));
             this.studentForm.controls.courseId.setValue(data.result.courseId);
             this.studentForm.controls.classId.setValue(data.result.classId);
-            this.studentForm.controls.admissionDate.setValue(data.result.admissionDate);
+            this.studentForm.controls.admissionDate.setValue(data.result.admissionDate.substr(0,10));
             this.studentForm.controls.mobileNumber.setValue(data.result.mobileNumber);
             this.studentForm.controls.email.setValue(data.result.emailAddress);
             this.studentForm.controls.altMobileNumber.setValue(data.result.alternateMobileNumber);
@@ -135,27 +140,27 @@ export class EditstudentComponent {
     });
   }
   updateStudent() {
-    debugger
+    
     var studentData = {
       id: this.studentId,
-      AdmissionId: this.studentForm.controls.admissionId,
-      Name: this.studentForm.controls.studentName,
-      FatherName:  this.studentForm.controls.fatherName,
-      MotherName:  this.studentForm.controls.motherName,
-      DateOfBirth: this.studentForm.controls.dateofBirth,
-      CourseId: this.studentForm.controls.courseId,
-      ClassId:this.studentForm.controls.classId,
-      AdmissionDate: this.studentForm.controls.admissionDate,
-      MobileNumber: this.studentForm.controls.mobileNumber,
-      EmailAddress: this.studentForm.controls.emailAddress,
-      AlternateMobileNumber: this.studentForm.controls.alternateMobileNumber,
-      AddressLine1: this.studentForm.controls.addressLine1,
-      Gender: this.studentForm.controls.addressLine2,
-      Landmark: this.studentForm.controls.landMark,
-      AddressLine2: this.studentForm.controls.landMark,
-      StateId: this.studentForm.controls.stateId,
-      City:  this.studentForm.controls.cityId,
-      PinCode:this.studentForm.controls.pinCode,
+      AdmissionId: this.studentForm.controls.admissionId.value,
+      Name: this.studentForm.controls.studentName.value,
+      FatherName:  this.studentForm.controls.fatherName.value,
+      MotherName:  this.studentForm.controls.motherName.value,
+      DateOfBirth: this.studentForm.controls.dateofBirth.value,
+      CourseId: this.studentForm.controls.courseId.value,
+      ClassId:this.studentForm.controls.classId.value,
+      AdmissionDate: this.studentForm.controls.admissionDate.value,
+      MobileNumber: this.studentForm.controls.mobileNumber.value,
+      EmailAddress: this.studentForm.controls.email.value,
+      AlternateMobileNumber: this.studentForm.controls.altMobileNumber.value,
+      AddressLine1: this.studentForm.controls.addressLine1.value,
+      AddressLine2: this.studentForm.controls.addressLine2.value,
+      Gender: this.studentForm.controls.gender.value,
+      Landmark: this.studentForm.controls.landMark.value,
+      StateId: this.studentForm.controls.stateId.value,
+      City:  this.studentForm.controls.cityId.value,
+      PinCode:this.studentForm.controls.pinCode.value,
       BranchId:'1000001',
       Password:'123'
     }
@@ -184,9 +189,11 @@ export class EditstudentComponent {
       }
     });
   }
+   
+
   getCities(stateId: any) {
-    
-    this.masterService
+    if (stateId !== undefined && stateId !== 0) {
+      this.masterService
       .getListItems('city', 'state', stateId)
       .subscribe((data: any) => {
         if (data.isSuccess) {
@@ -202,6 +209,26 @@ export class EditstudentComponent {
           alert(data.message);
         }
       });
+    }
+    else{
+      this.masterService
+      .getListItems('city', '', 0)
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          var list = this.dataMappingService.mapToModel<ListItem>(
+            data.result,
+            (item) => ({
+              id: item.id,
+              name: item.name,
+            })
+          );
+          this.cities = this.cities.concat(list);
+        } else {
+          alert(data.message);
+        }
+      });
+    }
+    
   }
   onStateChange(selectedId: any) {
     this.getCities(selectedId);
