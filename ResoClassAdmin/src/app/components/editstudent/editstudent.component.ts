@@ -87,8 +87,8 @@ export class EditstudentComponent {
             this.studentForm.controls.classId.setValue(data.result.classId);
             this.studentForm.controls.admissionDate.setValue(data.result.admissionDate);
             this.studentForm.controls.mobileNumber.setValue(data.result.mobileNumber);
-            this.studentForm.controls.emailAddress.setValue(data.result.emailAddress);
-            this.studentForm.controls.alternateMobileNumber.setValue(data.result.alternateMobileNumber);
+            this.studentForm.controls.email.setValue(data.result.emailAddress);
+            this.studentForm.controls.altMobileNumber.setValue(data.result.alternateMobileNumber);
             this.studentForm.controls.addressLine1.setValue(data.result.addressLine1);
             this.studentForm.controls.addressLine2.setValue(data.result.addressLine2);
             this.studentForm.controls.gender.setValue(data.result.gender);

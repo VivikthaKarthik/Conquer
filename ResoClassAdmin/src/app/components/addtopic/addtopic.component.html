@@ -17,71 +17,118 @@
                 <div class="row">
                     <div class="col-sm-6 col-md-4">
                         <div class="form-group form-focus select-focus">
-                            <app-textbox [label]="'Topic Name '" [id]="'topic_name'"
-                                [control]="addTopicForm.controls.name" [ErrorMessage]="'Name  is required'"
-                                [submitted]="submitted"></app-textbox>
+                            <input type="text" class="form-control floating select-focus" id="chapter_name"
+                                formControlName="name" name="chapter_name"
+                                [ngClass]="{'is-invalid': submitted && addTopicForm.controls.name.errors}">
+                            <div *ngIf="submitted && addTopicForm.controls.name.errors" class="text-danger">
+                                <div *ngIf="submitted && addTopicForm.controls.name.errors.required">
+                                    Topic Name Name is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Topic Name *</label>
+                        </div>
+
+
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control  floating" id="course_id" name="course_id"
+                                formControlName="selCourseId" (ngModelChange)="getClsByCourseId($event)"
+                                [ngClass]="{'is-invalid': submitted && addTopicForm.controls.selCourseId.errors}">
+                                <option value="">Select Course</option>
+                                <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && addTopicForm.controls.selCourseId.errors" class="text-danger">
+                                <div *ngIf="submitted && addTopicForm.controls.selCourseId.errors.required">
+                                    Course is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Couse *</label>
+
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-4">
                         <div class="form-group form-focus select-focus">
-                            <app-dropdown [label]="'Course'" [options]="courseData"
-                                [control]="addTopicForm.controls.selCourseId"
-                                (dropdownOnChange)="getClsByCourseId($event)" [ErrorMessage]="'Course is required'"
-                                [submitted]="submitted"></app-dropdown>
+                            <select class="form-control  floating" id="class_id" name="class_id"
+                                formControlName="selClassId" (ngModelChange)="getSubByClsID($event)"
+                                [ngClass]="{'is-invalid': submitted && addTopicForm.controls.selClassId.errors}">
+                                <option value="">Select Class</option>
+                                <option *ngFor="let item of classData" [value]="item.id">{{ item.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && addTopicForm.controls.selClassId.errors" class="text-danger">
+                                <div *ngIf="submitted && addTopicForm.controls.selClassId.errors.required">
+                                    Class is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Class *</label>
+
                         </div>
                     </div>
-                    
+
                 </div>
 
                 <div class="row">
-                    
-                    <div class="col-sm-6 col-md-4">
-                        <div class="form-group form-focus select-focus">
-                            <app-dropdown [label]="'Class'" [options]="classData"
-                                [control]="addTopicForm.controls.selClassId" (dropdownOnChange)="getSubByClsID($event)"
-                                [ErrorMessage]="'Class is required'" [submitted]="submitted"></app-dropdown>
-                        </div>
-                    </div>
 
                     <div class="col-sm-6 col-md-4">
                         <div class="form-group form-focus select-focus">
-                            <app-dropdown [label]="'Subject'" [options]="subjectData" (dropdownOnChange)="getChaptersBySubID($event)"
-                                [control]="addTopicForm.controls.selSubjectId" [ErrorMessage]="'Subject is required'"
-                                [submitted]="submitted"></app-dropdown>
+                            <select class="form-control  floating" id="subject_id" name="subject_id"
+                                formControlName="selSubjectId" (ngModelChange)="getChaptersBySubID($event)"
+                                [ngClass]="{'is-invalid': submitted && addTopicForm.controls.selSubjectId.errors}">
+                                <option value="">Select Subject</option>
+                                <option *ngFor="let item of subjectData" [value]="item.id">{{ item.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && addTopicForm.controls.selSubjectId.errors" class="text-danger">
+                                <div *ngIf="submitted && addTopicForm.controls.selSubjectId.errors.required">
+                                    Subject is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Subject</label>
                         </div>
                     </div>
-
-
-                </div>
-
-                <div class="row">
                     <div class="col-sm-6 col-md-4">
                         <div class="form-group form-focus select-focus">
-                            <app-dropdown [label]="'Chapter'" [options]="chapterData" (dropdownOnChange)="getTopicsByChapterID($event)"
-                                [control]="addTopicForm.controls.selChapterId" [ErrorMessage]="'Chapter is required'"
-                                [submitted]="submitted"></app-dropdown>
+                            <select class="form-control  floating" id="chapter_id" name="chapter_id"
+                                formControlName="selChapterId"
+                                [ngClass]="{'is-invalid': submitted && addTopicForm.controls.selChapterId.errors}">
+                                <option value="">Select Chapter</option>
+                                <option *ngFor="let item of chapterData" [value]="item.id">{{ item.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && addTopicForm.controls.selChapterId.errors" class="text-danger">
+                                <div *ngIf="submitted && addTopicForm.controls.selChapterId.errors.required">
+                                    Chapter is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Chapter</label>
                         </div>
                     </div>
-                   
 
 
                 </div>
                 <div class="row">
                     <div class="col-sm-6 col-md-6">
-                        <app-textarea [label]="'Description'" [id]="'topic_description'"
-                            [control]="addTopicForm.controls.description" [ErrorMessage]="'Description  is required'"
-                            [submitted]="submitted"></app-textarea>
-
+                        <div class="form-group form-focus select-focus">
+                            <textarea class="form-control floating textarea-height select-focus" id="topic_description"
+                                formControlName="description" name="topic_description"
+                                [ngClass]="{'is-invalid': submitted && addTopicForm.controls.description.errors}"></textarea>
+                            <div *ngIf="submitted && addTopicForm.controls.description.errors" class="text-danger">
+                                <div *ngIf="submitted && addTopicForm.controls.description.errors.required">
+                                    Description is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Description *</label>
+                        </div>
                     </div>
                     <div class="col-sm-6 col-md-6">
                         <app-image-upload (onFileUpload)="onFileSelected($event)"></app-image-upload>
                     </div>
-                    
-
-                    
                 </div>
                 <div class="row">
-                    <input type="checkbox" id="recommended" name="recommended" style="margin-left: 20px;"> Is Recommended?
+                    <input type="checkbox" id="recommended" name="recommended" style="margin-left: 20px;"> Is
+                    Recommended?
                 </div>
                 <div class="row">
                     <div class="col-sm-6 col-md-3">

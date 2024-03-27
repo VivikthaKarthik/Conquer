@@ -17,9 +17,18 @@
             <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
                 <div class="row">
                     <div class="col-sm-6 col-md-3">
-                        <app-textbox [label]="'Admission Id'" [id]="'admission_id'"
-                            [control]="studentForm.controls.admissionId" [ErrorMessage]="'Admission Id is required'"
-                            [submitted]="submitted"></app-textbox>
+                        <div class="form-group form-focus select-focus">
+                            <input type="text" class="form-control floating select-focus" id="admission_id"
+                                formControlName="admissionId" name="admission_id"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.admissionId.errors}">
+                            <div *ngIf="submitted && studentForm.controls.admissionId.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.admissionId.errors.required">
+                                    Admission Id is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Admission Id *</label>
+                        </div>
+
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
@@ -36,27 +45,46 @@
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <app-textbox [label]="'Student Name'" [id]="'student_name'"
-                                [control]="studentForm.controls.studentName" [ErrorMessage]="'Name is required'"
-                                [submitted]="submitted"></app-textbox>
-
+                            <input type="text" class="form-control floating select-focus" id="student_name"
+                                formControlName="studentName" name="student_name"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.studentName.errors}">
+                            <div *ngIf="submitted && studentForm.controls.studentName.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.studentName.errors.required">
+                                    Student Name is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Student Name *</label>
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <div class="form-group form-focus select-focus">
-                            <app-textbox [label]="'Father Name'" [id]="'father_name'"
-                                [control]="studentForm.controls.fatherName" [ErrorMessage]="'FatherName  is required'"
-                                [submitted]="submitted"></app-textbox>
 
+                        <div class="form-group form-focus select-focus">
+                            <input type="text" class="form-control floating select-focus" id="father_name"
+                                formControlName="fatherName" name="father_name"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.fatherName.errors}">
+                            <div *ngIf="submitted && studentForm.controls.fatherName.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.fatherName.errors.required">
+                                    FatherName is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Father Name *</label>
                         </div>
+
+
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <app-textbox [label]="'Mother Name'" [id]="'mother_name'"
-                                [control]="studentForm.controls.motherName" [ErrorMessage]="'MotherName  is required'"
-                                [submitted]="submitted"></app-textbox>
-
+                            <input type="text" class="form-control floating select-focus" id="mother_name"
+                                formControlName="motherName" name="mother_name"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.motherName.errors}">
+                            <div *ngIf="submitted && studentForm.controls.motherName.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.motherName.errors.required">
+                                    Mother Name is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Father Name *</label>
                         </div>
+
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
@@ -123,15 +151,43 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        
-                        <app-dropdown [label]="'Course'" [options]="courseData" [id]="'courseId'"
-                            [control]="studentForm.controls.courseId" (dropdownOnChange)="getClsByCourseId($event)"
-                            [ErrorMessage]="'Course is required'" [submitted]="submitted"></app-dropdown>
+
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control  floating" id="course_id" name="course_id"
+                                formControlName="courseId" (ngModelChange)="getClsByCourseId($event)"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.courseId.errors}">
+                                <option value="">Select Course</option>
+                                <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && studentForm.controls.courseId.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.courseId.errors.required">
+                                    Course is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Course *</label>
+
+                        </div>
+
+
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <app-dropdown [label]="'Class'" [options]="classData" [id]="'classId'"
-                            [control]="studentForm.controls.classId" [ErrorMessage]="'Course is required'"
-                            [submitted]="submitted"></app-dropdown>
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control  floating" id="class_id" name="class_id"
+                                formControlName="classId"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.classId.errors}">
+                                <option value="">Select Class</option>
+                                <option *ngFor="let item of classData" [value]="item.id">{{ item.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && studentForm.controls.classId.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.classId.errors.required">
+                                    Class is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Class *</label>
+
+                        </div>
                     </div>
                     <div class="col-sm-6 col-md-6">
                         <app-textbox [label]="'AddessLane 1'" [id]="'address_line1'"

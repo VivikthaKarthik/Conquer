@@ -21,10 +21,10 @@ export class AddstudentComponent {
   studentForm!: FormGroup;
   studentName: string = '';
  
-  courseData:ListItem[] = [{ id: 0, name: 'Select Course' }];
-  classData:ListItem[] = [{ id: 0, name: 'Select Class' }];
-  states: ListItem[] = [{ id: 0, name: 'Select State' }];
-  cities: ListItem[] = [{ id: 0, name: 'Select City' }];
+  courseData:ListItem[] = [];
+  classData:ListItem[] = [];
+  states: ListItem[] = [];
+  cities: ListItem[] = [];
   submitted = false;
   selectedOption: any;
   selectedCity: any;
@@ -40,6 +40,7 @@ export class AddstudentComponent {
   ngOnInit(): void {
     this.getCourses();
     this.getStates();
+    this.getClsByCourseId(0);
     this.studentForm = this.fb.group({
       // Define your form controls here
       admissionId: ['', Validators.required],

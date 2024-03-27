@@ -106,6 +106,7 @@ export class AddtopicComponent {
     }
   }
   getChaptersBySubID(Id: number) {
+   
     if (Id !== undefined) {
       this.masterService
         .getListItems('Chapter', 'Subject', Id)
