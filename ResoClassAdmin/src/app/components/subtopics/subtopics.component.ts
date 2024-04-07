@@ -18,6 +18,7 @@ import {
   FormBuilder,
 } from '@angular/forms';
 import { SubTopic } from '../../models/subtopics';
+import { Router } from '@angular/router';
 declare var $: any;
 
 @Component({
@@ -61,7 +62,8 @@ export class SubtopicsComponent {
     private dataMappingService: DataMappingService,
     private dialog: MatDialog,
     public notificationService: NotificationService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private router: Router
   ) {
     {
       // this.colDefs.push({
@@ -133,6 +135,21 @@ export class SubtopicsComponent {
         field: 'homeDisplay',
         filter: 'agTextColumnFilter',
       });
+      this.colDefs.push({
+        headerName: 'Class Notes Url',
+        field: 'classNotesUrl',
+        filter: 'agTextColumnFilter',
+      });
+      this.colDefs.push({
+        headerName: 'Extract Url',
+        field: 'extractUrl',
+        filter: 'agTextColumnFilter',
+      });
+      this.colDefs.push({
+        headerName: 'Rating',
+        field: 'rating',
+        filter: 'agTextColumnFilter',
+      });
     }
     // Reactive-Form validations
     {
@@ -174,23 +191,7 @@ export class SubtopicsComponent {
   }
 
   getSubTopicById(Id: any) {
-    this.getAllChapters();
-    this.subTopicId = Id;
-    this.masterService.getById(Id, 'SubTopic', 'Get').subscribe((data: any) => {
-      if (data.isSuccess) {
-        if (data.result != null && data.result.name != null) {
-          this.topicName = data.result.name;
-          this.selectedOption = data.result.topicId;
-          this.thumbnail = data.result.thumbnail;
-          this.description = data.result.description;
-          ($('#edit_topic') as any).modal('show');
-        } else {
-          alert('Some error occured..! Plaese try again');
-        }
-      } else {
-        alert(data.message);
-      }
-    });
+    this.router.navigate(['/editsubtopic'], { queryParams: { id: Id } });
   }
 
   createSubTopic() {

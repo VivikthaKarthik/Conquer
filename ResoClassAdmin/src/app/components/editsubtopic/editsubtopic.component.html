@@ -1,1 +1,245 @@
-<p>editsubtopic works!</p>
+<div class="main-wrapper">
+
+    <div class="page-wrapper">
+        <div class="content container-fluid">
+            <div class="page-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="page-title"><a href="/students">Sub Topic</a></h3>
+                        <ul class="breadcrumb">
+
+                            <li class="breadcrumb-item">Edit SubTopic</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <form [formGroup]="editSubTopicForm" (ngSubmit)="onSubmit()">
+                <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="text" class="form-control floating select-focus" id="chapter_name"
+                                formControlName="name" name="chapter_name"
+                                [ngClass]="{'is-invalid': submitted && editSubTopicForm.controls.name.errors}">
+                            <div *ngIf="submitted && editSubTopicForm.controls.name.errors" class="text-danger">
+                                <div *ngIf="submitted && editSubTopicForm.controls.name.errors.required">
+                                    Name is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Name *</label>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="text" class="form-control floating select-focus" id="source_URL"
+                                formControlName="sourceURL" name="source_URL"
+                                [ngClass]="{'is-invalid': submitted && editSubTopicForm.controls.sourceURL.errors}">
+                            <div *ngIf="submitted && editSubTopicForm.controls.sourceURL.errors" class="text-danger">
+                                <div *ngIf="submitted && editSubTopicForm.controls.sourceURL.errors.required">
+                                    Source-URL is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Source URL *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="text" class="form-control floating select-focus" id="duration"
+                                formControlName="duration" name="duration"
+                                [ngClass]="{'is-invalid': submitted && editSubTopicForm.controls.duration.errors}">
+                            <div *ngIf="submitted && editSubTopicForm.controls.duration.errors" class="text-danger">
+                                <div *ngIf="submitted && editSubTopicForm.controls.duration.errors.required">
+                                    Duration is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Duration *</label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control  floating" id="course_id" name="course_id"
+                                formControlName="selCourseId" (ngModelChange)="getClsByCourseId($event)"
+                                [ngClass]="{'is-invalid': submitted && editSubTopicForm.controls.selCourseId.errors}">
+                                <option value="">Select Course</option>
+                                <option *ngFor="let item of courseData" [value]="item.id">{{ item.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && editSubTopicForm.controls.selCourseId.errors" class="text-danger">
+                                <div *ngIf="submitted && editSubTopicForm.controls.selCourseId.errors.required">
+                                    Course is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Course *</label>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control  floating" id="class_id" name="class_id"
+                                formControlName="selClassId" (ngModelChange)="getSubByClsID($event)"
+                                [ngClass]="{'is-invalid': submitted && editSubTopicForm.controls.selClassId.errors}">
+                                <option value="">Select Class</option>
+                                <option *ngFor="let item of classData" [value]="item.id">{{ item.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && editSubTopicForm.controls.selClassId.errors" class="text-danger">
+                                <div *ngIf="submitted && editSubTopicForm.controls.selClassId.errors.required">
+                                    Class is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Class *</label>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control  floating" id="subject_id" name="subject_id"
+                                formControlName="selSubId"
+                                [ngClass]="{'is-invalid': submitted && editSubTopicForm.controls.selSubId.errors}">
+                                <option value="">Select Subject</option>
+                                <option *ngFor="let item of subjectData" [value]="item.id">{{ item.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && editSubTopicForm.controls.selSubId.errors" class="text-danger">
+                                <div *ngIf="submitted && editSubTopicForm.controls.selSubId.errors.required">
+                                    Subject is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Subject</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control  floating" id="chapter_id" name="chapter_id"
+                                formControlName="selChapterId"
+                                [ngClass]="{'is-invalid': submitted && editSubTopicForm.controls.selChapterId.errors}">
+                                <option value="">Select Subject</option>
+                                <option *ngFor="let item of chapterData" [value]="item.id">{{ item.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && editSubTopicForm.controls.selChapterId.errors" class="text-danger">
+                                <div *ngIf="submitted && editSubTopicForm.controls.selChapterId.errors.required">
+                                    Chapter is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Chapter</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control  floating" id="Topic_id" name="Topic_id"
+                                formControlName="selTopicId"
+                                [ngClass]="{'is-invalid': submitted && editSubTopicForm.controls.selTopicId.errors}">
+                                <option value="">Select Subject</option>
+                                <option *ngFor="let item of topicData" [value]="item.id">{{ item.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && editSubTopicForm.controls.selTopicId.errors" class="text-danger">
+                                <div *ngIf="submitted && editSubTopicForm.controls.selTopicId.errors.required">
+                                    Topics required
+                                </div>
+                            </div>
+                            <label class="focus-label">Topic</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="text" class="form-control floating select-focus" id="classNotes_URL"
+                                formControlName="classNotesURL" name="classNotes_URL"
+                                [ngClass]="{'is-invalid': submitted && editSubTopicForm.controls.classNotesURL.errors}">
+                            <div *ngIf="submitted && editSubTopicForm.controls.classNotesURL.errors"
+                                class="text-danger">
+                                <div *ngIf="submitted && editSubTopicForm.controls.classNotesURL.errors.required">
+                                    ClassNotesURl is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Class Notes URL *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="text" class="form-control floating select-focus" id="extract_URL"
+                                formControlName="extractURL" name="extract_URL"
+                                [ngClass]="{'is-invalid': submitted && editSubTopicForm.controls.extractURL.errors}">
+                            <div *ngIf="submitted && editSubTopicForm.controls.extractURL.errors" class="text-danger">
+                                <div *ngIf="submitted && editSubTopicForm.controls.extractURL.errors.required">
+                                    Extract URL is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Extract URL *</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-4">
+                        <div class="form-group form-focus select-focus">
+                            <input type="text" class="form-control floating select-focus" id="rating"
+                                formControlName="rating" name="rating"
+                                [ngClass]="{'is-invalid': submitted && editSubTopicForm.controls.rating.errors}">
+                            <div *ngIf="submitted && editSubTopicForm.controls.rating.errors" class="text-danger">
+                                <div *ngIf="submitted && editSubTopicForm.controls.rating.errors.required">
+                                    Rating is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Rating *</label>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group form-focus select-focus">
+                            <textarea class="form-control floating textarea-height select-focus"
+                                id="chapter_description" formControlName="description" name="chapter_description"
+                                [ngClass]="{'is-invalid': submitted && editSubTopicForm.controls.description.errors}"></textarea>
+                            <div *ngIf="submitted && editSubTopicForm.controls.description.errors" class="text-danger">
+                                <div *ngIf="submitted && editSubTopicForm.controls.description.errors.required">
+                                    Description is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Description *</label>
+                        </div>
+
+
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <app-image-upload (onFileUpload)="onFileSelected($event)"
+                            [imageURL]="selectedImageURL"></app-image-upload>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group form-focus select-focus">
+                            <input type="checkbox" id="recommended" name="recommended"> Home Display?
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <button class="btn btn-danger btn-block" type="button" onclick="window.history.back();"> Cancel
+                        </button>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <button class="btn btn-success btn-block" type="submit"> Submit </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div style="width: 100%; text-align: center; position: fixed; z-index: 9998889; top: 250px; left: 0px; text-align: center; display:none"
+    id="loader">
+    <img src="assets/img/loading.gif" style="width: 150px; height: auto">
+</div>
