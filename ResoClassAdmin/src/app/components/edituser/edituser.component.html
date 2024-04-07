@@ -15,15 +15,15 @@
 
                 </div>
             </div>
-            <form [formGroup]="addUserForm" (ngSubmit)="onSubmit()">
+            <form [formGroup]="editUserForm" (ngSubmit)="onSubmit()">
                 <div class="row">
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
                             <input type="text" class="form-control floating select-focus" id="first_Name"
                                 formControlName="firstName" name="first_Name"
-                                [ngClass]="{'is-invalid': submitted && addUserForm.controls.firstName.errors}">
-                            <div *ngIf="submitted && addUserForm.controls.firstName.errors" class="text-danger">
-                                <div *ngIf="submitted && addUserForm.controls.firstName.errors.required">
+                                [ngClass]="{'is-invalid': submitted && editUserForm.controls.firstName.errors}">
+                            <div *ngIf="submitted && editUserForm.controls.firstName.errors" class="text-danger">
+                                <div *ngIf="submitted && editUserForm.controls.firstName.errors.required">
                                     FirstName is required
                                 </div>
                             </div>
@@ -44,9 +44,9 @@
                         <div class="form-group form-focus select-focus">
                             <input type="email" class="form-control floating" id="email" name="email"
                                 formControlName="email" required
-                                [ngClass]="{'is-invalid': submitted && addUserForm.controls.email.errors}">
-                            <div *ngIf="submitted && addUserForm.controls.email.errors" class="text-danger">
-                                <div *ngIf="submitted && addUserForm.controls.email.errors.required">
+                                [ngClass]="{'is-invalid': submitted && editUserForm.controls.email.errors}">
+                            <div *ngIf="submitted && editUserForm.controls.email.errors" class="text-danger">
+                                <div *ngIf="submitted && editUserForm.controls.email.errors.required">
                                     Email is required
                                 </div>
                             </div>
@@ -58,7 +58,7 @@
                 <div class="row">
                     <div class="col-sm-6 col-md-3">
                         <app-textbox [label]="'Phone Number'" [id]="'phone_number'"
-                            [control]="addUserForm.controls.phoneNumber" [ErrorMessage]="'Phone Number is required'"
+                            [control]="editUserForm.controls.phoneNumber" [ErrorMessage]="'Phone Number is required'"
                             [submitted]="submitted"></app-textbox>
 
                     </div>
@@ -67,9 +67,9 @@
 
                             <input type="password" class="form-control floating" id="password" name="password"
                                 formControlName="password" required
-                                [ngClass]="{'is-invalid': submitted && addUserForm.controls.password.errors}">
-                            <div *ngIf="submitted && addUserForm.controls.password.errors" class="text-danger">
-                                <div *ngIf="submitted && addUserForm.controls.password.errors.required">
+                                [ngClass]="{'is-invalid': submitted && editUserForm.controls.password.errors}">
+                            <div *ngIf="submitted && editUserForm.controls.password.errors" class="text-danger">
+                                <div *ngIf="submitted && editUserForm.controls.password.errors.required">
                                     Password is required
                                 </div>
                             </div>
@@ -82,13 +82,13 @@
                         <div class="form-group form-focus select-focus">
                             <select class="form-control  floating" id="course_id" name="course_id"
                                 formControlName="role"
-                                [ngClass]="{'is-invalid': submitted && addUserForm.controls.role.errors}">
+                                [ngClass]="{'is-invalid': submitted && editUserForm.controls.role.errors}">
                                 <option value="">Select Role</option>
                                 <option *ngFor="let item of rolesData" [value]="item.id">{{ item.name }}
                                 </option>
                             </select>
-                            <div *ngIf="submitted && addUserForm.controls.role.errors" class="text-danger">
-                                <div *ngIf="submitted && addUserForm.controls.role.errors.required">
+                            <div *ngIf="submitted && editUserForm.controls.role.errors" class="text-danger">
+                                <div *ngIf="submitted && editUserForm.controls.role.errors.required">
                                     Role is required
                                 </div>
                             </div>
@@ -101,13 +101,13 @@
                         <div class="form-group form-focus select-focus">
                             <select class="form-control  floating" id="User_Branch" name="User_Branch"
                                 formControlName="branch"
-                                [ngClass]="{'is-invalid': submitted && addUserForm.controls.branch.errors}">
+                                [ngClass]="{'is-invalid': submitted && editUserForm.controls.branch.errors}">
                                 <option value="">Select Branch</option>
                                 <option *ngFor="let item of branchData" [value]="item.id">{{ item.name }}
                                 </option>
                             </select>
-                            <div *ngIf="submitted && addUserForm.controls.branch.errors" class="text-danger">
-                                <div *ngIf="submitted && addUserForm.controls.branch.errors.required">
+                            <div *ngIf="submitted && editUserForm.controls.branch.errors" class="text-danger">
+                                <div *ngIf="submitted && editUserForm.controls.branch.errors.required">
                                     Branch is required
                                 </div>
                             </div>

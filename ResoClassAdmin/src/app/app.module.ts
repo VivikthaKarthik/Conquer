@@ -13,7 +13,7 @@ import { LayoutModule } from './layout/layout.module';
 import { NotificationComponent } from './notification/notification.component';
 import { UsersComponent } from './components/users/users.component';
 import { AdduserComponent } from './components/adduser/adduser.component';
-import { EdituserComponent } from './edituser/edituser.component';
+import { EdituserComponent } from './components/edituser/edituser.component';
 import { GridComponent } from './components/grid/grid.component';
 import { ActionCellRendererComponent } from './components/action-cell-renderer/action-cell-renderer.component';
 import { AuthInterceptor } from './interceptor/auth.interceptor';

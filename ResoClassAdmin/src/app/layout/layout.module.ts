@@ -55,7 +55,7 @@ import { AddclassComponent } from '../components/addclass/addclass.component';
 import { EditclassComponent } from '../components/editclass/editclass.component';
 import { UsersComponent } from '../components/users/users.component';
 import { AdduserComponent } from '../components/adduser/adduser.component';
-import { EdituserComponent } from '../edituser/edituser.component';
+import { EdituserComponent } from '../components/edituser/edituser.component';
 
 
 @NgModule({

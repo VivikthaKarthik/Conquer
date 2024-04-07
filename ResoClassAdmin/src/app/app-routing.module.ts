@@ -18,7 +18,7 @@ import { AdduserComponent } from './components/adduser/adduser.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { VideosComponent } from './components/videos/videos.component';
 import { AddvideosComponent } from './components/addvideos/addvideos.component';
-import { EdituserComponent } from './edituser/edituser.component';
+import { EdituserComponent } from './components/edituser/edituser.component';
 import { EditvideoComponent } from './components/editvideo/editvideo.component';
 import { QuestionbankComponent } from './components/questionbank/questionbank.component';
 import { AddquestionbankComponent } from './components/addquestionbank/addquestionbank.component';
