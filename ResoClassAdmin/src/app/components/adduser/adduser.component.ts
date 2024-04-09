@@ -57,11 +57,12 @@ export class AdduserComponent {
       firstName: this.addUserForm.value.firstName,
       lastName: this.addUserForm.value.lastName,
       role: this.addUserForm.value.role,
+      phone:this.addUserForm.value.phoneNumber,
       email: this.addUserForm.value.email,
-      branch: this.addUserForm.value.branch,
+      //branch: this.addUserForm.value.branch,
 
     }
-    this.masterService.post(userData, 'User', 'Post')
+    this.masterService.post(userData, 'User', 'Create')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.router.navigate(['/user']);

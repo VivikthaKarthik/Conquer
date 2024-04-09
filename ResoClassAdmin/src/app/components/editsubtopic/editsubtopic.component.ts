@@ -19,7 +19,7 @@ import { ListItem } from '../../models/listItem';
   styleUrl: './editsubtopic.component.css'
 })
 export class EditsubtopicComponent {
-
+  isChecked: boolean = false;
   editSubTopicForm!: FormGroup;
   subtopicId: number = 0;
   studentName: string = '';
@@ -62,7 +62,7 @@ export class EditsubtopicComponent {
 
       name: ['', Validators.required],
       sourceURL: ['', Validators.required],
-      duration: ['', Validators.required],
+      duration: [''],
       selCourseId: ['', Validators.required],
       selClassId: ['', Validators.required],
       selSubId: ['', Validators.required],
@@ -70,7 +70,7 @@ export class EditsubtopicComponent {
       selTopicId: ['', Validators.required],
       classNotesURL: ['', Validators.required],
       extractURL: ['', Validators.required],
-      rating: ['', Validators.required],
+      // rating: ['', Validators.required],
       thumbnail: [''],
       description: ['', Validators.required],
       homeDispaly: [''],
@@ -91,8 +91,13 @@ export class EditsubtopicComponent {
             this.editSubTopicForm.controls.name.setValue(data.result.name);
             this.editSubTopicForm.controls.sourceURL.setValue(data.result.sourceUrl);
             this.editSubTopicForm.controls.description.setValue(data.result.description);
-            this.editSubTopicForm.controls.homeDispaly.setValue(data.result.homeDispaly);
+            this.editSubTopicForm.controls.homeDispaly.setValue(data.result.homeDisplay);
+            if(data.result.homeDisplay == true){
+                this.isChecked = true;
+            }
             this.editSubTopicForm.controls.duration.setValue(data.result.duration);
+            this.editSubTopicForm.controls.selClassId.setValue(data.result.classId);
+            this.editSubTopicForm.controls.selCourseId.setValue(data.result.courseId);
             this.editSubTopicForm.controls.selSubId.setValue(data.result.subjectId);
             this.editSubTopicForm.controls.selTopicId.setValue(data.result.topicId);
             this.editSubTopicForm.controls.selChapterId.setValue(data.result.chapterId);
@@ -289,7 +294,6 @@ export class EditsubtopicComponent {
       selTopicId: this.editSubTopicForm.value.selTopicId,
       classNotesURL: this.editSubTopicForm.value.classNotesURL,
       extractURL: this.editSubTopicForm.value.extractURL,
-      rating: this.editSubTopicForm.value.rating,
       thumbnail: this.editSubTopicForm.value.thumbnail,
       description: this.editSubTopicForm.value.description,
       homeDispaly: this.editSubTopicForm.value.homeDispaly,

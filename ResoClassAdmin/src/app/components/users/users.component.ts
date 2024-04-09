@@ -92,7 +92,7 @@ export class UsersComponent {
   }
 
   getStudentById(cId: any) {
-    this.router.navigate(['/editstudent'], { queryParams: { id: cId } });
+    this.router.navigate(['/editUser'], { queryParams: { id: cId } });
   }
   getUsers() {
     this.masterService.getAll('User', 'GetAll').subscribe((data: any) => {

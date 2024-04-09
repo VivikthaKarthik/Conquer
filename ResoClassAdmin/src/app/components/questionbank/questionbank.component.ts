@@ -57,7 +57,7 @@ export class QuestionbankComponent {
       selSubjects: ['', Validators.required],
       selChapters: ['', Validators.required],
       selTopics: [''],
-      selSubTopics: ['', Validators.required],
+      selSubTopics: [''],
     });
   }
 

@@ -31,6 +31,7 @@ export class AddsubtopicComponent {
   selectedCity: any;
   pageName: string = 'Student';
   selectedImageURL: any;
+  isChecked:boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -40,6 +41,7 @@ export class AddsubtopicComponent {
   ) { }
 
   ngOnInit(): void {
+    this.isChecked = true;
     this.getCourses();
    
     this.addSubTopicForm = this.fb.group({
@@ -54,7 +56,7 @@ export class AddsubtopicComponent {
       selTopicId: ['', Validators.required],
       classNotesURL: ['', Validators.required],
       extractURL: ['', Validators.required],
-      rating: ['', Validators.required],
+      // rating: ['', Validators.required],
       thumbnail: [''],
       description: ['', Validators.required],
       homeDisplay: [''],
@@ -239,7 +241,6 @@ export class AddsubtopicComponent {
       TopicId: this.addSubTopicForm.value.selTopicId,
       ClassNotesUrl: this.addSubTopicForm.value.classNotesURL,
       ExtractUrl: this.addSubTopicForm.value.extractURL,
-      Rating: this.addSubTopicForm.value.rating,
       Thumbnail: this.addSubTopicForm.value.thumbnail,
       Description: this.addSubTopicForm.value.description,
       HomeDisplay: this.addSubTopicForm.value.homeDisplay,

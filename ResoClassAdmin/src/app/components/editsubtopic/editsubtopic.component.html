@@ -46,14 +46,9 @@
                     <div class="col-sm-6 col-md-4">
                         <div class="form-group form-focus select-focus">
                             <input type="text" class="form-control floating select-focus" id="duration"
-                                formControlName="duration" name="duration"
-                                [ngClass]="{'is-invalid': submitted && editSubTopicForm.controls.duration.errors}">
-                            <div *ngIf="submitted && editSubTopicForm.controls.duration.errors" class="text-danger">
-                                <div *ngIf="submitted && editSubTopicForm.controls.duration.errors.required">
-                                    Duration is required
-                                </div>
-                            </div>
-                            <label class="focus-label">Duration *</label>
+                                formControlName="duration" name="duration">
+
+                            <label class="focus-label">Duration</label>
                         </div>
                     </div>
 
@@ -178,7 +173,7 @@
                             <label class="focus-label">Extract URL *</label>
                         </div>
                     </div>
-                    <div class="col-sm-6 col-md-4">
+                    <!-- <div class="col-sm-6 col-md-4">
                         <div class="form-group form-focus select-focus">
                             <input type="text" class="form-control floating select-focus" id="rating"
                                 formControlName="rating" name="rating"
@@ -190,7 +185,7 @@
                             </div>
                             <label class="focus-label">Rating *</label>
                         </div>
-                    </div>
+                    </div> -->
 
 
                 </div>
@@ -221,7 +216,7 @@
                 <div class="row">
                     <div class="col-sm-6 col-md-6">
                         <div class="form-group form-focus select-focus">
-                            <input type="checkbox" id="recommended" name="recommended"> Home Display?
+                            <input type="checkbox" id="recommended" [checked]="isChecked" name="recommended"> Home Display?
                         </div>
                     </div>
 

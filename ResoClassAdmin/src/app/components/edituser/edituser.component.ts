@@ -50,7 +50,7 @@ export class EdituserComponent {
   }
 
   getUserDetails(Id:string) {
-    
+    debugger
     this.userId = parseInt(Id);
     this.masterService
       .getById(Id, 'User', 'Get','studentId')

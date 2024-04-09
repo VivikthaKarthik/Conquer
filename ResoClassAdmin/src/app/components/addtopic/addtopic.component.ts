@@ -9,6 +9,8 @@ import { MasterService } from '../../services/master.service';
 import { DataMappingService } from '../../services/data-mapping.service';
 import { Router } from '@angular/router';
 import { ListItem } from '../../models/listItem';
+import { AbstractControl, ValidatorFn } from '@angular/forms';
+
 @Component({
   selector: 'app-addtopic',
   templateUrl: './addtopic.component.html',
@@ -37,7 +39,8 @@ export class AddtopicComponent {
       selClassId: ['', Validators.required],
       selSubjectId: ['', Validators.required],
       selChapterId: ['', Validators.required],
-     
+      startDate: ['', Validators.required],
+      endDate: ['', [Validators.required, this.endDateValidator('startDate')]],
       description: ['', Validators.required],
     
     });
@@ -162,8 +165,9 @@ export class AddtopicComponent {
     var topicData = {
       name: this.addTopicForm.value.name,
       chapterId: chapterId,
-      isRecommended: this.isChecked,
       description: this.addTopicForm.value.description,
+      startDate:this.addTopicForm.value.startDate,
+      endDate:this.addTopicForm.value.startDate,
       thumbnail:"na",
     };
 
@@ -177,6 +181,21 @@ export class AddtopicComponent {
         }
       });
 
+  }
+
+  endDateValidator(startDateControlName: string): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const startDate = control.root.get(startDateControlName)?.value;
+      const endDate = control.value;
+
+      if (startDate && endDate) {
+        if (endDate < startDate) {
+          return { 'endDateInvalid': true };
+        }
+      }
+
+      return null;
+    };
   }
 
 }

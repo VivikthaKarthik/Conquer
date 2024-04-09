@@ -127,8 +127,39 @@
                     </div>
                 </div>
                 <div class="row">
-                    <input type="checkbox" id="recommended" name="recommended" style="margin-left: 20px;"> Is
-                    Recommended?
+                    <!-- <input type="checkbox" id="recommended" name="recommended" style="margin-left: 20px;"> Is
+                    Recommended? -->
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus">
+                            <input type="date" class="form-control floating select-focus" id="start_Date"
+                                name="startDate" required formControlName="startDate"
+                                [ngClass]="{'is-invalid': submitted && addTopicForm.controls.startDate.errors}">
+                            <label class="focus-label">Start Date *</label>
+                            <div *ngIf="submitted && addTopicForm.controls.startDate.errors" class="text-danger">
+                                <div *ngIf="submitted && addTopicForm.controls.startDate.errors.required">
+                                    Start Date is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus">
+                            <input type="date" class="form-control floating select-focus" id="end_Date" name="end_Date"
+                                required formControlName="endDate"
+                                [ngClass]="{'is-invalid': submitted && addTopicForm.controls.endDate.errors}">
+                            <label class="focus-label">End Date *</label>
+                            <div *ngIf="submitted && addTopicForm.controls.endDate.errors" class="text-danger">
+                                <div *ngIf="submitted && addTopicForm.controls.endDate.errors.required">
+                                    End Date is required
+                                </div>
+                                <div *ngIf="addTopicForm.controls.endDate.errors?.endDateInvalid">
+                                    End date must be greater than or equal to start date.
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6 col-md-3">
