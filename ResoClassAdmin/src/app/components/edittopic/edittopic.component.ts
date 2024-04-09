@@ -14,7 +14,7 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
 @Component({
   selector: 'app-edittopic',
   templateUrl: './edittopic.component.html',
-  styleUrl: './edittopic.component.css'
+  styleUrl: './edittopic.component.css',
 })
 export class EdittopicComponent {
   editTopicForm!: FormGroup;
@@ -29,12 +29,12 @@ export class EdittopicComponent {
   topicId: number = 0;
   selectedImageURL: any;
 
-
   constructor(
     private masterService: MasterService,
     private dataMappingService: DataMappingService,
-    private fb: FormBuilder, private router: Router,
-    private route: ActivatedRoute,
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.editTopicForm = this.fb.group({
       name: ['', Validators.required],
@@ -45,11 +45,8 @@ export class EdittopicComponent {
       description: ['', Validators.required],
       startDate: ['', Validators.required],
       endDate: ['', [Validators.required, this.endDateValidator('startDate')]],
-
     });
   }
-
-
 
   ngOnInit(): void {
     this.getCourses();
@@ -57,31 +54,39 @@ export class EdittopicComponent {
     this.getSubByClsID(0);
     this.getChaptersBySubID(0);
 
-
     this.route.queryParams.subscribe((params) => {
       const id: string = params['id'];
       this.topicId = parseInt(id);
       this.getTopicById(this.topicId);
     });
-
   }
   getTopicById(Id: any) {
-    debugger
+    debugger;
     this.masterService.getById(Id, 'Topic', 'Get').subscribe((data: any) => {
       if (data.isSuccess) {
         if (data.result != null && data.result.name != null) {
-          debugger
+          debugger;
           this.selectedImageURL = data.result.thumbnail;
           this.editTopicForm.controls.name.setValue(data.result.name);
-          this.editTopicForm.controls.selCourseId.setValue(data.result.courseId);
+          this.editTopicForm.controls.selCourseId.setValue(
+            data.result.courseId
+          );
           this.editTopicForm.controls.selClassId.setValue(data.result.classId);
-          this.editTopicForm.controls.selSubjectId.setValue(data.result.subjectId);
-          this.editTopicForm.controls.selChapterId.setValue(data.result.chapterId);
-          this.editTopicForm.controls.description.setValue(data.result.description);
-          this.editTopicForm.controls.startDate.setValue(data.result.startDate.substr(0,10));
-          this.editTopicForm.controls.endDate.setValue(data.result.endDate.substr(0,10));
-
-
+          this.editTopicForm.controls.selSubjectId.setValue(
+            data.result.subjectId
+          );
+          this.editTopicForm.controls.selChapterId.setValue(
+            data.result.chapterId
+          );
+          this.editTopicForm.controls.description.setValue(
+            data.result.description
+          );
+          this.editTopicForm.controls.startDate.setValue(
+            data.result.startDate.substr(0, 10)
+          );
+          this.editTopicForm.controls.endDate.setValue(
+            data.result.endDate.substr(0, 10)
+          );
         } else {
           alert('Some error occured..! Plaese try again');
         }
@@ -107,9 +112,6 @@ export class EdittopicComponent {
     });
   }
 
-
-
-
   getClsByCourseId(Id: number) {
     if (Id !== undefined && Id !== 0) {
       this.masterService
@@ -127,8 +129,7 @@ export class EdittopicComponent {
             alert(data.message);
           }
         });
-    }
-    else {
+    } else {
       this.masterService.getListItems('Class', '', 0).subscribe((data: any) => {
         if (data.isSuccess) {
           this.classData = this.dataMappingService.mapToModel<ListItem>(
@@ -161,21 +162,22 @@ export class EdittopicComponent {
             alert(data.message);
           }
         });
-    }
-    else {
-      this.masterService.getListItems('Subject', '', 0).subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.subjectData = this.dataMappingService.mapToModel<ListItem>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-            })
-          );
-        } else {
-          alert(data.message);
-        }
-      });
+    } else {
+      this.masterService
+        .getListItems('Subject', '', 0)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.subjectData = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
     }
   }
   getChaptersBySubID(Id: number) {
@@ -195,30 +197,29 @@ export class EdittopicComponent {
             alert(data.message);
           }
         });
-    }
-    else {
-      this.masterService.getListItems('Chapter', '', 0).subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.chapterData = this.dataMappingService.mapToModel<ListItem>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-            })
-          );
-        } else {
-          alert(data.message);
-        }
-      });
+    } else {
+      this.masterService
+        .getListItems('Chapter', '', 0)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.chapterData = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
     }
   }
-
 
   onFileSelected(event: any): void {
-    debugger
+    debugger;
     this.selectedFile = event;
   }
-
 
   onSubmit() {
     this.submitted = true;
@@ -236,11 +237,11 @@ export class EdittopicComponent {
       description: this.editTopicForm.value.description,
       startDate: this.editTopicForm.value.startDate,
       endDate: this.editTopicForm.value.endDate,
-      thumbnail: "na"
+      thumbnail: '',
     };
     if (this.selectedFile != null) {
       this.masterService
-        .putWithFile(topicData, this.selectedFile, 'Topic', 'Update')
+        .putWithFile(topicData, this.selectedFile, 'Topic', 'UpdateWithFile')
         .subscribe((data: any) => {
           if (data.isSuccess) {
             this.router.navigate(['/topic']);
@@ -259,8 +260,6 @@ export class EdittopicComponent {
           }
         });
     }
-
-
   }
   endDateValidator(startDateControlName: string): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null => {
@@ -269,7 +268,7 @@ export class EdittopicComponent {
 
       if (startDate && endDate) {
         if (endDate < startDate) {
-          return { 'endDateInvalid': true };
+          return { endDateInvalid: true };
         }
       }
 

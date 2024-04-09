@@ -14,10 +14,9 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
 @Component({
   selector: 'app-addtopic',
   templateUrl: './addtopic.component.html',
-  styleUrl: './addtopic.component.css'
+  styleUrl: './addtopic.component.css',
 })
 export class AddtopicComponent {
-
   addTopicForm!: FormGroup;
   submitted = false;
   courseData: ListItem[] = [];
@@ -31,8 +30,9 @@ export class AddtopicComponent {
   constructor(
     private masterService: MasterService,
     private dataMappingService: DataMappingService,
-    private fb: FormBuilder, private router: Router
-  ) { 
+    private fb: FormBuilder,
+    private router: Router
+  ) {
     this.addTopicForm = this.fb.group({
       name: ['', Validators.required],
       selCourseId: ['', Validators.required],
@@ -42,18 +42,12 @@ export class AddtopicComponent {
       startDate: ['', Validators.required],
       endDate: ['', [Validators.required, this.endDateValidator('startDate')]],
       description: ['', Validators.required],
-    
     });
   }
 
-
-
   ngOnInit(): void {
     this.getCourses();
-
-   
   }
-
 
   getCourses() {
     this.masterService.getListItems('Course', '', 0).subscribe((data: any) => {
@@ -109,7 +103,6 @@ export class AddtopicComponent {
     }
   }
   getChaptersBySubID(Id: number) {
-   
     if (Id !== undefined) {
       this.masterService
         .getListItems('Chapter', 'Subject', Id)
@@ -166,9 +159,9 @@ export class AddtopicComponent {
       name: this.addTopicForm.value.name,
       chapterId: chapterId,
       description: this.addTopicForm.value.description,
-      startDate:this.addTopicForm.value.startDate,
-      endDate:this.addTopicForm.value.startDate,
-      thumbnail:"na",
+      startDate: this.addTopicForm.value.startDate,
+      endDate: this.addTopicForm.value.startDate,
+      thumbnail: '',
     };
 
     this.masterService
@@ -180,7 +173,6 @@ export class AddtopicComponent {
           alert(data.message);
         }
       });
-
   }
 
   endDateValidator(startDateControlName: string): ValidatorFn {
@@ -190,12 +182,11 @@ export class AddtopicComponent {
 
       if (startDate && endDate) {
         if (endDate < startDate) {
-          return { 'endDateInvalid': true };
+          return { endDateInvalid: true };
         }
       }
 
       return null;
     };
   }
-
 }
