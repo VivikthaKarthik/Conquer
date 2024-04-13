@@ -86,7 +86,6 @@
                     <div class="col-sm-6 col-md-4">
                         <div class="form-group form-focus select-focus">
                             <select class="form-control floating" id="class_id" name="class_id"
-                               
                                 [ngModel]="selectedOption" (ngModelChange)="getSubTopicsByTopicId($event)"
                                 formControlName="selTopics">
                                 <option value="">Select Topic</option>
@@ -103,7 +102,6 @@
                     <div class="col-sm-6 col-md-4">
                         <div class="form-group form-focus select-focus">
                             <select class="form-control floating" id="subTopic_id" name="subTopic_id"
-                                
                                 [ngModel]="selectedOption" formControlName="selSubTopics">
                                 <option value="">Select SubTopic</option>
                                 <option *ngFor="let item of subTopics" [value]="item.id">{{ item.name }}</option>
@@ -122,6 +120,8 @@
                                 (change)="onFileSelected($event)" required>
                             <label class="focus-label">Upload Question *</label>
                         </div>
+                        <a href="javascript:;" (click)="downloadFile('Questions')">Click here to download sample
+                            file</a>
                     </div>
 
                 </div>

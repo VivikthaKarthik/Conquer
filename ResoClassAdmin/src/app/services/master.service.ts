@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class MasterService {
   //private baseUrl: string = 'https://dsquad.services/api';
-  //private baseUrl: string = 'https://api.resoclass.com/api';
-  private baseUrl: string = 'https://localhost:7292/api';
+  private baseUrl: string = 'https://api.resoclass.com/api';
+  // private baseUrl: string = 'https://localhost:7292/api';
   constructor(private http: HttpClient) {}
 
   getAll(type: string, apiName: string) {
@@ -111,6 +111,12 @@ export class MasterService {
   ) {
     return this.http.get(
       `${this.baseUrl}/${type}/${apiName}?${idParamName}=${id}`
+    );
+  }
+
+  getPreSignedUrl(key: string) {
+    return this.http.get(
+      `${this.baseUrl}/Home/GetSampleDocumentUrl/?key=${key}`
     );
   }
 }

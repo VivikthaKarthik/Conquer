@@ -6,18 +6,19 @@
           <div class="col">
             <h3 class="page-title">Classes</h3>
             <ul class="breadcrumb">
-              
+
               <li class="breadcrumb-item active">Classes</li>
             </ul>
           </div>
           <div class="col-auto float-right ml-auto">
             <a routerLink="/addclass" class="btn add-btn"><i class="fa fa-plus"></i> Add Class</a>
-        </div>
+          </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-6 pad_b_20">
-          <app-bulk-upload [pageName]="pageName" (onFileUpload)="OnDocumentUpload($event)"></app-bulk-upload>
+          <app-bulk-upload [sampleFileName]="'Classes'" [pageName]="pageName"
+            (onFileUpload)="OnDocumentUpload($event)"></app-bulk-upload>
         </div>
         <div class="col-md-12">
           <app-grid [data]="classList" [coloumnDef]="colDefs" (editRecord)="editGridRecord($event)"
@@ -25,7 +26,7 @@
         </div>
       </div>
     </div>
-    
+
 
   </div>
 </div>

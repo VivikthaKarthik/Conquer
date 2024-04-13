@@ -4,4 +4,6 @@
   <button class="btn import-btn" type="button" *ngIf="showBulkUploadButton" (click)="UploadFile()">
     <i class="las la-file-upload"></i> Import
   </button>
+  <a href="javascript:;" (click)="downloadFile()" *ngIf="sampleFileName">Click here to download
+    sample file</a>
 </form>

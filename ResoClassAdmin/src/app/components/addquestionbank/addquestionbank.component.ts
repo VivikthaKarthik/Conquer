@@ -227,4 +227,17 @@ export class AddquestionbankComponent {
       alert('Please select a file to upload');
     }
   }
+
+  downloadFile(key: string): void {
+    this.masterService.getPreSignedUrl(key).subscribe(
+      (response: any) => {
+        if (response.result !== undefined)
+          window.open(response.result, '_blank'); // Open URL in new tab/window to trigger download
+      },
+      (error: any) => {
+        console.error('Error getting pre-signed URL:', error);
+        // Handle error
+      }
+    );
+  }
 }

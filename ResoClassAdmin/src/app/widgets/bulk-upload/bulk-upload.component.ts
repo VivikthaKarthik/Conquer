@@ -9,6 +9,7 @@ import { MasterService } from '../../services/master.service';
 export class BulkUploadComponent {
   selectedFile: File | undefined;
   @Input() pageName: string = '';
+  @Input() sampleFileName: string = '';
   @Output() onFileUpload = new EventEmitter();
   showBulkUploadButton: boolean = false;
 
@@ -40,5 +41,18 @@ export class BulkUploadComponent {
     } else {
       alert('Please select a File!');
     }
+  }
+
+  downloadFile(): void {
+    this.masterService.getPreSignedUrl(this.sampleFileName).subscribe(
+      (response: any) => {
+        if (response.result !== undefined)
+          window.open(response.result, '_blank'); // Open URL in new tab/window to trigger download
+      },
+      (error: any) => {
+        console.error('Error getting pre-signed URL:', error);
+        // Handle error
+      }
+    );
   }
 }
