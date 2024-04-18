@@ -20,22 +20,25 @@ import { ListItem } from '../../models/listItem';
 export class AddstudentComponent {
   studentForm!: FormGroup;
   studentName: string = '';
- 
-  courseData:ListItem[] = [];
-  classData:ListItem[] = [];
+  phoneNumber: string = '';
+  altPhoneNumber: string = '';
+  courseData: ListItem[] = [];
+  classData: ListItem[] = [];
   states: ListItem[] = [];
   cities: ListItem[] = [];
   submitted = false;
   selectedOption: any;
   selectedCity: any;
   pageName: string = 'Student';
-
+  selectedFile: File | undefined;
+  selectedImageURL: any;
+  srcFrom: string = 'Student';
   constructor(
     private fb: FormBuilder,
     private masterService: MasterService,
     private dataMappingService: DataMappingService,
     private router: Router
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getCourses();
@@ -55,9 +58,9 @@ export class AddstudentComponent {
         '',
         [Validators.required, this.mobileNumberValidator()],
       ],
-      email: [''],
-      courseId: ['',Validators.required],
-      classId: ['',Validators.required],
+      email: ['', [Validators.required, this.emailValidator()]],
+      courseId: ['', Validators.required],
+      classId: ['', Validators.required],
       addressLine1: ['', Validators.required],
       addressLine2: ['', Validators.required],
       landMark: [''],
@@ -110,7 +113,7 @@ export class AddstudentComponent {
   onStateChange(selectedId: any) {
     this.getCities(selectedId);
   }
-  
+
 
   getCourses() {
     this.masterService.getListItems('Course', '', 0).subscribe((data: any) => {
@@ -145,7 +148,7 @@ export class AddstudentComponent {
           }
         });
     }
-    else{
+    else {
       this.masterService.getListItems('Class', '', 0).subscribe((data: any) => {
         if (data.isSuccess) {
           this.classData = this.dataMappingService.mapToModel<ListItem>(
@@ -175,19 +178,35 @@ export class AddstudentComponent {
       this.saveStudent();
     }
   }
+  onPhoneNumberChange(event: any) {
+    // Check if phoneNumber starts with "+91", if not, prepend it
+    this.phoneNumber = event.target.value;
+    if (this.phoneNumber && !this.phoneNumber.startsWith('+91')) {
+      this.phoneNumber = '+91' + this.phoneNumber;
+    }
+  }
+
+  onAltPhoneNumberChange(event: any) {
+    // Check if phoneNumber starts with "+91", if not, prepend it
+    this.altPhoneNumber = event.target.value;
+    if (this.altPhoneNumber && !this.altPhoneNumber.startsWith('+91')) {
+      this.altPhoneNumber = '+91' + this.altPhoneNumber;
+    }
+  }
+
   saveStudent() {
-    var objStudent = {
+    var studentData = {
       AdmissionId: this.studentForm.value.admissionId,
       Name: this.studentForm.value.studentName,
       FatherName: this.studentForm.value.fatherName,
       MotherName: this.studentForm.value.motherName,
       DateOfBirth: this.studentForm.value.dateofBirth,
       CourseId: this.studentForm.value.courseId,
-      ClassId:this.studentForm.value.classId,
+      ClassId: this.studentForm.value.classId,
       AdmissionDate: this.studentForm.value.admissionDate,
       MobileNumber: String(this.studentForm.value.mobileNumber),
       EmailAddress: this.studentForm.value.email,
-      AlternateMobileNumber: String(this.studentForm.value.altMobileNumber),
+      AlternateMobileNumber: String(this.studentForm.value.alternateMobileNumber),
       AddressLine1: this.studentForm.value.addressLine1,
       Gender: this.studentForm.value.gender,
       Landmark: this.studentForm.value.landMark,
@@ -198,19 +217,44 @@ export class AddstudentComponent {
       Branchid: '1000001',
       Password: 'Reso@123',
     };
-    console.log(JSON.stringify(objStudent));
-    this.masterService
-      .post(objStudent, 'Student', 'Create')
-      .subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.router.navigate(['/student']);
-        } else {
-          alert(data.message);
-        }
-      });
+    console.log(JSON.stringify(studentData));
+    if (this.selectedFile) {
+      this.masterService
+        .postWithFile(studentData, this.selectedFile, 'Student', 'Create')
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.router.navigate(['/student']);
+          }
+        });
+    }
+    else {
+      this.masterService
+        .post(studentData, 'Student', 'Create')
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.router.navigate(['/student']);
+          } else {
+            alert(data.message);
+          }
+        });
+    }
+
   }
 
   OnDocumentUpload(event: any): void {
     this.router.navigate(['/student']);
   }
+
+  emailValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const valid = emailPattern.test(control.value);
+      return valid ? null : { 'invalidEmail': true };
+    };
+  }
+  onFileSelected(event: any): void {
+    this.selectedFile = event;
+  }
+
 }
+

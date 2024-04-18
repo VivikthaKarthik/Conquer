@@ -89,8 +89,13 @@ export class StudentsComponent {
       filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
-      headerName: 'Class/Course',
-      field: 'courseId',
+      headerName: 'Course',
+      field: 'Name',
+      filter: 'agTextColumnFilter',
+    });
+    this.colDefs.push({
+      headerName: 'Class',
+      field: 'Name',
       filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
@@ -143,9 +148,7 @@ export class StudentsComponent {
     this.masterService.getAll('Student', 'GetAll').subscribe((data: any) => {
       if (data.isSuccess) {
         this.studentsList = data.result;
-      } else {
-        alert(data.message);
-      }
+      } 
     });
   }
 
@@ -197,8 +200,6 @@ export class StudentsComponent {
           })
         );
         console.log(this.courseData);
-      } else {
-        alert(data.message);
       }
     });
   }

@@ -18,7 +18,17 @@ export class ImageUploadComponent {
   @Output() onFileUpload = new EventEmitter();
   @Input() imageURL: string | undefined;
   @Input() width: string | undefined;
+  @Input() sourceFrom: string | undefined;
+  condition: boolean = true;
+  labelText: string = "";
 
+  ngOnInit(){
+    if (this.sourceFrom == "Student") {
+      this.labelText = "Profile Picture";
+    } else {
+      this.labelText = "Thumbnail *";
+    }
+  }
   ngOnChanges(changes: SimpleChanges): void {
     if (this.imageURL !== undefined && this.imageURL !== null) {
       this.thumbnailUrl = this.imageURL;

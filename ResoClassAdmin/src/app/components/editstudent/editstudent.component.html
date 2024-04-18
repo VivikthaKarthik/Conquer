@@ -217,6 +217,10 @@
                             [submitted]="submitted"></app-textbox>
 
                     </div>
+                    <div class="col-sm-6 col-md-6">
+                        <app-image-upload (onFileUpload)="onFileSelected($event)"
+                            [imageURL]="selectedImageURL" [sourceFrom] = "srcFrom"></app-image-upload>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6 col-md-3">

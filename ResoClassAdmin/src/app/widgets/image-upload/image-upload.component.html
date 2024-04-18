@@ -1,7 +1,7 @@
 <div class="form-group form-focus select-focus">
   <input type="file" class="form-control floating" id="thumbnail" name="thumbnail" (change)="onFileSelected($event)"
     accept="image/*" required style="width:390px">
-  <label class="focus-label">Thumbnail *</label>
+  <label class="focus-label">{{labelText}}</label>
 </div>
 <div>
   <img style="height: 150px;width: 150px;" src={{thumbnailUrl}} id="add_thumb_image">

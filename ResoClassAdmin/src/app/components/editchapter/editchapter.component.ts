@@ -185,7 +185,7 @@ export class EditchapterComponent {
       subjectId: this.editChapterForm.value.selSubId,
       description: this.editChapterForm.value.description,
       isRecommended: this.isChecked,
-      thumbnail: "NA",
+      thumbnail: "",
     };
     if (this.selectedFile !== undefined) {
       this.masterService

@@ -26,6 +26,10 @@ export class EditstudentComponent {
   cities: ListItem[] = [{ id: 0, name: 'Select City' }];
   originalDateTime : string = "";
   formatedDateTime: string = "";
+  selectedFile: File | undefined;
+  selectedImageURL: any;
+  srcFrom: string = 'Student';
+
 
   constructor(
     private masterService: MasterService,
@@ -272,5 +276,8 @@ export class EditstudentComponent {
       const valid = /^[0-9]{10}$/.test(control.value);
       return valid ? null : { 'invalidMobileNumber': { value: control.value } };
     };
+  }
+  onFileSelected(event: any): void {
+    this.selectedFile = event;
   }
 }
