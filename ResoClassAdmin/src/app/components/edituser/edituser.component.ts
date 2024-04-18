@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, ValidatorFn,Validators,AbstractControl } from '@angular/forms';
 import { MasterService } from '../../services/master.service';
 import { DataMappingService } from '../../services/data-mapping.service';
 import { ActivatedRoute, Router } from '@angular/router';
+
 import { Course } from '../../models/course';
 import { ListItem } from '../../models/listItem';
 
@@ -32,8 +33,8 @@ export class EdituserComponent {
     this.route.queryParams.subscribe(params => {
      
       const id:string = params['id'];
-      this.userId = 0;
-      this.getUserDetails(id);
+      this.userId = parseInt(id);
+      this.getUserDetails(this.userId);
     });
 
 
@@ -42,16 +43,16 @@ export class EdituserComponent {
       firstName: ['', Validators.required],
       lastName: [''],
       role: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, this.emailValidator()]],
       branch: ['', Validators.required],
       password:['', Validators.required],
       phoneNumber:['', Validators.required],
     });
   }
 
-  getUserDetails(Id:string) {
+  getUserDetails(Id:number) {
     debugger
-    this.userId = parseInt(Id);
+    this.userId = Id;
     this.masterService
       .getById(Id, 'User', 'Get','studentId')
       .subscribe((data: any) => {
@@ -136,6 +137,14 @@ export class EdituserComponent {
         alert(data.message);
       }
     });
+  }
+
+  emailValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const valid = emailPattern.test(control.value);
+      return valid ? null : { 'invalidEmail': true };
+    };
   }
 
 }

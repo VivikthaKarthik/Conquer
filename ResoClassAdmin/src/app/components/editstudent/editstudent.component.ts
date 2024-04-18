@@ -16,15 +16,15 @@ import { ListItem } from '../../models/listItem';
 export class EditstudentComponent {
   studentForm!: FormGroup;
   studentId: number = 0;
-  courseData:ListItem[] = [{ id: 0, name: 'Select Course' }];
-  classData:ListItem[] = [{ id: 0, name: 'Select Class' }];
+  courseData: ListItem[] = [{ id: 0, name: 'Select Course' }];
+  classData: ListItem[] = [{ id: 0, name: 'Select Class' }];
   submitted: boolean = false;
   selectedOption: any;
-  selectedCity:any;
+  selectedCity: any;
   courses: Course[] = [];
   states: ListItem[] = [{ id: 0, name: 'Select State' }];
   cities: ListItem[] = [{ id: 0, name: 'Select City' }];
-  originalDateTime : string = "";
+  originalDateTime: string = "";
   formatedDateTime: string = "";
   selectedFile: File | undefined;
   selectedImageURL: any;
@@ -33,23 +33,23 @@ export class EditstudentComponent {
 
   constructor(
     private masterService: MasterService,
-    private dataMappingService: DataMappingService,private router: Router,private route: ActivatedRoute,private fb: FormBuilder
+    private dataMappingService: DataMappingService, private router: Router, private route: ActivatedRoute, private fb: FormBuilder
   ) { }
 
   ngOnInit() {
-    
+
     this.getCourses();
     this.getClsByCourseId(0);
     this.getStates();
     this.getCities(0);
     this.route.queryParams.subscribe(params => {
-     
-      const id:string = params['id'];
+
+      const id: string = params['id'];
       this.studentId = 0;
       this.editStudent(id);
     });
 
-    
+
     this.studentForm = this.fb.group({
       // Define your form controls here
       admissionId: ['', Validators.required],
@@ -61,7 +61,7 @@ export class EditstudentComponent {
       gender: [''],
       mobileNumber: ['', [Validators.required, this.mobileNumberValidator()]],
       altMobileNumber: ['', [Validators.required, this.mobileNumberValidator()]],
-      email: [''],
+      email: ['', [Validators.required, this.emailValidator()]],
       courseId: ['', Validators.required],
       classId: ['', Validators.required],
       addressLine1: ['', Validators.required],
@@ -70,19 +70,19 @@ export class EditstudentComponent {
       stateId: [''],
       cityId: [''],
       pinCode: [''],
-      studentId:['']
+      studentId: ['']
 
       // Add more controls as needed
     });
   }
-  
 
 
-  editStudent(cId:string) {
-    
+
+  editStudent(cId: string) {
+
     this.studentId = parseInt(cId);
     this.masterService
-      .getById(cId, 'Student', 'Get','studentId')
+      .getById(cId, 'Student', 'Get', 'studentId')
       .subscribe((data: any) => {
 
         if (data.isSuccess) {
@@ -91,10 +91,10 @@ export class EditstudentComponent {
             this.studentForm.controls.admissionId.setValue(data.result.admissionId);
             this.studentForm.controls.fatherName.setValue(data.result.fatherName);
             this.studentForm.controls.motherName.setValue(data.result.motherName);
-            this.studentForm.controls.dateofBirth.setValue(data.result.dateOfBirth.substr(0,10));
+            this.studentForm.controls.dateofBirth.setValue(data.result.dateOfBirth.substr(0, 10));
             this.studentForm.controls.courseId.setValue(data.result.courseId);
             this.studentForm.controls.classId.setValue(data.result.classId);
-            this.studentForm.controls.admissionDate.setValue(data.result.admissionDate.substr(0,10));
+            this.studentForm.controls.admissionDate.setValue(data.result.admissionDate.substr(0, 10));
             this.studentForm.controls.mobileNumber.setValue(data.result.mobileNumber);
             this.studentForm.controls.email.setValue(data.result.emailAddress);
             this.studentForm.controls.altMobileNumber.setValue(data.result.alternateMobileNumber);
@@ -116,7 +116,7 @@ export class EditstudentComponent {
   }
 
   onSubmit() {
-   
+
     this.submitted = true;
     if (this.studentForm.invalid) {
 
@@ -144,16 +144,16 @@ export class EditstudentComponent {
     });
   }
   updateStudent() {
-    
+
     var studentData = {
       id: this.studentId,
       AdmissionId: this.studentForm.controls.admissionId.value,
       Name: this.studentForm.controls.studentName.value,
-      FatherName:  this.studentForm.controls.fatherName.value,
-      MotherName:  this.studentForm.controls.motherName.value,
+      FatherName: this.studentForm.controls.fatherName.value,
+      MotherName: this.studentForm.controls.motherName.value,
       DateOfBirth: this.studentForm.controls.dateofBirth.value,
       CourseId: this.studentForm.controls.courseId.value,
-      ClassId:this.studentForm.controls.classId.value,
+      ClassId: this.studentForm.controls.classId.value,
       AdmissionDate: this.studentForm.controls.admissionDate.value,
       MobileNumber: this.studentForm.controls.mobileNumber.value,
       EmailAddress: this.studentForm.controls.email.value,
@@ -163,20 +163,33 @@ export class EditstudentComponent {
       Gender: this.studentForm.controls.gender.value,
       Landmark: this.studentForm.controls.landMark.value,
       StateId: this.studentForm.controls.stateId.value,
-      City:  this.studentForm.controls.cityId.value,
-      PinCode:this.studentForm.controls.pinCode.value,
-      BranchId:'1000001',
-      Password:'123'
+      City: this.studentForm.controls.cityId.value,
+      PinCode: this.studentForm.controls.pinCode.value,
+      BranchId: '1000001',
+      Password: '123'
     }
-    this.masterService.put(studentData, 'Student', 'Update')
-      .subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.router.navigate(['/student']);
-        } else {
-          alert(data.message);
-        }
-      });
-     
+    if (this.selectedFile !== undefined) {
+      this.masterService
+        .putWithFile(studentData, this.selectedFile, 'Chapter', 'Update')
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.router.navigate(['/chapter']);
+          } else {
+            alert(data.message);
+          }
+        });
+
+    } else {
+      this.masterService.put(studentData, 'Student', 'Update')
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.router.navigate(['/student']);
+          } else {
+            alert(data.message);
+          }
+        });
+    }
+
   }
   getCourses() {
     this.masterService.getListItems('Course', '', 0).subscribe((data: any) => {
@@ -193,46 +206,46 @@ export class EditstudentComponent {
       }
     });
   }
-   
+
 
   getCities(stateId: any) {
     if (stateId !== undefined && stateId !== 0) {
       this.masterService
-      .getListItems('city', 'state', stateId)
-      .subscribe((data: any) => {
-        if (data.isSuccess) {
-          var list = this.dataMappingService.mapToModel<ListItem>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-            })
-          );
-          this.cities = this.cities.concat(list);
-        } else {
-          alert(data.message);
-        }
-      });
+        .getListItems('city', 'state', stateId)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            var list = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+            this.cities = this.cities.concat(list);
+          } else {
+            alert(data.message);
+          }
+        });
     }
-    else{
+    else {
       this.masterService
-      .getListItems('city', '', 0)
-      .subscribe((data: any) => {
-        if (data.isSuccess) {
-          var list = this.dataMappingService.mapToModel<ListItem>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-            })
-          );
-          this.cities = this.cities.concat(list);
-        } else {
-          alert(data.message);
-        }
-      });
+        .getListItems('city', '', 0)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            var list = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+            this.cities = this.cities.concat(list);
+          } else {
+            alert(data.message);
+          }
+        });
     }
-    
+
   }
   onStateChange(selectedId: any) {
     this.getCities(selectedId);
@@ -255,7 +268,7 @@ export class EditstudentComponent {
           }
         });
     }
-    else{
+    else {
       this.masterService.getListItems('Class', '', 0).subscribe((data: any) => {
         if (data.isSuccess) {
           this.classData = this.dataMappingService.mapToModel<ListItem>(
@@ -272,12 +285,20 @@ export class EditstudentComponent {
     }
   }
   mobileNumberValidator(): ValidatorFn {
-    return (control: AbstractControl): {[key: string]: any} | null => {
+    return (control: AbstractControl): { [key: string]: any } | null => {
       const valid = /^[0-9]{10}$/.test(control.value);
       return valid ? null : { 'invalidMobileNumber': { value: control.value } };
     };
   }
   onFileSelected(event: any): void {
     this.selectedFile = event;
+  }
+
+  emailValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const valid = emailPattern.test(control.value);
+      return valid ? null : { 'invalidEmail': true };
+    };
   }
 }

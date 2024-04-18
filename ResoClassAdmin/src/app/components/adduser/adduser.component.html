@@ -42,17 +42,23 @@
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
-                            <input type="email" class="form-control floating" id="email" name="email"
-                                formControlName="email" required
+                            <input type="email" class="form-control floating select-focus" id="email" name="email"
+                                formControlName="email"
                                 [ngClass]="{'is-invalid': submitted && addUserForm.controls.email.errors}">
+                            <label class="focus-label">Email</label>
                             <div *ngIf="submitted && addUserForm.controls.email.errors" class="text-danger">
                                 <div *ngIf="submitted && addUserForm.controls.email.errors.required">
                                     Email is required
                                 </div>
+                                <div *ngIf="addUserForm.controls.email.hasError('invalidEmail')">
+                                    Please enter a valid email address
+                                </div>
                             </div>
-                            <label class="focus-label">Email *</label>
+
+
                         </div>
                     </div>
+
 
                 </div>
                 <div class="row">

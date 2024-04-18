@@ -7,7 +7,7 @@
                     <div class="col">
                         <h3 class="page-title">Students</h3>
                         <ul class="breadcrumb">
-                           
+
                             <li class="breadcrumb-item">Edit Students</li>
                         </ul>
                     </div>
@@ -121,7 +121,7 @@
                                 </div>
                             </div> -->
                             <div *ngIf="submitted && studentForm.controls['mobileNumber'].errors?.required"><span
-                                    style="color:red"> number is required</span>
+                                    style="color:red"> Mobile number is required</span>
                             </div>
                             <div *ngIf="submitted && studentForm.controls['mobileNumber'].errors?.invalidMobileNumber">
                                 <span style="color: red;">Invalid mobile number format</span>
@@ -131,10 +131,11 @@
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
                             <input type="number" class="form-control floating select-focus" id="alt_mobile_number"
-                                formControlName="altMobileNumber" name="alt_mobile_number">
+                                formControlName="altMobileNumber" name="alt_mobile_number"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.altMobileNumber.errors}">
                             <label class="focus-label">Alternate Mobile Number</label>
                             <div *ngIf="submitted && studentForm.controls['altMobileNumber'].errors?.required"><span
-                                    style="color:red"> number is required</span>
+                                    style="color:red"> Alternative number is required</span>
                             </div>
                             <div
                                 *ngIf="submitted && studentForm.controls['altMobileNumber'].errors?.invalidMobileNumber">
@@ -145,8 +146,19 @@
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
                             <input type="email" class="form-control floating select-focus" id="email" name="email"
-                                formControlName="email">
+                                formControlName="email"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.email.errors}">
                             <label class="focus-label">Email</label>
+                            <div *ngIf="submitted && studentForm.controls.email.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.email.errors.required">
+                                    Email is required
+                                </div>
+                                 <div *ngIf="studentForm.controls.email.hasError('invalidEmail')">
+                                Please enter a valid email address
+                              </div>
+                            </div>
+                           
+
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-3">
@@ -203,14 +215,42 @@
                             [submitted]="submitted"></app-textbox>
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <app-dropdown [label]="'State'" [id]="'stateId'" [options]="states"
-                            [control]="studentForm.controls.stateId" (dropdownOnChange)="onStateChange($event)"
-                            [ErrorMessage]="'State is required'" [submitted]="submitted"></app-dropdown>
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control  floating" id="course_id" name="course_id"
+                                formControlName="stateId" (ngModelChange)="onStateChange($event)"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.stateId.errors}">
+                                <option value="">Select Course</option>
+                                <option *ngFor="let item of states" [value]="item.id">{{ item.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && studentForm.controls.stateId.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.stateId.errors.required">
+                                    State is required
+                                </div>
+                            </div>
+                            <label class="focus-label">State *</label>
+                        </div>
+
                     </div>
                     <div class="col-sm-6 col-md-3">
-                        <app-dropdown [label]="'City'" [id]="'cityId'" [options]="cities"
-                            [control]="studentForm.controls.cityId" [ErrorMessage]="'City is required'"
-                            [submitted]="submitted"></app-dropdown>
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control  floating" id="course_id" name="course_id"
+                                formControlName="cityId"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.cityId.errors}">
+                                <option value="">Select City</option>
+                                <option *ngFor="let item of cities" [value]="item.id">{{ item.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && studentForm.controls.cityId.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.cityId.errors.required">
+                                    City is required
+                                </div>
+                            </div>
+                            <label class="focus-label">City *</label>
+                        </div>
+
+
+
                     </div>
                     <div class="col-sm-6 col-md-3">
                         <app-textbox [label]="'Pincode'" [id]="'pincode'" [control]="studentForm.controls.pinCode"
@@ -218,8 +258,8 @@
 
                     </div>
                     <div class="col-sm-6 col-md-6">
-                        <app-image-upload (onFileUpload)="onFileSelected($event)"
-                            [imageURL]="selectedImageURL" [sourceFrom] = "srcFrom"></app-image-upload>
+                        <app-image-upload (onFileUpload)="onFileSelected($event)" [imageURL]="selectedImageURL"
+                            [sourceFrom]="srcFrom"></app-image-upload>
                     </div>
                 </div>
                 <div class="row">

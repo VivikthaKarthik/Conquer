@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ValidatorFn,AbstractControl} from '@angular/forms';
 import { MasterService } from '../../services/master.service';
 import { DataMappingService } from '../../services/data-mapping.service';
 import { Router } from '@angular/router';
@@ -34,7 +34,7 @@ export class AdduserComponent {
       firstName: ['', Validators.required],
       lastName: [''],
       role: ['', Validators.required],
-      email: ['', Validators.required],
+      email: ['', [Validators.required, this.emailValidator()]],
       branch: ['', Validators.required],
       password: ['', Validators.required],
       phoneNumber: ['', Validators.required],
@@ -99,5 +99,13 @@ export class AdduserComponent {
         alert(data.message);
       }
     });
+  }
+
+  emailValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      const valid = emailPattern.test(control.value);
+      return valid ? null : { 'invalidEmail': true };
+    };
   }
 }
