@@ -206,7 +206,7 @@ export class AddstudentComponent {
       AdmissionDate: this.studentForm.value.admissionDate,
       MobileNumber: String(this.studentForm.value.mobileNumber),
       EmailAddress: this.studentForm.value.email,
-      AlternateMobileNumber: String(this.studentForm.value.alternateMobileNumber),
+      AlternateMobileNumber: String(this.studentForm.value.altMobileNumber),
       AddressLine1: this.studentForm.value.addressLine1,
       Gender: this.studentForm.value.gender,
       Landmark: this.studentForm.value.landMark,
@@ -220,7 +220,7 @@ export class AddstudentComponent {
     console.log(JSON.stringify(studentData));
     if (this.selectedFile) {
       this.masterService
-        .postWithFile(studentData, this.selectedFile, 'Student', 'Create')
+        .postStudentWithFile(studentData, this.selectedFile, 'Student', 'CreateWithFile')
         .subscribe((data: any) => {
           if (data.isSuccess) {
             this.router.navigate(['/student']);

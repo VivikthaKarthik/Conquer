@@ -90,12 +90,12 @@ export class StudentsComponent {
     });
     this.colDefs.push({
       headerName: 'Course',
-      field: 'Name',
+      field: 'courseId',
       filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
       headerName: 'Class',
-      field: 'Name',
+      field: 'classId',
       filter: 'agTextColumnFilter',
     });
     this.colDefs.push({

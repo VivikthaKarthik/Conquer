@@ -85,6 +85,41 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus">
+                            <input type="date" class="form-control floating select-focus" id="start_Date"
+                                name="startDate" required formControlName="startDate"
+                                [ngClass]="{'is-invalid': submitted && editChapterForm.controls.startDate.errors}">
+                            <label class="focus-label">Start Date *</label>
+                            <div *ngIf="submitted && editChapterForm.controls.startDate.errors" class="text-danger">
+                                <div *ngIf="submitted && editChapterForm.controls.startDate.errors.required">
+                                    Start Date is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus">
+                            <input type="date" class="form-control floating select-focus" id="end_Date" name="end_Date"
+                                required formControlName="endDate"
+                                [ngClass]="{'is-invalid': submitted && editChapterForm.controls.endDate.errors}">
+                            <label class="focus-label">End Date *</label>
+                            <div *ngIf="submitted && editChapterForm.controls.endDate.errors" class="text-danger">
+                                <div *ngIf="submitted && editChapterForm.controls.endDate.errors.required">
+                                    End Date is required
+                                </div>
+                                <div *ngIf="editChapterForm.controls.endDate.errors?.endDateInvalid">
+                                    End date must be greater than or equal to start date.
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
 
                 <div class="row">
                     <div class="col-sm-6 col-md-6">
@@ -110,7 +145,10 @@
                 </div>
 
                 <div class="row">
-                    <input type="checkbox" id="recommended" name="recommended"> Is Recommended?
+                    <div class="col-sm-6 col-md-3">
+                        <input type="checkbox" id="recommended" name="recommended"> Is Recommended?
+                    </div>
+                    
                 </div>
                 <div class="row">
                     <div class="col-sm-6 col-md-3">

@@ -45,6 +45,20 @@ export class MasterService {
 
     return this.http.post(`${this.baseUrl}/${type}/${apiName}`, formData);
   }
+  postStudentWithFile(
+    request: any,
+    thumbnailFile: File | undefined,
+    type: string,
+    apiName: string
+  ) {
+    const formData = new FormData();
+    formData.append('requestDto', JSON.stringify(request));
+    if (thumbnailFile !== undefined) {
+      formData.append('profilePicture', thumbnailFile);
+    }
+
+    return this.http.post(`${this.baseUrl}/${type}/${apiName}`, formData);
+  }
 
   UploadQuestions(
     request: any,

@@ -91,18 +91,18 @@ export class TopicsComponent {
         field: 'course',
         filter: 'agTextColumnFilter',
       });
-      this.colDefs.push({
-        headerName: 'Thumbnail',
-        field: 'thumbnail',
-        filter: 'agTextColumnFilter',
-        cellRenderer: function (params: any) {
-          if (params && params.value) {
-            return `<img src="${params.value}" style="max-height: 100px; max-width: 100px;" />`;
-          } else {
-            return null;
-          }
-        },
-      });
+      // this.colDefs.push({
+      //   headerName: 'Thumbnail',
+      //   field: 'thumbnail',
+      //   filter: 'agTextColumnFilter',
+      //   cellRenderer: function (params: any) {
+      //     if (params && params.value) {
+      //       return `<img src="${params.value}" style="max-height: 100px; max-width: 100px;" />`;
+      //     } else {
+      //       return null;
+      //     }
+      //   },
+      // });
     }
     
     

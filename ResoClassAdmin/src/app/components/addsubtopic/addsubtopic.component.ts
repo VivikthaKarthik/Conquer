@@ -11,6 +11,10 @@ import { DataMappingService } from '../../services/data-mapping.service';
 import { Router } from '@angular/router';
 import { Course } from '../../models/course';
 import { ListItem } from '../../models/listItem';
+import { Attachments } from '../../models/attachments';
+import { ColDef } from 'ag-grid-community';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-addsubtopic',
@@ -19,8 +23,10 @@ import { ListItem } from '../../models/listItem';
 })
 export class AddsubtopicComponent {
   addSubTopicForm!: FormGroup;
+  addAttachmentForm!: FormGroup;
   studentName: string = '';
   selectedFile: File | undefined;
+  selectedFiles: File | undefined;
   courseData: ListItem[] = [];
   classData: ListItem[] = [];
   subjectData: ListItem[] = [];
@@ -31,21 +37,38 @@ export class AddsubtopicComponent {
   selectedCity: any;
   pageName: string = 'Student';
   selectedImageURL: any;
-  isChecked:boolean = false;
+  isChecked: boolean = false;
+  attachmentsList: Attachments[] = [];
+  colDefs: ColDef[] = [];
+  isAddPopupVisible: boolean = true;
 
   constructor(
     private fb: FormBuilder,
     private masterService: MasterService,
     private dataMappingService: DataMappingService,
-    private router: Router  
-  ) { }
+    private router: Router
+  ) {
+
+    this.colDefs.push({
+      headerName: 'Name',
+      field: 'name',
+      filter: 'agTextColumnFilter',
+    });
+    this.colDefs.push({
+      headerName: 'Source Url',
+      field: 'sourceUrl',
+      filter: 'agTextColumnFilter',
+    });
+
+  }
 
   ngOnInit(): void {
     this.isChecked = true;
     this.getCourses();
-   
+    this.getAllAttachments();
+
     this.addSubTopicForm = this.fb.group({
-      
+
       name: ['', Validators.required],
       sourceURL: ['', Validators.required],
       duration: ['', Validators.required],
@@ -60,7 +83,7 @@ export class AddsubtopicComponent {
       thumbnail: [''],
       description: ['', Validators.required],
       homeDisplay: [''],
-      
+
     });
   }
 
@@ -221,6 +244,9 @@ export class AddsubtopicComponent {
   onFileSelected(event: any): void {
     this.selectedFile = event;
   }
+  onSelectedFiles(event: any): void {
+    this.selectedFiles = event;
+  }
   onSubmit() {
     this.submitted = true;
     if (this.addSubTopicForm.invalid) {
@@ -256,11 +282,55 @@ export class AddsubtopicComponent {
           alert(data.message);
         }
       });
-  
+
   }
 
   OnDocumentUpload(event: any): void {
     this.router.navigate(['/subtopic']);
+  }
+  showConfirmation(id: any): void {
+    Swal.fire({
+      text: 'Do you really want to remove this Student?',
+      icon: 'warning',
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteAttachments(id);
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+      }
+    });
+  }
+  deleteAttachments(cId: number) {
+    this.masterService
+      .delete(cId, 'Student', 'Delete')
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.getAllAttachments();
+        } else {
+          alert(data.message);
+        }
+      });
+  }
+  getAllAttachments() {
+    debugger
+    this.masterService.getAll('SubTopic', 'GetAttachments').subscribe((data: any) => {
+      if (data.isSuccess) {
+        debugger
+        this.attachmentsList = data.result;
+      }
+    });
+  }
+
+  downLoadRow(id: any) {
+   
+  }
+
+  deleteGridRecord(id: any) {
+    this.showConfirmation(id);
+  }
+
+  addAttachments(){
+    this.isAddPopupVisible = true;
   }
 }
 

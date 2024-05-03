@@ -4,6 +4,8 @@ import {
   FormBuilder,
   Validators,
   ReactiveFormsModule,
+  AbstractControl,
+  ValidatorFn,
 } from '@angular/forms';
 import { MasterService } from '../../services/master.service';
 import { DataMappingService } from '../../services/data-mapping.service';
@@ -42,6 +44,8 @@ export class AddchapterComponent {
       selClassId: ['', Validators.required],
       selSubId: ['', Validators.required],
       description: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', [Validators.required, this.endDateValidator('startDate')]],
     });
   }
 
@@ -119,6 +123,8 @@ export class AddchapterComponent {
       subjectId: subjID,
       isRecommended: this.isChecked,
       description: this.addChapterForm.value.description,
+      startDate: this.addChapterForm.value.startDate,
+      endDate: this.addChapterForm.value.startDate,
     };
 
     this.masterService
@@ -131,6 +137,21 @@ export class AddchapterComponent {
         }
       });
     
+  }
+
+  endDateValidator(startDateControlName: string): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const startDate = control.root.get(startDateControlName)?.value;
+      const endDate = control.value;
+
+      if (startDate && endDate) {
+        if (endDate < startDate) {
+          return { endDateInvalid: true };
+        }
+      }
+
+      return null;
+    };
   }
 
 }

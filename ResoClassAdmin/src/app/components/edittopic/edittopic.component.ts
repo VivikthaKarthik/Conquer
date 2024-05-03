@@ -42,7 +42,7 @@ export class EdittopicComponent {
       selClassId: ['', Validators.required],
       selSubjectId: ['', Validators.required],
       selChapterId: ['', Validators.required],
-      description: ['', Validators.required],
+      //description: ['', Validators.required],
       startDate: ['', Validators.required],
       endDate: ['', [Validators.required, this.endDateValidator('startDate')]],
     });
@@ -87,6 +87,7 @@ export class EdittopicComponent {
           this.editTopicForm.controls.endDate.setValue(
             data.result.endDate.substr(0, 10)
           );
+          
         } else {
           alert('Some error occured..! Plaese try again');
         }

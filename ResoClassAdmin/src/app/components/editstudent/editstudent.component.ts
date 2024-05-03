@@ -105,6 +105,7 @@ export class EditstudentComponent {
             this.studentForm.controls.stateId.setValue(data.result.stateId);
             this.studentForm.controls.cityId.setValue(data.result.cityId);
             this.studentForm.controls.pinCode.setValue(data.result.pinCode);
+            this.selectedImageURL = data.result.profilePicture;
           }
           else {
             alert('Some error occured..! Plaese try again');
@@ -170,10 +171,10 @@ export class EditstudentComponent {
     }
     if (this.selectedFile !== undefined) {
       this.masterService
-        .putWithFile(studentData, this.selectedFile, 'Chapter', 'Update')
+        .putWithFile(studentData, this.selectedFile, 'Student', 'UpdateWithFile')
         .subscribe((data: any) => {
           if (data.isSuccess) {
-            this.router.navigate(['/chapter']);
+            this.router.navigate(['/student']);
           } else {
             alert(data.message);
           }

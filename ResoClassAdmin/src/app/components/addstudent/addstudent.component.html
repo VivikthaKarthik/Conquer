@@ -122,7 +122,7 @@
                                 </div>
                             </div> -->
                             <div *ngIf="submitted && studentForm.controls['mobileNumber'].errors?.required"><span
-                                    style="color:red"> number is required</span>
+                                    style="color:red"> Mobile Number is required</span>
                             </div>
                             <div *ngIf="submitted && studentForm.controls['mobileNumber'].errors?.invalidMobileNumber">
                                 <span style="color: red;">Invalid mobile number format</span>
@@ -135,7 +135,7 @@
                                 formControlName="altMobileNumber" name="alt_mobile_number">
                             <label class="focus-label">Alternate Mobile Number</label>
                             <div *ngIf="submitted && studentForm.controls['altMobileNumber'].errors?.required"><span
-                                    style="color:red"> number is required</span>
+                                    style="color:red"> Alternate Number is required</span>
                             </div>
                             <div
                                 *ngIf="submitted && studentForm.controls['altMobileNumber'].errors?.invalidMobileNumber">
@@ -153,11 +153,11 @@
                                 <div *ngIf="submitted && studentForm.controls.email.errors.required">
                                     Email is required
                                 </div>
-                                 <div *ngIf="studentForm.controls.email.hasError('invalidEmail')">
-                                Please enter a valid email address
-                              </div>
+                                <div *ngIf="studentForm.controls.email.hasError('invalidEmail')">
+                                    Please enter a valid email address
+                                </div>
                             </div>
-                           
+
 
                         </div>
                     </div>
@@ -201,37 +201,88 @@
                         </div>
                     </div>
                     <div class="col-sm-6 col-md-6">
-                        <app-textbox [label]="'AddessLane 1'" [id]="'address_line1'"
-                            [control]="studentForm.controls.addressLine1" [ErrorMessage]="'AddressLane 1 is required'"
-                            [submitted]="submitted"></app-textbox>
-                    </div>
-                    <div class="col-sm-6 col-md-6">
-                        <app-textbox [label]="'AddessLane 2'" [id]="'address_line2'"
-                            [control]="studentForm.controls.addressLine2" [ErrorMessage]="'AddressLane 2 is required'"
-                            [submitted]="submitted"></app-textbox>
-                    </div>
-                    <div class="col-sm-6 col-md-6">
-                        <app-textbox [label]="'Landmark'" [id]="'landmark'" [control]="studentForm.controls.landMark"
-                            [submitted]="submitted"></app-textbox>
-                    </div>
-                    <div class="col-sm-6 col-md-3">
-                        <app-dropdown [label]="'State'" [id]="'stateId'" [options]="states"
-                            [control]="studentForm.controls.stateId" (dropdownOnChange)="onStateChange($event)"
-                            [ErrorMessage]="'State is required'" [submitted]="submitted"></app-dropdown>
-                    </div>
-                    <div class="col-sm-6 col-md-3">
-                        <app-dropdown [label]="'City'" [id]="'cityId'" [options]="cities"
-                            [control]="studentForm.controls.cityId" [ErrorMessage]="'City is required'"
-                            [submitted]="submitted"></app-dropdown>
-                    </div>
-                    <div class="col-sm-6 col-md-3">
-                        <app-textbox [label]="'Pincode'" [id]="'pincode'" [control]="studentForm.controls.pinCode"
-                            [submitted]="submitted"></app-textbox>
+                        <div class="form-group form-focus select-focus">
+                            <input type="text" class="form-control floating select-focus" id="address_line1"
+                                formControlName="addressLine1" name="address_line1"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.addressLine1.errors}">
+                            <div *ngIf="submitted && studentForm.controls.addressLine1.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.addressLine1.errors.required">
+                                    AddressLane 1 is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Adress Lane 1 *</label>
+                        </div>
 
                     </div>
                     <div class="col-sm-6 col-md-6">
-                        <app-image-upload (onFileUpload)="onFileSelected($event)"
-                            [imageURL]="selectedImageURL" [sourceFrom] = "srcFrom"></app-image-upload>
+                        <div class="form-group form-focus select-focus">
+                            <input type="text" class="form-control floating select-focus" id="address_line2"
+                                formControlName="addressLine2" name="address_line2"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.addressLine2.errors}">
+                            <div *ngIf="submitted && studentForm.controls.addressLine2.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.addressLine2.errors.required">
+                                    AddressLane 2 is required
+                                </div>
+                            </div>
+                            <label class="focus-label">Adress Lane 1 *</label>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <div class="form-group form-focus select-focus">
+                            <input type="text" class="form-control floating select-focus" id="landmark" name="landmark"
+                                formControlName="landMark">
+                            <label class="focus-label">Landmark</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control  floating" id="state_id" name="state_id"
+                                formControlName="stateId" (ngModelChange)="onStateChange($event)"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.stateId.errors}">
+                                <option value="">Select State</option>
+                                <option *ngFor="let item of states" [value]="item.id">{{ item.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && studentForm.controls.stateId.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.stateId.errors.required">
+                                    State is required
+                                </div>
+                            </div>
+                            <label class="focus-label">State *</label>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus">
+                            <select class="form-control  floating" id="city_id" name="city_id" formControlName="cityId"
+                                [ngClass]="{'is-invalid': submitted && studentForm.controls.cityId.errors}">
+                               
+                                <option *ngFor="let item of cities" [value]="item.id">{{ item.name }}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && studentForm.controls.cityId.errors" class="text-danger">
+                                <div *ngIf="submitted && studentForm.controls.cityId.errors.required">
+                                    City is required
+                                </div>
+                            </div>
+                            <label class="focus-label">City *</label>
+
+                        </div>
+
+
+                    </div>
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-group form-focus select-focus">
+                            <input type="text" class="form-control floating select-focus" id="pincode" name="pincode"
+                                formControlName="pinCode">
+                            <label class="focus-label">Pin Code</label>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6 col-md-6">
+                        <app-image-upload (onFileUpload)="onFileSelected($event)" [imageURL]="selectedImageURL"
+                            [sourceFrom]="srcFrom"></app-image-upload>
                     </div>
                 </div>
                 <div class="row">

@@ -5,6 +5,7 @@ export interface Student {
     FatherName:string;
     MotherName:string;
     DateOfBirth:Date;
+    ClassId:number;
     CourseId:number;
     AdmissionDate:Date;
     MobileNumber:string;

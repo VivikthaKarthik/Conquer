@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Input, Output, input } from '@angular/core';
 import { MasterService } from '../../services/master.service';
 
+
 @Component({
-  selector: 'app-bulk-upload',
-  templateUrl: './bulk-upload.component.html',
-  styleUrl: './bulk-upload.component.css',
+  selector: 'app-innerbulk-upload',
+  templateUrl: './innerbulk-upload.component.html',
+  styleUrl: './innerbulk-upload.component.css'
 })
-export class BulkUploadComponent {
+export class InnerbulkUploadComponent {
   selectedFile: File | undefined;
   @Input() pageName: string = '';
   @Input() sampleFileName: string = '';
@@ -25,7 +26,6 @@ export class BulkUploadComponent {
   }
 
   UploadFile() {
-    debugger
     if (this.selectedFile) {
       const formData = new FormData();
       formData.append('file', this.selectedFile);

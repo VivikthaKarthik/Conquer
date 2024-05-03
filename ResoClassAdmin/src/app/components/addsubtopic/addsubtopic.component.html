@@ -220,10 +220,22 @@
                 <div class="row">
                     <div class="col-sm-6 col-md-6">
                         <div class="form-group form-focus select-focus">
-                            <input type="checkbox" id="homeDisplay" name="homeDisplay"  formControlName="homeDisplay"> Home Display?
+                            <input type="checkbox" id="homeDisplay" name="homeDisplay" formControlName="homeDisplay">
+                            Home Display?
                         </div>
                     </div>
 
+                </div>
+                <div class="row">
+                    <div class="col-auto float-right ml-auto">
+                        <a href="#" class="btn add-btn" data-toggle="modal" data-target="#add_course"><i class="fa fa-plus"></i> Add
+                        </a>
+                      </div>
+                    <div class="col-md-12">
+                        <app-innergrid [data]="attachmentsList" [coloumnDef]="colDefs"
+                            (downLoadRow)="downLoadRow($event)"
+                            (deleteRecord)="deleteGridRecord($event)"></app-innergrid>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6 col-md-3">
@@ -236,6 +248,31 @@
                 </div>
             </form>
         </div>
+        <div id="add_course" class="modal custom-modal fade" role="dialog" *ngIf="isAddPopupVisible">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Add Attachment</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="addform" [formGroup]="addAttachmentForm" (ngSubmit)="onSubmit()">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12">
+                        <div class="form-group">
+                            <app-innerbulk-upload [sampleFileName]="'SubTopicAttachmnets'" [pageName]="pageName"
+                            (onFileUpload)="onSelectedFiles($event)"></app-innerbulk-upload>
+                    </div>
+                      </div>
+                    </div>
+                    
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
     </div>
 </div>
 <div style="width: 100%; text-align: center; position: fixed; z-index: 9998889; top: 250px; left: 0px; text-align: center; display:none"

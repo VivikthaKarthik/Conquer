@@ -4,6 +4,8 @@ import {
   FormBuilder,
   Validators,
   ReactiveFormsModule,
+  ValidatorFn,
+  AbstractControl,
 } from '@angular/forms';
 import { MasterService } from '../../services/master.service';
 import { DataMappingService } from '../../services/data-mapping.service';
@@ -38,6 +40,8 @@ export class EditchapterComponent {
       selClassId: ['', Validators.required],
       selSubId: ['', Validators.required],
       description: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', [Validators.required, this.endDateValidator('startDate')]],
     });
   }
 
@@ -69,6 +73,12 @@ export class EditchapterComponent {
             this.editChapterForm.controls.selClassId.setValue(data.result.classId);
             this.editChapterForm.controls.selSubId.setValue(data.result.subjectId);
             this.editChapterForm.controls.description.setValue(data.result.description);
+            this.editChapterForm.controls.startDate.setValue(
+              data.result.startDate.substr(0, 10)
+            );
+            this.editChapterForm.controls.endDate.setValue(
+              data.result.endDate.substr(0, 10)
+            );
 
           } else {
             alert('Some error occured..! Plaese try again');
@@ -185,6 +195,8 @@ export class EditchapterComponent {
       subjectId: this.editChapterForm.value.selSubId,
       description: this.editChapterForm.value.description,
       isRecommended: this.isChecked,
+      startDate: this.editChapterForm.value.startDate,
+      endDate: this.editChapterForm.value.endDate,
       thumbnail: "",
     };
     if (this.selectedFile !== undefined) {
@@ -209,7 +221,22 @@ export class EditchapterComponent {
           }
         });
     }
-    window.location.reload();
+    
+  }
+
+  endDateValidator(startDateControlName: string): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      const startDate = control.root.get(startDateControlName)?.value;
+      const endDate = control.value;
+
+      if (startDate && endDate) {
+        if (endDate < startDate) {
+          return { endDateInvalid: true };
+        }
+      }
+
+      return null;
+    };
   }
 
 }

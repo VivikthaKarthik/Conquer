@@ -56,6 +56,8 @@ import { EditclassComponent } from '../components/editclass/editclass.component'
 import { UsersComponent } from '../components/users/users.component';
 import { AdduserComponent } from '../components/adduser/adduser.component';
 import { EdituserComponent } from '../components/edituser/edituser.component';
+import { InnergridComponent } from '../components/innergrid/innergrid.component';
+import { InnerbulkUploadComponent } from '../widgets/innerbulk-upload/innerbulk-upload.component';
 
 
 @NgModule({
@@ -99,13 +101,15 @@ import { EdituserComponent } from '../components/edituser/edituser.component';
     EdittopicComponent,
     AddsubtopicComponent,
     EditsubtopicComponent,
-   TextboxComponent,
-   TextareaComponent,
-   AddclassComponent,
-   EditclassComponent,
-   UsersComponent,
-   AdduserComponent,
-   EdituserComponent,
+    TextboxComponent,
+    TextareaComponent,
+    AddclassComponent,
+    EditclassComponent,
+    UsersComponent,
+    AdduserComponent,
+    EdituserComponent,
+    InnergridComponent,
+    InnerbulkUploadComponent,
   ],
   imports: [
     CommonModule,
@@ -121,4 +125,4 @@ import { EdituserComponent } from '../components/edituser/edituser.component';
   ],
   exports: [SharedModule],
 })
-export class LayoutModule {}
+export class LayoutModule { }
