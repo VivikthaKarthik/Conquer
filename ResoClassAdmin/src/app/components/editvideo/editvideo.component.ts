@@ -55,7 +55,6 @@ export class EditvideoComponent {
   ngOnInit(): void {
     this.getCourses();
     this.route.queryParams.subscribe((params) => {
-      debugger;
       const id: string = params['id'];
       this.videoId = 0;
       this.editVideo(id);
@@ -174,7 +173,6 @@ export class EditvideoComponent {
   }
 
   editVideo(Id: string) {
-    debugger;
     this.videoId = parseInt(Id);
     this.masterService
       .getById(Id, 'Video', 'Get', 'videoId')

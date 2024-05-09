@@ -42,7 +42,6 @@ export class EdittopicComponent {
       selClassId: ['', Validators.required],
       selSubjectId: ['', Validators.required],
       selChapterId: ['', Validators.required],
-      //description: ['', Validators.required],
       startDate: ['', Validators.required],
       endDate: ['', [Validators.required, this.endDateValidator('startDate')]],
     });
@@ -61,12 +60,9 @@ export class EdittopicComponent {
     });
   }
   getTopicById(Id: any) {
-    debugger;
     this.masterService.getById(Id, 'Topic', 'Get').subscribe((data: any) => {
       if (data.isSuccess) {
         if (data.result != null && data.result.name != null) {
-          debugger;
-          this.selectedImageURL = data.result.thumbnail;
           this.editTopicForm.controls.name.setValue(data.result.name);
           this.editTopicForm.controls.selCourseId.setValue(
             data.result.courseId
@@ -78,16 +74,12 @@ export class EdittopicComponent {
           this.editTopicForm.controls.selChapterId.setValue(
             data.result.chapterId
           );
-          this.editTopicForm.controls.description.setValue(
-            data.result.description
-          );
           this.editTopicForm.controls.startDate.setValue(
             data.result.startDate.substr(0, 10)
           );
           this.editTopicForm.controls.endDate.setValue(
             data.result.endDate.substr(0, 10)
           );
-          
         } else {
           alert('Some error occured..! Plaese try again');
         }
@@ -218,7 +210,6 @@ export class EdittopicComponent {
   }
 
   onFileSelected(event: any): void {
-    debugger;
     this.selectedFile = event;
   }
 
@@ -235,10 +226,8 @@ export class EdittopicComponent {
       id: this.topicId,
       name: this.editTopicForm.value.name,
       chapterId: this.editTopicForm.value.selChapterId,
-      description: this.editTopicForm.value.description,
       startDate: this.editTopicForm.value.startDate,
       endDate: this.editTopicForm.value.endDate,
-      thumbnail: '',
     };
     if (this.selectedFile != null) {
       this.masterService

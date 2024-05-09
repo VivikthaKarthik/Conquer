@@ -11,16 +11,19 @@ import { DataMappingService } from '../../services/data-mapping.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Course } from '../../models/course';
 import { ListItem } from '../../models/listItem';
-
+import { Attachments } from '../../models/attachments';
+import { ColDef } from 'ag-grid-community';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-editsubtopic',
   templateUrl: './editsubtopic.component.html',
-  styleUrl: './editsubtopic.component.css'
+  styleUrl: './editsubtopic.component.css',
 })
 export class EditsubtopicComponent {
   isChecked: boolean = false;
   editSubTopicForm!: FormGroup;
+  addAttachmentForm!: FormGroup;
   subtopicId: number = 0;
   studentName: string = '';
   selectedFile: File | undefined;
@@ -34,17 +37,33 @@ export class EditsubtopicComponent {
   selectedCity: any;
   pageName: string = 'Student';
   selectedImageURL: any;
+  selectedFiles: File | undefined;
+
+  attachmentsList: Attachments[] = [];
+  colDefs: ColDef[] = [];
+  isAddPopupVisible: boolean = true;
 
   constructor(
     private fb: FormBuilder,
     private masterService: MasterService,
     private dataMappingService: DataMappingService,
     private router: Router,
-    private route: ActivatedRoute,
-  ) { }
+    private route: ActivatedRoute
+  ) {
+    this.colDefs.push({
+      headerName: 'Name',
+      field: 'name',
+      filter: 'agTextColumnFilter',
+    });
+    this.colDefs.push({
+      headerName: 'Source Url',
+      field: 'sourceUrl',
+      filter: 'agTextColumnFilter',
+    });
+  }
 
   ngOnInit(): void {
-    debugger
+    this.getAllAttachments();
     this.getCourses();
     this.getClsByCourseId(0);
     this.getSubByClsID(0);
@@ -57,9 +76,7 @@ export class EditsubtopicComponent {
       this.getSubTopicsById(this.subtopicId);
     });
 
-
     this.editSubTopicForm = this.fb.group({
-
       name: ['', Validators.required],
       sourceURL: ['', Validators.required],
       duration: [''],
@@ -68,52 +85,59 @@ export class EditsubtopicComponent {
       selSubId: ['', Validators.required],
       selChapterId: ['', Validators.required],
       selTopicId: ['', Validators.required],
-      classNotesURL: ['', Validators.required],
-      extractURL: ['', Validators.required],
-      // rating: ['', Validators.required],
-      thumbnail: [''],
-      description: ['', Validators.required],
+      classNotesURL: [''],
+      extractURL: [''],
       homeDispaly: [''],
-
     });
   }
 
   getSubTopicsById(Id: number) {
-    debugger
     this.subtopicId = Id;
-    this.masterService
-      .getById(Id, 'SubTopic', 'Get')
-      .subscribe((data: any) => {
-        if (data.isSuccess) {
-          if (data.result != null && data.result.name != null) {
-
-            this.selectedImageURL = data.result.thumbnail;
-            this.editSubTopicForm.controls.name.setValue(data.result.name);
-            this.editSubTopicForm.controls.sourceURL.setValue(data.result.sourceUrl);
-            this.editSubTopicForm.controls.description.setValue(data.result.description);
-            this.editSubTopicForm.controls.homeDispaly.setValue(data.result.homeDisplay);
-            if(data.result.homeDisplay == true){
-                this.isChecked = true;
-            }
-            this.editSubTopicForm.controls.duration.setValue(data.result.duration);
-            this.editSubTopicForm.controls.selClassId.setValue(data.result.classId);
-            this.editSubTopicForm.controls.selCourseId.setValue(data.result.courseId);
-            this.editSubTopicForm.controls.selSubId.setValue(data.result.subjectId);
-            this.editSubTopicForm.controls.selTopicId.setValue(data.result.topicId);
-            this.editSubTopicForm.controls.selChapterId.setValue(data.result.chapterId);
-            this.editSubTopicForm.controls.classNotesURL.setValue(data.result.classNotesUrl);
-            this.editSubTopicForm.controls.extractURL.setValue(data.result.extractUrl);
-            this.editSubTopicForm.controls.rating.setValue(data.result.rating);
-            this.selectedFile = data.result.thumbnail;
-          } else {
-            alert('Some error occured..! Plaese try again');
+    this.masterService.getById(Id, 'SubTopic', 'Get').subscribe((data: any) => {
+      if (data.isSuccess) {
+        if (data.result != null && data.result.name != null) {
+          this.editSubTopicForm.controls.name.setValue(data.result.name);
+          this.editSubTopicForm.controls.sourceURL.setValue(
+            data.result.sourceUrl
+          );
+          this.editSubTopicForm.controls.homeDispaly.setValue(
+            data.result.homeDisplay
+          );
+          if (data.result.homeDisplay == true) {
+            this.isChecked = true;
           }
+          this.editSubTopicForm.controls.duration.setValue(
+            data.result.duration
+          );
+          this.editSubTopicForm.controls.selClassId.setValue(
+            data.result.classId
+          );
+          this.editSubTopicForm.controls.selCourseId.setValue(
+            data.result.courseId
+          );
+          this.editSubTopicForm.controls.selSubId.setValue(
+            data.result.subjectId
+          );
+          this.editSubTopicForm.controls.selTopicId.setValue(
+            data.result.topicId
+          );
+          this.editSubTopicForm.controls.selChapterId.setValue(
+            data.result.chapterId
+          );
+          this.editSubTopicForm.controls.classNotesURL.setValue(
+            data.result.classNotesUrl
+          );
+          this.editSubTopicForm.controls.extractURL.setValue(
+            data.result.extractUrl
+          );
         } else {
-          alert(data.message);
+          alert('Some error occured..! Plaese try again');
         }
-      });
+      } else {
+        alert(data.message);
+      }
+    });
   }
-
 
   getCourses() {
     this.masterService.getListItems('Course', '', 0).subscribe((data: any) => {
@@ -147,8 +171,7 @@ export class EditsubtopicComponent {
             alert(data.message);
           }
         });
-    }
-    else {
+    } else {
       this.masterService.getListItems('Class', '', 0).subscribe((data: any) => {
         if (data.isSuccess) {
           this.classData = this.dataMappingService.mapToModel<ListItem>(
@@ -182,21 +205,22 @@ export class EditsubtopicComponent {
             alert(data.message);
           }
         });
-    }
-    else {
-      this.masterService.getListItems('Subject', '', 0).subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.subjectData = this.dataMappingService.mapToModel<ListItem>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-            })
-          );
-        } else {
-          alert(data.message);
-        }
-      });
+    } else {
+      this.masterService
+        .getListItems('Subject', '', 0)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.subjectData = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
     }
   }
   getChapterBySubID(Id: number) {
@@ -216,21 +240,22 @@ export class EditsubtopicComponent {
             alert(data.message);
           }
         });
-    }
-    else {
-      this.masterService.getListItems('Chapter', '', 0).subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.chapterData = this.dataMappingService.mapToModel<ListItem>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-            })
-          );
-        } else {
-          alert(data.message);
-        }
-      });
+    } else {
+      this.masterService
+        .getListItems('Chapter', '', 0)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.chapterData = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
     }
   }
   getTopicByChapterID(Id: number) {
@@ -250,8 +275,7 @@ export class EditsubtopicComponent {
             alert(data.message);
           }
         });
-    }
-    else {
+    } else {
       this.masterService.getListItems('Topic', '', 0).subscribe((data: any) => {
         if (data.isSuccess) {
           this.topicData = this.dataMappingService.mapToModel<ListItem>(
@@ -272,7 +296,6 @@ export class EditsubtopicComponent {
     this.selectedFile = event;
   }
   onSubmit() {
-    debugger
     this.submitted = true;
     if (this.editSubTopicForm.invalid) {
       return;
@@ -281,7 +304,6 @@ export class EditsubtopicComponent {
     }
   }
   updateSubTopic() {
-    debugger
     var stData = {
       id: this.subtopicId,
       name: this.editSubTopicForm.value.name,
@@ -294,10 +316,7 @@ export class EditsubtopicComponent {
       selTopicId: this.editSubTopicForm.value.selTopicId,
       classNotesURL: this.editSubTopicForm.value.classNotesURL,
       extractURL: this.editSubTopicForm.value.extractURL,
-      thumbnail: this.editSubTopicForm.value.thumbnail,
-      description: this.editSubTopicForm.value.description,
-      homeDispaly: this.editSubTopicForm.value.homeDispaly,
-
+      homeDisplay: this.editSubTopicForm.value.homeDispaly,
     };
     if (this.selectedFile !== undefined) {
       this.masterService
@@ -309,7 +328,6 @@ export class EditsubtopicComponent {
             alert(data.message);
           }
         });
-
     } else {
       this.masterService
         .put(stData, 'SubTopic', 'Update')
@@ -321,10 +339,67 @@ export class EditsubtopicComponent {
           }
         });
     }
-   
   }
 
   OnDocumentUpload(event: any): void {
     this.router.navigate(['/subtopic']);
+  }
+  onSelectedFiles(event: any): void {
+    if (event !== undefined) {
+      this.selectedFiles = event;
+
+      this.masterService
+        .postAttachment(this.subtopicId, this.selectedFiles)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.attachmentsList = data.result;
+          } else {
+            alert(data.message);
+          }
+        });
+    }
+    this.isAddPopupVisible = false;
+    window.location.reload();
+  }
+  downLoadRow(id: any) {}
+
+  deleteGridRecord(id: any) {
+    this.showConfirmation(id);
+  }
+
+  addAttachments() {
+    this.isAddPopupVisible = true;
+  }
+  deleteAttachments(cId: number) {
+    this.masterService
+      .delete(cId, 'SubTopic', 'DeleteAttachment')
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.getAllAttachments();
+        } else {
+          alert(data.message);
+        }
+      });
+  }
+  showConfirmation(id: any): void {
+    Swal.fire({
+      text: 'Do you really want to remove this Attachment?',
+      icon: 'warning',
+      showCancelButton: true,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.deleteAttachments(id);
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success');
+      }
+    });
+  }
+  getAllAttachments() {
+    this.masterService
+      .getAll('SubTopic', 'GetAttachments')
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.attachmentsList = data.result;
+        }
+      });
   }
 }

@@ -102,7 +102,7 @@ export class AddstudentComponent {
               name: item.name,
             })
           );
-          this.cities.push({ id: 0, name: 'Select City' });
+          // this.cities.push({ id: 0, name: 'Select City' });
           this.cities = this.cities.concat(list);
         } else {
           alert(data.message);

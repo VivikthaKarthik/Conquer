@@ -1,5 +1,11 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, ValidatorFn,Validators,AbstractControl } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  ValidatorFn,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
 import { MasterService } from '../../services/master.service';
 import { DataMappingService } from '../../services/data-mapping.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,65 +16,65 @@ import { ListItem } from '../../models/listItem';
 @Component({
   selector: 'app-edituser',
   templateUrl: './edituser.component.html',
-  styleUrl: './edituser.component.css'
+  styleUrl: './edituser.component.css',
 })
 export class EdituserComponent {
   editUserForm!: FormGroup;
-  studentName: string = "";
+  studentName: string = '';
   courses: Course[] | undefined;
   submitted = false;
   rolesData: ListItem[] = [];
   branchData: ListItem[] = [];
   userId: number = 0;
 
-
-  constructor(private fb: FormBuilder,private route: ActivatedRoute, private masterService: MasterService, private dataMappingService: DataMappingService, private router: Router) {
-    
-  }
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private masterService: MasterService,
+    private dataMappingService: DataMappingService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.getRoles();
     this.getBranches();
 
-    this.route.queryParams.subscribe(params => {
-     
-      const id:string = params['id'];
+    this.route.queryParams.subscribe((params) => {
+      const id: string = params['id'];
       this.userId = parseInt(id);
       this.getUserDetails(this.userId);
     });
 
-
     this.editUserForm = this.fb.group({
-      
       firstName: ['', Validators.required],
       lastName: [''],
       role: ['', Validators.required],
       email: ['', [Validators.required, this.emailValidator()]],
       branch: ['', Validators.required],
-      password:['', Validators.required],
-      phoneNumber:['', Validators.required],
+      password: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
     });
   }
 
-  getUserDetails(Id:number) {
-    debugger
+  getUserDetails(Id: number) {
     this.userId = Id;
     this.masterService
-      .getById(Id, 'User', 'Get','studentId')
+      .getById(Id, 'User', 'Get', 'UserId')
       .subscribe((data: any) => {
-
         if (data.isSuccess) {
-          if (data.result != null && data.result.name != null) {
-            this.editUserForm.controls.firstName.setValue(data.result.firstName);
+          if (data.result != null && data.result.firstName != null) {
+            this.editUserForm.controls.firstName.setValue(
+              data.result.firstName
+            );
             this.editUserForm.controls.lastName.setValue(data.result.lastName);
-            this.editUserForm.controls.role.setValue(data.result.role);
+            this.editUserForm.controls.role.setValue(data.result.roleId);
             this.editUserForm.controls.email.setValue(data.result.email);
-            this.editUserForm.controls.branch.setValue(data.result.branch);
+            this.editUserForm.controls.branch.setValue(data.result.branchId);
             this.editUserForm.controls.password.setValue(data.result.password);
-            this.editUserForm.controls.phoneNumber.setValue(data.result.phoneNumber);
-            
-          }
-          else {
+            this.editUserForm.controls.phoneNumber.setValue(
+              data.result.phoneNumber
+            );
+          } else {
             alert('Some error occured..! Plaese try again');
           }
         } else {
@@ -87,17 +93,18 @@ export class EdituserComponent {
   }
 
   updateUser() {
-
     var userData = {
+      id: this.userId,
       firstName: this.editUserForm.controls.firstName.value,
       lastName: this.editUserForm.controls.lastName.value,
       role: this.editUserForm.controls.role.value,
       email: this.editUserForm.controls.email.value,
-      branch: this.editUserForm.controls.branch.valid,
-      password:this.editUserForm.controls.password.valid,
-      phoneNumber:this.editUserForm.controls.phoneNumber.valid,
-    }
-    this.masterService.post(userData, 'User', 'Put')
+      branch: this.editUserForm.controls.branch.value,
+      password: this.editUserForm.controls.password.value,
+      phoneNumber: this.editUserForm.controls.phoneNumber.value,
+    };
+    this.masterService
+      .put(userData, 'User', 'Update')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.router.navigate(['/user']);
@@ -105,7 +112,6 @@ export class EdituserComponent {
           alert(data.message);
         }
       });
-
   }
 
   getRoles() {
@@ -143,9 +149,7 @@ export class EdituserComponent {
     return (control: AbstractControl): { [key: string]: any } | null => {
       const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       const valid = emailPattern.test(control.value);
-      return valid ? null : { 'invalidEmail': true };
+      return valid ? null : { invalidEmail: true };
     };
   }
-
 }
-

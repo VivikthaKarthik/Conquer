@@ -158,34 +158,20 @@ export class AddtopicComponent {
     var topicData = {
       name: this.addTopicForm.value.name,
       chapterId: chapterId,
-      //description: this.addTopicForm.value.description,
       startDate: this.addTopicForm.value.startDate,
       endDate: this.addTopicForm.value.startDate,
       thumbnail: '',
+      description: '',
     };
-    if (this.selectedFile !== undefined) {
-      this.masterService
-        .postWithFile(topicData, this.selectedFile, 'Topic', 'Create')
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            this.router.navigate(['/topic']);
-          } else {
-            alert(data.message);
-          }
-        });
-    }
-    else {
-      this.masterService
-        .post(topicData, 'Topic', 'Create')
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            this.router.navigate(['/topic']);
-          } else {
-            alert(data.message);
-          }
-        });
-    }
-
+    this.masterService
+      .post(topicData, 'Topic', 'Create')
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.router.navigate(['/topic']);
+        } else {
+          alert(data.message);
+        }
+      });
   }
 
   endDateValidator(startDateControlName: string): ValidatorFn {

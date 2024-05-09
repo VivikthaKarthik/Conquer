@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 })
 export class MasterService {
   //private baseUrl: string = 'https://dsquad.services/api';
-  //private baseUrl: string = 'https://api.resoclass.com/api';
-  private baseUrl: string = 'https://localhost:7292/api';
+  private baseUrl: string = 'https://api.resoclass.com/api';
+  // private baseUrl: string = 'https://localhost:7292/api';
   constructor(private http: HttpClient) {}
 
   getAll(type: string, apiName: string) {
@@ -58,6 +58,18 @@ export class MasterService {
     }
 
     return this.http.post(`${this.baseUrl}/${type}/${apiName}`, formData);
+  }
+
+  postAttachment(subTopicId: any, file: File | undefined) {
+    const formData = new FormData();
+    if (file !== undefined) {
+      formData.append('file', file);
+    }
+
+    return this.http.put(
+      `${this.baseUrl}/SubTopic/AddAttachment/${subTopicId}`,
+      formData
+    );
   }
 
   UploadQuestions(

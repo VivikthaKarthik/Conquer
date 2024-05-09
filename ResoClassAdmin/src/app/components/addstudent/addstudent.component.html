@@ -257,7 +257,7 @@
                         <div class="form-group form-focus select-focus">
                             <select class="form-control  floating" id="city_id" name="city_id" formControlName="cityId"
                                 [ngClass]="{'is-invalid': submitted && studentForm.controls.cityId.errors}">
-                               
+                                <option value="">Select City</option>
                                 <option *ngFor="let item of cities" [value]="item.id">{{ item.name }}
                                 </option>
                             </select>

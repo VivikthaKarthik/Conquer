@@ -90,12 +90,12 @@ export class StudentsComponent {
     });
     this.colDefs.push({
       headerName: 'Course',
-      field: 'courseId',
+      field: 'course',
       filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
       headerName: 'Class',
-      field: 'classId',
+      field: 'class',
       filter: 'agTextColumnFilter',
     });
     this.colDefs.push({
@@ -148,7 +148,7 @@ export class StudentsComponent {
     this.masterService.getAll('Student', 'GetAll').subscribe((data: any) => {
       if (data.isSuccess) {
         this.studentsList = data.result;
-      } 
+      }
     });
   }
 

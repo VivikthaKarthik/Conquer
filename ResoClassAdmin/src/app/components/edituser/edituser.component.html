@@ -85,6 +85,11 @@
                 <div class="row">
                     <div class="col-sm-6 col-md-3">
                         <div class="form-group form-focus select-focus">
+                            <!-- <app-dropdown [label]="'Role'" [options]="rolesData"
+                            [control]="editUserForm.controls.role" 
+                            [ErrorMessage]="'Course is required'" [submitted]="submitted"></app-dropdown> -->
+
+
                             <select class="form-control  floating" id="course_id" name="course_id"
                                 formControlName="role"
                                 [ngClass]="{'is-invalid': submitted && editUserForm.controls.role.errors}">

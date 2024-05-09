@@ -15,11 +15,10 @@ import { Attachments } from '../../models/attachments';
 import { ColDef } from 'ag-grid-community';
 import Swal from 'sweetalert2';
 
-
 @Component({
   selector: 'app-addsubtopic',
   templateUrl: './addsubtopic.component.html',
-  styleUrl: './addsubtopic.component.css'
+  styleUrl: './addsubtopic.component.css',
 })
 export class AddsubtopicComponent {
   addSubTopicForm!: FormGroup;
@@ -48,7 +47,6 @@ export class AddsubtopicComponent {
     private dataMappingService: DataMappingService,
     private router: Router
   ) {
-
     this.colDefs.push({
       headerName: 'Name',
       field: 'name',
@@ -59,7 +57,6 @@ export class AddsubtopicComponent {
       field: 'sourceUrl',
       filter: 'agTextColumnFilter',
     });
-
   }
 
   ngOnInit(): void {
@@ -68,7 +65,6 @@ export class AddsubtopicComponent {
     this.getAllAttachments();
 
     this.addSubTopicForm = this.fb.group({
-
       name: ['', Validators.required],
       sourceURL: ['', Validators.required],
       duration: ['', Validators.required],
@@ -80,13 +76,11 @@ export class AddsubtopicComponent {
       classNotesURL: ['', Validators.required],
       extractURL: ['', Validators.required],
       // rating: ['', Validators.required],
-      thumbnail: [''],
-      description: ['', Validators.required],
+      // thumbnail: [''],
+      // description: ['', Validators.required],
       homeDisplay: [''],
-
     });
   }
-
 
   getCourses() {
     this.masterService.getListItems('Course', '', 0).subscribe((data: any) => {
@@ -120,8 +114,7 @@ export class AddsubtopicComponent {
             alert(data.message);
           }
         });
-    }
-    else {
+    } else {
       this.masterService.getListItems('Class', '', 0).subscribe((data: any) => {
         if (data.isSuccess) {
           this.classData = this.dataMappingService.mapToModel<ListItem>(
@@ -155,21 +148,22 @@ export class AddsubtopicComponent {
             alert(data.message);
           }
         });
-    }
-    else {
-      this.masterService.getListItems('Subject', '', 0).subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.classData = this.dataMappingService.mapToModel<ListItem>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-            })
-          );
-        } else {
-          alert(data.message);
-        }
-      });
+    } else {
+      this.masterService
+        .getListItems('Subject', '', 0)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.classData = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
     }
   }
   getChapterBySubID(Id: number) {
@@ -189,21 +183,22 @@ export class AddsubtopicComponent {
             alert(data.message);
           }
         });
-    }
-    else {
-      this.masterService.getListItems('Chapter', '', 0).subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.chapterData = this.dataMappingService.mapToModel<ListItem>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-            })
-          );
-        } else {
-          alert(data.message);
-        }
-      });
+    } else {
+      this.masterService
+        .getListItems('Chapter', '', 0)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.chapterData = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
     }
   }
   getTopicByChapterID(Id: number) {
@@ -223,8 +218,7 @@ export class AddsubtopicComponent {
             alert(data.message);
           }
         });
-    }
-    else {
+    } else {
       this.masterService.getListItems('Topic', '', 0).subscribe((data: any) => {
         if (data.isSuccess) {
           this.topicData = this.dataMappingService.mapToModel<ListItem>(
@@ -244,8 +238,21 @@ export class AddsubtopicComponent {
   onFileSelected(event: any): void {
     this.selectedFile = event;
   }
+
   onSelectedFiles(event: any): void {
-    this.selectedFiles = event;
+    if (event !== undefined) {
+      this.selectedFiles = event;
+
+      this.masterService
+        .postAttachment(1, this.selectedFile)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.attachmentsList = data.result;
+          } else {
+            alert(data.message);
+          }
+        });
+    }
   }
   onSubmit() {
     this.submitted = true;
@@ -267,14 +274,13 @@ export class AddsubtopicComponent {
       TopicId: this.addSubTopicForm.value.selTopicId,
       ClassNotesUrl: this.addSubTopicForm.value.classNotesURL,
       ExtractUrl: this.addSubTopicForm.value.extractURL,
-      Thumbnail: this.addSubTopicForm.value.thumbnail,
-      Description: this.addSubTopicForm.value.description,
-      HomeDisplay: this.addSubTopicForm.value.homeDisplay,
-
+      Thumbnail: '',
+      Description: '',
+      HomeDisplay: this.addSubTopicForm.value.HomeDisplay,
     };
     console.log(JSON.stringify(objST));
     this.masterService
-      .postWithFile(objST, this.selectedFile, 'SubTopic', 'Create')
+      .post(objST, 'SubTopic', 'Create')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.router.navigate(['/subtopic']);
@@ -282,7 +288,7 @@ export class AddsubtopicComponent {
           alert(data.message);
         }
       });
-
+   
   }
 
   OnDocumentUpload(event: any): void {
@@ -302,7 +308,7 @@ export class AddsubtopicComponent {
   }
   deleteAttachments(cId: number) {
     this.masterService
-      .delete(cId, 'Student', 'Delete')
+      .delete(cId, 'SubTopic', 'DeleteAttachment')
       .subscribe((data: any) => {
         if (data.isSuccess) {
           this.getAllAttachments();
@@ -312,25 +318,22 @@ export class AddsubtopicComponent {
       });
   }
   getAllAttachments() {
-    debugger
-    this.masterService.getAll('SubTopic', 'GetAttachments').subscribe((data: any) => {
-      if (data.isSuccess) {
-        debugger
-        this.attachmentsList = data.result;
-      }
-    });
+    this.masterService
+      .getAll('SubTopic', 'GetAttachments')
+      .subscribe((data: any) => {
+        if (data.isSuccess) {
+          this.attachmentsList = data.result;
+        }
+      });
   }
 
-  downLoadRow(id: any) {
-   
-  }
+  downLoadRow(id: any) {}
 
   deleteGridRecord(id: any) {
     this.showConfirmation(id);
   }
 
-  addAttachments(){
+  addAttachments() {
     this.isAddPopupVisible = true;
   }
 }
-

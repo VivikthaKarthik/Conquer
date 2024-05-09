@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Input, Output, input } from '@angular/core';
 import { MasterService } from '../../services/master.service';
 
-
 @Component({
   selector: 'app-innerbulk-upload',
   templateUrl: './innerbulk-upload.component.html',
-  styleUrl: './innerbulk-upload.component.css'
+  styleUrl: './innerbulk-upload.component.css',
 })
 export class InnerbulkUploadComponent {
   selectedFile: File | undefined;
@@ -27,18 +26,7 @@ export class InnerbulkUploadComponent {
 
   UploadFile() {
     if (this.selectedFile) {
-      const formData = new FormData();
-      formData.append('file', this.selectedFile);
-      this.masterService
-        .post(formData, this.pageName, 'Upload')
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            alert(data.result);
-            this.onFileUpload.emit(this.selectedFile);
-          } else {
-            alert(data.message);
-          }
-        });
+      this.onFileUpload.emit(this.selectedFile);
     } else {
       alert('Please select a File!');
     }
