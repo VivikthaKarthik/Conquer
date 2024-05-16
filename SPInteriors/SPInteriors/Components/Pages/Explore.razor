@@ -1,0 +1,122 @@
+﻿@page "/explore"
+@using SPInteriors.Models
+@rendermode InteractiveServer
+ @inject NavigationManager NavigationManager;
+
+<!-- Our Team Area Start Style-2 -->
+<div class="our-team-area style-3 py-120 py-sm-60 py-md-80 py-lg-100">
+    <div class="container">
+      
+        <div class="team-card-wrapper">
+            <div class="row">
+                <div class="col-lg-3 col-md-5" @onclick="openCategory">
+                    <div class="team-member-card">
+                        <div class="content-wrapper">
+                            <div class="content">
+                                <h2 class="title">Living Room</h2>
+                            </div>
+                        </div>
+                        <div class="image">
+                            <img src="images/room/livingroom/livingroom.jpg" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-5">
+                    <div class="team-member-card">
+                        <div class="content-wrapper">
+                            <div class="content">
+                                <h2 class="title">Bed Room</h2>
+                            </div>
+                        </div>
+                        <div class="image">
+                            <img src="images/room/BedRoom/MasterBedRoom/MB1.jpg" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-5">
+                    <div class="team-member-card">
+                        <div class="content-wrapper">
+                            <div class="content">
+                                <h2 class="title">DEVID BEKHAM</h2>
+                            </div>
+                        </div>
+                        <div class="image">
+                            <img src="images/team-member/team-5.jpg" alt="team-member">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-5">
+                    <div class="team-member-card">
+                        <div class="content-wrapper">
+                            <div class="content">
+                                <h2 class="title">DEVID BEKHAM</h2>
+                            </div>
+                        </div>
+                        <div class="image">
+                            <img src="images/team-member/team-6.jpg" alt="team-member">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="team-card-wrapper">
+            <div class="row">
+                <div class="col-lg-3 col-md-5">
+                    <div class="team-member-card">
+                        <div class="content-wrapper">
+                            <div class="content">
+                                <h2 class="title">Jane Cooper</h2>
+                            </div>
+                        </div>
+                        <div class="image">
+                            <img src="images/team-member/team-3.jpg" alt="team-member">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-5">
+                    <div class="team-member-card">
+                        <div class="content-wrapper">
+                            <div class="content">
+                                <h2 class="title">DEVID BEKHAM</h2>
+                            </div>
+                        </div>
+                        <div class="image">
+                            <img src="images/team-member/team-4.jpg" alt="team-member">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-5">
+                    <div class="team-member-card">
+                        <div class="content-wrapper">
+                            <div class="content">
+                                <h2 class="title">DEVID BEKHAM</h2>
+                            </div>
+                        </div>
+                        <div class="image">
+                            <img src="images/team-member/team-5.jpg" alt="team-member">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-5">
+                    <div class="team-member-card">
+                        <div class="content-wrapper">
+                            <div class="content">
+                                <h2 class="title">DEVID BEKHAM</h2>
+                            </div>
+                        </div>
+                        <div class="image">
+                            <img src="images/team-member/team-6.jpg" alt="team-member">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Our Team Area End Style-2 -->
+@code {
+    public void openCategory()
+    {
+        NavigationManager.NavigateTo("/categories");
+    }
+}

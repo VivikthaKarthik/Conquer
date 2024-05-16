@@ -1,0 +1,127 @@
+﻿@page "/createworkorder/add/"
+@page "/createworkorder/edit/{id}"
+@using SPInteriors.Models
+@using SPInteriors.Services.Interfaces
+@rendermode InteractiveServer
+
+<div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
+
+    <div class="container edit-screen-container">
+
+        <div class="row edit-screen-header">
+            <div class="col-xl-12">
+                <h3>Work Order</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12">
+                <div class="subscribe-form-widget">
+                    <form>
+                        <div class="row form-row">
+                            <div class="faq-area">
+                                <div class="container">
+
+                                    <div class="row form-row">
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Name
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                <input type="text" class="form-control" placeholder="Enter Name" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                WorkOrder Item
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                @* <Dropdown ControlId="WorkOrderItemId" TableName="WorkOrderItem" ExistingItem="@workOrder.WorkOrderItemId" OnItemSelection='((value) => workOrder.WorkOrderItemId = value)'></Dropdown> *@
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-row">
+
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                WorkOrder Type
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                @* <Dropdown ControlId="WorkOrderTypeId" TableName="WorkOrderType" ExistingItem="@workOrder.WorkOrderTypeId" OnItemSelection='((value) => workOrder.WorkOrderTypeId = value)'></Dropdown> *@
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Design Type
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                @* <Dropdown ControlId="DesignTypeId" TableName="DesignType" ExistingItem="@workOrder.DesignTypeId" OnItemSelection='((value) => workOrder.DesignTypeId = value)'></Dropdown> *@
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row form-row">
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Material Type
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                @* <Dropdown ControlId="MaterialTypeId" TableName="MaterialType" ExistingItem="@workOrder.MaterialTypeId" OnItemSelection='((value) => workOrder.MaterialTypeId = value)'></Dropdown> *@
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Outer Frame
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                @* <Dropdown ControlId="OuterFrameTypeId" TableName="OuterFrameType" ExistingItem="@workOrder.OuterFrameTypeId" OnItemSelection='((value) => workOrder.OuterFrameTypeId = value)'></Dropdown> *@
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row form-row">
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Height
+                                            </div>
+                                        </div>                                     
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-row">
+                            <div class="col-xl-12 grid-buttons-container">
+                            @*     <button class="myButton text-right" @onclick="OnBackClicked" type="button">Back</button>
+                                <button class="myButton text-right" @onclick="OnSaveClicked" type="button">Save</button> *@
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    
+}

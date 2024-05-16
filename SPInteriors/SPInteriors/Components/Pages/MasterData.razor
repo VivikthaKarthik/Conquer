@@ -1,0 +1,67 @@
+﻿@page "/masterdata"
+
+@using SPInteriors.Models
+@using SPInteriors.Services.Interfaces
+
+@rendermode InteractiveServer
+
+
+<div class="grid-area style-1 scrollable-area" style="height:auto;padding-bottom:30px;background-image: url(./images/contact/subscribe-bg.jpg)">
+
+    <div class="container edit-screen-container" style="padding-bottom:30px;">
+
+        <div class="row edit-screen-header">
+            <div class="col-xl-12">
+                <h3>Master Data</h3>
+            </div>
+        </div>
+
+        @if(clients != null && clients.Count > 0){
+            <Grid T="ClientDto" GridName="Clients" data="@clients" OnEdit="HandleEdit"></Grid>
+        }
+
+        @if (clients != null && clients.Count > 0)
+        {
+            <Grid T="ClientDto" GridName="Projects" data="@clients" OnEdit="HandleEdit"></Grid>
+        }
+    </div>
+</div>
+
+
+@code {
+    @inject NavigationManager NavigationManager;
+    @inject IClientService clientService;
+
+    List<ClientDto> clients = new List<ClientDto>();
+
+    protected async override void OnInitialized()
+    {
+        clients = await clientService.GetClientsAsync();
+    }
+
+    private async Task OnBackClicked()
+    {
+        NavigationManager.NavigateTo("projects", false);
+    }
+
+
+    private async Task OnSaveClicked()
+    {
+        NavigationManager.NavigateTo("projects", false);
+    }
+
+    private async Task AddClient()
+    {
+        NavigationManager.NavigateTo("client/add", false);
+    }
+
+    private async Task EditClient(int id)
+    {
+        NavigationManager.NavigateTo("client/edit/" + id, false);
+    }
+
+    void HandleEdit(ClientDto item)
+    {
+        NavigationManager.NavigateTo("client/edit/" + item.Id, false);
+    }
+}

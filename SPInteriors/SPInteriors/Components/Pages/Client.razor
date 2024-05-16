@@ -1,0 +1,152 @@
+﻿@page "/client/add/{projectid}"
+@page "/client/edit/{id}"
+@using SPInteriors.Models
+@using SPInteriors.Services.Interfaces
+@rendermode InteractiveServer
+
+<div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
+
+    <div class="container edit-screen-container">
+
+        <div class="row edit-screen-header">
+            <div class="col-xl-12">
+                <h3>Client</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12">
+                <div class="subscribe-form-widget">
+                    <form>
+                        <div class="row form-row">
+                            <div class="faq-area">
+                                <div class="container">
+
+                                    <div class="row form-row">
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Name
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                <input type="text" class="form-control" @bind-value="@client.Name" placeholder="Enter Client Name" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Mobile Number
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                <input type="text" class="form-control" @bind-value="@client.MobileNumber" placeholder="Enter Mobile Number" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-row">
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Email
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                <input type="text" class="form-control" @bind-value="@client.Email" placeholder="Enter Email" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row form-row">
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Material Type
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-10 col-lg-10">
+                                            <div class="form-field">
+                                                <textarea type="text" class="form-control" @bind="@client.Address" placeholder="Enter Email"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-row">
+                            <div class="col-xl-12 grid-buttons-container">
+                                <button class="myButton text-right" @onclick="OnBackClicked" type="button">Back</button>
+                                <button class="myButton text-right" @onclick="OnSaveClicked" type="button">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    @inject NavigationManager NavigationManager;
+    @inject IClientService clientService;
+
+    [Parameter]
+    public string id { get; set; }
+
+    [Parameter]
+    public string ProjectId { get; set; }
+
+    ClientDto client { get; set; }
+
+    bool isAdd { get; set; }
+
+
+    protected async override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(id))
+        {
+            isAdd = false;
+            client = await clientService.GetClientByIdAsync(Convert.ToInt32(id));
+        }
+        else
+        {
+            client = new ClientDto();
+            isAdd = true;
+        }
+    }
+
+    private async Task OnBackClicked()
+    {
+        if (!string.IsNullOrEmpty(ProjectId) && ProjectId != "0")
+            NavigationManager.NavigateTo("projects/edit/" + ProjectId, false);
+        else if (!string.IsNullOrEmpty(ProjectId) && ProjectId == "0")
+            NavigationManager.NavigateTo("projects/add", false);
+        else
+            NavigationManager.NavigateTo("projects", false);
+    }
+
+
+    private async Task OnSaveClicked()
+    {
+        // if (isAdd)
+        //     await workOrderService.CreateWorkOrderAsync(workOrder);
+        // else
+        //     await workOrderService.UpdateWorkOrderAsync(workOrder);
+        NavigationManager.NavigateTo("projects", false);
+    }
+}
+
+}

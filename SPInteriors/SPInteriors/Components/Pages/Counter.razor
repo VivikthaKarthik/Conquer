@@ -1,0 +1,120 @@
+﻿@page "/counter"
+@rendermode InteractiveServer
+@* <div class="contact-form-area style-3 py-120 py-sm-60 py-md-80 py-lg-100">
+    <!-- Submit form Start -->
+    <div class="container">
+        <div class="contact-form-inner">
+            <div class="row justify-content-center">
+                <div class="col-lg-7">
+                    <!-- Comment Form Start -->
+                    <div class="comment-respond">
+                        <div class="post-comments-title">
+                            <h2>New Room</h2>                           
+                        </div>
+                        <form action="#" method="post" class="comment-form">
+                            <div class="row gx-2">
+                                <div class="col-xl-12">
+                                    <div class="contacts-name">
+                                        <input name="author" type="text" placeholder="Your name">
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="contacts-email">
+                                        <input name="email" type="text" placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="col-xl-6">
+                                    <div class="contacts-name">
+                                        <input name="website" type="number" placeholder="Phone">
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <div class="contacts-message">
+                                        <textarea name="comment" cols="20" rows="3" placeholder="Message here ..."></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button class="theme-btn" type="submit">Add</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Comment Form End -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- Submit form End -->
+</div> *@
+@* 
+<div class="contact-form-area style-3 py-120 py-sm-60 py-md-80 py-lg-100">
+    <!-- Submit form Start -->
+    <div class="container">        
+        <div class="contact-form-inner">
+            <div class="row">
+                <div class="col-lg-11">
+                    <h3 style="padding-top:5px;text-align:left;padding-left:10px;">New Room</h3>
+                </div>
+                <div class="col-lg-1">
+                    <i style="text-align:right; margin-top:20px; margin-bottom:20px;" class="fa-solid fa-chevron-down" data-bs-toggle="collapse" data-bs-target="#collapseForm" aria-expanded="false" aria-controls="collapseForm"></i>
+                </div>
+            </div>
+            <div class="row" style="width:900px;">
+                <div class="col-lg-7">
+                    <!-- Comment Form Start -->
+                    <div class="comment-respond">
+                         
+                        <div class="collapse" id="collapseForm">
+                            <form action="#" method="post" class="comment-form">
+                                <div class="row gx-2">
+                                    <div class="col-xl-12">
+                                        <div class="contacts-name">
+                                            <select id="dropdownControl" name="dropdownControl" class="form-control" asp-for="DropdownProperty">
+                                                <option value="">Select an Room Type</option>
+                                                <option value="1">Living Room</option>
+                                                <option value="2">Master Bed Room</option>
+                                                <option value="3">Children Bed Room</option>
+                                                <option value="4">Kitchen</option>
+                                                <option value="5">Dining Room</option>
+                                                <option value="6">Balocny</option>
+                                            </select>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-12"></div>
+                                    
+                                    <div class="col-xl-4">
+                                        <button class="theme-btn" type="submit">Delete</button>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <button class="theme-btn" type="submit">Update</button>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <button class="theme-btn" type="button" @onclick="NavigateToService">Next</button>
+                                    </div>
+
+
+                                  
+                                   
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- Comment Form End -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Submit form End -->
+</div> *@
+
+@code {
+    @inject NavigationManager NavigationManager;
+
+    private async Task NavigateToService()
+    {
+        NavigationManager.NavigateTo("service", false);
+
+    }
+}

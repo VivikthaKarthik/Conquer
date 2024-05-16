@@ -1,0 +1,346 @@
+﻿@page "/room/add/{projectId}"
+@page "/room/edit/{projectId}/{id}"
+@using SPInteriors.Models
+@using SPInteriors.Services.Interfaces
+@rendermode InteractiveServer
+<div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
+    <div class="container edit-screen-container">
+        <div class="row edit-screen-header">
+            <div class="col-xl-12">
+                <h3>Room</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12">
+                <div class="subscribe-form-widget">
+                    <form>
+                        <div class="row form-row">
+                            <div class="faq-area">
+                                <div class="container">
+
+                                    <div class="row form-row">
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Name
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                <input type="text" class="form-control" @bind-value="@room.Name" placeholder="Enter Name" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Project
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                <input type="text" class="form-control" value="@room.ProjectName" placeholder="Enter Name" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-row">
+
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Material Type
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                <Dropdown ControlId="MaterialTypeId" TableName="MaterialType" ExistingItem="@room.MaterialTypeId" OnItemSelection='((value) => room.MaterialTypeId = value.Id)'></Dropdown>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Outer Frame
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                <Dropdown ControlId="OuterFrameTypeId" TableName="OuterFrameType" ExistingItem="@room.OuterFrameTypeId" OnItemSelection='((value) => room.OuterFrameTypeId = value.Id)'></Dropdown>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="padding-left:10px;padding-top:47px;">
+                                        <div class="col-xl-6">
+                                            <h4>Work Orders</h4>
+                                        </div>
+                                        <div class="col-xl-6 grid-buttons-container" style="display:block">
+                                            <button class="myButton text-right" @onclick='(() => AddWorkOrder(room.Id))' type="button">Add <i class="fa-solid fa-add"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="our-team-area style-2">
+
+
+                                        <div class="container">
+
+                                            <div class="team-card-wrapper">
+                                                <div class="row">
+                                                    @if (room.Services != null && room.Services.Count > 0)
+                                                    {
+                                                        @foreach (var service in room.Services)
+                                                        {
+                                                            <div class="col-lg-3 col-md-5" style="margin-top:20px;" @onclick='(() => EditService(service.Id, room.Id))'>
+                                                                <div class="team-member-card">
+                                                                    <div class="content-wrapper">
+                                                                        <div class="content">
+                                                                            <h2 class="title">@service.Name</h2>
+                                                                            <p class="desc">@service.WorkOrderItem</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="image">
+                                                                        <img src="images/room/livingroom/livingroom.jpg" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-row">
+                            <div class="col-xl-12 grid-buttons-container">
+                                <button class="myButton text-right" @onclick="OnBackClicked" type="button">Back</button>
+                                <button class="myButton text-right" @onclick="SaveAndRedirect" type="button">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@* <div class="container">
+
+    <div class="team-card-wrapper">
+        <div class="row">
+            @if (room.Services != null && room.Services.Count > 0)
+            {
+                @foreach (var service in room.Services)
+                {
+                    <div class="col-lg-3 col-md-5">
+                        <div class="team-member-card">
+                            <div class="content-wrapper">
+                                <div class="content">
+                                    <h2 class="title">@service.Name</h2>
+                                    <p class="desc">@service.WorkOrderItem</p>
+                                </div>
+                            </div>
+                            <div class="image">
+                                <img src="images/room/livingroom/livingroom.jpg" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div> *@
+
+
+@* <div class="container">
+    <div class="row">
+        <!-- Testimonial Area Start Style-1 -->
+        <div class="testimonial-slider-area style-1 pt-120 pb-100 py-sm-60 py-md-80 py-lg-100 background-gray">
+            <div class="container">
+                <div class="row gy-5">
+                    <div class="col-lg-4">
+                        <div class="section-title mb-0">
+                            <div class="sec-content">
+                                <div class="short-title-wrapper">
+                                    <span class="short-title only-divider">Work Orders</span>
+                                </div>
+                                <h2 class="title">Design your dream home</h2>
+                                <div class="slider-nav-btn-wrapper mt-50">
+                                    <a href="#" class="slider-nav-prev-btn" id="testimonial_one_prev_btn">
+                                        <i class="fa-solid fa-arrow-left"></i>
+                                    </a>
+                                    <a href="#" class="slider-nav-next-btn" id="testimonial_one_next_btn">
+                                        <i class="fa-solid fa-arrow-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="slider-area-wrapper style-1">
+                            <div class="testimonial-slider-wrapper" id="testimonial_style_one">
+                                @if (room.Services != null && room.Services.Count > 0)
+                                {
+                                    @foreach (var service in room.Services)
+                                    {
+                                        <div class="slick-item">
+                                            <div class="testimonial-card style-1">
+                                                <div class="user-info-wrapper">
+                                                    <div class="team-member-card" >
+                                                        <div class="content-wrapper">
+                                                            <div class="content">
+                                                                <h2 class="title">@service.Name</h2>
+                                                                <p class="desc">@service.WorkOrderItem</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="image">
+                                                            <img src="images/room/livingroom/livingroom.jpg" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Testimonial Area End Style-1 -->
+
+    </div>
+</div> *@
+
+
+
+<!-- Scroll Up Section Start -->
+<div id="scrollTop" class="scrollup-wrapper">
+    <div class="scrollup-btn">
+        <i class="fa-regular fa-angle-up"></i>
+    </div>
+</div>
+<!-- Scroll Up Section End -->
+
+@code {
+    @inject IJSRuntime JSRuntime;
+    @inject NavigationManager NavigationManager;
+    @inject IRoomService roomService;
+    @inject IProjectService projectService;
+
+    [Parameter]
+    public string id { get; set; } = "0";
+
+    [Parameter]
+    public string projectId { get; set; }
+
+    bool isAdd { get; set; }
+
+    public RoomDto room { get; set; }
+    public ProjectDto project { get; set; }
+
+
+    protected async override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(id))
+        {
+            isAdd = false;
+            room = await roomService.GetRoomListByIdAsync(Convert.ToInt32(id));
+        }
+        else
+        {
+            room = new RoomDto();
+            isAdd = true;
+        }
+        if (projectId != null && Convert.ToInt32(projectId) > 0)
+        {
+            project = await projectService.GetProjectByIdAsync(Convert.ToInt32(projectId));
+
+            if (project != null)
+            {
+                room.ProjectId = project.Id;
+                room.ProjectName = project.Name;
+
+                if (room.MaterialTypeId == 0)
+                    room.MaterialTypeId = project.MaterialId;
+
+                if (room.OuterFrameTypeId == 0)
+                    room.OuterFrameTypeId = project.OuterFrameId;
+            }
+        }
+
+    }
+
+
+    private async Task AddWorkOrder(int roomId)
+    {
+        NavigationManager.NavigateTo("workorder/add/" + roomId, false);
+    }
+
+    private async Task EditWorkOrder(int serviceId, int roomId)
+    {
+        NavigationManager.NavigateTo("workorder/edit/" + roomId + "/" + serviceId, false);
+    }
+
+    private async Task AddNewService()
+    {
+        NavigationManager.NavigateTo("service", false);
+    }
+
+
+    private async Task OnBackClicked()
+    {
+        NavigationManager.NavigateTo("projects/edit/" + projectId, false);
+    }
+
+    private async Task<bool> SaveRoom()
+    {
+        if (string.IsNullOrEmpty(room.Name))
+        {
+            await JSRuntime.InvokeVoidAsync("ShowAlert", "Please Add all required fields");
+            return false;
+        }
+        else
+        {
+            await roomService.CreateRoomAsync(room);
+            return true;
+        }
+    }
+
+    private async Task SaveAndRedirect()
+    {
+        if (await SaveRoom())
+        {
+            NavigationManager.NavigateTo("projects/edit/" + projectId, false);
+        }
+    }
+
+
+    private async Task EditService(int serviceId, int roomId)
+    {
+        NavigationManager.NavigateTo("workorder/edit/" + roomId + "/" + serviceId, false);
+    }
+}
+
+
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.nice-select.min.js"></script>
+<script src="js/slick.min.js"></script>
+<script src="js/jquery.counterup.min.js"></script>
+<script src="js/waypoints.js"></script>
+<script src="js/jquery.meanmenu.min.js"></script>
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="js/inview.min.js"></script>
+<script src="js/wow.min.js"></script>
+<script src="js/tilt.jquery.min.js"></script>
+<script src="js/isotope.min.js"></script>
+<script src="js/jquery.imagesloaded.min.js"></script>
+<script src="js/jquery.lettering.min.js"></script>
+<script src="js/circletype.min.js"></script>
+<script src="js/custom.js"></script>

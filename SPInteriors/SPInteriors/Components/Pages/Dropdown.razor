@@ -1,0 +1,73 @@
+﻿@using SPInteriors.Models
+@using SPInteriors.Services.Interfaces
+@rendermode InteractiveServer
+
+
+<select id="@ControlId" name="@ControlId" disabled="@IsDisabled" class="form-control" asp-for="DropdownProperty" SelectedValue="@ExistingItem" @onchange="OnSelectionChanged">
+    <option value="0"></option>
+    @if (Data != null && Data.Count > 0)
+    {
+        @foreach (var item in Data)
+        {
+            if(item.Id == ExistingItem)
+            {
+                <option value="@item.Id" selected>
+                    @item.Name
+                </option>
+            }
+            else
+            {
+                <option value="@item.Id">
+                    @item.Name
+                </option>
+            }
+        }
+
+    }
+</select>
+
+@code {
+    @inject ICommonService commonService;
+
+    [Parameter]
+    public string ControlId { get; set; }
+
+    [Parameter]
+    public string TableName { get; set; }
+
+    [Parameter]
+    public string ParentName { get; set; }
+
+    [Parameter]
+    public bool IsDisabled { get; set; }
+
+    [Parameter]
+    public int ParentId { get; set; }
+
+    [Parameter]
+    public int? ExistingItem { get; set; }
+
+    public List<ListItemDto> Data { get; set; }
+
+    [Parameter]
+    public EventCallback<ListItemDto> OnItemSelection { get; set; }
+
+    protected async override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(TableName))
+        {
+            Data = await commonService.GetListItems(TableName, ParentName, ParentId);
+        }
+    }
+
+    async void OnSelectionChanged(ChangeEventArgs e)
+    {
+        int selectedId = Convert.ToInt32(e.Value);
+        ListItemDto selectedValue = new ListItemDto();
+        if (selectedId > 0)
+            selectedValue = Data.First(x => x.Id == selectedId);
+        await OnItemSelection.InvokeAsync(selectedValue);
+    }
+
+
+}

@@ -15,7 +15,7 @@ import { ListItem } from '../../models/listItem';
 @Component({
   selector: 'app-editchapter',
   templateUrl: './editchapter.component.html',
-  styleUrl: './editchapter.component.css'
+  styleUrl: './editchapter.component.css',
 })
 export class EditchapterComponent {
   editChapterForm!: FormGroup;
@@ -31,8 +31,9 @@ export class EditchapterComponent {
   constructor(
     private masterService: MasterService,
     private dataMappingService: DataMappingService,
-    private fb: FormBuilder, private router: Router,
-    private route: ActivatedRoute,
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute
   ) {
     this.editChapterForm = this.fb.group({
       name: ['', Validators.required],
@@ -45,8 +46,6 @@ export class EditchapterComponent {
     });
   }
 
-
-
   ngOnInit(): void {
     this.getCourses();
     this.getClsByCourseId(0);
@@ -57,7 +56,6 @@ export class EditchapterComponent {
       this.chapterId = parseInt(id);
       this.getChaptersById(this.chapterId);
     });
-
   }
   getChaptersById(cId: number) {
     this.chapterId = cId;
@@ -66,20 +64,26 @@ export class EditchapterComponent {
       .subscribe((data: any) => {
         if (data.isSuccess) {
           if (data.result != null && data.result.name != null) {
-
             this.selectedImageURL = data.result.thumbnail;
             this.editChapterForm.controls.name.setValue(data.result.name);
-            this.editChapterForm.controls.selCourseId.setValue(data.result.courseId);
-            this.editChapterForm.controls.selClassId.setValue(data.result.classId);
-            this.editChapterForm.controls.selSubId.setValue(data.result.subjectId);
-            this.editChapterForm.controls.description.setValue(data.result.description);
+            this.editChapterForm.controls.selCourseId.setValue(
+              data.result.courseId
+            );
+            this.editChapterForm.controls.selClassId.setValue(
+              data.result.classId
+            );
+            this.editChapterForm.controls.selSubId.setValue(
+              data.result.subjectId
+            );
+            this.editChapterForm.controls.description.setValue(
+              data.result.description
+            );
             this.editChapterForm.controls.startDate.setValue(
               data.result.startDate.substr(0, 10)
             );
             this.editChapterForm.controls.endDate.setValue(
               data.result.endDate.substr(0, 10)
             );
-
           } else {
             alert('Some error occured..! Plaese try again');
           }
@@ -105,7 +109,6 @@ export class EditchapterComponent {
     });
   }
 
-
   onFileSelected(event: any): void {
     this.selectedFile = event;
   }
@@ -127,8 +130,7 @@ export class EditchapterComponent {
             alert(data.message);
           }
         });
-    }
-    else {
+    } else {
       this.masterService.getListItems('Class', '', 0).subscribe((data: any) => {
         if (data.isSuccess) {
           this.classData = this.dataMappingService.mapToModel<ListItem>(
@@ -161,21 +163,22 @@ export class EditchapterComponent {
             alert(data.message);
           }
         });
-    }
-    else {
-      this.masterService.getListItems('Subject', '', 0).subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.subjectData = this.dataMappingService.mapToModel<ListItem>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-            })
-          );
-        } else {
-          alert(data.message);
-        }
-      });
+    } else {
+      this.masterService
+        .getListItems('Subject', '', 0)
+        .subscribe((data: any) => {
+          if (data.isSuccess) {
+            this.subjectData = this.dataMappingService.mapToModel<ListItem>(
+              data.result,
+              (item) => ({
+                id: item.id,
+                name: item.name,
+              })
+            );
+          } else {
+            alert(data.message);
+          }
+        });
     }
   }
 
@@ -197,11 +200,11 @@ export class EditchapterComponent {
       isRecommended: this.isChecked,
       startDate: this.editChapterForm.value.startDate,
       endDate: this.editChapterForm.value.endDate,
-      thumbnail: "",
+      thumbnail: '',
     };
     if (this.selectedFile !== undefined) {
       this.masterService
-        .putWithFile(objChapter, this.selectedFile, 'Chapter', 'Update')
+        .putWithFile(objChapter, this.selectedFile, 'Chapter', 'UpdateWithFile')
         .subscribe((data: any) => {
           if (data.isSuccess) {
             this.router.navigate(['/chapter']);
@@ -209,7 +212,6 @@ export class EditchapterComponent {
             alert(data.message);
           }
         });
-
     } else {
       this.masterService
         .put(objChapter, 'Chapter', 'Update')
@@ -221,7 +223,6 @@ export class EditchapterComponent {
           }
         });
     }
-    
   }
 
   endDateValidator(startDateControlName: string): ValidatorFn {
@@ -238,6 +239,4 @@ export class EditchapterComponent {
       return null;
     };
   }
-
 }
-

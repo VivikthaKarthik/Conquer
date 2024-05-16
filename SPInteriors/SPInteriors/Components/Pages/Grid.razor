@@ -1,0 +1,61 @@
+﻿@using SPInteriors.Models
+@using SPInteriors.Services.Interfaces
+@typeparam T
+
+<div class="row inner-grid-header">
+    <div class="col-xl-4">
+        <h4 class="inner-grid-title">@GridName</h4>
+    </div>
+    <div class="col-xl-8 grid-buttons-container" style="padding-top:5px;">
+        <button class="innerGridActionButton text-right" @onclick="AddClient" type="button">New</button>
+    </div>
+</div>
+
+<div class="row inner-table-wrapper">
+    <table class="inner-grid-table">
+        <thead>
+            <tr>
+                @foreach (var propertyInfo in typeof(T).GetProperties())
+                {
+                    <th>@propertyInfo.Name</th>
+                }
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Data)
+            {
+                <tr>
+                    @foreach (var propertyInfo in typeof(T).GetProperties())
+                    {
+                        <td>@propertyInfo.GetValue(item)</td>
+                    }
+                    <td><button class="innerGridActionButton" @onclick='(() => EditClient(item))' type="button">Edit</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@code {
+    @inject NavigationManager NavigationManager;
+
+    [Parameter]
+    public string GridName { get; set; }
+
+    [Parameter]
+    public List<T> Data { get; set; }
+
+    [Parameter]
+    public EventCallback<T> OnEdit { get; set; }
+
+    private async Task AddClient()
+    {
+        NavigationManager.NavigateTo("client/add", false);
+    }
+
+    private async Task EditClient(T item)
+    {
+        await OnEdit.InvokeAsync(item);
+    }
+
+}

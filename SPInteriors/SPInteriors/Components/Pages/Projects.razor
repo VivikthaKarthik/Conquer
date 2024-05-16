@@ -1,0 +1,235 @@
+﻿@page "/projects"
+@using SPInteriors.Models
+@using SPInteriors.Services.Interfaces
+@rendermode InteractiveServer
+
+<div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
+    <div class="container">
+        <div class="row">
+
+            <!-- Latest Posts Area Start style-3 -->
+            <div class="latest-posts-area style-2 py-40" style="margin-top:10px">
+                <div class="container">
+                    <div class="section-title">
+                        <div class="sec-content">
+                            <div class="short-title-wrapper">
+                                <span class="short-title only-divider">Projects</span>
+                            </div>
+                            <h2 class="title">
+                                Designing Spaces for Every <br>
+                                Taste and Budget
+                            </h2>
+                        </div>
+                        <div class="sec-desc">
+                            @*    <div class="short-title-wrapper">
+                            <label class="switch">
+                            Slider <input type="checkbox" checked>
+                            <span class="slider round"> Slider </span>
+                            </label>
+                            </div> *@
+                            <div class="slider-nav-btn-wrapper">
+                                <a href="#" class="slider-nav-prev-btn" id="post_slider_prev_btn"><i class="fa-solid fa-arrow-left"></i></a>
+                                <a href="#" class="slider-nav-next-btn" id="post_slider_next_btn">
+                                    <i class="fa-solid fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom:20px;">
+                        <div class="col-xl-3">
+                            <input class="search-field" name="clientSearch" type="text" @bind-value="clientName" placeholder="Enter Client Name">
+                        </div>
+                        <div class="col-xl-3">
+                            <select id="projectStatus" name="dropdownControl" class="form-control" asp-for="DropdownProperty" @bind="@statusId">
+                                <option value="0">Select</option>
+                                <option value="1">New</option>
+                                <option value="2">Accepted</option>
+                                <option value="3">Work  In Progress</option>
+                                <option value="4">Completed</option>
+                                <option value="5">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="col-xl-3">
+                            <button class="myButton" @onclick="SearchProjects" type="button">Search</button>
+                        </div>
+                        <div class="col-xl-3 grid-buttons-container">
+                            <button class="myButton text-right" @onclick="AddProject" type="button">New</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div id="post_card_slider_wrapper" class="post-card-slider-wrapper style-2">
+                                @if (projects != null && projects.Count > 0)
+                                {
+                                    @foreach (var project in projects)
+                                    {
+                                        <div class="slick-item">
+                                            <div class="post-card style-2">
+                                                <div class="image">
+                                                    <img src="@project.ImagePath" />
+                                                </div>
+                                                <div class="content-wrapper">
+                                                    <div class="content">
+                                                        <div class="post-meta">
+                                                            <a href="#" class="single-post-meta">
+                                                                <i class="fa-solid fa-user"></i>
+                                                                <span>@project.ClientName</span>
+                                                            </a>
+                                                            <a href="#" class="single-post-meta">
+                                                                <i class="fa-solid fa-calendar-days"></i>
+                                                                <span>October 19, 2022</span>
+                                                            </a>
+                                                        </div>
+                                                        <h3 class="title">
+                                                            <a href="blog-details.html">
+                                                                @project.Name
+                                                            </a>
+                                                        </h3>
+                                                        @* <div class="post-content">
+                                                            <p>
+                                                                @project.Status
+                                                            </p>
+                                                        </div> *@
+                                                        <div class="btn-wrapper">
+                                                            <a href="#" class="theme-btn" @onclick='(() => EditProject(project.Id))'>
+                                                                <span>View Details</span>
+                                                                <i class="fa-solid fa-plus"></i>
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                                @* <div class="slick-item">
+                                <div class="post-card style-2">
+                                <div class="image">
+                                <img src="images/room/BedRoom/MasterBedRoom/MB1.jpg" />
+                                </div>
+                                <div class="content-wrapper">
+                                <div class="content">
+                                <div class="post-meta">
+                                <a href="#" class="single-post-meta">
+                                <i class="fa-solid fa-user"></i>
+                                <span>By Admin</span>
+                                </a>
+                                <a href="#" class="single-post-meta">
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <span>October 19, 2022</span>
+                                </a>
+                                </div>
+                                <h3 class="title">
+                                <a href="blog-details.html">
+                                Where Innovation Meets Designing Spaces for
+                                Every
+                                </a>
+                                </h3>
+                                <div class="post-content">
+                                <p>
+                                It is a long established fact that a reader williljl
+                                be distracted the readable content of amjlk page
+                                when looking
+                                </p>
+                                </div>
+                                <div class="btn-wrapper">
+                                <a href="#" class="theme-btn">
+                                <span>READ MORE</span>
+                                <i class="fa-solid fa-plus"></i>
+                                </a>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                                </div> *@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Latest Posts Area End style-3 -->
+        </div>
+
+
+    </div>
+</div>
+
+@code {
+
+    @inject NavigationManager NavigationManager;
+    @inject IProjectService projectService;
+
+    private string clientName { get; set; }
+
+    private int statusId { get; set; }
+
+    List<ProjectDto> projects = new List<ProjectDto>();
+
+    protected async override void OnInitialized()
+    {
+        projects = await projectService.GetProjectListAsync();
+    }
+
+    private async Task AddProject()
+    {
+        NavigationManager.NavigateTo("projects/add", false);
+    }
+
+
+    private async Task EditProject(int id)
+    {
+        NavigationManager.NavigateTo("projects/edit/" + id, false);
+    }
+
+    private async Task SearchProjects()
+    {
+        projects = new List<ProjectDto>();
+        StateHasChanged();
+        // projects = await projectService.GetProjectListAsync(clientName, statusId);
+    }
+}
+
+<div class="search-form-wrapper">
+    <div class="search-form-inner">
+        <div class="search-content-filed">
+            <form role="search" method="get" class="search-form" action="#">
+                <input type="hidden" name="post_type" value="post" />
+                <div class="search-form-input">
+                    <div class="search-icon">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+                    <input type="search" placeholder="Search" />
+                    <button class="theme-btn" type="submit" title="Search" aria-label="Search">Search</button>
+                </div>
+            </form>
+            <span class="search-close">
+                <i class="fa-light fa-xmark"></i>
+            </span>
+        </div>
+    </div>
+</div>
+<!-- Header Search Bar Modal End -->
+<!-- Scroll Up Section Start -->
+<div id="scrollTop" class="scrollup-wrapper">
+    <div class="scrollup-btn">
+        <i class="fa-regular fa-angle-up"></i>
+    </div>
+</div>
+<!-- Scroll Up Section End -->
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.nice-select.min.js"></script>
+<script src="js/slick.min.js"></script>
+<script src="js/jquery.counterup.min.js"></script>
+<script src="js/waypoints.js"></script>
+<script src="js/jquery.meanmenu.min.js"></script>
+<script src="js/jquery.magnific-popup.min.js"></script>
+<script src="js/inview.min.js"></script>
+<script src="js/wow.min.js"></script>
+<script src="js/tilt.jquery.min.js"></script>
+<script src="js/isotope.min.js"></script>
+<script src="js/jquery.imagesloaded.min.js"></script>
+<script src="js/jquery.lettering.min.js"></script>
+<script src="js/circletype.min.js"></script>
+<script src="js/custom.js"></script>

@@ -1,0 +1,377 @@
+﻿@page "/projects/add"
+@page "/projects/edit/{id}"
+@using SPInteriors.Models
+@using SPInteriors.Services.Interfaces
+@rendermode InteractiveServer
+
+<div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
+
+    <div class="container edit-screen-container">
+
+        <div class="row edit-screen-header">
+            <div class="col-xl-12">
+                <h3>Project</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12">
+                <div class="subscribe-form-widget">
+                    <form>
+                        <div class="row form-row">
+                            <div class="faq-area">
+                                <div class="container">
+
+                                    <div class="row form-row">
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Project Name *
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                <input type="text" class="form-control" @bind-value="@project.Name" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Client Name *
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-3">
+                                            <div class="form-field">
+                                                <Dropdown ControlId="ClientId" TableName="Client" ExistingItem="@project.ClientId" OnItemSelection='((value) => project.ClientId = value.Id)'></Dropdown>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-1 col-lg-1" style="padding-left: 5px;">
+                                            <div class="form-field-button" style="margin:0 !important;">
+                                                <button style="margin-left: -3px;margin-top: 0px;border-radius:12px;" class="myButton text-right" @onclick="AddClient" type="button"><i class="fa-solid fa-add"></i></button>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+                                    <div class="row form-row">
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Status *
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                <Dropdown ControlId="StatusId" TableName="Status" ExistingItem="@project.StatusId" OnItemSelection='((value) => project.StatusId = value.Id)'></Dropdown>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                House Type *
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                <Dropdown ControlId="HouseTypeId" TableName="HouseType" ExistingItem="@project.HouseTypeId" OnItemSelection='((value) => project.HouseTypeId = value.Id)'></Dropdown>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row form-row">
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Material *
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                <Dropdown ControlId="MaterialId" TableName="MaterialType" ExistingItem="@project.MaterialId" OnItemSelection='((value) => project.MaterialId = value.Id)'></Dropdown>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Outer Finish *
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                <Dropdown ControlId="OuterFrameId" TableName="OuterFrameType" ExistingItem="@project.OuterFrameId" OnItemSelection='((value) => project.OuterFrameId = value.Id)'></Dropdown>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="padding-left:10px;padding-top:47px;">
+                                        <div class="col-xl-6">
+                                            <h4>Rooms</h4>
+                                        </div>
+                                        <div class="col-xl-6 grid-buttons-container" style="display:block">
+                                            <button class="myButton text-right" @onclick='(() => AddRoom())' type="button">Add <i class="fa-solid fa-add"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <!-- Accordion Start -->
+                                            <div class="accordion-wrapper style-one">
+                                                <div class="accordion-box-wrapper">
+                                                    @if (rooms != null && rooms.Count > 0)
+                                                    {
+                                                        @foreach (var item in rooms)
+                                                        {
+                                                            <div class="accordion-list-item" id="@item.WorkBookTag">
+                                                                <div id="headingOne">
+                                                                    <div class="accordion-head" role="button" data-bs-toggle="collapse" data-bs-target="#@item.AccordionTag" aria-expanded="true" aria-controls="@item.AccordionTag">
+                                                                        <h3 class="accordion-title">@item.Name</h3>
+                                                                        <button class="myButton text-right" @onclick='(() => UpdateRoom(item.Id))' type="button">Update <i class="fa-solid fa-edit"></i></button>
+                                                                    </div>
+                                                                </div>
+                                                                <div id="@item.AccordionTag" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#serviceDetailsFAQ">
+                                                                    <div class="accordion-item-body">
+                                                                        <div class="row">
+                                                                            <div class="col-xl-6">
+                                                                                <h4>Work Orders</h4>
+                                                                            </div>
+                                                                            <div class="col-xl-6 grid-buttons-container" style="display:block">
+                                                                                <button class="myButton text-right" @onclick='(() => AddWorkOrder(item.Id))' type="button">Add <i class="fa-solid fa-add"></i></button>
+                                                                                @if (item.Services != null && item.Services.Count > 1)
+                                                                                {
+                                                                                    <button style="margin-left:4px;" class="myButton text-right" @onclick='(() => GenerateWorkSheet(item.WorkBookTag))' type="button">WorkSheet <i class="fa-solid fa-download"></i></button>
+                                                                                }
+                                                                            </div>
+                                                                        </div>
+                                                                        @if (item.Services != null && item.Services.Count > 0)
+                                                                        {
+                                                                            @foreach (var service in item.Services)
+                                                                            {
+                                                                                <div style="background-color: #F4F4F4;color:black;margin: 10px;padding: 0px;">
+                                                                                    <div class="row" style="margin-left:20px;" id="@service.WorkBookTag">
+                                                                                        <div class="col-xl-6" style="padding:10px;">
+                                                                                            <div class="row">
+                                                                                                <div class="col-xl-12" style="padding-top:20px;padding-bottom:30px;">
+                                                                                                    <h4>@service.WorkOrderItem</h4>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div class="row">
+                                                                                                <div class="col-xl-4 workorder-form-label">
+                                                                                                    <span>Name</span>
+                                                                                                </div>
+                                                                                                <div class="col-xl-8 workorder-form-label">
+                                                                                                    <span>@service.Name</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <hr />
+                                                                                            @if (!string.IsNullOrEmpty(service.WorkOrderType))
+                                                                                            {
+                                                                                                <div class="row">
+                                                                                                    <div class="col-xl-4 workorder-form-label">
+                                                                                                        <span>Type</span>
+                                                                                                    </div>
+                                                                                                    <div class="col-xl-8 workorder-form-label">
+                                                                                                        <span>@service.WorkOrderType</span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <hr />
+                                                                                            }
+                                                                                            @if (!string.IsNullOrEmpty(service.DesignType))
+                                                                                            {
+                                                                                                <div class="row">
+                                                                                                    <div class="col-xl-4 workorder-form-label">
+                                                                                                        <span>Design</span>
+                                                                                                    </div>
+                                                                                                    <div class="col-xl-8 workorder-form-label">
+                                                                                                        <span>@service.DesignType</span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <hr />
+                                                                                            }
+                                                                                            @if (!string.IsNullOrEmpty(service.MaterialType))
+                                                                                            {
+                                                                                                <div class="row">
+                                                                                                    <div class="col-xl-4 workorder-form-label">
+                                                                                                        <span>Material</span>
+                                                                                                    </div>
+                                                                                                    <div class="col-xl-8 workorder-form-label">
+                                                                                                        <span>@service.MaterialType</span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <hr />
+                                                                                            }
+                                                                                            @if (!string.IsNullOrEmpty(service.OuterFrameType))
+                                                                                            {
+                                                                                                <div class="row">
+                                                                                                    <div class="col-xl-4 workorder-form-label">
+                                                                                                        <span>Outer Frame</span>
+                                                                                                    </div>
+                                                                                                    <div class="col-xl-8 workorder-form-label">
+                                                                                                        <span>@service.OuterFrameType</span>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <hr />
+                                                                                            }
+                                                                                            <div class="row">
+                                                                                                <div class="col-xl-4 workorder-form-label">
+                                                                                                    <span>Height</span>
+                                                                                                </div>
+                                                                                                <div class="col-xl-8 workorder-form-label">
+                                                                                                    <span>@service.HeightInFeet <span style="padding-left:4px; padding-right:8px;">ft</span> @service.HeightInInch ''</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <hr />
+                                                                                            <div class="row">
+                                                                                                <div class="col-xl-4 workorder-form-label">
+                                                                                                    <span>Width</span>
+                                                                                                </div>
+                                                                                                <div class="col-xl-8 workorder-form-label">
+                                                                                                    <span>@service.WidthInFeet <span style="padding-left:4px; padding-right:8px;">ft</span> @service.WidthInInch ''</span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <hr />
+                                                                                        </div>
+                                                                                        <div class="col-xl-6">
+                                                                                            <div style="height:300px;width:300px;margin:40px;">
+                                                                                                <img src="images/room/LivingRoom/livingroom.jpg" />
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row">
+                                                                                        <div class="col-xl-12 grid-buttons-container" style="display:block">
+                                                                                            <button class="myButton text-right" @onclick='(() => EditService(service.Id, item.Id))' type="button">Delete <i class="fa-solid fa-trash"></i></button>
+                                                                                            <button class="myButton text-right" @onclick='(() => EditService(service.Id, item.Id))' type="button">Update <i class="fa-solid fa-edit"></i></button>
+                                                                                            <button class="myButton text-right" @onclick='(() => GenerateWorkSheet(service.WorkBookTag))' type="button">WorkSheet <i class="fa-solid fa-download"></i></button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            }
+                                                                        }
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    }
+
+                                                </div>
+                                            </div>
+                                            <!-- Accordion End -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row form-row">
+                            <div class="col-xl-12 grid-buttons-container">
+                                <button class="myButton text-right" @onclick="SaveModel" type="button">Back</button>
+                                <button class="myButton text-right" @onclick="SaveAndRedirect" type="button">Save</button>
+                                <button class="myButton text-right" @onclick="NavigateToQuotation" type="button">Quotation</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+    @inject IJSRuntime JSRuntime;
+    @inject NavigationManager NavigationManager;
+    @inject IRoomService roomService;
+    @inject IProjectService projectService;
+
+    [Parameter]
+    public string id { get; set; }
+
+    ProjectDto project { get; set; }
+
+    List<RoomDto> rooms = new List<RoomDto>();
+
+    protected async override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(id))
+        {
+            project = await projectService.GetProjectByIdAsync(Convert.ToInt32(id));
+            rooms = await roomService.GetRoomListAsync(Convert.ToInt32(id));
+        }
+        else
+        {
+            project = new ProjectDto();
+        }
+    }
+
+    private async Task AddClient()
+    {
+        NavigationManager.NavigateTo("client/add/" + project.Id, false);
+    }
+
+    private async Task AddService(int roomId)
+    {
+        NavigationManager.NavigateTo("workorder/add/" + roomId, false);
+    }
+
+
+    private async Task EditService(int serviceId, int roomId)
+    {
+        NavigationManager.NavigateTo("workorder/edit/" + roomId + "/" + serviceId, false);
+    }
+
+    private async Task SaveModel()
+    {
+        NavigationManager.NavigateTo("projects", false);
+    }
+
+    private async Task NavigateToQuotation()
+    {
+        NavigationManager.NavigateTo("/quotations/" + project.Id, false);
+    }
+
+    private async Task AddRoom()
+    {
+        if (await SaveProject())
+        {
+            NavigationManager.NavigateTo("room/add/" + id, false);
+        }
+    }
+    private async Task UpdateRoom(int id)
+    {
+        if (await SaveProject())
+        {
+            NavigationManager.NavigateTo("room/edit/" + project.Id + "/" + id, false);
+        }
+    }
+
+    private async Task AddWorkOrder(int roomId)
+    {
+        NavigationManager.NavigateTo("workorder/add/" + roomId, false);
+    }
+    private async Task GenerateWorkSheet(string id)
+    {
+        await JSRuntime.InvokeVoidAsync("SaveFile", id);
+    }
+
+    private async Task<bool> SaveProject()
+    {
+        if (string.IsNullOrEmpty(project.Name))
+        {
+            await JSRuntime.InvokeVoidAsync("ShowAlert", "Please Add all required fields");
+            return false;
+        }
+        else
+        {
+            await projectService.CreateProjectAsync(project);
+            return true;
+        }
+    }
+
+    private async Task SaveAndRedirect()
+    {
+        if(await SaveProject())
+        {
+            NavigationManager.NavigateTo("projects", false);
+        }
+    }
+}

@@ -1,0 +1,82 @@
+﻿@page "/selecthouse"
+@rendermode InteractiveServer
+
+<div class="row">
+    <div class="col-lg-3 col-md-6">
+       <label>Client Name: Vamshi</label>
+       <br />
+        <label>Mobile Number: Vamshi</label>
+        <br />
+        <label>Address: Vamshi</label>
+    </div>
+   
+</div>
+
+<div class="team-card-wrapper">
+    <div class="row">
+        <div class="col-lg-3 col-md-6">
+            <div class="team-member-card">
+                <div class="content-wrapper">
+                    <div class="content" @onclick="NavigateToQuotation">
+                        <h2 class="title">1 BHK</h2>
+                        <p class="desc">Single Bed Room</p>
+                    </div>
+                </div>
+                <div class="image">
+                    <img src="images/team-member/team-3.jpg" alt="team-member">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="team-member-card">
+                <div class="content-wrapper">
+                    <div class="content">
+                        <h2 class="title">2 BHK</h2>
+                        <p class="desc">Double Bed Room</p>
+                    </div>
+                </div>
+                <div class="image">
+                    <img src="images/team-member/team-4.jpg" alt="team-member">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="team-member-card">
+                <div class="content-wrapper">
+                    <div class="content">
+                        <h2 class="title">3 BHK</h2>
+                        <p class="desc">Triple Bed Room</p>
+                    </div>
+                </div>
+                <div class="image">
+                    <img src="images/team-member/team-5.jpg" alt="team-member">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+            <div class="team-member-card">
+                <div class="content-wrapper">
+                    <div class="content">
+                        <h2 class="title">Villas</h2>
+                        <p class="desc">Individual House/Villas</p>
+                    </div>
+                </div>
+                <div class="image">
+                    <img src="images/team-member/team-6.jpg" alt="team-member">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+
+    @inject NavigationManager NavigationManager;
+
+    private async Task NavigateToQuotation()
+    {
+        NavigationManager.NavigateTo("addrooms", false);
+        
+    }
+}

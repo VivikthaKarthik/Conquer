@@ -1,0 +1,308 @@
+﻿@page "/workorder/add/{roomId}"
+@page "/workorder/edit/{roomId}/{id}"
+@using SPInteriors.Models
+@using SPInteriors.Services.Interfaces
+@rendermode InteractiveServer
+
+<div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
+    <div class="container edit-screen-container">
+        <div class="row edit-screen-header">
+            <div class="col-xl-12">
+                <h3>Work Order</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 col-lg-12">
+                <div class="subscribe-form-widget">
+                    <form>
+                        <div class="row form-row">
+                            <div class="faq-area">
+                                <div class="container">
+
+                                    <div class="row form-row">
+                                        <div class="col-xl-12 col-lg-12">
+                                            <div class="form-label">
+                                                <h4>@RoomName</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row form-row">
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Name
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                <input type="text" class="form-control" @bind-value="@workOrder.Name" placeholder="Enter Name" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                WorkOrder Item
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                <Dropdown ControlId="WorkOrderItemId" TableName="WorkOrderItem" ExistingItem="@workOrder.WorkOrderItemId" OnItemSelection='((value) => OnWorkOrderItemUpdated(value))'></Dropdown>
+                                            </div>
+                                        </div>
+
+                                        @if (workOrder.WorkOrderItem != "Custom")
+                                        {
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    WorkOrder Type
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <EditableDropDown ControlId="WorkOrderTypeId" IsDisabled="@(workOrder.WorkOrderItemId == null || workOrder.WorkOrderItemId == 0)" TableName="WorkOrderType" ExistingItem="@workOrder.WorkOrderType" OnItemSelection='((value) => workOrder.WorkOrderType = value.Name)'></EditableDropDown>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Design Type
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <EditableDropDown ControlId="DesignTypeId" IsDisabled="@(workOrder.WorkOrderItemId == null || workOrder.WorkOrderItemId == 0)" TableName="DesignType" ExistingItem="@workOrder.DesignType" OnItemSelection='((value) => workOrder.DesignType = value.Name)'></EditableDropDown>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Material Type
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <EditableDropDown ControlId="MaterialTypeId" IsDisabled="@(workOrder.WorkOrderItemId == null || workOrder.WorkOrderItemId == 0)" TableName="MaterialType" ExistingItem="@workOrder.MaterialType" OnItemSelection='((value) => workOrder.MaterialType = value.Name)'></EditableDropDown>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Outer Frame
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <EditableDropDown ControlId="OuterFrameTypeId" IsDisabled="@(workOrder.WorkOrderItemId == null || workOrder.WorkOrderItemId == 0)" TableName="OuterFrameType" ExistingItem="@workOrder.OuterFrameType" OnItemSelection='((value) => workOrder.OuterFrameType = value.Name)'></EditableDropDown>
+                                                </div>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    WorkOrder Type
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <input type="text" class="form-control" @bind-value="@workOrder.WorkOrderType" placeholder="Enter Type" />
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Design Type
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <input type="text" class="form-control" @bind-value="@workOrder.DesignType" placeholder="Enter Design" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Material Type
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <input type="text" class="form-control" @bind-value="@workOrder.MaterialType" placeholder="Enter Material" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Outer Frame
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <input type="text" class="form-control" @bind-value="@workOrder.OuterFrameType" placeholder="Enter OuterFrame" />
+                                                </div>
+                                            </div>
+                                        }
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Height
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-field">
+                                                <input type="number" class="form-control" @bind-value="@workOrder.HeightInFeet" placeholder="feet" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-field">
+                                                <input type="number" class="form-control" @bind-value="@workOrder.HeightInInch" max="12" placeholder="inch" />
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Width
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-field">
+                                                <input type="number" class="form-control" @bind-value="@workOrder.WidthInFeet" placeholder="feet" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-field">
+                                                <input type="number" class="form-control" @bind-value="@workOrder.WidthInInch" max="12" placeholder="inch" />
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                <input type="checkbox" @bind-value="@workOrder.SuppressCalculation" name="checkboxName" id="SuppressCalculationId">
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                SuppressCalculation
+                                            </div>
+                                        </div>
+
+                                        @if (@workOrder.SuppressCalculation)
+                                        {
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Amount
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <input type="text" class="form-control" @bind-value="@workOrder.Amount" placeholder="Enter Amount" />
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-row">
+                            <div class="col-xl-12 grid-buttons-container">
+                                <button class="myButton text-right" @onclick="OnBackClicked" type="button">Back</button>
+                                <button class="myButton text-right" @onclick="OnSaveClicked" type="button">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    @inject IJSRuntime JSRuntime;
+    @inject NavigationManager NavigationManager;
+    @inject IWorkOrderService workOrderService;
+    @inject IRoomService roomService;
+    @inject IClientService clientService;
+
+    List<ClientDto> clients = new List<ClientDto>();
+
+    [Parameter]
+    public string id { get; set; }
+
+    [Parameter]
+    public string roomId { get; set; }
+
+    WorkOrderDto workOrder { get; set; }
+
+    RoomDto room { get; set; }
+
+    string RoomName { get; set; } = "Work Order";
+
+    bool isAdd { get; set; }
+
+
+    protected async override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(id))
+        {
+            isAdd = false;
+            workOrder = await workOrderService.GetWorkOrderByIdAsync(Convert.ToInt32(id));
+
+            if (workOrder != null)
+            {
+                RoomName = workOrder.Room;
+            }
+        }
+        else
+        {
+            workOrder = new WorkOrderDto();
+            isAdd = true;
+        }
+
+        if (!string.IsNullOrEmpty(roomId))
+        {
+            room = await roomService.GetRoomListByIdAsync(Convert.ToInt32(roomId));
+
+            if (room != null)
+            {
+                workOrder.RoomId = room.Id;
+                RoomName = room.Name;
+
+                if (!string.IsNullOrEmpty(workOrder.WorkOrderItem) && workOrder.WorkOrderItem != "Not Applicable" && workOrder.WorkOrderItem != "Custom")
+                {
+                    if (string.IsNullOrEmpty(workOrder.MaterialType))
+                        workOrder.MaterialType = room.Material;
+
+                    if (string.IsNullOrEmpty(workOrder.OuterFrameType))
+                        workOrder.OuterFrameType = room.OuterFrame;
+
+                }
+            }
+        }
+
+        clients = await clientService.GetClientsAsync();
+    }
+
+    private async Task OnBackClicked()
+    {
+        NavigationManager.NavigateTo("room/edit/" + room.ProjectId + "/" + room.Id, false);
+    }
+
+    private async Task OnWorkOrderItemUpdated(ListItemDto selectedItem)
+    {
+        workOrder.WorkOrderItemId = selectedItem.Id;
+        workOrder.WorkOrderItem = selectedItem.Name;
+    }
+
+    private async Task OnSaveClicked()
+    {
+        bool isSuccess = false;
+        if (isAdd)
+            isSuccess = await workOrderService.CreateWorkOrderAsync(workOrder);
+        else
+            isSuccess = await workOrderService.UpdateWorkOrderAsync(workOrder);
+
+        if (isSuccess)
+            NavigationManager.NavigateTo("room/edit/" + room.ProjectId + "/" + room.Id, false);
+        else
+            await JSRuntime.InvokeVoidAsync("ShowAlert", "Some problem occured.. Please try again");
+
+    }
+}
