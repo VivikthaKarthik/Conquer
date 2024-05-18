@@ -11,6 +11,8 @@ public partial class WorkOrderItem
 
     public string Description { get; set; } = null!;
 
+    public string? ImagePath { get; set; }
+
     public virtual ICollection<DesignType> DesignTypes { get; set; } = new List<DesignType>();
 
     public virtual ICollection<WorkOrder> WorkOrders { get; set; } = new List<WorkOrder>();

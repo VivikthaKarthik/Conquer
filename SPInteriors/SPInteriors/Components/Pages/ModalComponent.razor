@@ -1,0 +1,102 @@
+﻿@using SPInteriors.Models
+@using SPInteriors.Services.Interfaces
+<div class="modal @ModalClass" tabindex="-1" style="display: @(ShowModal ? "block" : "none")">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Category</h5>
+                <button type="button" class="btn-close" aria-label="Close" @onclick="CloseModal"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12">
+                        <div class="subscribe-form-widget">
+                            <form>
+                                <div class="row form-row">
+                                    <div class="faq-area">
+                                        <div class="container">
+
+                                            <div class="row form-row">
+                                                <div class="col-xs-12">
+                                                    <div>
+                                                        <input type="text" class="form-control" @bind-value="category.Name" placeholder="Enter Name" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-row">
+                                                <div class="col-xs-12">
+                                                    <div>
+                                                        <textarea type="text" class="form-control" @bind="category.Description" placeholder="Enter Description"></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row form-row">
+                                                <div class="col-xs-12">
+                                                    <div>
+                                                        <InputFile OnChange="@ImageUploaded" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @if (!string.IsNullOrEmpty(category.ImagePath))
+                                            {
+                                                <div class="row form-row">
+                                                    <div class="col-xs-12">
+                                                        <img style="height:250px;width:100%;" src="@category.ImagePath" />
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-row">
+                                    <div class="col-xl-12 grid-buttons-container">
+                                        <button class="myButton text-right" @onclick="OnModalSaveClicked" type="button">Save</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter] public bool ShowModal { get; set; }
+    [Parameter] public EventCallback<bool> ShowModalChanged { get; set; }
+    @inject IPortfolioService portfolioService;
+
+    private string ModalClass => ShowModal ? "show" : "";
+    private CategoryDto category;
+
+    protected async override void OnInitialized()
+    {
+        category = new CategoryDto();
+    }
+
+    private async Task CloseModal()
+    {
+        ShowModal = false;
+        await ShowModalChanged.InvokeAsync(ShowModal);
+    }
+
+    private async Task OnModalSaveClicked()
+    {
+        await portfolioService.CreateCategoryAsync(category);
+        CloseModal();
+    }
+
+    private async Task ImageUploaded(InputFileChangeEventArgs e)
+    {
+        using var stream = e.File.OpenReadStream();
+        using var ms = new MemoryStream();
+        await stream.CopyToAsync(ms);
+        category.ImagePath = "data:" + e.File.ContentType + ";base64," + Convert.ToBase64String(ms.ToArray());
+
+    }
+}

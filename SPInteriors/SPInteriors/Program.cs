@@ -8,6 +8,7 @@ using SPInteriors;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddScoped<IFileUploadService, FileUploadService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IQuotationService, QuotationService>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
@@ -15,6 +16,7 @@ builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<ICommonService, CommonService>();
 builder.Services.AddScoped<IWorkOrderService, WorkOrderService>();
 builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IPortfolioService, PortfolioService>();
 
 //IMapper mapper = MapperConfig.RegisterMaps().CreateMapper();
 //builder.Services.AddSingleton(mapper);

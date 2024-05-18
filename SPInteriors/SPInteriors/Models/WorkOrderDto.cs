@@ -26,6 +26,8 @@ namespace SPInteriors.Models
         public string DesignType { get; set; }
         public string MaterialType { get; set; }
 
+        public string ImagePath { get; set; }
+
         public decimal Height
         {
             get

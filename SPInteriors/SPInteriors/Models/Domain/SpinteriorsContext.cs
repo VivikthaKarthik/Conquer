@@ -15,6 +15,8 @@ public partial class SpinteriorsContext : DbContext
     {
     }
 
+    public virtual DbSet<Category> Categories { get; set; }
+
     public virtual DbSet<Client> Clients { get; set; }
 
     public virtual DbSet<DesignType> DesignTypes { get; set; }
@@ -30,6 +32,8 @@ public partial class SpinteriorsContext : DbContext
     public virtual DbSet<MaterialType> MaterialTypes { get; set; }
 
     public virtual DbSet<OuterFrameType> OuterFrameTypes { get; set; }
+
+    public virtual DbSet<PortfolioImage> PortfolioImages { get; set; }
 
     public virtual DbSet<Project> Projects { get; set; }
 
@@ -51,6 +55,8 @@ public partial class SpinteriorsContext : DbContext
 
     public virtual DbSet<WorkOrder> WorkOrders { get; set; }
 
+    public virtual DbSet<WorkOrderImage> WorkOrderImages { get; set; }
+
     public virtual DbSet<WorkOrderItem> WorkOrderItems { get; set; }
 
     public virtual DbSet<WorkOrderType> WorkOrderTypes { get; set; }
@@ -60,6 +66,13 @@ public partial class SpinteriorsContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Category>(entity =>
+        {
+            entity.ToTable("Category");
+
+            entity.Property(e => e.Name).HasMaxLength(250);
+        });
+
         modelBuilder.Entity<Client>(entity =>
         {
             entity.ToTable("Client");
@@ -122,6 +135,20 @@ public partial class SpinteriorsContext : DbContext
             entity.ToTable("OuterFrameType");
 
             entity.Property(e => e.Name).HasMaxLength(500);
+        });
+
+        modelBuilder.Entity<PortfolioImage>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK_Images");
+
+            entity.ToTable("PortfolioImage");
+
+            entity.Property(e => e.Name).HasMaxLength(250);
+
+            entity.HasOne(d => d.Category).WithMany(p => p.PortfolioImages)
+                .HasForeignKey(d => d.CategoryId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Images_Category");
         });
 
         modelBuilder.Entity<Project>(entity =>
@@ -250,10 +277,24 @@ public partial class SpinteriorsContext : DbContext
                 .HasConstraintName("FK_WorkOrder_WorkOrderItem");
         });
 
+        modelBuilder.Entity<WorkOrderImage>(entity =>
+        {
+            entity.ToTable("WorkOrderImage");
+
+            entity.Property(e => e.Name).HasMaxLength(250);
+            entity.Property(e => e.UploadedBy).HasMaxLength(20);
+
+            entity.HasOne(d => d.WorkOrder).WithMany(p => p.WorkOrderImages)
+                .HasForeignKey(d => d.WorkOrderId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_WorkOrderImage_WorkOrder");
+        });
+
         modelBuilder.Entity<WorkOrderItem>(entity =>
         {
             entity.ToTable("WorkOrderItem");
 
+            entity.Property(e => e.ImagePath).HasMaxLength(1024);
             entity.Property(e => e.Name).HasMaxLength(100);
         });
 

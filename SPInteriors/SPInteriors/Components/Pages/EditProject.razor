@@ -49,11 +49,6 @@
                                                 <button style="margin-left: -3px;margin-top: 0px;border-radius:12px;" class="myButton text-right" @onclick="AddClient" type="button"><i class="fa-solid fa-add"></i></button>
                                             </div>
                                         </div>
-
-
-                                    </div>
-
-                                    <div class="row form-row">
                                         <div class="col-xl-2 col-lg-2">
                                             <div class="form-label">
                                                 Status *
@@ -75,10 +70,6 @@
                                                 <Dropdown ControlId="HouseTypeId" TableName="HouseType" ExistingItem="@project.HouseTypeId" OnItemSelection='((value) => project.HouseTypeId = value.Id)'></Dropdown>
                                             </div>
                                         </div>
-                                    </div>
-
-
-                                    <div class="row form-row">
                                         <div class="col-xl-2 col-lg-2">
                                             <div class="form-label">
                                                 Material *
@@ -122,8 +113,18 @@
                                                             <div class="accordion-list-item" id="@item.WorkBookTag">
                                                                 <div id="headingOne">
                                                                     <div class="accordion-head" role="button" data-bs-toggle="collapse" data-bs-target="#@item.AccordionTag" aria-expanded="true" aria-controls="@item.AccordionTag">
-                                                                        <h3 class="accordion-title">@item.Name</h3>
-                                                                        <button class="myButton text-right" @onclick='(() => UpdateRoom(item.Id))' type="button">Update <i class="fa-solid fa-edit"></i></button>
+                                                                        <h3 class="accordion-title">
+                                                                            @item.Name
+                                                                            <button class="myIconButton" @onclick='(() => UpdateRoom(item.Id))' type="button">
+                                                                                Edit <i class="fa-solid fa-edit"></i>
+                                                                            </button>
+                                                                            @if (item.Services != null && item.Services.Count > 1)
+                                                                            {
+                                                                                <button class="myIconButton" @onclick='(() => GenerateWorkSheet(item.WorkBookTag))' type="button">
+                                                                                    Download <i class="fa-solid fa-download"></i>
+                                                                                </button>
+                                                                            }
+                                                                        </h3>
                                                                     </div>
                                                                 </div>
                                                                 <div id="@item.AccordionTag" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#serviceDetailsFAQ">
@@ -131,13 +132,6 @@
                                                                         <div class="row">
                                                                             <div class="col-xl-6">
                                                                                 <h4>Work Orders</h4>
-                                                                            </div>
-                                                                            <div class="col-xl-6 grid-buttons-container" style="display:block">
-                                                                                <button class="myButton text-right" @onclick='(() => AddWorkOrder(item.Id))' type="button">Add <i class="fa-solid fa-add"></i></button>
-                                                                                @if (item.Services != null && item.Services.Count > 1)
-                                                                                {
-                                                                                    <button style="margin-left:4px;" class="myButton text-right" @onclick='(() => GenerateWorkSheet(item.WorkBookTag))' type="button">WorkSheet <i class="fa-solid fa-download"></i></button>
-                                                                                }
                                                                             </div>
                                                                         </div>
                                                                         @if (item.Services != null && item.Services.Count > 0)
@@ -149,19 +143,10 @@
                                                                                         <div class="col-xl-6" style="padding:10px;">
                                                                                             <div class="row">
                                                                                                 <div class="col-xl-12" style="padding-top:20px;padding-bottom:30px;">
-                                                                                                    <h4>@service.WorkOrderItem</h4>
+                                                                                                    <h4>@service.Name</h4>
                                                                                                 </div>
                                                                                             </div>
 
-                                                                                            <div class="row">
-                                                                                                <div class="col-xl-4 workorder-form-label">
-                                                                                                    <span>Name</span>
-                                                                                                </div>
-                                                                                                <div class="col-xl-8 workorder-form-label">
-                                                                                                    <span>@service.Name</span>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <hr />
                                                                                             @if (!string.IsNullOrEmpty(service.WorkOrderType))
                                                                                             {
                                                                                                 <div class="row">
@@ -230,16 +215,22 @@
                                                                                             <hr />
                                                                                         </div>
                                                                                         <div class="col-xl-6">
-                                                                                            <div style="height:300px;width:300px;margin:40px;">
-                                                                                                <img src="images/room/LivingRoom/livingroom.jpg" />
+                                                                                            <div style="height:70%;width:80%;margin:40px;">
+                                                                                                @if (!string.IsNullOrEmpty(service.ImagePath))
+                                                                                                {
+
+                                                                                                    <img style="height:100%;width:100%;" src="@service.ImagePath" />
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <img src="images/room/livingroom/livingroom.jpg" />
+                                                                                                }
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
                                                                                     <div class="row">
                                                                                         <div class="col-xl-12 grid-buttons-container" style="display:block">
-                                                                                            <button class="myButton text-right" @onclick='(() => EditService(service.Id, item.Id))' type="button">Delete <i class="fa-solid fa-trash"></i></button>
-                                                                                            <button class="myButton text-right" @onclick='(() => EditService(service.Id, item.Id))' type="button">Update <i class="fa-solid fa-edit"></i></button>
-                                                                                            <button class="myButton text-right" @onclick='(() => GenerateWorkSheet(service.WorkBookTag))' type="button">WorkSheet <i class="fa-solid fa-download"></i></button>
+                                                                                            <button class="myButton text-right" @onclick='(() => GenerateWorkSheet(service.WorkBookTag))' type="button">Download <i class="fa-solid fa-download"></i></button>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -369,9 +360,14 @@
 
     private async Task SaveAndRedirect()
     {
-        if(await SaveProject())
+        if (await SaveProject())
         {
             NavigationManager.NavigateTo("projects", false);
         }
     }
 }
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+</script>

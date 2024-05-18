@@ -56,6 +56,11 @@ namespace SPInteriors.Services.Implementations
                         workorder.SuppressCalculation = data.SuppressCalculation;
                         workorder.Amount = data.Amount;
 
+                        if (dbContext.WorkOrderImages.Any(x => x.WorkOrderId == data.Id))
+                        {
+                            workorder.ImagePath = dbContext.WorkOrderImages.First(x => x.WorkOrderId == data.Id).ImagePath;
+                        }
+
                         room.Services.Add(workorder);
                     }
                 }
@@ -104,6 +109,11 @@ namespace SPInteriors.Services.Implementations
                             workorder.Height = data.Height;
                             workorder.SuppressCalculation = data.SuppressCalculation;
                             workorder.Amount = data.Amount;
+
+                            if (dbContext.WorkOrderImages.Any(x => x.WorkOrderId == data.Id))
+                            {
+                                workorder.ImagePath = dbContext.WorkOrderImages.First(x => x.WorkOrderId == data.Id).ImagePath;
+                            }
 
                             room.Services.Add(workorder);
                         }

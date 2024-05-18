@@ -96,7 +96,14 @@
                                                                         </div>
                                                                     </div>
                                                                     <div class="image">
-                                                                        <img src="images/room/livingroom/livingroom.jpg" />
+                                                                        @if (!string.IsNullOrEmpty(service.ImagePath))
+                                                                        {
+                                                                            <img style="height:300px;width:100%;" src="@service.ImagePath" />
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <img src="images/room/livingroom/livingroom.jpg" />
+                                                                        }
                                                                     </div>
                                                                 </div>
                                                             </div>

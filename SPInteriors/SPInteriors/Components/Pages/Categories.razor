@@ -1,83 +1,84 @@
-﻿
-@page "/categories"
-@code {
+﻿@page "/categories/{id}"
+@using SPInteriors.Models
+@using SPInteriors.Services.Interfaces
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager;
 
-}
 <!-- Our Team Area Start Style-2 -->
-<div class="our-team-area style-3 py-120 py-sm-60 py-md-80 py-lg-100">
+<div class="our-team-area style-3 py-sm-60 py-md-80 py-lg-100">
     <div class="container">
 
         <div class="team-card-wrapper">
-            <div class="row">
-                <div class="col-lg-3 col-md-5">
-                    <div class="team-member-card">
-                       <div class="image">
-                            <img src="images/room/LivingRoom/livingroom.jpg" />
-                        </div>
+            <div class="row form-row">
+                <div class="col-xl-2 col-lg-2">
+                    <div class="form-label">
+                        Upload Image(s)
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-5">
-                    <div class="team-member-card">
-                       
-                        <div class="image">
-                            <img src="images/room/LivingRoom/livingroom1.jpg" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-5">
-                    <div class="team-member-card">
-                       
-                        <div class="image">
-                            <img src="images/room/LivingRoom/livingroom2.jpg" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-5">
-                    <div class="team-member-card">
-                       
-                        <div class="image">
-                            <img src="images/room/LivingRoom/livingroom3.jpg" />
-                        </div>
+                <div class="col-xl-4 col-lg-4">
+                    <div class="form-field">
+                        <InputFile OnChange="@ImageUploaded" />
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="team-card-wrapper">
             <div class="row">
-                <div class="col-lg-3 col-md-5">
-                    <div class="team-member-card">
-                        
-                        <div class="image">
-                            <img src="images/room/LivingRoom/livingroom4.jpg" />
+                @if (images != null && images.Count > 0)
+                {
+                    @foreach (var item in images)
+                    {
+                        <div class="col-lg-3 col-md-5" style="padding-top:20px;">
+                            <div class="team-member-card">
+                                <div class="image">
+                                    <img src="@item.ImagePath" />
+                                    <i class="heart-icon" @onclick="ToggleHeart" href="javascript:void">
+                                        @if (isHearted)
+                                        {
+                                            <span>&#10084;</span> <!-- Filled heart -->
+                                        }
+                                        else
+                                        {
+                                            <span>&#9825;</span> <!-- Outline heart -->
+                                        }
+                                    </i>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-5">
-                    <div class="team-member-card">
-                       
-                        <div class="image">
-                            <img src="images/room/LivingRoom/livingroom5.jpg" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-5">
-                    <div class="team-member-card">
-                       
-                        <div class="image">
-                            <img src="images/room/LivingRoom/livingroom6.jpg" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-5">
-                    <div class="team-member-card">
-                      
-                        <div class="image">
-                            <img src="images/room/LivingRoom/livingroom7.jpg" />
-                        </div>
-                    </div>
-                </div>
+                    }
+                }
             </div>
         </div>
     </div>
 </div>
 <!-- Our Team Area End Style-2 -->
+@code {
+    @inject IJSRuntime JSRuntime;
+    @inject NavigationManager NavigationManager;
+    @inject IPortfolioService portfolioService;
+    @inject IFileUploadService FileUploadService;
+
+    [Parameter]
+    public string id { get; set; }
+
+    public bool isHearted { get; set; }
+
+    public List<PortfolioImageDto> images { get; set; }
+
+    protected async override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(id))
+        {
+            images = await portfolioService.GetImagesListAsync(Convert.ToInt32(id));
+        }
+    }
+
+    private async Task ImageUploaded(InputFileChangeEventArgs e)
+    {
+        await FileUploadService.SavePortfolioImageAsync(e.File, Convert.ToInt32(id)); 
+        images = await portfolioService.GetImagesListAsync(Convert.ToInt32(id));
+    }
+
+    private void ToggleHeart()
+    {
+        isHearted = !isHearted;
+    }
+}

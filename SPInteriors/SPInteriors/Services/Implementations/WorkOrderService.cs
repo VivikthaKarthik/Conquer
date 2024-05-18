@@ -37,8 +37,23 @@ namespace SPInteriors.Services.Implementations
                 workorder.Height = data.Height;
                 workorder.SuppressCalculation = data.SuppressCalculation;
                 workorder.Amount = data.Amount;
+
+                if(dbContext.WorkOrderImages.Any(x=>x.WorkOrderId == id))
+                {
+                    workorder.ImagePath = dbContext.WorkOrderImages.First(x => x.WorkOrderId == id).ImagePath;
+                }
             }
             return workorder;
+        }
+
+        public async Task<string> GetWorkOrderItemImage(int id)
+        {
+            string imagePath = string.Empty;
+            if (dbContext.WorkOrderItems.Any(x => x.Id == id))
+            {
+                imagePath = dbContext.WorkOrderItems.First(x => x.Id == id).ImagePath;
+            }
+            return imagePath;
         }
 
         public async Task<List<WorkOrderDto>> GetWorkOrdersListAsync(int roomId)
@@ -64,6 +79,12 @@ namespace SPInteriors.Services.Implementations
                     workorder.Width = data.Width;
                     workorder.SuppressCalculation = data.SuppressCalculation;
                     workorder.Amount = data.Amount;
+
+                    if (dbContext.WorkOrderImages.Any(x => x.WorkOrderId == data.Id))
+                    {
+                        workorder.ImagePath = dbContext.WorkOrderImages.First(x => x.WorkOrderId == data.Id).ImagePath;
+                    }
+
                     list.Add(workorder);
                 }
             }
@@ -115,6 +136,7 @@ namespace SPInteriors.Services.Implementations
 
                     if (workorder != null)
                     {
+                        workorder.Name = data.Name;
                         workorder.WorkOrderItemId = data.WorkOrderItemId;
                         workorder.WorkOrderType = data.WorkOrderType;
                         workorder.RoomId = data.RoomId;

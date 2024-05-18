@@ -1,122 +1,80 @@
 ﻿@page "/explore"
 @using SPInteriors.Models
+@using SPInteriors.Services.Interfaces
 @rendermode InteractiveServer
  @inject NavigationManager NavigationManager;
 
 <!-- Our Team Area Start Style-2 -->
-<div class="our-team-area style-3 py-120 py-sm-60 py-md-80 py-lg-100">
+<div class="our-team-area style-3 py-sm-60 py-md-80 py-lg-100" style="background-color:lightgray;">
     <div class="container">
-      
+
         <div class="team-card-wrapper">
-            <div class="row">
-                <div class="col-lg-3 col-md-5" @onclick="openCategory">
-                    <div class="team-member-card">
-                        <div class="content-wrapper">
-                            <div class="content">
-                                <h2 class="title">Living Room</h2>
-                            </div>
-                        </div>
-                        <div class="image">
-                            <img src="images/room/livingroom/livingroom.jpg" />
-                        </div>
-                    </div>
+            <div class="row" style="padding-left:10px;padding-bottom:30px;">
+                <div class="col-xl-6">
+                    <h3>Categories</h3>
                 </div>
-                <div class="col-lg-3 col-md-5">
-                    <div class="team-member-card">
-                        <div class="content-wrapper">
-                            <div class="content">
-                                <h2 class="title">Bed Room</h2>
-                            </div>
-                        </div>
-                        <div class="image">
-                            <img src="images/room/BedRoom/MasterBedRoom/MB1.jpg" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-5">
-                    <div class="team-member-card">
-                        <div class="content-wrapper">
-                            <div class="content">
-                                <h2 class="title">DEVID BEKHAM</h2>
-                            </div>
-                        </div>
-                        <div class="image">
-                            <img src="images/team-member/team-5.jpg" alt="team-member">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-5">
-                    <div class="team-member-card">
-                        <div class="content-wrapper">
-                            <div class="content">
-                                <h2 class="title">DEVID BEKHAM</h2>
-                            </div>
-                        </div>
-                        <div class="image">
-                            <img src="images/team-member/team-6.jpg" alt="team-member">
-                        </div>
-                    </div>
+                <div class="col-xl-6 grid-buttons-container" style="display:block">
+                    <button class="myButton text-right" @onclick="ShowModal" type="button">Add <i class="fa-solid fa-add"></i></button>
                 </div>
             </div>
-        </div>
-        <div class="team-card-wrapper">
-            <div class="row">
-                <div class="col-lg-3 col-md-5">
-                    <div class="team-member-card">
-                        <div class="content-wrapper">
-                            <div class="content">
-                                <h2 class="title">Jane Cooper</h2>
+            <div class="row" style="background-color:grey;">
+                @if (categories != null && categories.Count > 0)
+                {
+                    @foreach (var item in categories)
+                    {
+                        <div class="col-lg-3 col-md-5" style="padding-top:20px;" @onclick='(() => openCategory(item.Id))'>
+                            <div class="team-member-card">
+                                <div class="content-wrapper">
+                                    <div class="content">
+                                        <h2 class="title">@item.Name</h2>
+                                    </div>
+                                </div>
+                                <div class="image">
+                                    <img src="@item.ImagePath" />
+                                </div>
                             </div>
                         </div>
-                        <div class="image">
-                            <img src="images/team-member/team-3.jpg" alt="team-member">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-5">
-                    <div class="team-member-card">
-                        <div class="content-wrapper">
-                            <div class="content">
-                                <h2 class="title">DEVID BEKHAM</h2>
-                            </div>
-                        </div>
-                        <div class="image">
-                            <img src="images/team-member/team-4.jpg" alt="team-member">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-5">
-                    <div class="team-member-card">
-                        <div class="content-wrapper">
-                            <div class="content">
-                                <h2 class="title">DEVID BEKHAM</h2>
-                            </div>
-                        </div>
-                        <div class="image">
-                            <img src="images/team-member/team-5.jpg" alt="team-member">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-5">
-                    <div class="team-member-card">
-                        <div class="content-wrapper">
-                            <div class="content">
-                                <h2 class="title">DEVID BEKHAM</h2>
-                            </div>
-                        </div>
-                        <div class="image">
-                            <img src="images/team-member/team-6.jpg" alt="team-member">
-                        </div>
-                    </div>
-                </div>
+                    }
+                }
             </div>
         </div>
     </div>
 </div>
+
+<ModalComponent ShowModal="@showModal" ShowModalChanged="@(value => OnModelClosing(value))"></ModalComponent>
+
 <!-- Our Team Area End Style-2 -->
 @code {
-    public void openCategory()
+    @inject IJSRuntime JSRuntime;
+    @inject NavigationManager NavigationManager;
+    @inject IPortfolioService portfolioService;
+    private bool showModal;
+
+    public List<CategoryDto> categories { get; set; }
+
+    protected async override void OnInitialized()
     {
-        NavigationManager.NavigateTo("/categories");
+        categories = await portfolioService.GetCategoriesListAsync();
+    }
+
+    public void openCategory(int id)
+    {
+        NavigationManager.NavigateTo("/categories/" + id);
+    }
+
+    private void ShowModal()
+    {
+        showModal = true;
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+    }
+
+    private async Task OnModelClosing(bool value)
+    {
+        showModal = value;
+        categories = await portfolioService.GetCategoriesListAsync();
     }
 }

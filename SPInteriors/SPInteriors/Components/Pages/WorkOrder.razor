@@ -39,7 +39,6 @@
                                                 <input type="text" class="form-control" @bind-value="@workOrder.Name" placeholder="Enter Name" />
                                             </div>
                                         </div>
-
                                         <div class="col-xl-2 col-lg-2">
                                             <div class="form-label">
                                                 WorkOrder Item
@@ -196,7 +195,27 @@
                                                 </div>
                                             </div>
                                         }
+
+                                        <div class="col-xl-2 col-lg-2">
+                                            <div class="form-label">
+                                                Upload Image(s)
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                            <div class="form-field">
+                                                <InputFile OnChange="@ImageUploaded" />
+                                            </div>
+                                        </div>
                                     </div>
+
+                                    @if (!string.IsNullOrEmpty(src))
+                                    {
+                                        <div class="row form-row">
+                                            <div class="col-xl-12 col-lg-12">
+                                                <img style="height:300px;width:300px;" src="@src" />
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -220,6 +239,7 @@
     @inject IWorkOrderService workOrderService;
     @inject IRoomService roomService;
     @inject IClientService clientService;
+    @inject IFileUploadService FileUploadService;
 
     List<ClientDto> clients = new List<ClientDto>();
 
@@ -232,8 +252,10 @@
     WorkOrderDto workOrder { get; set; }
 
     RoomDto room { get; set; }
-
+    string src { get; set; }
     string RoomName { get; set; } = "Work Order";
+
+    public IBrowserFile SelectedImage { get; set; }
 
     bool isAdd { get; set; }
 
@@ -248,6 +270,7 @@
             if (workOrder != null)
             {
                 RoomName = workOrder.Room;
+                src = workOrder.ImagePath;
             }
         }
         else
@@ -279,6 +302,20 @@
 
         clients = await clientService.GetClientsAsync();
     }
+    private async Task ImageUploaded(InputFileChangeEventArgs e)
+    {
+        if (workOrder.Id <= 0)
+        {
+            using var stream = e.File.OpenReadStream();
+            using var ms = new MemoryStream();
+            await stream.CopyToAsync(ms);
+            src = "data:" + e.File.ContentType + ";base64," + Convert.ToBase64String(ms.ToArray());
+        }
+        else
+        {
+            src = await FileUploadService.SaveWorkOrderImageAsync(e.File, workOrder.Id);
+        }
+    }
 
     private async Task OnBackClicked()
     {
@@ -289,13 +326,21 @@
     {
         workOrder.WorkOrderItemId = selectedItem.Id;
         workOrder.WorkOrderItem = selectedItem.Name;
+        src = await workOrderService.GetWorkOrderItemImage(selectedItem.Id);
     }
 
     private async Task OnSaveClicked()
     {
         bool isSuccess = false;
         if (isAdd)
+        {
             isSuccess = await workOrderService.CreateWorkOrderAsync(workOrder);
+
+            if (isSuccess && SelectedImage != null)
+            {
+                src = await FileUploadService.SaveWorkOrderImageAsync(SelectedImage, workOrder.Id);
+            }
+        }
         else
             isSuccess = await workOrderService.UpdateWorkOrderAsync(workOrder);
 

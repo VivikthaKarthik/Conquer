@@ -33,5 +33,7 @@ public partial class WorkOrder
 
     public virtual Room Room { get; set; } = null!;
 
+    public virtual ICollection<WorkOrderImage> WorkOrderImages { get; set; } = new List<WorkOrderImage>();
+
     public virtual WorkOrderItem? WorkOrderItem { get; set; }
 }
