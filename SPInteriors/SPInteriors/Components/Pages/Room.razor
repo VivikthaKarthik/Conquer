@@ -2,7 +2,7 @@
 @page "/room/edit/{projectId}/{id}"
 @using SPInteriors.Models
 @using SPInteriors.Services.Interfaces
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender:false))
 <div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
     <div class="container edit-screen-container">
         <div class="row edit-screen-header">

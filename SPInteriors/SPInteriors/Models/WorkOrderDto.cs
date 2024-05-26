@@ -35,7 +35,7 @@ namespace SPInteriors.Models
                 var inches = HeightInInch;
                 if (HeightInInch > 12)
                     inches = HeightInInch / 10;
-                return HeightInFeet + (Convert.ToDecimal(inches) / 100);
+                return HeightInFeet + (Convert.ToDecimal(inches) / 10);
             }
             set
             {
@@ -55,7 +55,7 @@ namespace SPInteriors.Models
                 if (WidthInInch > 12)
                     inches = WidthInInch / 10;
 
-                return WidthInFeet + (Convert.ToDecimal(inches) / 100);
+                return WidthInFeet + (Convert.ToDecimal(inches) / 10);
             }
             set
             {
@@ -80,5 +80,13 @@ namespace SPInteriors.Models
 
         public int WidthInInch { get; set; }
 
+        public List<WorkOrderDetailsDto> Details { get; set; }
+    }
+
+    public class WorkOrderDetailsDto
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Value { get; set; }
     }
 }

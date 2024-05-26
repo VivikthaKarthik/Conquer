@@ -2,7 +2,7 @@
 @page "/projects/edit/{id}"
 @using SPInteriors.Models
 @using SPInteriors.Services.Interfaces
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender:false))
 
 <div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
 
@@ -215,22 +215,20 @@
                                                                                             <hr />
                                                                                         </div>
                                                                                         <div class="col-xl-6">
-                                                                                            <div style="height:70%;width:80%;margin:40px;">
+                                                                                            <div class="col-xl-12 grid-buttons-container" style="display:block;margin-top:20px;">
+                                                                                                <button class="myButton text-right" @onclick='(() => GenerateWorkSheet(service.WorkBookTag))' type="button">Download <i class="fa-solid fa-download"></i></button>
+                                                                                            </div>
+                                                                                            <div style="max-height:80%;width:80%;margin-left:40px;margin-right:40px;margin-top:20px;padding-bottom:30px;">
                                                                                                 @if (!string.IsNullOrEmpty(service.ImagePath))
                                                                                                 {
 
-                                                                                                    <img style="height:100%;width:100%;" src="@service.ImagePath" />
+                                                                                                    <img style="height:300px;width:100%;" src="@service.ImagePath" />
                                                                                                 }
                                                                                                 else
                                                                                                 {
-                                                                                                    <img src="images/room/livingroom/livingroom.jpg" />
+                                                                                                    <img style="height:300px;width:100%;" src="images/room/livingroom/livingroom.jpg" />
                                                                                                 }
                                                                                             </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="row">
-                                                                                        <div class="col-xl-12 grid-buttons-container" style="display:block">
-                                                                                            <button class="myButton text-right" @onclick='(() => GenerateWorkSheet(service.WorkBookTag))' type="button">Download <i class="fa-solid fa-download"></i></button>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -317,7 +315,7 @@
 
     private async Task NavigateToQuotation()
     {
-        NavigationManager.NavigateTo("/quotations/" + project.Id, false);
+        NavigationManager.NavigateTo("/quotations/" + project.Id, true);
     }
 
     private async Task AddRoom()

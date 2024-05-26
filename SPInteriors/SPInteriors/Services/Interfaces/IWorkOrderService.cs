@@ -6,7 +6,9 @@ namespace SPInteriors.Services.Interfaces
     {
         Task<WorkOrderDto> GetWorkOrderByIdAsync(int id);
         Task<string> GetWorkOrderItemImage(int id);
-        Task<bool> CreateWorkOrderAsync(WorkOrderDto data);
-        Task<bool> UpdateWorkOrderAsync(WorkOrderDto data);
+        Task<bool> CreateWorkOrderAsync(WorkOrderDto data, List<WorkOrderPropertyDto> properties);
+        Task<bool> UpdateWorkOrderAsync(WorkOrderDto data, List<WorkOrderPropertyDto> properties);
+
+        Task<List<WorkOrderPropertyDto>> GetWorkOrderPropertiesAsync();
     }
 }

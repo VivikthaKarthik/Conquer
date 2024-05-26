@@ -1,7 +1,7 @@
 ﻿@page "/categories/{id}"
 @using SPInteriors.Models
 @using SPInteriors.Services.Interfaces
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender:false))
 @inject NavigationManager NavigationManager;
 
 <!-- Our Team Area Start Style-2 -->
@@ -65,16 +65,21 @@
 
     protected async override void OnInitialized()
     {
-        if (!string.IsNullOrEmpty(id))
-        {
-            images = await portfolioService.GetImagesListAsync(Convert.ToInt32(id));
-        }
+        await FetchData();
     }
 
     private async Task ImageUploaded(InputFileChangeEventArgs e)
     {
-        await FileUploadService.SavePortfolioImageAsync(e.File, Convert.ToInt32(id)); 
-        images = await portfolioService.GetImagesListAsync(Convert.ToInt32(id));
+        await FileUploadService.SavePortfolioImageAsync(e.File, Convert.ToInt32(id));
+        await FetchData();
+    }
+
+    private async Task FetchData()
+    {
+        if (!string.IsNullOrEmpty(id))
+        {
+            images = await portfolioService.GetImagesListAsync(Convert.ToInt32(id));
+        }
     }
 
     private void ToggleHeart()

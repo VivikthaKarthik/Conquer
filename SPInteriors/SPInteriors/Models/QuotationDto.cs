@@ -41,17 +41,24 @@
 
     public class WorkOrderInfo
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string WorkOrderItem { get; set; }
+        public string WorkOrderType { get; set; }
+        public bool SuppressCalculation { get; set; }
+        public int Amount { get; set; }
         public int Quantity { get; set; } = 1;
         public decimal UnitPrice { get; set; }
+        public decimal Height {  get; set; }
+        public decimal Width { get; set; }
+        public List<WorkOrderDetailsDto> Details { get; set; }
         public decimal TotalPrice 
         { 
             get
             {
                 return this.UnitPrice * Quantity;
             }
-        }        
+        }  
     }
 
     public class ClientAddress

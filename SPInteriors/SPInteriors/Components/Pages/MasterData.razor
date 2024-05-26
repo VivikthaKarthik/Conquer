@@ -3,7 +3,7 @@
 @using SPInteriors.Models
 @using SPInteriors.Services.Interfaces
 
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender:false))
 
 
 <div class="grid-area style-1 scrollable-area" style="height:auto;padding-bottom:30px;background-image: url(./images/contact/subscribe-bg.jpg)">

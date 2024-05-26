@@ -3,6 +3,8 @@ using SPInteriors.Components.Pages;
 using SPInteriors.Models;
 using SPInteriors.Models.Domain;
 using SPInteriors.Services.Interfaces;
+using System.util;
+using static iTextSharp.text.pdf.AcroFields;
 
 
 namespace SPInteriors.Services.Implementations
@@ -41,6 +43,24 @@ namespace SPInteriors.Services.Implementations
                 if(dbContext.WorkOrderImages.Any(x=>x.WorkOrderId == id))
                 {
                     workorder.ImagePath = dbContext.WorkOrderImages.First(x => x.WorkOrderId == id).ImagePath;
+                }
+
+                if (dbContext.WorkOrderDetails.Any(x => x.WorkOrderId == id))
+                {
+                    workorder.Details = new List<WorkOrderDetailsDto>();
+                    var deatilsList = dbContext.WorkOrderDetails.Where(x => x.WorkOrderId == id).ToList();
+
+                    foreach(var deatil in deatilsList)
+                    {
+                        WorkOrderDetailsDto workOrderDetails = new WorkOrderDetailsDto()
+                        {
+                            Id = deatil.Id,
+                            Name = deatil.Name,
+                            Value = deatil.Value,
+                        };
+
+                        workorder.Details.Add(workOrderDetails);
+                    }
                 }
             }
             return workorder;
@@ -92,7 +112,7 @@ namespace SPInteriors.Services.Implementations
         }
 
 
-        public async Task<bool> CreateWorkOrderAsync(WorkOrderDto data)
+        public async Task<bool> CreateWorkOrderAsync(WorkOrderDto data, List<WorkOrderPropertyDto> properties)
         {
             try
             {
@@ -108,13 +128,29 @@ namespace SPInteriors.Services.Implementations
                     workorder.MaterialType = data.MaterialType;
                     workorder.OuterFrameType = data.OuterFrameType;
                     workorder.Width = data.Width;
-                    workorder.Width = data.Width;
-                    workorder.Height = data.Height;
                     workorder.Height = data.Height;
                     workorder.SuppressCalculation = data.SuppressCalculation;
                     workorder.Amount = data.Amount;
 
                     dbContext.WorkOrders.Add(workorder);
+                    await dbContext.SaveChangesAsync();
+
+
+                    if(properties != null && properties.Count > 0)
+                    {
+                        foreach (var property in properties)
+                        {
+                            foreach(var value in property.SelectedValues)
+                            {
+                                WorkOrderDetail detail = new WorkOrderDetail();
+                                detail.WorkOrderId = workorder.Id;
+                                detail.Name = value.Name;
+                                detail.Value = value.Value;
+
+                                dbContext.WorkOrderDetails.Add(detail);
+                            }
+                        }
+                    }
                     await dbContext.SaveChangesAsync();
                 }
             }
@@ -126,7 +162,7 @@ namespace SPInteriors.Services.Implementations
         }
 
 
-        public async Task<bool> UpdateWorkOrderAsync(WorkOrderDto data)
+        public async Task<bool> UpdateWorkOrderAsync(WorkOrderDto data, List<WorkOrderPropertyDto> properties)
         {
             if (data != null && data.Id > 0)
             {
@@ -144,12 +180,36 @@ namespace SPInteriors.Services.Implementations
                         workorder.MaterialType = data.MaterialType;
                         workorder.OuterFrameType = data.OuterFrameType;
                         workorder.Width = data.Width;
-                        workorder.Width = data.Width;
-                        workorder.Height = data.Height;
                         workorder.Height = data.Height;
                         workorder.SuppressCalculation = data.SuppressCalculation;
                         workorder.Amount = data.Amount;
 
+                        await dbContext.SaveChangesAsync();
+
+
+
+                        if (properties != null && properties.Count > 0)
+                        {
+                            foreach (var property in properties)
+                            {
+                                //if (dbContext.WorkOrderDetails.Any(x => x.WorkOrderId == workorder.Id && x.Name == property.Name))
+                                //{
+                                //    dbContext.WorkOrderDetails.RemoveRange(dbContext.WorkOrderDetails.Where(x => x.WorkOrderId == workorder.Id && x.Name == property.Name).ToList());
+                                //}
+                                foreach (var value in property.SelectedValues)
+                                {
+                                    if (!dbContext.WorkOrderDetails.Any(x => x.WorkOrderId == workorder.Id && x.Name == property.Name && x.Value == value.Value))
+                                    {
+                                        WorkOrderDetail detail = new WorkOrderDetail();
+                                        detail.WorkOrderId = workorder.Id;
+                                        detail.Name = value.Name;
+                                        detail.Value = value.Value;
+
+                                        dbContext.WorkOrderDetails.Add(detail);
+                                    }
+                                }
+                            }
+                        }
                         await dbContext.SaveChangesAsync();
                     }
                 }
@@ -159,6 +219,38 @@ namespace SPInteriors.Services.Implementations
                 }
             }
             return true;
+        }
+
+
+        public async Task<List<WorkOrderPropertyDto>> GetWorkOrderPropertiesAsync()
+        {
+            List<WorkOrderPropertyDto> properties = new List<WorkOrderPropertyDto>();
+            var listItems = dbContext.WorkOrderProperties.ToList();
+
+            foreach (var data in listItems)
+            {
+                WorkOrderPropertyDto property = new WorkOrderPropertyDto();
+                property.Id = data.Id;
+                property.Name = data.Name;
+                property.AllowMultipleSelect = data.AllowMultipleSelect;
+
+                if (dbContext.WorkOrderPropertyFields.Any(x => x.WorkOrderPropertyId == data.Id))
+                {
+                    property.Fields = new List<WorkOrderPropertyFieldDto>();
+                    var fields = dbContext.WorkOrderPropertyFields.Where(x => x.WorkOrderPropertyId == data.Id);
+                    foreach(var field in fields)
+                    {
+                        WorkOrderPropertyFieldDto item = new WorkOrderPropertyFieldDto();
+                        item.Id = field.Id;
+                        item.Name = field.Name;
+
+                        property.Fields.Add(item);
+                    }
+                }
+
+                properties.Add(property);
+            }
+            return properties;
         }
     }
 }

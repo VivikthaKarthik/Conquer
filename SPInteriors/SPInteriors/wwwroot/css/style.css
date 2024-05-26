@@ -21368,7 +21368,7 @@ ul.children {
 .footer .widget-menu-wrapper {
     padding-left: 50px;
     padding-right: 30px;
-    bottom:0 !important;
+    bottom: 0 !important;
 }
 
 @media (max-width: 991px) {
@@ -21725,7 +21725,7 @@ ul.children {
         top: 0px; /* table head will be placed from the top of the table and sticks to it */
     }
 
-    .grid-table tr td{
+    .grid-table tr td {
         border: 1px solid darkgrey;
         padding: 5px;
         text-align: center;
@@ -21765,6 +21765,7 @@ ul.children {
     margin-bottom: 5px;
     border-radius: 10px;
 }
+
 .myIconButton {
     display: inline-flex;
     background-color: #D9A14C;
@@ -21792,15 +21793,16 @@ ul.children {
     border-radius: 12px;
     margin-left: 4px;
 }
+
 .iconButton {
     display: inline-flex;
     background-color: #D9A14C;
     border: 1px solid #D9A14C;
     color: #ffffff;
-    padding-top:0px;
-    padding-bottom:0px;
-    padding-left:14px;
-    padding-right:24px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 14px;
+    padding-right: 24px;
     text-align: center;
     font-weight: 700;
     font-family: "Rajdhani", sans-serif;
@@ -21820,18 +21822,19 @@ ul.children {
     margin-bottom: 5px;
 }
 
-    /* Hover effect */
-    .myButton:hover {
-        background-color: #333; /* Background color on hover */
-        color: #fff; /* Text color on hover */
-        border-color: #333; /* Border color on hover */
-    }
+/* Hover effect */
+.myButton:hover {
+    background-color: #333; /* Background color on hover */
+    color: #fff; /* Text color on hover */
+    border-color: #333; /* Border color on hover */
+}
 
 .iconButton:hover {
     background-color: #333; /* Background color on hover */
     color: #fff; /* Text color on hover */
     border-color: #333; /* Border color on hover */
 }
+
 .myActionButton {
     display: inline-flex;
     background-color: #D9A14C;
@@ -21860,6 +21863,7 @@ ul.children {
         color: #fff; /* Text color on hover */
         border-color: #333; /* Border color on hover */
     }
+
 .search-field {
     margin-top: 5px;
     padding: 0 25px;
@@ -21973,11 +21977,11 @@ form-field-button {
 .quotation-form-label {
     height: 20px;
     color: black;
-    padding-left:10px;
+    padding-left: 10px;
 }
 
-.form-row{
-    padding-top:20px;
+.form-row {
+    padding-top: 20px;
 }
 
 .edit-screen-container {
@@ -21987,6 +21991,12 @@ form-field-button {
 
 .edit-screen-header {
     padding-top: 30px;
+    margin-left: 20px;
+}
+
+.bread-crumb {
+    margin-top: 20px;
+    margin-bottom: 0px;
     margin-left: 20px;
 }
 
@@ -22033,7 +22043,6 @@ form-field-button {
     .noPrint {
         display: none;
     }
-   
 }
 
 .form-measurement-control {
@@ -22058,7 +22067,7 @@ form-field-button {
     padding-bottom: 0px;
     padding-left: 0px;
     margin-left: 30px;
-    margin-bottom:0px;
+    margin-bottom: 0px;
 }
 
 .inner-table-wrapper {
@@ -22073,6 +22082,7 @@ form-field-button {
     padding-right: 30px;
     margin-left: 30px;
 }
+
 .innerGrid {
     margin-top: 10px;
     margin: 60px;
@@ -22080,6 +22090,7 @@ form-field-button {
     padding-bottom: 20px;
     background-color: #F4F4F4;
 }
+
 .inner-grid-title {
     padding-top: 10px;
     font-size: 28px;
@@ -22114,11 +22125,11 @@ form-field-button {
 
     .inner-grid-table tbody {
         height: auto;
-        background-color:white;
+        background-color: white;
     }
 
-.grid-title{
-    padding-left:0px;
+.grid-title {
+    padding-left: 0px;
 }
 
 .innerGridActionButton {
@@ -22140,7 +22151,7 @@ form-field-button {
     white-space: nowrap;
     width: auto;
     height: 30px;
-    border-radius:8px;
+    border-radius: 8px;
 }
 
     /* Hover effect */
@@ -22157,7 +22168,7 @@ form-field-button {
     cursor: pointer;
     font-size: 24px; /* Adjust the size as needed */
     color: red;
-    z-index:10;
+    z-index: 10;
 }
 
 
@@ -22212,7 +22223,102 @@ form-field-button {
     border-top: 1px solid #dee2e6;
 }
 
+.grid-container {
+    /*display: inline-grid;*/
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    width: 93%;
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-top: 40px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #F4F4F4;
+}
 
+.grid-item-content {
+    display: flex;
+    flex-wrap: wrap;
+    grid-template-columns: auto auto auto;
+    padding: 30px;
+    align-content: space-between;
+}
 
+.grid-item {
+    border-radius: 12px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 20px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #fff;
+    color: black;
+    cursor: pointer;
+    margin-left: 8px;
+    box-shadow: 0 0 5px -1px rgba(0,0,0,0.2);
+}
+
+    .grid-item:hover {
+        box-shadow: 0 0 5px -1px rgba(0,0,0,0.6);
+        /*background-color: #333;*/
+        border-color: #333;
+    }
+
+.grid-item-selected {
+    background-color: #D9A14C;
+    color: #333;
+    color: #fff;
+}
+
+@media (max-width: 991px) {
+    .grid-container {
+        width: 90%;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    .grid-item-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+}
+
+.row-item {
+    margin-left: 20px;
+    margin-right: 20px;
+    padding-top: 7px;
+    height: 40px;
+}
+
+    .row-item:nth-of-type(even) {
+        background-color: lightgray
+    }
+
+.quotation-table-container {
+    color: blue;
+    margin-left: 20px;
+}
+.quotation-item {
+    display: flex;
+    /*justify-content: flex-start;
+    flex-wrap: wrap;
+    grid-template-columns: auto auto auto;
+    align-items: flex-end;
+    flex-shrink: 0;
+    flex-grow: 1;*/
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    align-items: center;
+    flex-direction: column;
+}
+
+.quotation-item > div:first-child {
+    color: red;
+}
+
+.preloader-hide{
+    display:none;
+
+}
 
 

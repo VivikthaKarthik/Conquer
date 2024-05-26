@@ -2,7 +2,7 @@
 @page "/client/edit/{id}"
 @using SPInteriors.Models
 @using SPInteriors.Services.Interfaces
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender:false))
 
 <div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
 

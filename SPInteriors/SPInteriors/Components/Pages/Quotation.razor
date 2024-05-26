@@ -1,14 +1,17 @@
 ﻿@page "/quotations/{projectId}"
-
-@using SPInteriors.Models
-@using SPInteriors.Services.Interfaces
-@using System.IO
-@rendermode InteractiveServer
-
+@rendermode @(new InteractiveServerRenderMode(prerender:false))
 
 <div class="grid-area style-1 scrollable-area" style="">
 
     <div class="container edit-screen-container" style="background-color:lightgrey;height:auto;">
+
+        <div class="row">
+            <div style="margin-left:12px;margin-top:15px;font-size:18px;">
+                <a href="javascript:void(0)" @onclick='((value) => Navigate("/Projects"))'>Projects</a> /
+                <a href="javascript:void(0)" @onclick='((value) => Navigate("/Projects/Edit/" + projectId))'>@quotation.Address.ClientName's 3 BHK</a> /
+                <a href="javascript:void(0)">Quotation</a>
+            </div>
+        </div>
 
         <div class="row edit-screen-header">
             <div class="col-xl-12">
@@ -32,7 +35,7 @@
                                         </div>
                                         <div class="col-xl-3 col-lg-3">
                                             <div class="form-field">
-                                                <input type="number" class="form-control" />
+                                                <input type="number" class="form-control" @bind-value="BoxPrice" />
                                             </div>
                                         </div>
 
@@ -43,7 +46,7 @@
                                         </div>
                                         <div class="col-xl-3 col-lg-3">
                                             <div class="form-field">
-                                                <input type="number" class="form-control" />
+                                                <input type="number" class="form-control" @bind-value="FramePrice" />
                                             </div>
                                         </div>
 
@@ -54,7 +57,7 @@
                                         </div>
                                         <div class="col-xl-3 col-lg-3">
                                             <div class="form-field">
-                                                <input type="number" class="form-control" />
+                                                <input type="number" class="form-control" @bind-value="PanelPrice" />
                                             </div>
                                         </div>
 
@@ -65,7 +68,7 @@
 
                         <div class="row form-row" style="margin-top:20px;">
                             <div class="col-xl-12 grid-buttons-container">
-                                <button class="myButton text-right" @onclick="GeneratePDF" type="button">Update<i class="fa-solid fa-edit"></i></button>
+                                <button class="myButton text-right" onclick="Calculate()" type="button">Update<i class="fa-solid fa-edit"></i></button>
                                 <button class="serviceButton text-right" @onclick="GeneratePDF" type="button">Download<i class="fa-solid fa-download"></i></button>
                             </div>
                         </div>
@@ -191,51 +194,54 @@
                                     <h3 style="color: rgb(127, 96, 0);">Total Price</h3>
                                 </div>
                             </div>
+
+
+                            @*  <div class="row-item">
+                            <div class="col-xl-6 col-lg-6"><span style="font-size:18px;">MBR Wardrobe - row</span></div><!--!-->
+                            <!--!--><div class="col-xl-1 col-lg-1" style="text-align:center;"><span>1 </span></div>
+                            <div class="col-xl-2 col-lg-2" style="text-align:center;"><span><!--!-->₹ 14,630.00</span></div><!--!-->
+                            <div class="col-xl-3 col-lg-3" style="text-align:center;"><span><!--!-->₹ 14,630.00</span></div>
+                            </div>
+                            *@
+                            @* <div class="quotation-table-container">
+                            <div class="quotation-item">
+                            <div>
+                            MBR Wardrobe - flex
+                            </div>
+                            <div>
+                            1
+                            </div>
+                            <div>
+                            ₹ 14,630.00
+                            </div>
+                            <div>
+                            ₹ 14,630.00
+                            </div>
+                            </div>
+                            </div> *@
+
                             @if (quotation != null && quotation.Rooms != null)
                             {
                                 @foreach (var room in quotation.Rooms)
                                 {
                                     @if (room != null && room.WorkOrders != null && room.WorkOrders.Count > 0)
                                     {
-                                        bool applyColor = true;
                                         @foreach (var workorder in room.WorkOrders)
                                         {
-                                            @if (applyColor)
-                                            {
-                                                <div class="row" style="margin-left:20px;margin-right:20px;background-color: lightgray;padding-top:7px;height:40px;">
-                                                    <div class="col-xl-6 col-lg-6">
-                                                        <span style="font-size:18px;">@workorder.WorkOrderItem</span>
-                                                    </div>
-                                                    <div class="col-xl-1 col-lg-1" style="text-align:center;">
-                                                        <span>1 </span>
-                                                    </div>
-                                                    <div class="col-xl-2 col-lg-2" style="text-align:center;">
-                                                        <span>₹ @workorder.UnitPrice.ToString("#,##0.00") </span>
-                                                    </div>
-                                                    <div class="col-xl-3 col-lg-3" style="text-align:center;">
-                                                        <span>₹ @workorder.TotalPrice.ToString("#,##0.00") </span>
-                                                    </div>
+                                            <div class="row row-item">
+                                                <div class="col-xl-6 col-lg-6">
+                                                    <span style="font-size:18px;">@workorder.Name</span>
                                                 </div>
-                                            }
-                                            else
-                                            {
-                                                <div class="row" style="margin-left:20px;margin-right:20px;padding-top:7px;height:40px;">
-                                                    <div class="col-xl-6 col-lg-6">
-                                                        <span style="font-size:18px;">@workorder.WorkOrderItem</span>
-                                                    </div>
-                                                    <div class="col-xl-1 col-lg-1" style="text-align:center;">
-                                                        <span>@workorder.Quantity </span>
-                                                    </div>
-                                                    <div class="col-xl-2 col-lg-2" style="text-align:center;">
-                                                        <span>₹ @workorder.UnitPrice.ToString("#,##0.00") </span>
-                                                    </div>
-                                                    <div class="col-xl-3 col-lg-3" style="text-align:center;">
-                                                        <span>₹ @workorder.TotalPrice.ToString("#,##0.00") </span>
-                                                    </div>
+                                                <div class="col-xl-1 col-lg-1" style="text-align:center;">
+                                                    <span>1 </span>
                                                 </div>
-                                            }
-
-                                            applyColor = !applyColor;
+                                                <div class="col-xl-2 col-lg-2" style="text-align:center;">
+                                                    <span>₹ @GetUnitPrice(workorder).Result </span>
+                                                </div>
+                                                <div class="col-xl-3 col-lg-3" style="text-align:center;">
+                                                    <span>₹ @workorder.TotalPrice.ToString("#,##0.00") </span>
+                                                </div>
+                                            </div>
 
                                         }
                                     }
@@ -308,32 +314,6 @@
     </div>
 </div>
 
-
-
-
-@code {
-
-    @inject IJSRuntime JSRuntime;
-    @inject NavigationManager NavigationManager;
-    @inject IQuotationService quotationService;
-
-    [Parameter]
-    public string projectId { get; set; }
-
-    private string clientName { get; set; }
-
-    private QuotationDto quotation { get; set; }
-
-    protected async override void OnInitialized()
-    {
-        if (!string.IsNullOrEmpty(projectId) && Convert.ToInt32(projectId) > 0)
-        {
-            quotation = await quotationService.GetQuotationByIdAsync(Convert.ToInt32(projectId));
-        }
-    }
-
-    async Task GeneratePDF()
-    {
-        await JSRuntime.InvokeVoidAsync("SaveFile", "pdf-content");
-    }
-}
+<div id="preloader" style="display: @(showLoader ? "block" : "none")">
+    <div id="preloader-status" style="background-image: url('images/icon/preeloader.gif')"></div>
+</div>

@@ -1,6 +1,6 @@
 ﻿@using SPInteriors.Models
 @using SPInteriors.Services.Interfaces
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender:false))
 
 
 <select id="@ControlId" name="@ControlId" disabled="@IsDisabled" class="form-control" asp-for="DropdownProperty" SelectedValue="@ExistingItem" @onchange="OnSelectionChanged">

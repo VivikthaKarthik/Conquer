@@ -1,10 +1,12 @@
-﻿using SPInteriors.Components.Pages;
+﻿using Microsoft.IdentityModel.Tokens;
+using SPInteriors.Components.Pages;
 using SPInteriors.Models;
 using SPInteriors.Models.Domain;
 using SPInteriors.Services.Interfaces;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using static iTextSharp.text.pdf.AcroFields;
 
 namespace SPInteriors.Services.Implementations
 {
@@ -69,16 +71,42 @@ namespace SPInteriors.Services.Implementations
                             foreach (var workOrder in workOrders)
                             {
                                 WorkOrderInfo workOrderInfo = new WorkOrderInfo();
+                                workOrderInfo.Id = workOrder.Id;
                                 workOrderInfo.Name = workOrder.Name;
                                 workOrderInfo.WorkOrderItem = workOrder.WorkOrderItem;
+                                workOrderInfo.WorkOrderType = workOrder.WorkOrderType ?? "";
+                                workOrderInfo.Height = workOrder.Height;
+                                workOrderInfo.Width = workOrder.Width;
                                 workOrderInfo.Quantity = 1;
+                                workOrderInfo.SuppressCalculation = workOrder.SuppressCalculation;
+                                workOrderInfo.Amount = workOrder.Amount != null ? workOrder.Amount.Value : 0;
 
                                 if (workOrder.SuppressCalculation)
                                 {
                                     workOrderInfo.UnitPrice = Convert.ToDecimal(workOrder.Amount);
                                 }
-                                else {
-                                    //workOrderInfo.UnitPrice = workOrder.HeightInFeet * workOrder.WidthInFeet * 
+                                else
+                                {
+                                    workOrderInfo.UnitPrice = 0;
+                                }
+
+                                if (dbContext.WorkOrderDetails.Any(x => x.WorkOrderId == workOrder.Id))
+                                {
+                                    workOrderInfo.Details = new List<WorkOrderDetailsDto>();
+                                    var details = dbContext.WorkOrderDetails.Where(x => x.WorkOrderId == workOrder.Id).ToList();
+
+                                    if (details != null && details.Count > 0)
+                                    {
+                                        foreach(var detail in  details)
+                                        {
+                                            WorkOrderDetailsDto detailDto = new WorkOrderDetailsDto();
+                                            detailDto.Id = detail.Id;
+                                            detailDto.Name = detail.Name;
+                                            detailDto.Value = detail.Value;
+
+                                            workOrderInfo.Details.Add(detailDto);
+                                        }
+                                    }
                                 }
 
                                 roomInfo.WorkOrders.Add(workOrderInfo);
@@ -103,6 +131,8 @@ namespace SPInteriors.Services.Implementations
                     Type = "Hettich hinges and chanells"
                 });
             }
+
+            
             return quotation;
         }
 

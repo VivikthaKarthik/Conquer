@@ -1,7 +1,7 @@
 ﻿@using SPInteriors.Services.Interfaces
 @using SPInteriors.Utilities
 
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender:false))
 
 <!-- Header Start !-->
 <header class="header-area style-4 noPrint">
@@ -17,9 +17,9 @@
                             <a href="/" class="sticky-logo">
                                 <img src="images/logo/sticky-logo.png" alt="logo" />
                             </a>
-                            <a href="/" class="retina-logo">
+                            @* <a href="/" class="retina-logo">
                                 <img src="images/logo/logo.png" alt="logo" />
-                            </a>
+                            </a> *@
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,6 @@
 (function ($) {
     "use strict";
-    $(document).ready(function () {       
+    $(document).ready(function () {
         /*
        Jquery Mobile Menu
        ============================*/
@@ -104,7 +104,7 @@
                     if (100 < $(window).scrollTop() && !scrolled) {
                         nav
                             .addClass("sticky_menu animated fadeIn")
-                            .animate({"margin-top": "0px"}, 300); // 300 milliseconds for smooth scroll
+                            .animate({ "margin-top": "0px" }, 300); // 300 milliseconds for smooth scroll
                         scrolled = true;
                     }
 
@@ -131,35 +131,35 @@
             speed: 1500,
             rtl: false,
             responsive: [{
-                    breakpoint: 1400,
-                    settings: {
-                        slidesToShow: 4,
-                    },
+                breakpoint: 1400,
+                settings: {
+                    slidesToShow: 4,
                 },
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 3,
-                    },
+            },
+            {
+                breakpoint: 1200,
+                settings: {
+                    slidesToShow: 3,
                 },
-                {
-                    breakpoint: 992,
-                    settings: {
-                        slidesToShow: 3,
-                    },
+            },
+            {
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 3,
                 },
-                {
-                    breakpoint: 767,
-                    settings: {
-                        slidesToShow: 2,
-                    },
+            },
+            {
+                breakpoint: 767,
+                settings: {
+                    slidesToShow: 2,
                 },
-                {
-                    breakpoint: 460,
-                    settings: {
-                        slidesToShow: 1,
-                    },
+            },
+            {
+                breakpoint: 460,
+                settings: {
+                    slidesToShow: 1,
                 },
+            },
             ],
         });
 
@@ -193,11 +193,11 @@
         /*
         Skill Progress Bar Js
         ============================*/
-        $('.skill-progress-card').each(function() {
+        $('.skill-progress-card').each(function () {
             let section = $(this);
-            section.one('inview', function(event, isInView) {
+            section.one('inview', function (event, isInView) {
                 if (isInView) {
-                    section.find('.progress-inner').each(function() {
+                    section.find('.progress-inner').each(function () {
                         $(this).find('.progress-content').animate({
                             width: $(this).attr('data-percentage')
                         }, 2000);
@@ -207,7 +207,7 @@
                             },
                             {
                                 duration: 2000,
-                                step: function(now) {
+                                step: function (now) {
                                     let data = Math.round(now);
                                     $(this).find('.progress-percent').html(data + '%');
                                 }
@@ -240,7 +240,7 @@
                 settings: {
                     autoplay: true,
                 },
-            }, ],
+            },],
         });
         $(".slider-wrapper-six").slick({
             slidesToShow: 1,
@@ -263,7 +263,7 @@
                     arrows: false,
                     dots: true,
                 },
-            }, ],
+            },],
         });
 
 
@@ -285,39 +285,39 @@
             speed: 1500,
             rtl: false,
             responsive: [{
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 3,
-                    },
+                breakpoint: 1200,
+                settings: {
+                    slidesToShow: 3,
                 },
-                {
-                    breakpoint: 992,
-                    settings: {
-                        slidesToShow: 2,
-                        variableWidth: false,
-                    },
+            },
+            {
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 2,
+                    variableWidth: false,
                 },
-                {
-                    breakpoint: 991,
-                    settings: {
-                        slidesToShow: 2,
-                        variableWidth: false,
-                    },
+            },
+            {
+                breakpoint: 991,
+                settings: {
+                    slidesToShow: 2,
+                    variableWidth: false,
                 },
-                {
-                    breakpoint: 767,
-                    settings: {
-                        slidesToShow: 2,
-                        variableWidth: false,
-                    },
+            },
+            {
+                breakpoint: 767,
+                settings: {
+                    slidesToShow: 2,
+                    variableWidth: false,
                 },
-                {
-                    breakpoint: 576,
-                    settings: {
-                        slidesToShow: 1,
-                        variableWidth: false,
-                    },
+            },
+            {
+                breakpoint: 576,
+                settings: {
+                    slidesToShow: 1,
+                    variableWidth: false,
                 },
+            },
             ],
         });
 
@@ -338,17 +338,17 @@
             prevArrow: "<button type='button' class='info-card-arrow-btn prev-btn'><i class='fa-solid fa-angle-left'></i></button>",
             nextArrow: "<button type='button' class='info-card-arrow-btn next-btn'><i class='fa-solid fa-angle-right'></i></button>",
             responsive: [{
-                    breakpoint: 992,
-                    settings: {
-                        slidesToShow: 2,
-                    },
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 2,
                 },
-                {
-                    breakpoint: 768,
-                    settings: {
-                        slidesToShow: 1,
-                    },
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 1,
                 },
+            },
             ],
         });
 
@@ -369,33 +369,33 @@
             rtl: false,
             responsive: [{
                 breakpoint: 1199,
-                    settings: {
-                        autoplay: true,
-                        slidesToShow: 1,
-                        arrows: true,
-                        variableWidth: false,
-                        speed: 1500,
-                    },
+                settings: {
+                    autoplay: true,
+                    slidesToShow: 1,
+                    arrows: true,
+                    variableWidth: false,
+                    speed: 1500,
                 },
+            },
             {
                 breakpoint: 991,
-                    settings: {
-                        autoplay: true,
-                        slidesToShow: 2,
-                        arrows: true,
-                        variableWidth: false,
-                        speed: 1500,
-                    },
+                settings: {
+                    autoplay: true,
+                    slidesToShow: 2,
+                    arrows: true,
+                    variableWidth: false,
+                    speed: 1500,
+                },
             },
             {
                 breakpoint: 767,
-                    settings: {
-                        autoplay: true,
-                        slidesToShow: 1,
-                        arrows: true,
-                        variableWidth: false,
-                        speed: 1500,
-                    },
+                settings: {
+                    autoplay: true,
+                    slidesToShow: 1,
+                    arrows: true,
+                    variableWidth: false,
+                    speed: 1500,
+                },
             },
             ],
         });
@@ -430,7 +430,7 @@
                     slidesToShow: 1,
                     arrows: true,
                 },
-            }, ],
+            },],
         });
 
         $('#testimonial_two_prev_btn').on('click', function (e) {
@@ -464,7 +464,7 @@
                     slidesToShow: 1,
                     arrows: true,
                 },
-            }, ],
+            },],
         });
 
         $('#testimonial_three_prev_btn').on('click', function (e) {
@@ -494,17 +494,17 @@
             centerMode: true,
             rtl: false,
             responsive: [{
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 1,
-                    },
+                breakpoint: 1200,
+                settings: {
+                    slidesToShow: 1,
                 },
-                {
-                    breakpoint: 992,
-                    settings: {
-                        slidesToShow: 1,
-                    },
+            },
+            {
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 1,
                 },
+            },
             ],
         });
 
@@ -525,20 +525,20 @@
             variableWidth: true,
             rtl: false,
             responsive: [{
-                    breakpoint: 1400,
-                    settings: {
-                        slidesToShow: 1,
-                        variableWidth: true,
-                        centerMode: true,
-                    },
+                breakpoint: 1400,
+                settings: {
+                    slidesToShow: 1,
+                    variableWidth: true,
+                    centerMode: true,
                 },
-                {
-                    breakpoint: 992,
-                    settings: {
-                        slidesToShow: 1,
-                        variableWidth: false,
-                    },
+            },
+            {
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 1,
+                    variableWidth: false,
                 },
+            },
             ],
         });
 
@@ -558,23 +558,23 @@
             speed: 1500,
             rtl: false,
             responsive: [{
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 3,
-                    },
+                breakpoint: 1200,
+                settings: {
+                    slidesToShow: 3,
                 },
-                {
-                    breakpoint: 992,
-                    settings: {
-                        slidesToShow: 2,
-                    },
+            },
+            {
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 2,
                 },
-                {
-                    breakpoint: 576,
-                    settings: {
-                        slidesToShow: 1,
-                    },
+            },
+            {
+                breakpoint: 576,
+                settings: {
+                    slidesToShow: 1,
                 },
+            },
             ],
         });
 
@@ -595,17 +595,17 @@
             speed: 1500,
             rtl: false,
             responsive: [{
-                    breakpoint: 992,
-                    settings: {
-                        slidesToShow: 2,
-                    },
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 2,
                 },
-                {
-                    breakpoint: 767,
-                    settings: {
-                        slidesToShow: 1,
-                    },
+            },
+            {
+                breakpoint: 767,
+                settings: {
+                    slidesToShow: 1,
                 },
+            },
             ],
         });
 
@@ -624,24 +624,24 @@
             speed: 1500,
             rtl: false,
             responsive: [{
-                    breakpoint: 1400,
-                    settings: {
-                        slidesToShow: 2,
-                    },
+                breakpoint: 1400,
+                settings: {
+                    slidesToShow: 2,
                 },
-                {
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 2,
-                    },
+            },
+            {
+                breakpoint: 1200,
+                settings: {
+                    slidesToShow: 2,
                 },
-                {
-                    breakpoint: 767,
-                    settings: {
-                        slidesToShow: 1,
-                        variableWidth: false,
-                    },
+            },
+            {
+                breakpoint: 767,
+                settings: {
+                    slidesToShow: 1,
+                    variableWidth: false,
                 },
+            },
             ],
         });
 
@@ -672,23 +672,23 @@
             prevArrow: "<button type='button' class='portfolio-arrow-btn prev-btn'><i class='fa-solid fa-angle-left'></i></button>",
             nextArrow: "<button type='button' class='portfolio-arrow-btn next-btn'><i class='fa-solid fa-angle-right'></i></button>",
             responsive: [{
-                    breakpoint: 991,
-                    settings: {
-                        slidesToShow: 2,
-                    },
+                breakpoint: 991,
+                settings: {
+                    slidesToShow: 2,
                 },
-                {
-                    breakpoint: 767,
-                    settings: {
-                        slidesToShow: 1,
-                    },
+            },
+            {
+                breakpoint: 767,
+                settings: {
+                    slidesToShow: 1,
                 },
-                {
-                    breakpoint: 460,
-                    settings: {
-                        slidesToShow: 1,
-                    },
+            },
+            {
+                breakpoint: 460,
+                settings: {
+                    slidesToShow: 1,
                 },
+            },
             ],
         }).on('setPosition', function (event, slick) {
             slick.$slides.css('height', slick.$slides.width() + 'px');
@@ -727,43 +727,43 @@
             speed: 1500,
             rtl: false,
             responsive: [{
-                    breakpoint: 1400,
-                    settings: {
-                        slidesToShow: 1,
-                        centerMode: true,
-                    },
+                breakpoint: 1400,
+                settings: {
+                    slidesToShow: 1,
+                    centerMode: true,
                 },
-                {
-                    breakpoint: 992,
-                    settings: {
-                        slidesToShow: 1,
-                    },
+            },
+            {
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 1,
                 },
-                {
-                    breakpoint: 991,
-                    settings: {
-                        slidesToShow: 1,
-                        variableWidth: false,
-                    },
+            },
+            {
+                breakpoint: 991,
+                settings: {
+                    slidesToShow: 1,
+                    variableWidth: false,
                 },
-                {
-                    breakpoint: 767,
-                    settings: {
-                        slidesToShow: 1,
-                        variableWidth: false,
-                        centerMode: false,
-                        dots: true,
-                    },
+            },
+            {
+                breakpoint: 767,
+                settings: {
+                    slidesToShow: 1,
+                    variableWidth: false,
+                    centerMode: false,
+                    dots: true,
                 },
-                {
-                    breakpoint: 460,
-                    settings: {
-                        slidesToShow: 1,
-                        variableWidth: false,
-                        centerMode: false,
-                        dots: true,
-                    },
+            },
+            {
+                breakpoint: 460,
+                settings: {
+                    slidesToShow: 1,
+                    variableWidth: false,
+                    centerMode: false,
+                    dots: true,
                 },
+            },
             ],
         });
 
@@ -780,35 +780,35 @@
             speed: 1500,
             rtl: false,
             responsive: [{
-                    breakpoint: 1200,
-                    settings: {
-                        slidesToShow: 4,
-                    },
+                breakpoint: 1200,
+                settings: {
+                    slidesToShow: 4,
                 },
-                {
-                    breakpoint: 992,
-                    settings: {
-                        slidesToShow: 3,
-                    },
+            },
+            {
+                breakpoint: 992,
+                settings: {
+                    slidesToShow: 3,
                 },
-                {
-                    breakpoint: 991,
-                    settings: {
-                        slidesToShow: 3,
-                    },
+            },
+            {
+                breakpoint: 991,
+                settings: {
+                    slidesToShow: 3,
                 },
-                {
-                    breakpoint: 767,
-                    settings: {
-                        slidesToShow: 2,
-                    },
+            },
+            {
+                breakpoint: 767,
+                settings: {
+                    slidesToShow: 2,
                 },
-                {
-                    breakpoint: 460,
-                    settings: {
-                        slidesToShow: 2,
-                    },
+            },
+            {
+                breakpoint: 460,
+                settings: {
+                    slidesToShow: 2,
                 },
+            },
             ],
         });
 
@@ -957,10 +957,10 @@
             $(".share-group").removeClass("active");
             $(".social-btn-overlay").removeClass("active");
         });
-         /*
-        Window Load
-        ============================*/
-        window.onload = new function() { 
+        /*
+       Window Load
+       ============================*/
+        window.onload = new function () {
             $("#preloader").fadeOut();
             $("#preloader-status").delay(200).fadeOut("slow");
             $("body").delay(200).css({ "overflow-x": "hidden" });
@@ -991,5 +991,31 @@
             html2pdf().from(element).set(options).save();
         }
 
+        //window.SelectItem = function (id) {
+        //    var element = document.getElementById(id);
+        //    element.classList.toggle("grid-item-selected");
+        //}
+
+        window.SelectItem = function (id) {
+            //alert(id);
+            var element = document.getElementById(id);
+            element.classList.add("grid-item-selected");
+        }
+
+        window.DeselectItem = function (id) {
+            //alert(id);
+            var element = document.getElementById(id);
+            element.classList.remove("grid-item-selected");
+        }
+
+        window.showLoader = function () {
+            //var element = document.getElementById("preloader");
+            //element.classList.add("preloader-hide");
+            $("#preloader").show();
+        }
+
+        window.Calculate = function () {
+            $("#preloader").hide();
+        }
     });
 })(jQuery);

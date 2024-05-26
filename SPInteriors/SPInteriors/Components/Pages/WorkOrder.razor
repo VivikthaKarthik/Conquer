@@ -2,7 +2,7 @@
 @page "/workorder/edit/{roomId}/{id}"
 @using SPInteriors.Models
 @using SPInteriors.Services.Interfaces
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender:false))
 
 <div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
     <div class="container edit-screen-container">
@@ -54,17 +54,6 @@
                                         {
                                             <div class="col-xl-2 col-lg-2">
                                                 <div class="form-label">
-                                                    WorkOrder Type
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-4">
-                                                <div class="form-field">
-                                                    <EditableDropDown ControlId="WorkOrderTypeId" IsDisabled="@(workOrder.WorkOrderItemId == null || workOrder.WorkOrderItemId == 0)" TableName="WorkOrderType" ExistingItem="@workOrder.WorkOrderType" OnItemSelection='((value) => workOrder.WorkOrderType = value.Name)'></EditableDropDown>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-xl-2 col-lg-2">
-                                                <div class="form-label">
                                                     Design Type
                                                 </div>
                                             </div>
@@ -73,40 +62,9 @@
                                                     <EditableDropDown ControlId="DesignTypeId" IsDisabled="@(workOrder.WorkOrderItemId == null || workOrder.WorkOrderItemId == 0)" TableName="DesignType" ExistingItem="@workOrder.DesignType" OnItemSelection='((value) => workOrder.DesignType = value.Name)'></EditableDropDown>
                                                 </div>
                                             </div>
-                                            <div class="col-xl-2 col-lg-2">
-                                                <div class="form-label">
-                                                    Material Type
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-4">
-                                                <div class="form-field">
-                                                    <EditableDropDown ControlId="MaterialTypeId" IsDisabled="@(workOrder.WorkOrderItemId == null || workOrder.WorkOrderItemId == 0)" TableName="MaterialType" ExistingItem="@workOrder.MaterialType" OnItemSelection='((value) => workOrder.MaterialType = value.Name)'></EditableDropDown>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-xl-2 col-lg-2">
-                                                <div class="form-label">
-                                                    Outer Frame
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-4">
-                                                <div class="form-field">
-                                                    <EditableDropDown ControlId="OuterFrameTypeId" IsDisabled="@(workOrder.WorkOrderItemId == null || workOrder.WorkOrderItemId == 0)" TableName="OuterFrameType" ExistingItem="@workOrder.OuterFrameType" OnItemSelection='((value) => workOrder.OuterFrameType = value.Name)'></EditableDropDown>
-                                                </div>
-                                            </div>
                                         }
                                         else
                                         {
-                                            <div class="col-xl-2 col-lg-2">
-                                                <div class="form-label">
-                                                    WorkOrder Type
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-4">
-                                                <div class="form-field">
-                                                    <input type="text" class="form-control" @bind-value="@workOrder.WorkOrderType" placeholder="Enter Type" />
-                                                </div>
-                                            </div>
                                             <div class="col-xl-2 col-lg-2">
                                                 <div class="form-label">
                                                     Design Type
@@ -118,27 +76,6 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-xl-2 col-lg-2">
-                                                <div class="form-label">
-                                                    Material Type
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-4">
-                                                <div class="form-field">
-                                                    <input type="text" class="form-control" @bind-value="@workOrder.MaterialType" placeholder="Enter Material" />
-                                                </div>
-                                            </div>
-
-                                            <div class="col-xl-2 col-lg-2">
-                                                <div class="form-label">
-                                                    Outer Frame
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-4">
-                                                <div class="form-field">
-                                                    <input type="text" class="form-control" @bind-value="@workOrder.OuterFrameType" placeholder="Enter OuterFrame" />
-                                                </div>
-                                            </div>
                                         }
                                         <div class="col-xl-2 col-lg-2">
                                             <div class="form-label">
@@ -219,6 +156,45 @@
                                 </div>
                             </div>
                         </div>
+                        @if (workOrder.WorkOrderItemId > 0)
+                        {
+                            @foreach (var item in Properties)
+                            {
+                                @if (item.Fields != null && item.Fields.Count > 0)
+                                {
+                                    <div class="row">
+                                        <div class="col-xl-12 grid-container">
+                                            <div class="grid-item-header">
+                                                <h3>@item.Name</h3>
+                                            </div>
+                                            @*        <div class="grid-item-content">
+                                <input type="checkbox" @bind-value="@item.AllowMultipleSelect" /><span style="margin-left:10px;">Allow Multi Select</span>
+                                </div> *@
+                                            <div class="grid-item-content">
+                                                @foreach (var field in item.Fields)
+                                                {
+                                                    if (workOrder.Details != null && workOrder.Details.Any(x => x.Name == item.Name && x.Value == field.Name))
+                                                    {
+                                                        <div class="grid-item grid-item-selected" id='@(item.Name.Replace(" ", "") + '_' + field.Id.ToString())' @onclick='(() => SelectElement(item.Id, field.Id, item.Name,  field.Name))'>
+                                                            @field.Name
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="grid-item" id='@(item.Name.Replace(" ", "") + '_' + field.Id.ToString())' @onclick='(() => SelectElement(item.Id, field.Id, item.Name,  field.Name))'>
+                                                            @field.Name
+                                                        </div>
+                                                    }
+                                                }
+                                                <div class="grid-item" id='@(item.Name.Replace(" ", "") + "_Other")' @onclick='(() => SelectElement(item.Id, 0, "", ""))'>
+                                                    Add New
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
                         <div class="row form-row">
                             <div class="col-xl-12 grid-buttons-container">
                                 <button class="myButton text-right" @onclick="OnBackClicked" type="button">Back</button>
@@ -240,6 +216,7 @@
     @inject IRoomService roomService;
     @inject IClientService clientService;
     @inject IFileUploadService FileUploadService;
+    @inject ICommonService commonService;
 
     List<ClientDto> clients = new List<ClientDto>();
 
@@ -258,6 +235,8 @@
     public IBrowserFile SelectedImage { get; set; }
 
     bool isAdd { get; set; }
+
+    List<WorkOrderPropertyDto> Properties { get; set; }
 
 
     protected async override void OnInitialized()
@@ -301,6 +280,7 @@
         }
 
         clients = await clientService.GetClientsAsync();
+        Properties = await workOrderService.GetWorkOrderPropertiesAsync();
     }
     private async Task ImageUploaded(InputFileChangeEventArgs e)
     {
@@ -332,22 +312,125 @@
     private async Task OnSaveClicked()
     {
         bool isSuccess = false;
-        if (isAdd)
+        string errorMessage = await Validate();
+        if (string.IsNullOrEmpty(errorMessage))
         {
-            isSuccess = await workOrderService.CreateWorkOrderAsync(workOrder);
-
-            if (isSuccess && SelectedImage != null)
+            if (isAdd)
             {
-                src = await FileUploadService.SaveWorkOrderImageAsync(SelectedImage, workOrder.Id);
+                isSuccess = await workOrderService.CreateWorkOrderAsync(workOrder, Properties);
+
+                if (isSuccess && SelectedImage != null)
+                {
+                    src = await FileUploadService.SaveWorkOrderImageAsync(SelectedImage, workOrder.Id);
+                }
             }
+            else
+                isSuccess = await workOrderService.UpdateWorkOrderAsync(workOrder, Properties);
+
+            if (isSuccess)
+                NavigationManager.NavigateTo("room/edit/" + room.ProjectId + "/" + room.Id, false);
+            else
+                await JSRuntime.InvokeVoidAsync("ShowAlert", "Some problem occured.. Please try again");
         }
         else
-            isSuccess = await workOrderService.UpdateWorkOrderAsync(workOrder);
+        {
+            await JSRuntime.InvokeVoidAsync("ShowAlert", errorMessage);
+        }
 
-        if (isSuccess)
-            NavigationManager.NavigateTo("room/edit/" + room.ProjectId + "/" + room.Id, false);
-        else
-            await JSRuntime.InvokeVoidAsync("ShowAlert", "Some problem occured.. Please try again");
+    }
 
+    private async Task<string> Validate()
+    {
+        string errorMessage = string.Empty;
+
+        if (string.IsNullOrEmpty(workOrder.Name))
+        {
+            errorMessage = "Name cannot be Empty";
+        }
+        else if (workOrder.WorkOrderItemId <= 0)
+        {
+            errorMessage = "Please Select WorkOrder Item";
+        }
+        else if (workOrder.Height <= 0 && workOrder.Width <= 0 && !workOrder.SuppressCalculation)
+        {
+            errorMessage = "Enter Measurements or Suppress Calculation";
+        }
+        else if (workOrder.SuppressCalculation && (workOrder.Amount == null || workOrder.Amount <= 0))
+        {
+            errorMessage = "Amount cannot be lessthan or equal to 0";
+        }
+
+        return errorMessage;
+    }
+
+
+    private async Task SelectElement(int propertyId, int fieldId, string name, string value)
+    {
+        if (fieldId > 0)
+        {
+            string elementId = string.Empty;
+            var property = Properties.First(x => x.Id == propertyId);
+
+            if (property != null)
+            {
+                if (!property.AllowMultipleSelect)
+                {
+                    if (property.Fields != null && property.Fields.Count > 0)
+                    {
+                        foreach (var item in property.Fields)
+                        {
+                            elementId = property.Name.Replace(" ", "") + "_" + item.Id.ToString();
+                            if (item.Id == fieldId)
+                            {
+                                if (property.SelectedValues.Any(x => x.Value == item.Name && x.Name == name))
+                                {
+                                    var SelectedItem = property.SelectedValues.First(x => x.Value == item.Name && x.Name == name);
+                                    property.SelectedValues.Remove(SelectedItem);
+                                    await JSRuntime.InvokeVoidAsync("DeselectItem", elementId);
+                                }
+                                else
+                                {
+                                    WorkOrderDetailsDto selectedItem = new WorkOrderDetailsDto();
+                                    selectedItem.Name = name;
+                                    selectedItem.Value = value;
+                                    property.SelectedValues.Add(selectedItem);
+                                    await JSRuntime.InvokeVoidAsync("SelectItem", elementId);
+                                }
+                            }
+                            else
+                            {
+                                if (property.SelectedValues.Any(x => x.Value == item.Name && x.Name == name))
+                                {
+                                    var SelectedItem = property.SelectedValues.First(x => x.Value == item.Name && x.Name == name);
+                                    if (SelectedItem != null)
+                                        property.SelectedValues.Remove(SelectedItem);
+                                }
+                                await JSRuntime.InvokeVoidAsync("DeselectItem", elementId);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    elementId = property.Name.Replace(" ", "") + "_" + fieldId.ToString();
+                    if (property.SelectedValues.Any(x => x.Value == value && x.Name == name))
+                    {
+                        var SelectedItem = property.SelectedValues.First(x => x.Value == value && x.Name == name);
+                        if (SelectedItem != null)
+                            property.SelectedValues.Remove(SelectedItem);
+
+                        await JSRuntime.InvokeVoidAsync("DeselectItem", elementId);
+                    }
+                    else
+                    {
+                        WorkOrderDetailsDto selectedItem = new WorkOrderDetailsDto();
+                        selectedItem.Name = name;
+                        selectedItem.Value = value;
+                        property.SelectedValues.Add(selectedItem);
+                        await JSRuntime.InvokeVoidAsync("SelectItem", elementId);
+                    }
+                }
+            }
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿@page "/explore"
 @using SPInteriors.Models
 @using SPInteriors.Services.Interfaces
-@rendermode InteractiveServer
+@rendermode @(new InteractiveServerRenderMode(prerender:false))
  @inject NavigationManager NavigationManager;
 
 <!-- Our Team Area Start Style-2 -->

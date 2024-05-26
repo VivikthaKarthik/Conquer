@@ -55,9 +55,17 @@ public partial class SpinteriorsContext : DbContext
 
     public virtual DbSet<WorkOrder> WorkOrders { get; set; }
 
+    public virtual DbSet<WorkOrderDetail> WorkOrderDetails { get; set; }
+
     public virtual DbSet<WorkOrderImage> WorkOrderImages { get; set; }
 
     public virtual DbSet<WorkOrderItem> WorkOrderItems { get; set; }
+
+    public virtual DbSet<WorkOrderPart> WorkOrderParts { get; set; }
+
+    public virtual DbSet<WorkOrderProperty> WorkOrderProperties { get; set; }
+
+    public virtual DbSet<WorkOrderPropertyField> WorkOrderPropertyFields { get; set; }
 
     public virtual DbSet<WorkOrderType> WorkOrderTypes { get; set; }
 
@@ -277,6 +285,11 @@ public partial class SpinteriorsContext : DbContext
                 .HasConstraintName("FK_WorkOrder_WorkOrderItem");
         });
 
+        modelBuilder.Entity<WorkOrderDetail>(entity =>
+        {
+            entity.Property(e => e.Name).HasMaxLength(250);
+        });
+
         modelBuilder.Entity<WorkOrderImage>(entity =>
         {
             entity.ToTable("WorkOrderImage");
@@ -296,6 +309,33 @@ public partial class SpinteriorsContext : DbContext
 
             entity.Property(e => e.ImagePath).HasMaxLength(1024);
             entity.Property(e => e.Name).HasMaxLength(100);
+        });
+
+        modelBuilder.Entity<WorkOrderPart>(entity =>
+        {
+            entity.ToTable("WorkOrderPart");
+
+            entity.Property(e => e.Height).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.Width).HasColumnType("decimal(18, 2)");
+        });
+
+        modelBuilder.Entity<WorkOrderProperty>(entity =>
+        {
+            entity.ToTable("WorkOrderProperty");
+
+            entity.Property(e => e.Name).HasMaxLength(250);
+        });
+
+        modelBuilder.Entity<WorkOrderPropertyField>(entity =>
+        {
+            entity.ToTable("WorkOrderPropertyField");
+
+            entity.Property(e => e.Name).HasMaxLength(250);
+
+            entity.HasOne(d => d.WorkOrderProperty).WithMany(p => p.WorkOrderPropertyFields)
+                .HasForeignKey(d => d.WorkOrderPropertyId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_WorkOrderPropertyField_WorkOrderProperty");
         });
 
         modelBuilder.Entity<WorkOrderType>(entity =>
