@@ -5,9 +5,20 @@ using SPInteriors.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using SPInteriors;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.AspNetCore.Components.Authorization;
+using SPInteriors.Authentication;
+using Microsoft.Identity.Client;
+using Microsoft.Identity.Client.Extensibility;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNet.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAuthenticationCore();
+builder.Services.AddScoped<ProtectedSessionStorage>();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<IFileUploadService, FileUploadService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IQuotationService, QuotationService>();
@@ -18,6 +29,7 @@ builder.Services.AddScoped<IWorkOrderService, WorkOrderService>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IPortfolioService, PortfolioService>();
 
+builder.Services.AddHttpContextAccessor();
 //IMapper mapper = MapperConfig.RegisterMaps().CreateMapper();
 //builder.Services.AddSingleton(mapper);
 //builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -26,6 +38,20 @@ builder.Services.AddScoped<IPortfolioService, PortfolioService>();
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+//builder.Services.AddAuthentication(options =>
+//{
+//    options.DefaultAuthenticateScheme = DefaultAuthenticationTypes.ApplicationCookie;
+//});
+//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+//    .AddCookie(options =>
+//    {
+//        options.Cookie.Name = "auth-token";
+//        options.LoginPath = "/login";
+//        options.Cookie.MaxAge = TimeSpan.FromMinutes(30);
+//        options.AccessDeniedPath = "/accessdenied";
+//    });
+//builder.Services.AddAuthorization();
+//builder.Services.AddCascadingAuthenticationState();
 
 builder.Services.AddDbContext<SpinteriorsContext>((sp, options) =>
 {
@@ -46,7 +72,8 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.UseAntiforgery();
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 

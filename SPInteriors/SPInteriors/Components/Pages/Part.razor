@@ -1,0 +1,302 @@
+﻿@page "/part/add/{workOrderId}"
+@page "/part/edit/{workOrderId}/{id}"
+@using SPInteriors.Models
+@using SPInteriors.Services.Interfaces
+
+@rendermode @(new InteractiveServerRenderMode(prerender:false))
+
+
+<div class="page-breadcrumb-area page-bg">
+    <div class="page-overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="breadcrumb-wrapper">
+                    <div class="page-heading">
+                        <h3 class="page-title">Part Details</h3>
+                    </div>
+                    <div class="breadcrumb-list">
+                        <ul>
+                            <li><a href="javascript:void(0);">Home</a></li>
+                            <li><a href="javascript:void(0);">Projects</a></li>
+                            <li><a href="javascript:void(0);">Rooms</a></li>
+                            <li><a href="javascript:void(0);">WorkOrder</a></li>
+                            <li class="active"><a href="javascript:void(0);">Part Details</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="contact-form-area style-3 py-30 py-sm-60 py-md-80 py-lg-100">
+    <!-- Submit form Start -->
+    <div class="container">
+        <div class="contact-form-inner">
+            <div class="row justify-content-center">
+                <div class="col-lg-7">
+                    <!-- Comment Form Start -->
+                    <div class="comment-respond" style="padding-bottom:0px;">
+                        <div class="row gx-2">
+                            <div class="col-xl-12">
+                                <div class="contacts-name">
+                                    <input name="author" type="text" placeholder="Name" value="@WorkOrderItemName - @part.WorkOrderItem" readonly>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="contacts-email">
+                                    <input name="website" type="number" placeholder="Height" @bind-value="part.Height">
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="contacts-name">
+                                    <input name="website" type="number" placeholder="Width" @bind-value="part.Width">
+                                </div>
+                            </div>
+                            <div class="col-xl-12">
+                                <div class="contacts-message">
+                                    <textarea name="comment" cols="20" rows="3" placeholder="Notes ..."></textarea>
+                                </div>
+                            </div>
+                            <div class="col-xl-12" style="margin-bottom:10px;">
+                                <h4>Properties</h4>
+                            </div>
+
+                            <div class="col-xl-12" style="margin-left:5px;margin-right:5px; margin-bottom:20px;border: 1px solid lightgrey;background-color:#ffffff;">
+                                <div class="grid-item-header">
+                                    <h3>Type</h3>
+                                </div>
+                                <div class="grid-item-content">
+
+                                    <div class="grid-item grid-item-selected">
+                                        BOX
+                                    </div>
+                                    <div class="grid-item">
+                                        LOFT
+                                    </div>
+                                    <div class="grid-item">
+                                        PANEL
+                                    </div>
+                                    <div class="grid-item">
+                                        Add New
+                                    </div>
+                                </div>
+                            </div>
+                            @foreach (var item in Properties)
+                            {
+                                @if (item.Fields != null && item.Fields.Count > 0)
+                                {
+                                    <div class="col-xl-12" style="margin-left:5px;margin-right:5px; margin-bottom:20px;border: 1px solid lightgrey;background-color:#ffffff;">
+                                        <div class="grid-item-header">
+                                            <h3>@item.Name</h3>
+                                        </div>
+                                        <div class="grid-item-content">
+                                            @foreach (var field in item.Fields)
+                                            {
+                                                if (part.Details != null && part.Details.Any(x => x.Name == item.Name && x.Value == field.Name))
+                                                {
+                                                    <div class="grid-item grid-item-selected" id='@(item.Name.Replace(" ", "") + '_' + field.Id.ToString())' @onclick='(() => SelectElement(item.Id, field.Id, item.Name,  field.Name))'>
+                                                        @field.Name
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="grid-item" id='@(item.Name.Replace(" ", "") + '_' + field.Id.ToString())' @onclick='(() => SelectElement(item.Id, field.Id, item.Name,  field.Name))'>
+                                                        @field.Name
+                                                    </div>
+                                                }
+                                            }
+                                            <div class="grid-item" id='@(item.Name.Replace(" ", "") + "_Other")' @onclick='(() => SelectElement(item.Id, 0, "", ""))'>
+                                                Add New
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </div>
+                    <!-- Comment Form End -->
+                </div>
+                <div class="col-lg-5">
+                    <div class="row">
+                        <div class="col-12">
+                            <img style="height:100%;width:100%;" src="images/room/livingroom/livingroom.jpg" />
+                        </div>
+                        <div class="col-12">
+                            <div class="form-field" style="width:100%;margin-top:20px;">
+                                <InputFile OnChange="@ImageUploaded" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="row form-row">
+                        <div class="col-xl-12 grid-buttons-container">
+                            <button class="myButton text-right" @onclick="OnBackClicked" type="button">Back</button>
+                            <button class="myButton text-right" @onclick="OnSaveClicked" type="button">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Submit form End -->
+</div>
+
+@code {
+    @inject IJSRuntime JSRuntime;
+    @inject NavigationManager NavigationManager;
+    @inject IWorkOrderService workOrderService;
+
+    [Parameter]
+    public string id { get; set; }
+
+    [Parameter]
+    public string workOrderId { get; set; }
+
+    WorkOrderDto workOrder { get; set; }
+
+    WorkOrderPartDto part { get; set; }
+
+    bool isAdd { get; set; }
+
+    string src { get; set; }
+
+    string WorkOrderItemName { get; set; }
+
+    List<WorkOrderPropertyDto> Properties { get; set; }
+
+
+    protected async override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(id))
+        {
+            isAdd = false;
+            part = await workOrderService.GetWorkOrderPartsAsync(Convert.ToInt32(id));
+
+            if (workOrder != null)
+            {
+                WorkOrderItemName = part.WorkOrderItem;
+                src = workOrder.ImagePath;
+            }
+        }
+        else
+        {
+            part = new WorkOrderPartDto();
+            isAdd = true;
+        }
+
+        if (!string.IsNullOrEmpty(workOrderId))
+        {
+            workOrder = await workOrderService.GetWorkOrderAsync(Convert.ToInt32(workOrderId));
+
+            if (workOrder != null)
+            {
+                part.WorkOrderId = workOrder.Id;
+                WorkOrderItemName = workOrder.Name;
+
+                // if (!string.IsNullOrEmpty(workOrder.WorkOrderItem) && workOrder.WorkOrderItem != "Not Applicable" && workOrder.WorkOrderItem != "Custom")
+                // {
+                //     if (string.IsNullOrEmpty(workOrder.MaterialType))
+                //         workOrder.MaterialType = room.Material;
+
+                //     if (string.IsNullOrEmpty(workOrder.OuterFrameType))
+                //         workOrder.OuterFrameType = room.OuterFrame;
+
+                // }
+            }
+        }
+
+        Properties = await workOrderService.GetWorkOrderPropertiesAsync();
+    }
+
+    private async Task ImageUploaded(InputFileChangeEventArgs e)
+    {
+
+    }
+
+
+    private async Task OnBackClicked()
+    {
+        NavigationManager.NavigateTo("workorder/edit/" + workOrder.RoomId + "/" + workOrder.Id, false);
+    }
+
+
+    private async Task OnSaveClicked()
+    {
+
+    }
+
+
+    private async Task SelectElement(int propertyId, int fieldId, string name, string value)
+    {
+        if (fieldId > 0)
+        {
+            string elementId = string.Empty;
+            var property = Properties.First(x => x.Id == propertyId);
+
+            if (property != null)
+            {
+                if (!property.AllowMultipleSelect)
+                {
+                    if (property.Fields != null && property.Fields.Count > 0)
+                    {
+                        foreach (var item in property.Fields)
+                        {
+                            elementId = property.Name.Replace(" ", "") + "_" + item.Id.ToString();
+                            if (item.Id == fieldId)
+                            {
+                                if (property.SelectedValues.Any(x => x.Value == item.Name && x.Name == name))
+                                {
+                                    var SelectedItem = property.SelectedValues.First(x => x.Value == item.Name && x.Name == name);
+                                    property.SelectedValues.Remove(SelectedItem);
+                                    await JSRuntime.InvokeVoidAsync("DeselectItem", elementId);
+                                }
+                                else
+                                {
+                                    WorkOrderDetailsDto selectedItem = new WorkOrderDetailsDto();
+                                    selectedItem.Name = name;
+                                    selectedItem.Value = value;
+                                    property.SelectedValues.Add(selectedItem);
+                                    await JSRuntime.InvokeVoidAsync("SelectItem", elementId);
+                                }
+                            }
+                            else
+                            {
+                                if (property.SelectedValues.Any(x => x.Value == item.Name && x.Name == name))
+                                {
+                                    var SelectedItem = property.SelectedValues.First(x => x.Value == item.Name && x.Name == name);
+                                    if (SelectedItem != null)
+                                        property.SelectedValues.Remove(SelectedItem);
+                                }
+                                await JSRuntime.InvokeVoidAsync("DeselectItem", elementId);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    elementId = property.Name.Replace(" ", "") + "_" + fieldId.ToString();
+                    if (property.SelectedValues.Any(x => x.Value == value && x.Name == name))
+                    {
+                        var SelectedItem = property.SelectedValues.First(x => x.Value == value && x.Name == name);
+                        if (SelectedItem != null)
+                            property.SelectedValues.Remove(SelectedItem);
+
+                        await JSRuntime.InvokeVoidAsync("DeselectItem", elementId);
+                    }
+                    else
+                    {
+                        WorkOrderDetailsDto selectedItem = new WorkOrderDetailsDto();
+                        selectedItem.Name = name;
+                        selectedItem.Value = value;
+                        property.SelectedValues.Add(selectedItem);
+                        await JSRuntime.InvokeVoidAsync("SelectItem", elementId);
+                    }
+                }
+            }
+        }
+    }
+
+}

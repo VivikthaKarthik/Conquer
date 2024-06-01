@@ -241,7 +241,7 @@ public partial class SpinteriorsContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("ID");
             entity.Property(e => e.MaterialType).HasMaxLength(100);
-            entity.Property(e => e.Name).HasMaxLength(250);
+            entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.OuterFrameType).HasMaxLength(500);
             entity.Property(e => e.ProjectName).HasMaxLength(100);
         });
@@ -257,7 +257,7 @@ public partial class SpinteriorsContext : DbContext
             entity.Property(e => e.MaterialType).HasMaxLength(500);
             entity.Property(e => e.Name).HasMaxLength(500);
             entity.Property(e => e.OuterFrameType).HasMaxLength(500);
-            entity.Property(e => e.Room).HasMaxLength(250);
+            entity.Property(e => e.Room).HasMaxLength(100);
             entity.Property(e => e.Width).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.WorkOrderItem).HasMaxLength(100);
             entity.Property(e => e.WorkOrderType).HasMaxLength(500);

@@ -8,5 +8,6 @@ namespace SPInteriors.Services.Interfaces
         Task<List<RoomDto>> GetRoomListAsync(int projectId);
         Task<bool> CreateRoomAsync(RoomDto data);
         Task<bool> UpdateRoomAsync(RoomDto data);
+        Task<bool> DeleteRoom(int id);
     }
 }

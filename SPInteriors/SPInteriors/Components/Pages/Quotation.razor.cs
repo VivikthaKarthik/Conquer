@@ -25,6 +25,7 @@ namespace SPInteriors.Components.Pages
         public string projectId { get; set; }
 
         private string clientName { get; set; }
+        bool isDataFetchedCompletely = false;
 
         private QuotationDto quotation { get; set; }
 
@@ -40,11 +41,7 @@ namespace SPInteriors.Components.Pages
             {
                 quotation = await quotationService.GetQuotationByIdAsync(Convert.ToInt32(projectId));
             }
-        }
-
-        protected async override void OnAfterRender(bool firstRender)
-        {
-            await jsRuntime.InvokeVoidAsync("Calculate");
+            isDataFetchedCompletely = true;
         }
 
         async Task GeneratePDF()
@@ -80,20 +77,16 @@ namespace SPInteriors.Components.Pages
             }
             else
             {
-                var workOrderDetail = workorder.Details.First(x => x.Name == "Type");
-                if (workOrderDetail != null && !string.IsNullOrEmpty(workOrderDetail.Name))
+                if(workorder.Parts != null)
                 {
-                    if (workOrderDetail.Value.ToUpper() == "BOX")
+                    foreach (var part in workorder.Parts)
                     {
-                        unitPrice = workorder.Height * workorder.Width * BoxPrice;
-                    }
-                    else if (workOrderDetail.Value.ToUpper() == "LOFT")
-                    {
-                        unitPrice = workorder.Height * workorder.Width * FramePrice;
-                    }
-                    else if (workOrderDetail.Value.ToUpper() == "PANEL")
-                    {
-                        unitPrice = workorder.Height * workorder.Width * PanelPrice;
+                        if (part.WorkOrderType == "BOX")
+                            unitPrice += part.Height * part.Width * BoxPrice;
+                        else if (part.WorkOrderType == "LOFT")
+                            unitPrice += part.Height * part.Width * FramePrice;
+                        else if (part.WorkOrderType == "PANEL")
+                            unitPrice += part.Height * part.Width * PanelPrice;
                     }
                 }
             }

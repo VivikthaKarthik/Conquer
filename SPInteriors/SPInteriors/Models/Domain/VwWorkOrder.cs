@@ -17,7 +17,9 @@ public partial class VwWorkOrder
 
     public int RoomId { get; set; }
 
-    public string? Room { get; set; }
+    public int RoomTypeId { get; set; }
+
+    public string Room { get; set; } = null!;
 
     public string? DesignType { get; set; }
 

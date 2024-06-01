@@ -51,7 +51,9 @@
         public decimal UnitPrice { get; set; }
         public decimal Height {  get; set; }
         public decimal Width { get; set; }
-        public List<WorkOrderDetailsDto> Details { get; set; }
+
+
+        public List<WorkOrderPartDto> Parts { get; set; }
         public decimal TotalPrice 
         { 
             get

@@ -4,209 +4,219 @@
 @using SPInteriors.Services.Interfaces
 @rendermode @(new InteractiveServerRenderMode(prerender:false))
 
-<div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
-    <div class="container edit-screen-container">
-        <div class="row edit-screen-header">
-            <div class="col-xl-12">
-                <h3>Work Order</h3>
-            </div>
-        </div>
+@if (isDataFetchedCompletely)
+{
 
-        <div class="row">
-            <div class="col-xl-12 col-lg-12">
-                <div class="subscribe-form-widget">
-                    <form>
-                        <div class="row form-row">
-                            <div class="faq-area">
-                                <div class="container">
-
-                                    <div class="row form-row">
-                                        <div class="col-xl-12 col-lg-12">
-                                            <div class="form-label">
-                                                <h4>@RoomName</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row form-row">
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                Name
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-4">
-                                            <div class="form-field">
-                                                <input type="text" class="form-control" @bind-value="@workOrder.Name" placeholder="Enter Name" />
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                WorkOrder Item
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-4">
-                                            <div class="form-field">
-                                                <Dropdown ControlId="WorkOrderItemId" TableName="WorkOrderItem" ExistingItem="@workOrder.WorkOrderItemId" OnItemSelection='((value) => OnWorkOrderItemUpdated(value))'></Dropdown>
-                                            </div>
-                                        </div>
-
-                                        @if (workOrder.WorkOrderItem != "Custom")
-                                        {
-                                            <div class="col-xl-2 col-lg-2">
-                                                <div class="form-label">
-                                                    Design Type
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-4">
-                                                <div class="form-field">
-                                                    <EditableDropDown ControlId="DesignTypeId" IsDisabled="@(workOrder.WorkOrderItemId == null || workOrder.WorkOrderItemId == 0)" TableName="DesignType" ExistingItem="@workOrder.DesignType" OnItemSelection='((value) => workOrder.DesignType = value.Name)'></EditableDropDown>
-                                                </div>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="col-xl-2 col-lg-2">
-                                                <div class="form-label">
-                                                    Design Type
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-4">
-                                                <div class="form-field">
-                                                    <input type="text" class="form-control" @bind-value="@workOrder.DesignType" placeholder="Enter Design" />
-                                                </div>
-                                            </div>
-
-                                        }
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                Height
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-field">
-                                                <input type="number" class="form-control" @bind-value="@workOrder.HeightInFeet" placeholder="feet" />
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-field">
-                                                <input type="number" class="form-control" @bind-value="@workOrder.HeightInInch" max="12" placeholder="inch" />
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                Width
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-field">
-                                                <input type="number" class="form-control" @bind-value="@workOrder.WidthInFeet" placeholder="feet" />
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-field">
-                                                <input type="number" class="form-control" @bind-value="@workOrder.WidthInInch" max="12" placeholder="inch" />
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                <input type="checkbox" @bind-value="@workOrder.SuppressCalculation" name="checkboxName" id="SuppressCalculationId">
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-4">
-                                            <div class="form-field">
-                                                SuppressCalculation
-                                            </div>
-                                        </div>
-
-                                        @if (@workOrder.SuppressCalculation)
-                                        {
-                                            <div class="col-xl-2 col-lg-2">
-                                                <div class="form-label">
-                                                    Amount
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-4">
-                                                <div class="form-field">
-                                                    <input type="text" class="form-control" @bind-value="@workOrder.Amount" placeholder="Enter Amount" />
-                                                </div>
-                                            </div>
-                                        }
-
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                Upload Image(s)
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-4">
-                                            <div class="form-field">
-                                                <InputFile OnChange="@ImageUploaded" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    @if (!string.IsNullOrEmpty(src))
-                                    {
-                                        <div class="row form-row">
-                                            <div class="col-xl-12 col-lg-12">
-                                                <img style="height:300px;width:300px;" src="@src" />
-                                            </div>
-                                        </div>
-                                    }
-                                </div>
-                            </div>
+    <div class="page-breadcrumb-area page-bg">
+        <div class="page-overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="breadcrumb-wrapper">
+                        <div class="page-heading">
+                            <h3 class="page-title">Work Order Details</h3>
                         </div>
-                        @if (workOrder.WorkOrderItemId > 0)
-                        {
-                            @foreach (var item in Properties)
-                            {
-                                @if (item.Fields != null && item.Fields.Count > 0)
-                                {
-                                    <div class="row">
-                                        <div class="col-xl-12 grid-container">
-                                            <div class="grid-item-header">
-                                                <h3>@item.Name</h3>
-                                            </div>
-                                            @*        <div class="grid-item-content">
-                                <input type="checkbox" @bind-value="@item.AllowMultipleSelect" /><span style="margin-left:10px;">Allow Multi Select</span>
-                                </div> *@
-                                            <div class="grid-item-content">
-                                                @foreach (var field in item.Fields)
-                                                {
-                                                    if (workOrder.Details != null && workOrder.Details.Any(x => x.Name == item.Name && x.Value == field.Name))
-                                                    {
-                                                        <div class="grid-item grid-item-selected" id='@(item.Name.Replace(" ", "") + '_' + field.Id.ToString())' @onclick='(() => SelectElement(item.Id, field.Id, item.Name,  field.Name))'>
-                                                            @field.Name
-                                                        </div>
-                                                    }
-                                                    else
-                                                    {
-                                                        <div class="grid-item" id='@(item.Name.Replace(" ", "") + '_' + field.Id.ToString())' @onclick='(() => SelectElement(item.Id, field.Id, item.Name,  field.Name))'>
-                                                            @field.Name
-                                                        </div>
-                                                    }
-                                                }
-                                                <div class="grid-item" id='@(item.Name.Replace(" ", "") + "_Other")' @onclick='(() => SelectElement(item.Id, 0, "", ""))'>
-                                                    Add New
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                            }
-                        }
-                        <div class="row form-row">
-                            <div class="col-xl-12 grid-buttons-container">
-                                <button class="myButton text-right" @onclick="OnBackClicked" type="button">Back</button>
-                                <button class="myButton text-right" @onclick="OnSaveClicked" type="button">Save</button>
-                            </div>
+                        <div class="breadcrumb-list">
+                            <ul>
+                                <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/"))'>Home</a></li>
+                                <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/Projects"))'>Projects</a></li>
+                                <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/projects/Edit/" + room.ProjectId))'>@room.ProjectName</a></li>
+                                <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/room/Edit/" + roomId))'>@RoomName</a></li>
+                                <li><a href="javascript:void(0);">WorkOrder Details</a></li>
+                            </ul>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
+        <div class="container edit-screen-container">
+            @*  <div class="row edit-screen-header">
+        <div class="col-xl-12">
+        <h3>Work Order</h3>
+        </div>
+        </div> *@
+
+            <div class="row">
+                <div class="col-xl-12 col-lg-12">
+                    <div class="subscribe-form-widget">
+                        <form>
+                            <div class="row form-row">
+                                <div class="faq-area">
+                                    <div class="container">
+
+                                        <div class="row form-row">
+                                            <div class="col-xl-12 col-lg-12">
+                                                <div class="form-label">
+                                                    <h4>@RoomName</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row form-row">
+                                            @* <div class="col-xl-2 col-lg-2">
+                                        <div class="form-label">
+                                        Name
+                                        </div>
+                                        </div>
+                                        <div class="col-xl-4 col-lg-4">
+                                        <div class="form-field">
+                                        <input type="text" class="form-control" @bind-value="@workOrder.Name" placeholder="Enter Name" />
+                                        </div>
+                                        </div> *@
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    WorkOrder Item
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-10 col-lg-10">
+                                                <div class="form-field">
+                                                    <Dropdown ControlId="WorkOrderItemId" TableName="WorkOrderItem" ParentName="RoomType" ParentId="workOrder.RoomTypeId" ExistingItem="@workOrder.WorkOrderItemId" OnItemSelection='((value) => OnWorkOrderItemUpdated(value))'></Dropdown>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Height
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-field">
+                                                    <input type="number" class="form-control" @bind-value="@workOrder.HeightInFeet" placeholder="feet" readonly />
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-field">
+                                                    <input type="number" class="form-control" @bind-value="@workOrder.HeightInInch" max="12" placeholder="inch" readonly />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Width
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-field">
+                                                    <input type="number" class="form-control" @bind-value="@workOrder.WidthInFeet" placeholder="feet" readonly />
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-field">
+                                                    <input type="number" class="form-control" @bind-value="@workOrder.WidthInInch" max="12" placeholder="inch" readonly />
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    <input type="checkbox" @bind-value="@workOrder.SuppressCalculation" name="checkboxName" id="SuppressCalculationId">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    SuppressCalculation
+                                                </div>
+                                            </div>
+
+                                            @if (@workOrder.SuppressCalculation)
+                                            {
+                                                <div class="col-xl-2 col-lg-2">
+                                                    <div class="form-label">
+                                                        Amount
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-4 col-lg-4">
+                                                    <div class="form-field">
+                                                        <input type="text" class="form-control" @bind-value="@workOrder.Amount" placeholder="Enter Amount" />
+                                                    </div>
+                                                </div>
+                                            }
+
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Upload Image(s)
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <InputFile OnChange="@ImageUploaded" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @if (!string.IsNullOrEmpty(src))
+                                        {
+                                            <div class="row form-row">
+                                                <div class="col-xl-12 col-lg-12">
+                                                    <img style="height:300px;width:300px;" src="@src" />
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="padding-left:10px;padding-top:47px;">
+                                <div class="col-xl-6">
+                                    <h4>Parts</h4>
+                                </div>
+                                <div class="col-xl-6 grid-buttons-container" style="display:block">
+                                    <button class="myButton text-right" type="button" @onclick='(() => AddPart(workOrder.Id))'>Add <i class="fa-solid fa-add"></i></button>
+                                </div>
+                            </div>
+                            <div class="our-team-area style-2">
+
+
+                                <div class="container">
+
+                                    <div class="team-card-wrapper">
+                                        <div class="row">
+                                            @if (workOrder.Parts != null && workOrder.Parts.Count > 0)
+                                            {
+                                                @foreach (var part in workOrder.Parts)
+                                                {
+                                                    <div class="col-lg-3 col-md-5" style="margin-top:20px;" @onclick='(() => EditPart(part.Id, room.Id))'>
+                                                        <div class="team-member-card">
+                                                            <div class="content-wrapper">
+                                                                <div class="content">
+                                                                    <h2 class="title">@part.WorkOrderType</h2>
+                                                                </div>
+                                                            </div>
+                                                            <div class="image">
+                                                                @if (!string.IsNullOrEmpty(part.ImagePath))
+                                                                {
+                                                                    <img style="height:300px;width:100%;" src="@part.ImagePath" />
+                                                                }
+                                                                else
+                                                                {
+                                                                    <img src="images/room/livingroom/livingroom.jpg" />
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row form-row">
+                                <div class="col-xl-12 grid-buttons-container">
+                                    <button class="myButton text-right" @onclick="OnBackClicked" type="button">Back</button>
+                                    <button class="myButton text-right" @onclick="OnSaveClicked" type="button">Save</button>
+                                    <button class="myButton text-right" @onclick="OnDeleteClicked" type="button">Delete</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <PartModal ShowModal="@showModal" RequestType="@modalRequestType" partId="@selectedPartId" workOrderId="@workOrder.Id" ShowModalChanged="@(value => OnModelClosing(value))"></PartModal>
+
+}
 
 
 @code {
@@ -217,6 +227,7 @@
     @inject IClientService clientService;
     @inject IFileUploadService FileUploadService;
     @inject ICommonService commonService;
+    private bool showModal;
 
     List<ClientDto> clients = new List<ClientDto>();
 
@@ -230,14 +241,31 @@
 
     RoomDto room { get; set; }
     string src { get; set; }
+    bool isDataFetchedCompletely = false;
     string RoomName { get; set; } = "Work Order";
 
     public IBrowserFile SelectedImage { get; set; }
 
     bool isAdd { get; set; }
 
-    List<WorkOrderPropertyDto> Properties { get; set; }
+    int selectedPartId { get; set; } = 0;
+    string modalRequestType = "";
 
+    private void ShowModal()
+    {
+        showModal = true;
+    }
+
+    private void CloseModal()
+    {
+        showModal = false;
+    }
+
+    private async Task OnModelClosing(bool value)
+    {
+        showModal = value;
+        workOrder = await workOrderService.GetWorkOrderByIdAsync(Convert.ToInt32(id));
+    }
 
     protected async override void OnInitialized()
     {
@@ -280,7 +308,7 @@
         }
 
         clients = await clientService.GetClientsAsync();
-        Properties = await workOrderService.GetWorkOrderPropertiesAsync();
+        isDataFetchedCompletely = true;
     }
     private async Task ImageUploaded(InputFileChangeEventArgs e)
     {
@@ -317,7 +345,7 @@
         {
             if (isAdd)
             {
-                isSuccess = await workOrderService.CreateWorkOrderAsync(workOrder, Properties);
+                isSuccess = await workOrderService.CreateWorkOrderAsync(workOrder);
 
                 if (isSuccess && SelectedImage != null)
                 {
@@ -325,7 +353,7 @@
                 }
             }
             else
-                isSuccess = await workOrderService.UpdateWorkOrderAsync(workOrder, Properties);
+                isSuccess = await workOrderService.UpdateWorkOrderAsync(workOrder);
 
             if (isSuccess)
                 NavigationManager.NavigateTo("room/edit/" + room.ProjectId + "/" + room.Id, false);
@@ -337,6 +365,21 @@
             await JSRuntime.InvokeVoidAsync("ShowAlert", errorMessage);
         }
 
+    }
+
+    private async Task OnDeleteClicked()
+    {
+        var isDeleted = await workOrderService.DeleteWorkOrder(workOrder.Id);
+
+        if (isDeleted)
+        {
+            await JSRuntime.InvokeVoidAsync("ShowAlert", "Deleted " + workOrder.Name + " successfully !");
+            NavigationManager.NavigateTo("room/edit/" + room.ProjectId + "/" + room.Id, false);
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("ShowAlert", "Some error occured. Please try again !");
+        }
     }
 
     private async Task<string> Validate()
@@ -363,74 +406,22 @@
         return errorMessage;
     }
 
-
-    private async Task SelectElement(int propertyId, int fieldId, string name, string value)
+    private async Task AddPart(int workOrderId)
     {
-        if (fieldId > 0)
-        {
-            string elementId = string.Empty;
-            var property = Properties.First(x => x.Id == propertyId);
+        selectedPartId = 0;
+        modalRequestType = "Add";
+        ShowModal();
+    }
 
-            if (property != null)
-            {
-                if (!property.AllowMultipleSelect)
-                {
-                    if (property.Fields != null && property.Fields.Count > 0)
-                    {
-                        foreach (var item in property.Fields)
-                        {
-                            elementId = property.Name.Replace(" ", "") + "_" + item.Id.ToString();
-                            if (item.Id == fieldId)
-                            {
-                                if (property.SelectedValues.Any(x => x.Value == item.Name && x.Name == name))
-                                {
-                                    var SelectedItem = property.SelectedValues.First(x => x.Value == item.Name && x.Name == name);
-                                    property.SelectedValues.Remove(SelectedItem);
-                                    await JSRuntime.InvokeVoidAsync("DeselectItem", elementId);
-                                }
-                                else
-                                {
-                                    WorkOrderDetailsDto selectedItem = new WorkOrderDetailsDto();
-                                    selectedItem.Name = name;
-                                    selectedItem.Value = value;
-                                    property.SelectedValues.Add(selectedItem);
-                                    await JSRuntime.InvokeVoidAsync("SelectItem", elementId);
-                                }
-                            }
-                            else
-                            {
-                                if (property.SelectedValues.Any(x => x.Value == item.Name && x.Name == name))
-                                {
-                                    var SelectedItem = property.SelectedValues.First(x => x.Value == item.Name && x.Name == name);
-                                    if (SelectedItem != null)
-                                        property.SelectedValues.Remove(SelectedItem);
-                                }
-                                await JSRuntime.InvokeVoidAsync("DeselectItem", elementId);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    elementId = property.Name.Replace(" ", "") + "_" + fieldId.ToString();
-                    if (property.SelectedValues.Any(x => x.Value == value && x.Name == name))
-                    {
-                        var SelectedItem = property.SelectedValues.First(x => x.Value == value && x.Name == name);
-                        if (SelectedItem != null)
-                            property.SelectedValues.Remove(SelectedItem);
+    private async Task EditPart(int serviceId, int roomId)
+    {
+        selectedPartId = serviceId;
+        modalRequestType = "Edit";
+        ShowModal();
+    }
 
-                        await JSRuntime.InvokeVoidAsync("DeselectItem", elementId);
-                    }
-                    else
-                    {
-                        WorkOrderDetailsDto selectedItem = new WorkOrderDetailsDto();
-                        selectedItem.Name = name;
-                        selectedItem.Value = value;
-                        property.SelectedValues.Add(selectedItem);
-                        await JSRuntime.InvokeVoidAsync("SelectItem", elementId);
-                    }
-                }
-            }
-        }
+    private async void Navigate(string url)
+    {
+        NavigationManager.NavigateTo(url, false);
     }
 }

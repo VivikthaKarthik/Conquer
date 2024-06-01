@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        public int RoomTypeId { get; set; }
         public int ProjectId { get; set; }
         public string ProjectName { get; set; }
         public int MaterialTypeId { get; set; }
@@ -25,7 +26,8 @@
                 return Id.ToString() + "_" + Name.Replace(" ", "");
             }
         }
-        public List<WorkOrderDto> Services { get; set; }
+        public string ImagePath { get; set; }
+        public List<WorkOrderDto> WorkOrders { get; set; }
 
     }
 }

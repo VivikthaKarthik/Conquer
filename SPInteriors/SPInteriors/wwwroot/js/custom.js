@@ -997,13 +997,11 @@
         //}
 
         window.SelectItem = function (id) {
-            //alert(id);
             var element = document.getElementById(id);
             element.classList.add("grid-item-selected");
         }
 
         window.DeselectItem = function (id) {
-            //alert(id);
             var element = document.getElementById(id);
             element.classList.remove("grid-item-selected");
         }
@@ -1016,6 +1014,11 @@
 
         window.Calculate = function () {
             $("#preloader").hide();
+        }
+
+        window.UnselectAll = function (id) {
+            var element = document.getElementById(id);
+            $('#modalBodyTemplate .grid-item-selected').removeClass('grid-item-selected');
         }
     });
 })(jQuery);

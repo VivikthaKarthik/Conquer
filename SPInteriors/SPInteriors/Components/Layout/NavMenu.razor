@@ -1,4 +1,5 @@
-﻿@using SPInteriors.Services.Interfaces
+﻿@using SPInteriors.Authentication
+@using SPInteriors.Services.Interfaces
 @using SPInteriors.Utilities
 
 @rendermode @(new InteractiveServerRenderMode(prerender:false))
@@ -17,9 +18,6 @@
                             <a href="/" class="sticky-logo">
                                 <img src="images/logo/sticky-logo.png" alt="logo" />
                             </a>
-                            @* <a href="/" class="retina-logo">
-                                <img src="images/logo/logo.png" alt="logo" />
-                            </a> *@
                         </div>
                     </div>
                 </div>
@@ -31,25 +29,25 @@
 
                                 <li><a href="explore" @onclick='(() => HandleNavClick("explore"))'>Explore</a></li>
 
-                                <li><a href="dashboard" @onclick='(() => HandleNavClick("dashboard"))'>Dashboard</a></li>
-
-                                <li><a href="projects" @onclick='(() => HandleNavClick("projects"))'>Projects</a></li>
-
-                                <li><a href="portfolio" @onclick='(() => HandleNavClick("portfolio"))'>Portfolio</a></li>
-
-                                <li class="dropdown">
-                                    <a href="javascript:void(0);">Manage</a>
-                                    <ul class="submenu">
-                                        <li><a href="masterdata" @onclick='(() => HandleNavClick("masterdata"))'>MasterData</a></li>
-                                        <li><a href="accounts" @onclick='(() => HandleNavClick("accounts"))'>Accounts</a></li>
-                                        <li><a href="inventory" @onclick='(() => HandleNavClick("inventory"))'>Inventory</a></li>
-                                    </ul>
-                                </li>
-                                @*
-                                <li><a href="myprofile" @onclick='(() => HandleNavClick("myprofile"))'>My Profile</a></li>
-
-                                <li><a href="myprojects" @onclick='(() => HandleNavClick("myprojects"))'>My Projects</a></li> *@
-
+                                <CascadingAuthenticationState>
+                                    <AuthorizeView>
+                                        <Authorized>
+                                            @* <li><a href="dashboard" @onclick='(() => HandleNavClick("dashboard"))'>Dashboard</a></li> *@
+                                            <li><a href="projects" @onclick='(() => HandleNavClick("projects"))'>Projects</a></li>
+                                            <li><a href="portfolio" @onclick='(() => HandleNavClick("portfolio"))'>Portfolio</a></li>
+                                            <li class="dropdown">
+                                                <a href="javascript:void(0);">Manage</a>
+                                                <ul class="submenu">
+                                                    <li><a href="masterdata" @onclick='(() => HandleNavClick("masterdata"))'>MasterData</a></li>
+                                                    <li><a href="accounts" @onclick='(() => HandleNavClick("accounts"))'>Accounts</a></li>
+                                                    <li><a href="inventory" @onclick='(() => HandleNavClick("inventory"))'>Inventory</a></li>
+                                                </ul>
+                                            </li>
+                                        </Authorized>
+                                    </AuthorizeView>
+                                </CascadingAuthenticationState>
+                                <li><a href="portfolio" @onclick='(() => HandleNavClick("aboutus"))'>About Us</a></li>
+                                <li><a href="portfolio" @onclick='(() => HandleNavClick("contactus"))'>Contact Us</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -59,9 +57,21 @@
                         <i class="fa-solid fa-magnifying-glass"></i>
                         </a>
                         </div> *@
-                        <div class="btn-wrapper">
-                            <a href="javascript:void(0);" @onclick="Login" class="theme-btn">@LoginButtonText<i class="fa-solid fa-sign-in"></i></a>
-                        </div>
+                        <CascadingAuthenticationState>
+                            <AuthorizeView>
+                                <NotAuthorized>
+                                    <div class="btn-wrapper">
+                                        <a href="javascript:void(0);" @onclick='(() => Login())' class="theme-btn">Login<i class="fa-solid fa-sign-in"></i></a>
+                                    </div>
+                                </NotAuthorized>
+                                <Authorized>
+
+                                    <div class="btn-wrapper">
+                                        <a href="javascript:void(0);" @onclick='(() => Logout())' class="theme-btn">Logout<i class="fa-solid fa-sign-in"></i></a>
+                                    </div>
+                                </Authorized>
+                            </AuthorizeView>
+                        </CascadingAuthenticationState>
                     </div>
                     <!-- Mobile Menu Toggle Button Start !-->
                     <div class="mobile-menu-bar d-lg-none text-end">
@@ -128,8 +138,7 @@
     @inject IJSRuntime JSRuntime;
     @inject NavigationManager NavigationManager;
     @inject IUserService UserService;
-
-    private string LoginButtonText { get; set; } = "Login";
+    @inject AuthenticationStateProvider authStateProvider;
 
     // protected override void OnInitialized()
     // {
@@ -143,18 +152,14 @@
 
     private void Login()
     {
-        if (UserService.UserType == UserRoles.Unknown)
-        {
-            UserService.UserType = UserRoles.Admin;
-            LoginButtonText = "Logout";
-        }
-        else
-        {
-            UserService.UserType = UserRoles.Unknown;
-            LoginButtonText = "Login";
-        }
+        NavigationManager.NavigateTo("/login", true);
     }
-
+    private async Task Logout()
+    {
+        var customAuthStateProvider = (CustomAuthenticationStateProvider)authStateProvider;
+        await customAuthStateProvider.UpdateAuthenticationState(null);
+        NavigationManager.NavigateTo("/", true);
+    }
 
     private void Update()
     {

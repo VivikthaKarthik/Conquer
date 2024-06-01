@@ -4,13 +4,37 @@
 @using SPInteriors.Services.Interfaces
 @rendermode @(new InteractiveServerRenderMode(prerender:false))
 
+@if (isDataFetchedCompletely)
+{
+<div class="page-breadcrumb-area page-bg">
+    <div class="page-overlay"></div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="breadcrumb-wrapper">
+                    <div class="page-heading">
+                        <h3 class="page-title">Project Details</h3>
+                    </div>
+                    <div class="breadcrumb-list">
+                        <ul>
+                            <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/"))'>Home</a></li>
+                            <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/Projects"))'>Projects</a></li>
+                            <li><a href="javascript:void(0);">Project Details</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
 
     <div class="container edit-screen-container">
 
         <div class="row edit-screen-header">
             <div class="col-xl-12">
-                <h3>Project</h3>
+                <h3>@project.Name</h3>
             </div>
         </div>
 
@@ -23,17 +47,7 @@
                                 <div class="container">
 
                                     <div class="row form-row">
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                Project Name *
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-4">
-                                            <div class="form-field">
-                                                <input type="text" class="form-control" @bind-value="@project.Name" />
-                                            </div>
-                                        </div>
-
+                                        
                                         <div class="col-xl-2 col-lg-2">
                                             <div class="form-label">
                                                 Client Name *
@@ -99,151 +113,42 @@
                                         </div>
                                         <div class="col-xl-6 grid-buttons-container" style="display:block">
                                             <button class="myButton text-right" @onclick='(() => AddRoom())' type="button">Add <i class="fa-solid fa-add"></i></button>
+                                            <button class="myButton text-right" @onclick="NavigateToQuotation" type="button">Quotation</button>
+                                            <button class="myButton text-right" @onclick="NavigateToWorkSheet" type="button">WorkSheet</button>
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <!-- Accordion Start -->
-                                            <div class="accordion-wrapper style-one">
-                                                <div class="accordion-box-wrapper">
+                                    <div class="our-team-area style-2">
+                                        <div class="container">
+                                            <div class="team-card-wrapper">
+                                                <div class="row">
                                                     @if (rooms != null && rooms.Count > 0)
                                                     {
                                                         @foreach (var item in rooms)
                                                         {
-                                                            <div class="accordion-list-item" id="@item.WorkBookTag">
-                                                                <div id="headingOne">
-                                                                    <div class="accordion-head" role="button" data-bs-toggle="collapse" data-bs-target="#@item.AccordionTag" aria-expanded="true" aria-controls="@item.AccordionTag">
-                                                                        <h3 class="accordion-title">
-                                                                            @item.Name
-                                                                            <button class="myIconButton" @onclick='(() => UpdateRoom(item.Id))' type="button">
-                                                                                Edit <i class="fa-solid fa-edit"></i>
-                                                                            </button>
-                                                                            @if (item.Services != null && item.Services.Count > 1)
-                                                                            {
-                                                                                <button class="myIconButton" @onclick='(() => GenerateWorkSheet(item.WorkBookTag))' type="button">
-                                                                                    Download <i class="fa-solid fa-download"></i>
-                                                                                </button>
-                                                                            }
-                                                                        </h3>
-                                                                    </div>
-                                                                </div>
-                                                                <div id="@item.AccordionTag" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#serviceDetailsFAQ">
-                                                                    <div class="accordion-item-body">
-                                                                        <div class="row">
-                                                                            <div class="col-xl-6">
-                                                                                <h4>Work Orders</h4>
-                                                                            </div>
+                                                            <div class="col-lg-3 col-md-5" style="margin-top:20px;" @onclick='(() => UpdateRoom(item.Id))'>
+                                                                <div class="team-member-card">
+                                                                    <div class="content-wrapper">
+                                                                        <div class="content">
+                                                                            <h2 class="title">@item.Name</h2>
+                                                                            <p class="desc" style="padding:0;">@item.Material</p>
                                                                         </div>
-                                                                        @if (item.Services != null && item.Services.Count > 0)
+                                                                    </div>
+                                                                    <div class="image">
+                                                                        @if (!string.IsNullOrEmpty(item.ImagePath))
                                                                         {
-                                                                            @foreach (var service in item.Services)
-                                                                            {
-                                                                                <div style="background-color: #F4F4F4;color:black;margin: 10px;padding: 0px;">
-                                                                                    <div class="row" style="margin-left:20px;" id="@service.WorkBookTag">
-                                                                                        <div class="col-xl-6" style="padding:10px;">
-                                                                                            <div class="row">
-                                                                                                <div class="col-xl-12" style="padding-top:20px;padding-bottom:30px;">
-                                                                                                    <h4>@service.Name</h4>
-                                                                                                </div>
-                                                                                            </div>
-
-                                                                                            @if (!string.IsNullOrEmpty(service.WorkOrderType))
-                                                                                            {
-                                                                                                <div class="row">
-                                                                                                    <div class="col-xl-4 workorder-form-label">
-                                                                                                        <span>Type</span>
-                                                                                                    </div>
-                                                                                                    <div class="col-xl-8 workorder-form-label">
-                                                                                                        <span>@service.WorkOrderType</span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <hr />
-                                                                                            }
-                                                                                            @if (!string.IsNullOrEmpty(service.DesignType))
-                                                                                            {
-                                                                                                <div class="row">
-                                                                                                    <div class="col-xl-4 workorder-form-label">
-                                                                                                        <span>Design</span>
-                                                                                                    </div>
-                                                                                                    <div class="col-xl-8 workorder-form-label">
-                                                                                                        <span>@service.DesignType</span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <hr />
-                                                                                            }
-                                                                                            @if (!string.IsNullOrEmpty(service.MaterialType))
-                                                                                            {
-                                                                                                <div class="row">
-                                                                                                    <div class="col-xl-4 workorder-form-label">
-                                                                                                        <span>Material</span>
-                                                                                                    </div>
-                                                                                                    <div class="col-xl-8 workorder-form-label">
-                                                                                                        <span>@service.MaterialType</span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <hr />
-                                                                                            }
-                                                                                            @if (!string.IsNullOrEmpty(service.OuterFrameType))
-                                                                                            {
-                                                                                                <div class="row">
-                                                                                                    <div class="col-xl-4 workorder-form-label">
-                                                                                                        <span>Outer Frame</span>
-                                                                                                    </div>
-                                                                                                    <div class="col-xl-8 workorder-form-label">
-                                                                                                        <span>@service.OuterFrameType</span>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <hr />
-                                                                                            }
-                                                                                            <div class="row">
-                                                                                                <div class="col-xl-4 workorder-form-label">
-                                                                                                    <span>Height</span>
-                                                                                                </div>
-                                                                                                <div class="col-xl-8 workorder-form-label">
-                                                                                                    <span>@service.HeightInFeet <span style="padding-left:4px; padding-right:8px;">ft</span> @service.HeightInInch ''</span>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <hr />
-                                                                                            <div class="row">
-                                                                                                <div class="col-xl-4 workorder-form-label">
-                                                                                                    <span>Width</span>
-                                                                                                </div>
-                                                                                                <div class="col-xl-8 workorder-form-label">
-                                                                                                    <span>@service.WidthInFeet <span style="padding-left:4px; padding-right:8px;">ft</span> @service.WidthInInch ''</span>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <hr />
-                                                                                        </div>
-                                                                                        <div class="col-xl-6">
-                                                                                            <div class="col-xl-12 grid-buttons-container" style="display:block;margin-top:20px;">
-                                                                                                <button class="myButton text-right" @onclick='(() => GenerateWorkSheet(service.WorkBookTag))' type="button">Download <i class="fa-solid fa-download"></i></button>
-                                                                                            </div>
-                                                                                            <div style="max-height:80%;width:80%;margin-left:40px;margin-right:40px;margin-top:20px;padding-bottom:30px;">
-                                                                                                @if (!string.IsNullOrEmpty(service.ImagePath))
-                                                                                                {
-
-                                                                                                    <img style="height:300px;width:100%;" src="@service.ImagePath" />
-                                                                                                }
-                                                                                                else
-                                                                                                {
-                                                                                                    <img style="height:300px;width:100%;" src="images/room/livingroom/livingroom.jpg" />
-                                                                                                }
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-                                                                            }
+                                                                            <img style="height:300px;width:100%;" src="@item.ImagePath" />
                                                                         }
-
+                                                                        else
+                                                                        {
+                                                                            <img src="images/room/livingroom/livingroom.jpg" />
+                                                                        }
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         }
                                                     }
-
                                                 </div>
                                             </div>
-                                            <!-- Accordion End -->
                                         </div>
                                     </div>
                                 </div>
@@ -254,7 +159,6 @@
                             <div class="col-xl-12 grid-buttons-container">
                                 <button class="myButton text-right" @onclick="SaveModel" type="button">Back</button>
                                 <button class="myButton text-right" @onclick="SaveAndRedirect" type="button">Save</button>
-                                <button class="myButton text-right" @onclick="NavigateToQuotation" type="button">Quotation</button>
                             </div>
                         </div>
                     </form>
@@ -264,7 +168,7 @@
     </div>
 </div>
 
-
+}
 
 @code {
     @inject IJSRuntime JSRuntime;
@@ -276,6 +180,7 @@
     public string id { get; set; }
 
     ProjectDto project { get; set; }
+    bool isDataFetchedCompletely = false;
 
     List<RoomDto> rooms = new List<RoomDto>();
 
@@ -290,6 +195,7 @@
         {
             project = new ProjectDto();
         }
+        isDataFetchedCompletely = true;
     }
 
     private async Task AddClient()
@@ -316,6 +222,11 @@
     private async Task NavigateToQuotation()
     {
         NavigationManager.NavigateTo("/quotations/" + project.Id, true);
+    }
+        
+    private async Task NavigateToWorkSheet()
+    {
+        NavigationManager.NavigateTo("/worksheet/" + project.Id, true);
     }
 
     private async Task AddRoom()
@@ -362,6 +273,11 @@
         {
             NavigationManager.NavigateTo("projects", false);
         }
+    }
+
+    private async void Navigate(string url)
+    {
+        NavigationManager.NavigateTo(url, false);
     }
 }
 

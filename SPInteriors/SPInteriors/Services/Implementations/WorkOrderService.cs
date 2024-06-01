@@ -5,6 +5,7 @@ using SPInteriors.Models.Domain;
 using SPInteriors.Services.Interfaces;
 using System.util;
 using static iTextSharp.text.pdf.AcroFields;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 
 namespace SPInteriors.Services.Implementations
@@ -22,7 +23,8 @@ namespace SPInteriors.Services.Implementations
         public async Task<WorkOrderDto> GetWorkOrderByIdAsync(int id)
         {
             WorkOrderDto workorder = new WorkOrderDto();
-
+            decimal height = 0;
+            decimal width = 0;
             if (dbContext.VwWorkOrders.Any(x => x.Id == id))
             {
                 var data = dbContext.VwWorkOrders.First(x => x.Id == id);
@@ -31,12 +33,13 @@ namespace SPInteriors.Services.Implementations
                 workorder.WorkOrderItemId = data.WorkOrderItemId;
                 workorder.WorkOrderType = data.WorkOrderType;
                 workorder.OuterFrameType = data.OuterFrameType;
+                workorder.RoomTypeId = data.RoomTypeId;
                 workorder.RoomId = data.RoomId;
                 workorder.Room = data.Room;
+                workorder.Height = data.Height;
+                workorder.Width = data.Width;
                 workorder.DesignType = data.DesignType;
                 workorder.MaterialType = data.MaterialType;
-                workorder.Width = data.Width;
-                workorder.Height = data.Height;
                 workorder.SuppressCalculation = data.SuppressCalculation;
                 workorder.Amount = data.Amount;
 
@@ -45,12 +48,84 @@ namespace SPInteriors.Services.Implementations
                     workorder.ImagePath = dbContext.WorkOrderImages.First(x => x.WorkOrderId == id).ImagePath;
                 }
 
+                if (dbContext.WorkOrderParts.Any(x => x.WorkOrderId == id))
+                {
+                    workorder.Parts = new List<WorkOrderPartDto>();
+                    var partsList = dbContext.WorkOrderParts.Where(x => x.WorkOrderId == id).ToList();
+
+                    var workOrderTypes = dbContext.WorkOrderTypes.ToList();
+
+                    foreach(var item in partsList)
+                    {
+                        WorkOrderPartDto part = new WorkOrderPartDto()
+                        {
+                            Id = item.Id,
+                            WorkOrderId = item.WorkOrderId,
+                            Notes = item.Notes,
+                            WorkOrderTypeId = item.WorkOrderTypeId
+                        };
+
+                        height += item.Height;
+                        width += item.Width;
+
+                        if (workOrderTypes.Any(x => x.Id == item.WorkOrderTypeId))
+                            part.WorkOrderType = workOrderTypes.First(x => x.Id == item.WorkOrderTypeId).Name;
+
+                        workorder.Parts.Add(part);
+                    }
+                }
+            }
+
+            if (height > 0)
+                workorder.Height = height;
+
+            if (width > 0)
+                workorder.Width = width;
+
+            return workorder;
+        }
+        
+        public async Task<WorkOrderDto> GetWorkOrderAsync(int id)
+        {
+            WorkOrderDto workorder = new WorkOrderDto();
+
+            if (dbContext.WorkOrders.Any(x => x.Id == id))
+            {
+                var data = dbContext.WorkOrders.First(x => x.Id == id);
+                workorder.Id = data.Id;
+                workorder.Name = data.Name;
+                workorder.WorkOrderItemId = data.WorkOrderItemId;
+                workorder.WorkOrderType = data.WorkOrderType;
+                workorder.OuterFrameType = data.OuterFrameType;
+                workorder.RoomId = data.RoomId;
+                workorder.DesignType = data.DesignType;
+                workorder.MaterialType = data.MaterialType;
+                workorder.SuppressCalculation = data.SuppressCalculation;
+                workorder.Amount = data.Amount;
+
+            }
+            return workorder;
+        }
+
+        public async Task<WorkOrderPartDto> GetWorkOrderPartsAsync(int id)
+        {
+            WorkOrderPartDto part = new WorkOrderPartDto();
+
+            if (dbContext.WorkOrderParts.Any(x => x.Id == id))
+            {
+                var data = dbContext.WorkOrderParts.First(x => x.Id == id);
+                part.Id = data.Id;
+                part.WorkOrderId = data.WorkOrderId;
+                part.WorkOrderTypeId = data.WorkOrderTypeId;
+                part.Width = data.Width;
+                part.Height = data.Height;
+
                 if (dbContext.WorkOrderDetails.Any(x => x.WorkOrderId == id))
                 {
-                    workorder.Details = new List<WorkOrderDetailsDto>();
+                    part.Details = new List<WorkOrderDetailsDto>();
                     var deatilsList = dbContext.WorkOrderDetails.Where(x => x.WorkOrderId == id).ToList();
 
-                    foreach(var deatil in deatilsList)
+                    foreach (var deatil in deatilsList)
                     {
                         WorkOrderDetailsDto workOrderDetails = new WorkOrderDetailsDto()
                         {
@@ -59,12 +134,17 @@ namespace SPInteriors.Services.Implementations
                             Value = deatil.Value,
                         };
 
-                        workorder.Details.Add(workOrderDetails);
+                        part.Details.Add(workOrderDetails);
                     }
                 }
+
+                part.WorkOrder = await GetWorkOrderAsync(part.WorkOrderId);
+                if (part.WorkOrderTypeId > 0)
+                    part.WorkOrderType = dbContext.WorkOrderTypes.First(x => x.Id == part.WorkOrderTypeId).Name;
             }
-            return workorder;
+            return part;
         }
+
 
         public async Task<string> GetWorkOrderItemImage(int id)
         {
@@ -112,7 +192,7 @@ namespace SPInteriors.Services.Implementations
         }
 
 
-        public async Task<bool> CreateWorkOrderAsync(WorkOrderDto data, List<WorkOrderPropertyDto> properties)
+        public async Task<bool> CreateWorkOrderAsync(WorkOrderDto data)
         {
             try
             {
@@ -134,16 +214,40 @@ namespace SPInteriors.Services.Implementations
 
                     dbContext.WorkOrders.Add(workorder);
                     await dbContext.SaveChangesAsync();
+                }
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+        public async Task<bool> CreateWorkOrderPartAsync(WorkOrderPartDto data, List<WorkOrderPropertyDto> properties)
+        {
+            try
+            {
+                Models.Domain.WorkOrderPart part = new Models.Domain.WorkOrderPart();
+
+                if (data != null)
+                {
+                    part.WorkOrderId = data.WorkOrderId;
+                    part.WorkOrderTypeId = data.WorkOrderTypeId;
+                    part.Width = data.Width;
+                    part.Height = data.Height;
+                    part.Notes = data.Notes;
+
+                    dbContext.WorkOrderParts.Add(part);
+                    await dbContext.SaveChangesAsync();
 
 
-                    if(properties != null && properties.Count > 0)
+                    if (properties != null && properties.Count > 0)
                     {
                         foreach (var property in properties)
                         {
-                            foreach(var value in property.SelectedValues)
+                            foreach (var value in property.SelectedValues)
                             {
                                 WorkOrderDetail detail = new WorkOrderDetail();
-                                detail.WorkOrderId = workorder.Id;
+                                detail.WorkOrderId = part.Id;
                                 detail.Name = value.Name;
                                 detail.Value = value.Value;
 
@@ -154,7 +258,7 @@ namespace SPInteriors.Services.Implementations
                     await dbContext.SaveChangesAsync();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return false;
             }
@@ -162,7 +266,7 @@ namespace SPInteriors.Services.Implementations
         }
 
 
-        public async Task<bool> UpdateWorkOrderAsync(WorkOrderDto data, List<WorkOrderPropertyDto> properties)
+        public async Task<bool> UpdateWorkOrderAsync(WorkOrderDto data)
         {
             if (data != null && data.Id > 0)
             {
@@ -185,6 +289,32 @@ namespace SPInteriors.Services.Implementations
                         workorder.Amount = data.Amount;
 
                         await dbContext.SaveChangesAsync();
+                    }
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+            return true;
+        }
+
+        public async Task<bool> UpdateWorkOrderPartAsync(WorkOrderPartDto data, List<WorkOrderPropertyDto> properties)
+        {
+            if (data != null && data.Id > 0)
+            {
+                try
+                {
+                    var workorderPart = dbContext.WorkOrderParts.FirstOrDefault(s => s.Id == data.Id);
+
+                    if (workorderPart != null)
+                    {
+                        workorderPart.WorkOrderTypeId = data.WorkOrderTypeId;
+                        workorderPart.WorkOrderId = data.WorkOrderId;
+                        workorderPart.Width = data.Width;
+                        workorderPart.Height = data.Height;
+
+                        await dbContext.SaveChangesAsync();
 
 
 
@@ -192,16 +322,12 @@ namespace SPInteriors.Services.Implementations
                         {
                             foreach (var property in properties)
                             {
-                                //if (dbContext.WorkOrderDetails.Any(x => x.WorkOrderId == workorder.Id && x.Name == property.Name))
-                                //{
-                                //    dbContext.WorkOrderDetails.RemoveRange(dbContext.WorkOrderDetails.Where(x => x.WorkOrderId == workorder.Id && x.Name == property.Name).ToList());
-                                //}
                                 foreach (var value in property.SelectedValues)
                                 {
-                                    if (!dbContext.WorkOrderDetails.Any(x => x.WorkOrderId == workorder.Id && x.Name == property.Name && x.Value == value.Value))
+                                    if (!dbContext.WorkOrderDetails.Any(x => x.WorkOrderId == workorderPart.Id && x.Name == property.Name && x.Value == value.Value))
                                     {
                                         WorkOrderDetail detail = new WorkOrderDetail();
-                                        detail.WorkOrderId = workorder.Id;
+                                        detail.WorkOrderId = workorderPart.Id;
                                         detail.Name = value.Name;
                                         detail.Value = value.Value;
 
@@ -220,7 +346,6 @@ namespace SPInteriors.Services.Implementations
             }
             return true;
         }
-
 
         public async Task<List<WorkOrderPropertyDto>> GetWorkOrderPropertiesAsync()
         {
@@ -252,5 +377,63 @@ namespace SPInteriors.Services.Implementations
             }
             return properties;
         }
+
+        public async Task<bool> DeleteWorkOrderPart(int id)
+        {
+            bool isDeleted = false;
+
+            if (dbContext.WorkOrderParts.Any(x => x.Id == id))
+            {
+                var part = dbContext.WorkOrderParts.First(x => x.Id == id);
+
+                if(dbContext.WorkOrderDetails.Any(x => x.WorkOrderId == id))
+                {
+                    var details = dbContext.WorkOrderDetails.Where(x => x.WorkOrderId == id);
+                    dbContext.WorkOrderDetails.RemoveRange(details);
+                }
+                dbContext.WorkOrderParts.Remove(part);
+
+                dbContext.SaveChangesAsync();
+                isDeleted = true;
+            }
+
+            return isDeleted;
+        }
+
+
+        public async Task<bool> DeleteWorkOrder(int id)
+        {
+            bool isDeleted = false;
+
+            if (dbContext.WorkOrders.Any(x => x.Id == id))
+            {
+                var workOrder = dbContext.WorkOrders.First(x => x.Id == id);
+
+                if (dbContext.WorkOrderParts.Any(x => x.WorkOrderId == id))
+                {
+                    var parts = dbContext.WorkOrderParts.Where(x => x.WorkOrderId == id);
+
+                    foreach(var part in parts)
+                    {
+                        if (dbContext.WorkOrderParts.Any(x => x.Id == part.Id))
+                        {
+                            if (dbContext.WorkOrderDetails.Any(x => x.WorkOrderId == part.Id))
+                            {
+                                var details = dbContext.WorkOrderDetails.Where(x => x.WorkOrderId == part.Id);
+                                dbContext.WorkOrderDetails.RemoveRange(details);
+                            }
+                            dbContext.WorkOrderParts.Remove(part);
+                        }
+                    }                    
+                }
+                dbContext.WorkOrders.Remove(workOrder);
+
+                await dbContext.SaveChangesAsync();
+                isDeleted = true;
+            }
+
+            return isDeleted;
+        }
+
     }
 }

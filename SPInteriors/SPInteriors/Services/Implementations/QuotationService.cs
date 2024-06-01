@@ -58,6 +58,7 @@ namespace SPInteriors.Services.Implementations
                     quotation.Rooms = new List<RoomInfo>();
                     var rooms = dbContext.VwRooms.Where(x => x.ProjectId == id).ToList();
 
+                    var workOrderTypes = dbContext.WorkOrderTypes.ToList();
                     foreach (var item in rooms)
                     {
                         RoomInfo roomInfo = new RoomInfo();
@@ -90,24 +91,32 @@ namespace SPInteriors.Services.Implementations
                                     workOrderInfo.UnitPrice = 0;
                                 }
 
-                                if (dbContext.WorkOrderDetails.Any(x => x.WorkOrderId == workOrder.Id))
+                                if(dbContext.WorkOrderParts.Any(x=>x.WorkOrderId == workOrder.Id))
                                 {
-                                    workOrderInfo.Details = new List<WorkOrderDetailsDto>();
-                                    var details = dbContext.WorkOrderDetails.Where(x => x.WorkOrderId == workOrder.Id).ToList();
+                                    var parts = dbContext.WorkOrderParts.Where(x => x.WorkOrderId == workOrder.Id).ToList();
 
-                                    if (details != null && details.Count > 0)
+                                    if(parts != null && parts.Count > 0)
                                     {
-                                        foreach(var detail in  details)
-                                        {
-                                            WorkOrderDetailsDto detailDto = new WorkOrderDetailsDto();
-                                            detailDto.Id = detail.Id;
-                                            detailDto.Name = detail.Name;
-                                            detailDto.Value = detail.Value;
+                                        workOrderInfo.Parts = new List<WorkOrderPartDto>();
 
-                                            workOrderInfo.Details.Add(detailDto);
+                                        foreach (var part in parts)
+                                        {
+                                            WorkOrderPartDto partDto = new WorkOrderPartDto();
+                                            partDto.Id = part.Id;
+                                            partDto.WorkOrderId = part.WorkOrderId;
+                                            partDto.WorkOrderTypeId = part.WorkOrderTypeId;
+                                            partDto.Height = part.Height;
+                                            partDto.Width = part.Width;
+
+                                            if (workOrderTypes.Any(x => x.Id == part.WorkOrderTypeId))
+                                                partDto.WorkOrderType = workOrderTypes.First(x => x.Id == part.WorkOrderTypeId).Name;
+
+                                            workOrderInfo.Parts.Add(partDto);
                                         }
                                     }
                                 }
+
+                               
 
                                 roomInfo.WorkOrders.Add(workOrderInfo);
                             }

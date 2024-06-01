@@ -9,6 +9,8 @@ public partial class Room
 
     public string? Name { get; set; }
 
+    public int RoomTypeId { get; set; }
+
     public int MaterialTypeId { get; set; }
 
     public int OuterFrameTypeId { get; set; }

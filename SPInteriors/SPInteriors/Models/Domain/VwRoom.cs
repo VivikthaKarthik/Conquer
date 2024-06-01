@@ -7,7 +7,9 @@ public partial class VwRoom
 {
     public int Id { get; set; }
 
-    public string? Name { get; set; }
+    public int RoomTypeId { get; set; }
+
+    public string Name { get; set; } = null!;
 
     public int ProjectId { get; set; }
 

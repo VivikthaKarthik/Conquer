@@ -13,7 +13,7 @@ public partial class WorkOrderItem
 
     public string? ImagePath { get; set; }
 
-    public int? RoomId { get; set; }
+    public int RoomTypeId { get; set; }
 
     public virtual ICollection<DesignType> DesignTypes { get; set; } = new List<DesignType>();
 

@@ -1,32 +1,13 @@
-﻿using SPInteriors.Models.Domain;
-
-namespace SPInteriors.Models
+﻿namespace SPInteriors.Models
 {
-    public class WorkOrderDto
+    public class WorkOrderPartDto
     {
-
-        public string WorkBookTag
-        {
-            get
-            {
-                return Id.ToString() + "_" + Name.Replace(" ", "");
-            }
-        }
         public int Id { get; set; }
 
-        public string Name { get; set; }
+        public int WorkOrderId { get; set; }
 
-        public int? WorkOrderItemId { get; set; }
-        public string WorkOrderItem { get; set; }
+        public int WorkOrderTypeId { get; set; }
         public string WorkOrderType { get; set; }
-        public int RoomTypeId { get; set; }
-        public int RoomId { get; set; }
-        public string Room { get; set; }
-        public string OuterFrameType { get; set; }
-        public string DesignType { get; set; }
-        public string MaterialType { get; set; }
-
-        public string ImagePath { get; set; }
 
         public decimal Height
         {
@@ -67,29 +48,19 @@ namespace SPInteriors.Models
             }
         }
 
-        public bool SuppressCalculation { get; set; }
-
-        public int? Amount { get; set; }
-
-        public int TotalSftInFeet
+        public decimal TotalSft
         {
             get
             {
-                return Convert.ToInt32(Math.Floor(Height * Width));
+                return Height * Width;
             }
         }
 
-        public decimal TotalSftInInch
-        {
-            get
-            {
-                var inches = Convert.ToInt32((Height * Width - TotalSftInFeet) * 100);
+        public string? Notes { get; set; }
+        public string WorkOrderItem { get; set; }
 
-                if (inches > 12)
-                    inches = inches / 10;
-                return inches;
-            }
-        }
+        public string ImagePath { get; set; }
+
 
         public int HeightInFeet { get; set; }
 
@@ -99,13 +70,8 @@ namespace SPInteriors.Models
 
         public int WidthInInch { get; set; }
 
-        public List<WorkOrderPartDto> Parts { get; set; }
-    }
+        public List<WorkOrderDetailsDto> Details { get; set; }
 
-    public class WorkOrderDetailsDto
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public string Value { get; set; }
+        public WorkOrderDto WorkOrder { get; set; }
     }
 }

@@ -12574,8 +12574,8 @@ body.admin-bar .header-area.style-7 {
 }
 
 .page-breadcrumb-area {
-    padding-top: 215px;
-    padding-bottom: 125px;
+    padding-top: 15px;
+    padding-bottom: 25px;
     position: relative;
     z-index: 2;
     background-repeat: no-repeat;
@@ -12586,8 +12586,8 @@ body.admin-bar .header-area.style-7 {
 
 @media only screen and (min-width: 0px) and (max-width: 767px) {
     .page-breadcrumb-area {
-        padding-top: 168px;
-        padding-bottom: 100px;
+        padding-top: 18px;
+        padding-bottom: 10px;
     }
 }
 
@@ -12611,7 +12611,7 @@ body.admin-bar .header-area.style-7 {
     text-transform: capitalize;
     line-height: initial;
     font-weight: 600;
-    text-align: center;
+    text-align: left;
 }
 
 @media (max-width: 375px) {
@@ -12641,7 +12641,7 @@ body.admin-bar .header-area.style-7 {
 }
 
 .breadcrumb-list {
-    text-align: center;
+    text-align: left;
 }
 
     .breadcrumb-list ul {
@@ -12650,14 +12650,14 @@ body.admin-bar .header-area.style-7 {
         display: inline-flex;
         gap: 0 12px;
         flex-wrap: wrap;
-        justify-content: center;
+        justify-content: left;
         text-align: left;
     }
 
 @media only screen and (min-width: 0px) and (max-width: 767px) {
     .breadcrumb-list ul {
         flex-direction: column;
-        align-items: center;
+        align-items: flex-start;
     }
 }
 
@@ -12665,7 +12665,7 @@ body.admin-bar .header-area.style-7 {
     list-style: none;
     display: inline-flex;
     gap: 0 12px;
-    align-items: center;
+    align-items: flex-start;
     color: #fff;
 }
 
@@ -20093,7 +20093,7 @@ ul.children {
 
 .contact-form-area.style-3 .comment-respond {
     padding: 60px;
-    padding-right: 0;
+    /*padding-right: 0;*/
 }
 
 @media only screen and (min-width: 0px) and (max-width: 767px) {
@@ -22190,7 +22190,7 @@ form-field-button {
     }
 
 .modal-dialog {
-    max-width: 500px;
+    max-width: 800px;
     margin: 1.75rem auto;
 }
 
@@ -22207,11 +22207,16 @@ form-field-button {
     align-items: center;
     padding: 1rem;
     border-bottom: 1px solid #dee2e6;
+    background-color: #D9A14C;
 }
 
 .modal-body {
     position: relative;
     padding: 1rem;
+}
+
+.modal-title {
+    color: #ffffff;
 }
 
 .modal-footer {
@@ -22248,14 +22253,15 @@ form-field-button {
     border-radius: 12px;
     padding-left: 20px;
     padding-right: 20px;
-    margin-top: 20px;
     text-align: center;
     vertical-align: middle;
-    background-color: #fff;
+    background-color: #F4F4F4;
     color: black;
     cursor: pointer;
     margin-left: 8px;
+    border: 1px solid lightgrey;
     box-shadow: 0 0 5px -1px rgba(0,0,0,0.2);
+    margin-top:8px;
 }
 
     .grid-item:hover {
@@ -22281,6 +22287,11 @@ form-field-button {
         flex-direction: column;
         gap: 20px;
     }
+}
+
+.grid-item-header{
+    padding-left:30px;
+    padding-top:30px;
 }
 
 .row-item {
