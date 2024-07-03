@@ -108,6 +108,10 @@ export class MasterService {
     return this.http.put(`${this.baseUrl}/${type}/${apiName}/${obj.id}`, obj);
   }
 
+  update(id: number, type: string, apiName: string) {
+    return this.http.put(`${this.baseUrl}/${type}/${apiName}/${id}`, null);
+  }
+
   delete(id: any, type: string, apiName: string) {
     return this.http.delete(`${this.baseUrl}/${type}/${apiName}/${id}`);
   }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using SPInteriors.Components.Pages;
 using SPInteriors.Models;
 using SPInteriors.Models.Domain;
@@ -13,10 +15,12 @@ namespace SPInteriors.Services.Implementations
     public class WorkOrderService : IWorkOrderService
     {
         private readonly SpinteriorsContext dbContext;
+        private readonly IWebHostEnvironment _environment;
         //private readonly IMapper mapper;
-        public WorkOrderService(SpinteriorsContext _dbContext)
+        public WorkOrderService(IWebHostEnvironment environment, SpinteriorsContext _dbContext)
         {
             dbContext = _dbContext;
+            _environment = environment;
             //mapper = _mapper;
         }
 
@@ -103,6 +107,17 @@ namespace SPInteriors.Services.Implementations
                 workorder.SuppressCalculation = data.SuppressCalculation;
                 workorder.Amount = data.Amount;
 
+                if(workorder.RoomId > 0)
+                {
+                    var room = dbContext.Rooms.First(x => x.Id == workorder.RoomId);
+                    workorder.ProjectId = room.ProjectId;
+                    workorder.Room = room.Name?? "";
+                    if (workorder.ProjectId > 0)
+                    {
+                        workorder.ProjectName = dbContext.Projects.First(x => x.Id == workorder.ProjectId).Name;
+                    }
+                }
+
             }
             return workorder;
         }
@@ -119,7 +134,7 @@ namespace SPInteriors.Services.Implementations
                 part.WorkOrderTypeId = data.WorkOrderTypeId;
                 part.Width = data.Width;
                 part.Height = data.Height;
-
+                                
                 if (dbContext.WorkOrderDetails.Any(x => x.WorkOrderId == id))
                 {
                     part.Details = new List<WorkOrderDetailsDto>();
@@ -378,6 +393,25 @@ namespace SPInteriors.Services.Implementations
             return properties;
         }
 
+        public async Task<List<ListItemDto>> GetWorkOrderImagesAsync(int workOrderId)
+        {
+            List<ListItemDto> images = new List<ListItemDto>();
+            var listItems = dbContext.WorkOrderImages.Where(x => x.WorkOrderId == workOrderId).ToList();
+
+            if (listItems.Any())
+            {
+                foreach (var data in listItems)
+                {
+                    ListItemDto image = new ListItemDto();
+                    image.Id = data.Id;
+                    image.Name = data.ImagePath;
+
+                    images.Add(image);
+                }
+            }
+            return images;
+        }
+
         public async Task<bool> DeleteWorkOrderPart(int id)
         {
             bool isDeleted = false;
@@ -435,5 +469,46 @@ namespace SPInteriors.Services.Implementations
             return isDeleted;
         }
 
+        public async Task<bool> CreateWorkOrderItemAsync(IBrowserFile image, int roomId, CreateWorkOrderItemDto data)
+        {
+            try
+            {
+                string filePath = "";
+                if (image != null)
+                {
+                    var uploadPath = Path.Combine(_environment.WebRootPath, "ImageVault");
+
+                    if (!Directory.Exists(uploadPath))
+                    {
+                        Directory.CreateDirectory(uploadPath);
+                    }
+
+                    var actualFilePath = Path.Combine(uploadPath, image.Name);
+                    filePath = "ImageVault/Default Images/WorkItems/" + image.Name;
+
+                    using (var stream = new FileStream(actualFilePath, FileMode.Create))
+                    {
+                        await image.OpenReadStream().CopyToAsync(stream);
+                    }
+                }
+                Models.Domain.WorkOrderItem workOrderItem = new Models.Domain.WorkOrderItem();
+
+                if (data != null)
+                {
+                    workOrderItem.Name = data.Name;
+                    workOrderItem.Description = data.Description;
+                    workOrderItem.RoomTypeId = roomId;
+                    workOrderItem.ImagePath = filePath;
+
+                    dbContext.WorkOrderItems.Add(workOrderItem);
+                    await dbContext.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }

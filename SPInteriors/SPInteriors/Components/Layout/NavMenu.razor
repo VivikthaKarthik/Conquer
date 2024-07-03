@@ -1,4 +1,5 @@
 ﻿@using SPInteriors.Authentication
+@using SPInteriors.Services.Implementations
 @using SPInteriors.Services.Interfaces
 @using SPInteriors.Utilities
 
@@ -25,17 +26,17 @@
                     <div class="menu d-inline-block">
                         <nav id="main-menu" class="main-menu">
                             <ul>
-                                <li class="active"><a href="/" @onclick='(() => HandleNavClick("home"))'>Home</a></li>
+                                <li class="@(currentPage == "home" ? "active" : "")"><a href="/" @onclick='(() => HandleNavClick("home"))'>Home</a></li>
 
-                                <li><a href="explore" @onclick='(() => HandleNavClick("explore"))'>Explore</a></li>
+                                <li class='@(currentPage == "explore" ? "active" : "")'><a href="explore" @onclick='(() => HandleNavClick("explore"))'>Explore</a></li>
 
                                 <CascadingAuthenticationState>
                                     <AuthorizeView>
                                         <Authorized>
                                             @* <li><a href="dashboard" @onclick='(() => HandleNavClick("dashboard"))'>Dashboard</a></li> *@
-                                            <li><a href="projects" @onclick='(() => HandleNavClick("projects"))'>Projects</a></li>
-                                            <li><a href="portfolio" @onclick='(() => HandleNavClick("portfolio"))'>Portfolio</a></li>
-                                            <li class="dropdown">
+                                            <li class='@(currentPage == "projects" ? "active" : "")'><a href="projects" @onclick='(() => HandleNavClick("projects"))'>Projects</a></li>
+                                            <li class='@(currentPage == "portfolio" ? "active" : "")'><a href="portfolio" class="active" @onclick='(() => HandleNavClick("portfolio"))'>Portfolio</a></li>
+                                            <li class='dropdown @(currentPage == "masterdata" ? "active" : "")'>
                                                 <a href="javascript:void(0);">Manage</a>
                                                 <ul class="submenu">
                                                     <li><a href="masterdata" @onclick='(() => HandleNavClick("masterdata"))'>MasterData</a></li>
@@ -46,8 +47,8 @@
                                         </Authorized>
                                     </AuthorizeView>
                                 </CascadingAuthenticationState>
-                                <li><a href="portfolio" @onclick='(() => HandleNavClick("aboutus"))'>About Us</a></li>
-                                <li><a href="portfolio" @onclick='(() => HandleNavClick("contactus"))'>Contact Us</a></li>
+                                <li class='@(currentPage == "aboutus" ? "active" : "")'><a href="portfolio" @onclick='(() => HandleNavClick("aboutus"))'>About Us</a></li>
+                                <li class='@(currentPage == "contactus" ? "active" : "")'><a href="portfolio" @onclick='(() => HandleNavClick("contactus"))'>Contact Us</a></li>
                             </ul>
                         </nav>
                     </div>
@@ -134,19 +135,24 @@
 <!-- Menu Sidebar Section Start -->
 <div class="body-overlay"></div>
 
+
 @code {
-    @inject IJSRuntime JSRuntime;
+@inject IJSRuntime JSRuntime;
     @inject NavigationManager NavigationManager;
     @inject IUserService UserService;
     @inject AuthenticationStateProvider authStateProvider;
+    @inject HeaderService headerService;
 
-    // protected override void OnInitialized()
-    // {
-    //     JSRuntime.InvokeVoidAsync("addDynamicComponent");
-    // }
+    private string currentPage = "Home";
+
+    protected override void OnInitialized()
+    {
+        currentPage = headerService.CurrentPage;
+    }
 
     private void HandleNavClick(string componentName)
     {
+        headerService.CurrentPage = componentName;
         NavigationManager.NavigateTo(componentName, true);
     }
 

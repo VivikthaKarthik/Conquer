@@ -6,162 +6,161 @@
 
 @if (isDataFetchedCompletely)
 {
-<div class="page-breadcrumb-area page-bg">
-    <div class="page-overlay"></div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="breadcrumb-wrapper">
-                    <div class="page-heading">
-                        <h3 class="page-title">Room Details</h3>
-                    </div>
-                    <div class="breadcrumb-list">
-                        <ul>
-                            <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/"))'>Home</a></li>
-                            <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/Projects"))'>Projects</a></li>
-                            <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/Projects/Edit/" + projectId))'>@room.ProjectName</a></li>
-                            <li><a href="javascript:void(0);">Room Details</a></li>
-                        </ul>
+    <div class="page-breadcrumb-area page-bg">
+        <div class="page-overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="breadcrumb-wrapper">
+                        <div class="page-heading">
+                            <h3 class="page-title">Room Details</h3>
+                        </div>
+                        <div class="breadcrumb-list">
+                            <ul>
+                                <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/"))'>Home</a></li>
+                                <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/Projects"))'>Projects</a></li>
+                                <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/Projects/Edit/" + projectId))'>@room.ProjectName</a></li>
+                                <li><a href="javascript:void(0);">Room Details</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
-    <div class="container edit-screen-container">
-      @*   <div class="row edit-screen-header">
-            <div class="col-xl-12">
-                <h3>Room</h3>
-            </div>
+    <div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
+        <div class="container edit-screen-container">
+            @*   <div class="row edit-screen-header">
+        <div class="col-xl-12">
+        <h3>Room</h3>
+        </div>
         </div> *@
 
-        <div class="row">
-            <div class="col-xl-12 col-lg-12">
-                <div class="subscribe-form-widget">
-                    <form>
-                        <div class="row form-row">
-                            <div class="faq-area">
-                                <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12">
+                    <div class="subscribe-form-widget">
+                        <form>
+                            <div class="row form-row">
+                                <div class="faq-area">
+                                    <div class="container">
 
-                                    <div class="row form-row">
-                                        <div class="col-xl-12 col-lg-12">
-                                            <div class="form-label">
-                                                <h4>@room.ProjectName</h4>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row form-row">
-                                      
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                Project
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-10 col-lg-10">
-                                            <div class="form-field">
-                                                <Dropdown ControlId="RoomTypeId" TableName="RoomType" ExistingItem="@room.RoomTypeId" OnItemSelection='((value) => room.RoomTypeId = value.Id)'></Dropdown>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                Material Type
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-4">
-                                            <div class="form-field">
-                                                <Dropdown ControlId="MaterialTypeId" TableName="MaterialType" ExistingItem="@room.MaterialTypeId" OnItemSelection='((value) => room.MaterialTypeId = value.Id)'></Dropdown>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                Outer Frame
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-4">
-                                            <div class="form-field">
-                                                <Dropdown ControlId="OuterFrameTypeId" TableName="OuterFrameType" ExistingItem="@room.OuterFrameTypeId" OnItemSelection='((value) => room.OuterFrameTypeId = value.Id)'></Dropdown>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row" style="padding-left:10px;padding-top:47px;">
-                                        <div class="col-xl-6">
-                                            <h4>Work Orders</h4>
-                                        </div>
-                                        <div class="col-xl-6 grid-buttons-container" style="display:block">
-                                            <button class="myButton text-right" @onclick='(() => AddWorkOrder(room.Id))' type="button">Add <i class="fa-solid fa-add"></i></button>
-                                        </div>
-                                    </div>
-                                    <div class="our-team-area style-2">
-                                        <div class="container">
-                                            <div class="team-card-wrapper">
-                                                <div class="row">
-                                                    @if (room.WorkOrders != null && room.WorkOrders.Count > 0)
-                                                    {
-                                                        @foreach (var service in room.WorkOrders)
-                                                        {
-                                                            <div class="col-lg-3 col-md-5" style="margin-top:20px;" @onclick='(() => EditService(service.Id, room.Id))'>
-                                                                <div class="team-member-card">
-                                                                    <div class="content-wrapper">
-                                                                        <div class="content">
-                                                                            <h2 class="title">@service.Name</h2>
-                                                                            <p class="desc" style="padding:0;">@service.WorkOrderItem</p>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="image">
-                                                                        @if (!string.IsNullOrEmpty(service.ImagePath))
-                                                                        {
-                                                                            <img style="height:300px;width:100%;" src="@service.ImagePath" />
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <img src="images/room/livingroom/livingroom.jpg" />
-                                                                        }
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        }
-                                                    }
+                                        <div class="row form-row">
+                                            <div class="col-xl-12 col-lg-12">
+                                                <div class="form-label">
+                                                    <h4>@room.ProjectName</h4>
                                                 </div>
                                             </div>
                                         </div>
 
+                                        <div class="row form-row">
+
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Room Type
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-10 col-lg-10">
+                                                <div class="form-field">
+                                                    <Dropdown ControlId="RoomTypeId" TableName="RoomType" ExistingItem="@room.RoomTypeId" OnItemSelection='((value) => room.RoomTypeId = value.Id)'></Dropdown>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Material Type
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <Dropdown ControlId="MaterialTypeId" TableName="MaterialType" ExistingItem="@room.MaterialTypeId" OnItemSelection='((value) => room.MaterialTypeId = value.Id)'></Dropdown>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Outer Frame
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <Dropdown ControlId="OuterFrameTypeId" TableName="OuterFrameType" ExistingItem="@room.OuterFrameTypeId" OnItemSelection='((value) => room.OuterFrameTypeId = value.Id)'></Dropdown>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" style="padding-left:10px;padding-top:47px;">
+                                            <div class="col-xl-6">
+                                                <h4>Work Orders</h4>
+                                            </div>
+                                            <div class="col-xl-6 grid-buttons-container" style="display:block">
+                                                <button class="myButton text-right" @onclick='(() => AddWorkOrder(room.Id))' type="button">Add <i class="fa-solid fa-add"></i></button>
+                                            </div>
+                                        </div>
+                                        <div class="our-team-area style-2">
+                                            <div class="container">
+                                                <div class="team-card-wrapper">
+                                                    <div class="row">
+                                                        @if (room.WorkOrders != null && room.WorkOrders.Count > 0)
+                                                        {
+                                                            @foreach (var service in room.WorkOrders)
+                                                            {
+                                                                <div class="col-lg-3 col-md-5" style="margin-top:20px;" @onclick='(() => EditService(service.Id, room.Id))'>
+                                                                    <div class="team-member-card">
+                                                                        <div class="content-wrapper">
+                                                                            <div class="content">
+                                                                                <h2 class="title">@service.WorkOrderItem</h2>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="image">
+                                                                            @if (!string.IsNullOrEmpty(service.ImagePath))
+                                                                            {
+                                                                                <img style="height:300px;width:100%;" src="@service.ImagePath" />
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <img src="images/room/livingroom/livingroom.jpg" />
+                                                                            }
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            }
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
                                     </div>
-
-
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row form-row">
-                            <div class="col-xl-12 grid-buttons-container">
-                                <button class="myButton text-right" @onclick="OnBackClicked" type="button">Back</button>
-                                <button class="myButton text-right" @onclick="SaveAndRedirect" type="button">Save</button>
+                            <div class="row form-row">
+                                <div class="col-xl-12 grid-buttons-container">
+                                    <button class="myButton text-right" @onclick="OnBackClicked" type="button">Back</button>
+                                    <button class="myButton text-right" @onclick="SaveAndRedirect" type="button">Save</button>
 
-                                @if (!isAdd)
-                                {
-                                    <button class="myButton text-right" @onclick="DeleteAndRedirect" type="button">Delete</button>
-                                }
+                                    @if (!isAdd)
+                                    {
+                                        <button class="myButton text-right" @onclick="DeleteAndRedirect" type="button">Delete</button>
+                                    }
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Scroll Up Section Start -->
-<div id="scrollTop" class="scrollup-wrapper">
-    <div class="scrollup-btn">
-        <i class="fa-regular fa-angle-up"></i>
+    <!-- Scroll Up Section Start -->
+    <div id="scrollTop" class="scrollup-wrapper">
+        <div class="scrollup-btn">
+            <i class="fa-regular fa-angle-up"></i>
+        </div>
     </div>
-</div>
-<!-- Scroll Up Section End -->
+    <!-- Scroll Up Section End -->
 }
 
 @code {
@@ -197,7 +196,7 @@
         }
         if (projectId != null && Convert.ToInt32(projectId) > 0)
         {
-            project = await projectService.GetProjectByIdAsync(Convert.ToInt32(projectId));
+            await FetchProject();
 
             if (project != null)
             {
@@ -214,23 +213,57 @@
         isDataFetchedCompletely = true;
     }
 
+    private async Task FetchProject()
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(projectId))
+            {
+                var response = await projectService.GetProjectByIdAsync(Convert.ToInt32(projectId));
+
+                if (response != null && response.IsSuccess)
+                    project = (ProjectDto)response.Result;
+                else if (response != null && !string.IsNullOrEmpty(response.ErrorMessage))
+                {
+                    project = new ProjectDto();
+                    await JSRuntime.InvokeVoidAsync("ShowAlert", response.ErrorMessage);
+                    NavigationManager.NavigateTo("/Error", true);
+                }
+                else
+                {
+                    await JSRuntime.InvokeVoidAsync("ShowAlert", "Some error occured. Please try again !");
+                    NavigationManager.NavigateTo("/Error", true);
+                }
+            }
+            else
+            {
+                project = new ProjectDto();
+            }
+        }
+        catch
+        {
+            await JSRuntime.InvokeVoidAsync("ShowAlert", "Some error occured. Please try again !");
+            NavigationManager.NavigateTo("/Error", true);
+        }
+    }
+
 
     private async Task AddWorkOrder(int roomId)
     {
         if (await SaveRoom())
         {
-            NavigationManager.NavigateTo("workorder/add/" + roomId, false);
+            NavigationManager.NavigateTo("workorder/add/" + roomId, true);
         }
     }
 
     private async Task EditWorkOrder(int serviceId, int roomId)
     {
-        NavigationManager.NavigateTo("workorder/edit/" + roomId + "/" + serviceId, false);
+        NavigationManager.NavigateTo("workorder/edit/" + roomId + "/" + serviceId, true);
     }
 
     private async Task OnBackClicked()
     {
-        NavigationManager.NavigateTo("projects/edit/" + projectId, false);
+        NavigationManager.NavigateTo("projects/edit/" + projectId, true);
     }
 
     private async Task<bool> SaveRoom()
@@ -251,10 +284,10 @@
     {
         if (await SaveRoom())
         {
-            NavigationManager.NavigateTo("projects/edit/" + projectId, false);
+            NavigationManager.NavigateTo("projects/edit/" + projectId, true);
         }
     }
-    
+
     private async Task DeleteAndRedirect()
     {
         var isDeleted = await roomService.DeleteRoom(room.Id);
@@ -262,7 +295,7 @@
         if (isDeleted)
         {
             await JSRuntime.InvokeVoidAsync("ShowAlert", "Deleted " + room.Name + " successfully !");
-            NavigationManager.NavigateTo("projects/edit/" + projectId, false);
+            NavigationManager.NavigateTo("projects/edit/" + projectId, true);
         }
         else
         {
@@ -272,13 +305,13 @@
 
     private async Task EditService(int serviceId, int roomId)
     {
-        NavigationManager.NavigateTo("workorder/edit/" + roomId + "/" + serviceId, false);
+        NavigationManager.NavigateTo("workorder/edit/" + roomId + "/" + serviceId, true);
     }
 
 
     private async void Navigate(string url)
     {
-        NavigationManager.NavigateTo(url, false);
+        NavigationManager.NavigateTo(url, true);
     }
 }
 

@@ -65,10 +65,6 @@ export class EditsubtopicComponent {
   ngOnInit(): void {
     this.getAllAttachments();
     this.getCourses();
-    this.getClsByCourseId(0);
-    this.getSubByClsID(0);
-    this.getChapterBySubID(0);
-    this.getTopicByChapterID(0);
 
     this.route.queryParams.subscribe((params) => {
       const id: string = params['id'];
@@ -149,6 +145,7 @@ export class EditsubtopicComponent {
             name: item.name,
           })
         );
+        this.getClsByCourseId(this.editSubTopicForm.controls.selCourseId.value);
       } else {
         alert(data.message);
       }
@@ -167,24 +164,11 @@ export class EditsubtopicComponent {
                 name: item.name,
               })
             );
+            this.getSubByClsID(this.editSubTopicForm.controls.selClassId.value);
           } else {
             alert(data.message);
           }
         });
-    } else {
-      this.masterService.getListItems('Class', '', 0).subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.classData = this.dataMappingService.mapToModel<ListItem>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-            })
-          );
-        } else {
-          alert(data.message);
-        }
-      });
     }
   }
 
@@ -201,21 +185,8 @@ export class EditsubtopicComponent {
                 name: item.name,
               })
             );
-          } else {
-            alert(data.message);
-          }
-        });
-    } else {
-      this.masterService
-        .getListItems('Subject', '', 0)
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            this.subjectData = this.dataMappingService.mapToModel<ListItem>(
-              data.result,
-              (item) => ({
-                id: item.id,
-                name: item.name,
-              })
+            this.getChapterBySubID(
+              this.editSubTopicForm.controls.selSubId.value
             );
           } else {
             alert(data.message);
@@ -236,21 +207,9 @@ export class EditsubtopicComponent {
                 name: item.name,
               })
             );
-          } else {
-            alert(data.message);
-          }
-        });
-    } else {
-      this.masterService
-        .getListItems('Chapter', '', 0)
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            this.chapterData = this.dataMappingService.mapToModel<ListItem>(
-              data.result,
-              (item) => ({
-                id: item.id,
-                name: item.name,
-              })
+
+            this.getTopicByChapterID(
+              this.editSubTopicForm.controls.selChapterId.value
             );
           } else {
             alert(data.message);
@@ -275,20 +234,6 @@ export class EditsubtopicComponent {
             alert(data.message);
           }
         });
-    } else {
-      this.masterService.getListItems('Topic', '', 0).subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.topicData = this.dataMappingService.mapToModel<ListItem>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-            })
-          );
-        } else {
-          alert(data.message);
-        }
-      });
     }
   }
 
@@ -309,11 +254,8 @@ export class EditsubtopicComponent {
       name: this.editSubTopicForm.value.name,
       sourceURL: this.editSubTopicForm.value.sourceURL,
       duration: this.editSubTopicForm.value.duration,
-      selCourseId: this.editSubTopicForm.value.selCourseId,
-      selClassId: this.editSubTopicForm.value.selClassId,
-      selSubId: this.editSubTopicForm.value.selSubId,
-      selChapterId: this.editSubTopicForm.value.selChapterId,
-      selTopicId: this.editSubTopicForm.value.selTopicId,
+      chapterId: this.editSubTopicForm.value.selChapterId,
+      topicId: this.editSubTopicForm.value.selTopicId,
       classNotesURL: this.editSubTopicForm.value.classNotesURL,
       extractURL: this.editSubTopicForm.value.extractURL,
       homeDisplay: this.editSubTopicForm.value.homeDispaly,

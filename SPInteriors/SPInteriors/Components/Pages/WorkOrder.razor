@@ -1,7 +1,11 @@
 ﻿@page "/workorder/add/{roomId}"
 @page "/workorder/edit/{roomId}/{id}"
+
+@inherits WorkOrderBase
 @using SPInteriors.Models
 @using SPInteriors.Services.Interfaces
+@using SPInteriors.Components.Pages.Modals
+
 @rendermode @(new InteractiveServerRenderMode(prerender:false))
 
 @if (isDataFetchedCompletely)
@@ -21,7 +25,7 @@
                                 <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/"))'>Home</a></li>
                                 <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/Projects"))'>Projects</a></li>
                                 <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/projects/Edit/" + room.ProjectId))'>@room.ProjectName</a></li>
-                                <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/room/Edit/" + roomId))'>@RoomName</a></li>
+                                <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/room/Edit/" + room.ProjectId + "/" + roomId))'>@RoomName</a></li>
                                 <li><a href="javascript:void(0);">WorkOrder Details</a></li>
                             </ul>
                         </div>
@@ -70,9 +74,14 @@
                                                     WorkOrder Item
                                                 </div>
                                             </div>
-                                            <div class="col-xl-10 col-lg-10">
+                                            <div class="col-xl-9 col-lg-9">
                                                 <div class="form-field">
-                                                    <Dropdown ControlId="WorkOrderItemId" TableName="WorkOrderItem" ParentName="RoomType" ParentId="workOrder.RoomTypeId" ExistingItem="@workOrder.WorkOrderItemId" OnItemSelection='((value) => OnWorkOrderItemUpdated(value))'></Dropdown>
+                                                    <Dropdown ControlId="WorkOrderItemId" ReloadDropdown="reloadDropdown" TableName="WorkOrderItem" ParentName="RoomType" ParentId="workOrder.RoomTypeId" ExistingItem="@workOrder.WorkOrderItemId" OnItemSelection='((value) => OnWorkOrderItemUpdated(value))'></Dropdown>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-1 col-lg-1" style="padding-left: 5px;">
+                                                <div class="form-field-button" style="margin:0 !important;">
+                                                    <button style="margin-left: -3px;margin-top: 0px;border-radius:12px;" class="myButton text-right" @onclick="ShowModal" type="button"><i class="fa-solid fa-add"></i></button>
                                                 </div>
                                             </div>
                                             <div class="col-xl-2 col-lg-2">
@@ -130,29 +139,44 @@
                                                     </div>
                                                 </div>
                                             }
-
-                                            <div class="col-xl-2 col-lg-2">
-                                                <div class="form-label">
-                                                    Upload Image(s)
-                                                </div>
-                                            </div>
-                                            <div class="col-xl-4 col-lg-4">
-                                                <div class="form-field">
-                                                    <InputFile OnChange="@ImageUploaded" />
-                                                </div>
-                                            </div>
                                         </div>
 
-                                        @if (!string.IsNullOrEmpty(src))
-                                        {
-                                            <div class="row form-row">
-                                                <div class="col-xl-12 col-lg-12">
-                                                    <img style="height:300px;width:300px;" src="@src" />
-                                                </div>
-                                            </div>
-                                        }
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="row" style="padding-left:10px;padding-top:47px;">
+                                <div class="col-xl-12">
+                                    <h4>Images</h4>
+                                </div>
+                                <div class="col-xl-12" style="margin-left:10px;margin-top:20px;">
+                                    <InputFile OnChange="@ImageUploaded" />
+                                </div>
+                                <div class="our-team-area style-2">
+                                    <div class="container">
+
+                                        <div class="team-card-wrapper">
+                                            <div class="row">
+                                                @if (images != null && images.Count > 0)
+                                                {
+                                                    @foreach (var image in images)
+                                                    {
+                                                        <div class="col-lg-3 col-md-5" style="margin-top:20px;">
+                                                            <img style="height:300px;width:300px;" src="@image.Name" />
+                                                        </div>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-lg-3 col-md-5" style="margin-top:20px;">
+                                                        <span>No Images uploaded yet...</span>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
                             <div class="row" style="padding-left:10px;padding-top:47px;">
@@ -162,45 +186,42 @@
                                 <div class="col-xl-6 grid-buttons-container" style="display:block">
                                     <button class="myButton text-right" type="button" @onclick='(() => AddPart(workOrder.Id))'>Add <i class="fa-solid fa-add"></i></button>
                                 </div>
-                            </div>
-                            <div class="our-team-area style-2">
+                                <div class="our-team-area style-2">
+                                    <div class="container">
 
-
-                                <div class="container">
-
-                                    <div class="team-card-wrapper">
-                                        <div class="row">
-                                            @if (workOrder.Parts != null && workOrder.Parts.Count > 0)
-                                            {
-                                                @foreach (var part in workOrder.Parts)
+                                        <div class="team-card-wrapper">
+                                            <div class="row">
+                                                @if (workOrder.Parts != null && workOrder.Parts.Count > 0)
                                                 {
-                                                    <div class="col-lg-3 col-md-5" style="margin-top:20px;" @onclick='(() => EditPart(part.Id, room.Id))'>
-                                                        <div class="team-member-card">
-                                                            <div class="content-wrapper">
-                                                                <div class="content">
-                                                                    <h2 class="title">@part.WorkOrderType</h2>
+                                                    @foreach (var part in workOrder.Parts)
+                                                    {
+                                                        <div class="col-lg-3 col-md-5" style="margin-top:20px;" @onclick='(() => EditPart(part.Id, room.Id))'>
+                                                            <div class="team-member-card">
+                                                                <div class="content-wrapper">
+                                                                    <div class="content">
+                                                                        <h2 class="title">@part.WorkOrderType</h2>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="image">
+                                                                    @if (!string.IsNullOrEmpty(part.ImagePath))
+                                                                    {
+                                                                        <img style="height:300px;width:100%;" src="@part.ImagePath" />
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <img src="images/room/livingroom/livingroom.jpg" />
+                                                                    }
                                                                 </div>
                                                             </div>
-                                                            <div class="image">
-                                                                @if (!string.IsNullOrEmpty(part.ImagePath))
-                                                                {
-                                                                    <img style="height:300px;width:100%;" src="@part.ImagePath" />
-                                                                }
-                                                                else
-                                                                {
-                                                                    <img src="images/room/livingroom/livingroom.jpg" />
-                                                                }
-                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    }
                                                 }
-                                            }
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
                             </div>
-
                             <div class="row form-row">
                                 <div class="col-xl-12 grid-buttons-container">
                                     <button class="myButton text-right" @onclick="OnBackClicked" type="button">Back</button>
@@ -214,214 +235,12 @@
             </div>
         </div>
     </div>
-    <PartModal ShowModal="@showModal" RequestType="@modalRequestType" partId="@selectedPartId" workOrderId="@workOrder.Id" ShowModalChanged="@(value => OnModelClosing(value))"></PartModal>
+    <CreateWorkOrderItem ShowModal="@showModal" roomId="@workOrder.RoomTypeId" workOrderId="@workOrder.Id" ShowModalChanged="@(value => OnModelClosing(value))"></CreateWorkOrderItem>
 
 }
 
 
+
 @code {
-    @inject IJSRuntime JSRuntime;
-    @inject NavigationManager NavigationManager;
-    @inject IWorkOrderService workOrderService;
-    @inject IRoomService roomService;
-    @inject IClientService clientService;
-    @inject IFileUploadService FileUploadService;
-    @inject ICommonService commonService;
-    private bool showModal;
-
-    List<ClientDto> clients = new List<ClientDto>();
-
-    [Parameter]
-    public string id { get; set; }
-
-    [Parameter]
-    public string roomId { get; set; }
-
-    WorkOrderDto workOrder { get; set; }
-
-    RoomDto room { get; set; }
-    string src { get; set; }
-    bool isDataFetchedCompletely = false;
-    string RoomName { get; set; } = "Work Order";
-
-    public IBrowserFile SelectedImage { get; set; }
-
-    bool isAdd { get; set; }
-
-    int selectedPartId { get; set; } = 0;
-    string modalRequestType = "";
-
-    private void ShowModal()
-    {
-        showModal = true;
-    }
-
-    private void CloseModal()
-    {
-        showModal = false;
-    }
-
-    private async Task OnModelClosing(bool value)
-    {
-        showModal = value;
-        workOrder = await workOrderService.GetWorkOrderByIdAsync(Convert.ToInt32(id));
-    }
-
-    protected async override void OnInitialized()
-    {
-        if (!string.IsNullOrEmpty(id))
-        {
-            isAdd = false;
-            workOrder = await workOrderService.GetWorkOrderByIdAsync(Convert.ToInt32(id));
-
-            if (workOrder != null)
-            {
-                RoomName = workOrder.Room;
-                src = workOrder.ImagePath;
-            }
-        }
-        else
-        {
-            workOrder = new WorkOrderDto();
-            isAdd = true;
-        }
-
-        if (!string.IsNullOrEmpty(roomId))
-        {
-            room = await roomService.GetRoomListByIdAsync(Convert.ToInt32(roomId));
-
-            if (room != null)
-            {
-                workOrder.RoomId = room.Id;
-                RoomName = room.Name;
-
-                if (!string.IsNullOrEmpty(workOrder.WorkOrderItem) && workOrder.WorkOrderItem != "Not Applicable" && workOrder.WorkOrderItem != "Custom")
-                {
-                    if (string.IsNullOrEmpty(workOrder.MaterialType))
-                        workOrder.MaterialType = room.Material;
-
-                    if (string.IsNullOrEmpty(workOrder.OuterFrameType))
-                        workOrder.OuterFrameType = room.OuterFrame;
-
-                }
-            }
-        }
-
-        clients = await clientService.GetClientsAsync();
-        isDataFetchedCompletely = true;
-    }
-    private async Task ImageUploaded(InputFileChangeEventArgs e)
-    {
-        if (workOrder.Id <= 0)
-        {
-            using var stream = e.File.OpenReadStream();
-            using var ms = new MemoryStream();
-            await stream.CopyToAsync(ms);
-            src = "data:" + e.File.ContentType + ";base64," + Convert.ToBase64String(ms.ToArray());
-        }
-        else
-        {
-            src = await FileUploadService.SaveWorkOrderImageAsync(e.File, workOrder.Id);
-        }
-    }
-
-    private async Task OnBackClicked()
-    {
-        NavigationManager.NavigateTo("room/edit/" + room.ProjectId + "/" + room.Id, false);
-    }
-
-    private async Task OnWorkOrderItemUpdated(ListItemDto selectedItem)
-    {
-        workOrder.WorkOrderItemId = selectedItem.Id;
-        workOrder.WorkOrderItem = selectedItem.Name;
-        src = await workOrderService.GetWorkOrderItemImage(selectedItem.Id);
-    }
-
-    private async Task OnSaveClicked()
-    {
-        bool isSuccess = false;
-        string errorMessage = await Validate();
-        if (string.IsNullOrEmpty(errorMessage))
-        {
-            if (isAdd)
-            {
-                isSuccess = await workOrderService.CreateWorkOrderAsync(workOrder);
-
-                if (isSuccess && SelectedImage != null)
-                {
-                    src = await FileUploadService.SaveWorkOrderImageAsync(SelectedImage, workOrder.Id);
-                }
-            }
-            else
-                isSuccess = await workOrderService.UpdateWorkOrderAsync(workOrder);
-
-            if (isSuccess)
-                NavigationManager.NavigateTo("room/edit/" + room.ProjectId + "/" + room.Id, false);
-            else
-                await JSRuntime.InvokeVoidAsync("ShowAlert", "Some problem occured.. Please try again");
-        }
-        else
-        {
-            await JSRuntime.InvokeVoidAsync("ShowAlert", errorMessage);
-        }
-
-    }
-
-    private async Task OnDeleteClicked()
-    {
-        var isDeleted = await workOrderService.DeleteWorkOrder(workOrder.Id);
-
-        if (isDeleted)
-        {
-            await JSRuntime.InvokeVoidAsync("ShowAlert", "Deleted " + workOrder.Name + " successfully !");
-            NavigationManager.NavigateTo("room/edit/" + room.ProjectId + "/" + room.Id, false);
-        }
-        else
-        {
-            await JSRuntime.InvokeVoidAsync("ShowAlert", "Some error occured. Please try again !");
-        }
-    }
-
-    private async Task<string> Validate()
-    {
-        string errorMessage = string.Empty;
-
-        if (string.IsNullOrEmpty(workOrder.Name))
-        {
-            errorMessage = "Name cannot be Empty";
-        }
-        else if (workOrder.WorkOrderItemId <= 0)
-        {
-            errorMessage = "Please Select WorkOrder Item";
-        }
-        else if (workOrder.Height <= 0 && workOrder.Width <= 0 && !workOrder.SuppressCalculation)
-        {
-            errorMessage = "Enter Measurements or Suppress Calculation";
-        }
-        else if (workOrder.SuppressCalculation && (workOrder.Amount == null || workOrder.Amount <= 0))
-        {
-            errorMessage = "Amount cannot be lessthan or equal to 0";
-        }
-
-        return errorMessage;
-    }
-
-    private async Task AddPart(int workOrderId)
-    {
-        selectedPartId = 0;
-        modalRequestType = "Add";
-        ShowModal();
-    }
-
-    private async Task EditPart(int serviceId, int roomId)
-    {
-        selectedPartId = serviceId;
-        modalRequestType = "Edit";
-        ShowModal();
-    }
-
-    private async void Navigate(string url)
-    {
-        NavigationManager.NavigateTo(url, false);
-    }
+    
 }

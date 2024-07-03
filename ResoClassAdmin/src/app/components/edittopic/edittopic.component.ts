@@ -49,9 +49,6 @@ export class EdittopicComponent {
 
   ngOnInit(): void {
     this.getCourses();
-    this.getClsByCourseId(0);
-    this.getSubByClsID(0);
-    this.getChaptersBySubID(0);
 
     this.route.queryParams.subscribe((params) => {
       const id: string = params['id'];
@@ -74,12 +71,18 @@ export class EdittopicComponent {
           this.editTopicForm.controls.selChapterId.setValue(
             data.result.chapterId
           );
-          this.editTopicForm.controls.startDate.setValue(
-            data.result.startDate.substr(0, 10)
-          );
-          this.editTopicForm.controls.endDate.setValue(
-            data.result.endDate.substr(0, 10)
-          );
+
+          if (data.result.startDate != null) {
+            this.editTopicForm.controls.startDate.setValue(
+              data.result.startDate.substr(0, 10)
+            );
+          }
+
+          if (data.result.endDate != null) {
+            this.editTopicForm.controls.endDate.setValue(
+              data.result.endDate.substr(0, 10)
+            );
+          }
         } else {
           alert('Some error occured..! Plaese try again');
         }
@@ -99,6 +102,7 @@ export class EdittopicComponent {
             name: item.name,
           })
         );
+        this.getClsByCourseId(this.editTopicForm.controls.selCourseId.value);
       } else {
         alert(data.message);
       }
@@ -118,24 +122,11 @@ export class EdittopicComponent {
                 name: item.name,
               })
             );
+            this.getSubByClsID(this.editTopicForm.controls.selClassId.value);
           } else {
             alert(data.message);
           }
         });
-    } else {
-      this.masterService.getListItems('Class', '', 0).subscribe((data: any) => {
-        if (data.isSuccess) {
-          this.classData = this.dataMappingService.mapToModel<ListItem>(
-            data.result,
-            (item) => ({
-              id: item.id,
-              name: item.name,
-            })
-          );
-        } else {
-          alert(data.message);
-        }
-      });
     }
   }
   getSubByClsID(Id: number) {
@@ -151,21 +142,8 @@ export class EdittopicComponent {
                 name: item.name,
               })
             );
-          } else {
-            alert(data.message);
-          }
-        });
-    } else {
-      this.masterService
-        .getListItems('Subject', '', 0)
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            this.subjectData = this.dataMappingService.mapToModel<ListItem>(
-              data.result,
-              (item) => ({
-                id: item.id,
-                name: item.name,
-              })
+            this.getChaptersBySubID(
+              this.editTopicForm.controls.selSubjectId.value
             );
           } else {
             alert(data.message);
@@ -177,22 +155,6 @@ export class EdittopicComponent {
     if (Id !== undefined && Id !== 0) {
       this.masterService
         .getListItems('Chapter', 'Subject', Id)
-        .subscribe((data: any) => {
-          if (data.isSuccess) {
-            this.chapterData = this.dataMappingService.mapToModel<ListItem>(
-              data.result,
-              (item) => ({
-                id: item.id,
-                name: item.name,
-              })
-            );
-          } else {
-            alert(data.message);
-          }
-        });
-    } else {
-      this.masterService
-        .getListItems('Chapter', '', 0)
         .subscribe((data: any) => {
           if (data.isSuccess) {
             this.chapterData = this.dataMappingService.mapToModel<ListItem>(

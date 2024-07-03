@@ -4,7 +4,9 @@ namespace SPInteriors.Services.Interfaces
 {
     public interface IClientService
     {
-        Task<ClientDto> GetClientByIdAsync(int id);
-        Task<List<ClientDto>> GetClientsAsync();
+        Task<CommonResponseDto> GetClientByIdAsync(int id);
+        Task<CommonResponseDto> GetClientsAsync();
+        Task<CommonResponseDto> CreateClientAsync(ClientDto data);
+        Task<CommonResponseDto> UpdateClientAsync(ClientDto data);
     }
 }

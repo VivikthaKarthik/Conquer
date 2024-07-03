@@ -21,6 +21,8 @@ namespace SPInteriors.Models
         public string WorkOrderType { get; set; }
         public int RoomTypeId { get; set; }
         public int RoomId { get; set; }
+        public int ProjectId { get; set; }
+        public string ProjectName { get; set; }
         public string Room { get; set; }
         public string OuterFrameType { get; set; }
         public string DesignType { get; set; }

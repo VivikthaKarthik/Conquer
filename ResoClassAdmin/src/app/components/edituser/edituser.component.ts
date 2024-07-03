@@ -26,6 +26,7 @@ export class EdituserComponent {
   rolesData: ListItem[] = [];
   branchData: ListItem[] = [];
   userId: number = 0;
+  type:string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -83,6 +84,8 @@ export class EdituserComponent {
       });
   }
 
+  
+
   onSubmit() {
     this.submitted = true;
     if (this.editUserForm.invalid) {
@@ -102,6 +105,7 @@ export class EdituserComponent {
       branch: this.editUserForm.controls.branch.value,
       password: this.editUserForm.controls.password.value,
       phoneNumber: this.editUserForm.controls.phoneNumber.value,
+      
     };
     this.masterService
       .put(userData, 'User', 'Update')

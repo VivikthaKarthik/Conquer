@@ -4,10 +4,11 @@ namespace SPInteriors.Services.Interfaces
 {
     public interface IProjectService
     {
-        Task<ProjectDto> GetProjectByIdAsync(int id);
+        Task<CommonResponseDto> GetProjectByIdAsync(int id);
         Task<List<ProjectDto>> GetProjectListAsync();
+        Task<CommonResponseDto> GetRoomListAsync(int projectid);
         Task<List<ProjectDto>> GetProjectListAsync(string clietnName, int statusId);
 
-        Task<bool> CreateProjectAsync(ProjectDto data);
+        Task<CommonResponseDto> CreateProjectAsync(ProjectDto data);
     }
 }

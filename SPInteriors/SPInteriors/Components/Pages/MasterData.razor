@@ -36,32 +36,14 @@
 
     protected async override void OnInitialized()
     {
-        clients = await clientService.GetClientsAsync();
-    }
+        var response = await clientService.GetClientsAsync();
 
-    private async Task OnBackClicked()
-    {
-        NavigationManager.NavigateTo("projects", false);
-    }
-
-
-    private async Task OnSaveClicked()
-    {
-        NavigationManager.NavigateTo("projects", false);
-    }
-
-    private async Task AddClient()
-    {
-        NavigationManager.NavigateTo("client/add", false);
-    }
-
-    private async Task EditClient(int id)
-    {
-        NavigationManager.NavigateTo("client/edit/" + id, false);
+        if (response.IsSuccess)
+            clients = (List<ClientDto>)response.Result;
     }
 
     void HandleEdit(ClientDto item)
     {
-        NavigationManager.NavigateTo("client/edit/" + item.Id, false);
+        NavigationManager.NavigateTo("client/edit/" + item.Id, true);
     }
 }

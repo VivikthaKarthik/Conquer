@@ -1,0 +1,150 @@
+﻿@using SPInteriors.Models
+@using SPInteriors.Services.Interfaces
+
+<div class="modal @ModalClass" tabindex="-1" style="display: @(ShowModal ? "block" : "none")">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width:800px;max-height:600px;position:center;">
+            <div class="modal-header">
+                <h3 class="modal-title">Add New Item </h3>
+                <button type="button" class="btn-close" aria-label="Close" @onclick="CloseModal" style="color:#ffff;"></button>
+            </div>
+            <div class="modal-body" id="modalBodyTemplate" style="height:100%;width:100%;overflow-y:scroll;overflow:auto;">
+
+                <div class="contact-form-area style-3 py-30 py-sm-60 py-md-80 py-lg-100">
+                    <!-- Submit form Start -->
+                    <div class="container">
+                        <div class="contact-form-inner">
+                            <div class="row justify-content-center">
+                                <div class="col-lg-12">
+                                    <!-- Comment Form Start -->
+                                    <div class="comment-respond">
+                                        <div class="row gx-2">
+                                            <div class="col-xl-12">
+                                                <div class="contacts-name">
+                                                    <h4>Work Order Item</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12">
+                                                <div class="contacts-email">
+                                                    <span style="font-size:16px;padding-left:4px;">Name</span>
+                                                    <input name="website" type="text" @bind-value="workOrderItem.Name">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12">
+                                                <div class="contacts-message">
+                                                    <span style="font-size:16px;padding-left:4px;">Description</span>
+                                                    <textarea name="comment" cols="20" rows="3" @bind="description"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-12">
+                                                <div class="contacts-message">
+                                                    <span style="font-size:16px;padding-left:4px;">Upload Image</span>
+                                                    <InputFile OnChange="@ImageUploaded" />
+                                                </div>
+                                            </div>
+
+                                            @if (!string.IsNullOrEmpty(workOrderItem.ImagePath))
+                                            {
+                                                <div class="col-xl-12">
+                                                    <div class="image">
+                                                        <img style="height:300px;width:100%;" src="@workOrderItem.ImagePath" />
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                        <!-- Comment Form End -->
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="row form-row">
+                                            <div class="col-xl-12 grid-buttons-container">
+                                                <button class="myButton text-right" @onclick="OnBackClicked" type="button">Close</button>
+                                                <button class="myButton text-right" @onclick="OnSaveClicked" type="button">Save</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Submit form End -->
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    @inject IJSRuntime JSRuntime;
+    @inject NavigationManager NavigationManager;
+    @inject IWorkOrderService workOrderService;
+    @inject ICommonService commonService;
+
+    [Parameter] public bool ShowModal { get; set; }
+    [Parameter] public EventCallback<bool> ShowModalChanged { get; set; }
+    private string ModalClass => ShowModal ? "show" : "";
+
+    [Parameter]
+    public int workOrderId { get; set; }
+    [Parameter]
+    public int roomId { get; set; }
+
+    private CreateWorkOrderItemDto workOrderItem { get; set; }
+    private IBrowserFile SelectedImage { get; set; }
+    private string description{ get; set; }
+    private async Task CloseModal()
+    {
+        ShowModal = false;
+        await ShowModalChanged.InvokeAsync(ShowModal);
+    }
+
+    protected async override void OnInitialized()
+    {
+        workOrderItem = new CreateWorkOrderItemDto();
+    }
+
+
+    private async Task OnBackClicked()
+    {
+        await CloseModal();
+    }
+
+
+    private async Task OnSaveClicked()
+    {
+        string errorMessage = await Validate();
+        if (string.IsNullOrEmpty(errorMessage))
+        {
+            workOrderItem.Description = description;
+            await workOrderService.CreateWorkOrderItemAsync(SelectedImage, roomId, workOrderItem);
+            await CloseModal();
+        }
+        else
+        {
+            await JSRuntime.InvokeVoidAsync("ShowAlert", errorMessage);
+        }
+    }
+
+
+    private async Task<string> Validate()
+    {
+        string errorMessage = string.Empty;
+
+        if (string.IsNullOrEmpty(workOrderItem.Name))
+        {
+            errorMessage = "Please Enter Name";
+        }
+        return errorMessage;
+    }
+
+    private async Task ImageUploaded(InputFileChangeEventArgs e)
+    {
+        using var stream = e.File.OpenReadStream();
+        using var ms = new MemoryStream();
+        await stream.CopyToAsync(ms);
+        SelectedImage = e.File;
+        workOrderItem.ImagePath = "data:" + e.File.ContentType + ";base64," + Convert.ToBase64String(ms.ToArray());
+    }
+
+
+}

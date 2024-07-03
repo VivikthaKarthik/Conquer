@@ -73,8 +73,8 @@ export class AddsubtopicComponent {
       selSubId: ['', Validators.required],
       selChapterId: ['', Validators.required],
       selTopicId: ['', Validators.required],
-      classNotesURL: ['', Validators.required],
-      extractURL: ['', Validators.required],
+      classNotesURL: [''],
+      extractURL: [''],
       // rating: ['', Validators.required],
       // thumbnail: [''],
       // description: ['', Validators.required],
@@ -288,7 +288,6 @@ export class AddsubtopicComponent {
           alert(data.message);
         }
       });
-   
   }
 
   OnDocumentUpload(event: any): void {

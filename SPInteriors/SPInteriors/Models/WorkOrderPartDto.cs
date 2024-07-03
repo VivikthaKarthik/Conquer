@@ -61,6 +61,7 @@
 
         public string ImagePath { get; set; }
 
+        public RoomDto Room { get; set; }
 
         public int HeightInFeet { get; set; }
 

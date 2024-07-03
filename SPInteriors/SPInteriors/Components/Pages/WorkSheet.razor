@@ -30,7 +30,7 @@
 
     <div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
 
-        <div class="container edit-screen-container">
+        <div class="container edit-screen-container" id="mainContainer">
 
             <div class="row edit-screen-header">
                 <div class="col-xl-12">
@@ -83,7 +83,7 @@
                                                                             {
                                                                                 if (service.Parts != null && service.Parts.Count > 0)
                                                                                 {
-                                                                                    <div style="background-color: #F4F4F4;color:black;margin: 10px;padding: 0px;">
+                                                                                    <div style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);background-color: #F4F4F4;color:black;margin: 10px;padding: 0px;">
                                                                                         <div class="row" style="margin-left:20px;" id="@service.WorkBookTag">
                                                                                             <div class="col-xl-6" style="padding:10px;">
                                                                                                 <div class="row">
@@ -102,7 +102,7 @@
                                                                                                 </div>
                                                                                                 @foreach (var part in service.Parts)
                                                                                                 {
-                                                                                                    <div class="row" style="margin:0px;margin-top:20px;margin-bottom:20px;border:1px solid lightgrey;">
+                                                                                                    <div class="row" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);margin:0px;margin-top:20px;margin-bottom:20px;">
                                                                                                         <div class="col-xl-12" style="background-color:#ffffff; padding-top:20px;padding-bottom:30px;">
                                                                                                            <div class="row">
                                                                                                                 <div class="col-xl-4 workorder-form-label">
@@ -312,7 +312,7 @@
     {
         if (!string.IsNullOrEmpty(projectId))
         {
-            project = await projectService.GetProjectByIdAsync(Convert.ToInt32(projectId));
+            await FetchProject();
             rooms = await roomService.GetRoomListAsync(Convert.ToInt32(projectId));
         }
         else
@@ -320,6 +320,40 @@
             project = new ProjectDto();
         }
         isDataFetchedCompletely = true;
+    }
+
+    private async Task FetchProject()
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(projectId))
+            {
+                var response = await projectService.GetProjectByIdAsync(Convert.ToInt32(projectId));
+
+                if (response != null && response.IsSuccess)
+                    project = (ProjectDto)response.Result;
+                else if (response != null && !string.IsNullOrEmpty(response.ErrorMessage))
+                {
+                    project = new ProjectDto();
+                    await JSRuntime.InvokeVoidAsync("ShowAlert", response.ErrorMessage);
+                    NavigationManager.NavigateTo("/Error", true);
+                }
+                else
+                {
+                    await JSRuntime.InvokeVoidAsync("ShowAlert", "Some error occured. Please try again !");
+                    NavigationManager.NavigateTo("/Error", true);
+                }
+            }
+            else
+            {
+                project = new ProjectDto();
+            }
+        }
+        catch
+        {
+            await JSRuntime.InvokeVoidAsync("ShowAlert", "Some error occured. Please try again !");
+            NavigationManager.NavigateTo("/Error", true);
+        }
     }
 
     private async Task NavigateToQuotation()
@@ -335,7 +369,7 @@
 
     private async void Navigate(string url)
     {
-        NavigationManager.NavigateTo(url, false);
+        NavigationManager.NavigateTo(url);
     }
 }
 
@@ -343,3 +377,6 @@
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
 </script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.0.272/jspdf.debug.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>

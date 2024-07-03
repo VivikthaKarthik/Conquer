@@ -1,16 +1,14 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;
 using SPInteriors.Models;
-using SPInteriors.Models.Domain;
-using SPInteriors.Services.Implementations;
 using SPInteriors.Services.Interfaces;
 
 namespace SPInteriors.Components.Pages
 {
     public partial class Quotation
     {
+        #region Inject Services
+
         [Inject]
         protected IJSRuntime jsRuntime { get; set; }
 
@@ -20,20 +18,28 @@ namespace SPInteriors.Components.Pages
         [Inject]
         protected IQuotationService quotationService { get; set; }
 
+        #endregion
+
+        #region Parameters
 
         [Parameter]
         public string projectId { get; set; }
 
-        private string clientName { get; set; }
+        #endregion
+
+        #region Local Variables
+
         bool isDataFetchedCompletely = false;
+        private string clientName;
+        private QuotationDto quotation;
+        private bool showLoader;
+        private int BoxPrice = 1000;
+        private int PanelPrice = 1100;
+        private int FramePrice = 1200;
 
-        private QuotationDto quotation { get; set; }
+        #endregion
 
-        private bool showLoader { get; set; }
-
-        private int BoxPrice { get; set; } = 1000;
-        private int PanelPrice { get; set; } = 1100;
-        private int FramePrice { get; set; } = 1200;
+        #region Life Cycle Events
 
         protected async override void OnInitialized()
         {
@@ -43,6 +49,10 @@ namespace SPInteriors.Components.Pages
             }
             isDataFetchedCompletely = true;
         }
+
+        #endregion
+
+        #region Private Methods
 
         async Task GeneratePDF()
         {
@@ -97,7 +107,9 @@ namespace SPInteriors.Components.Pages
 
         private async void Navigate(string url)
         {
-            navigationManager.NavigateTo(url, false);
+            navigationManager.NavigateTo(url, true);
         }
+
+        #endregion
     }
 }

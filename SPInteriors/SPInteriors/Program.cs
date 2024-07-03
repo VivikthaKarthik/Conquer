@@ -17,6 +17,7 @@ using Microsoft.AspNet.Identity;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAuthenticationCore();
+builder.Services.AddSingleton<HeaderService>();
 builder.Services.AddScoped<ProtectedSessionStorage>();
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
 builder.Services.AddScoped<IFileUploadService, FileUploadService>();

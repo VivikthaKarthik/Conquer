@@ -33,6 +33,9 @@
     public string ControlId { get; set; }
 
     [Parameter]
+    public bool ReloadDropdown { get; set; }
+
+    [Parameter]
     public string TableName { get; set; }
 
     [Parameter]
@@ -53,6 +56,15 @@
     public EventCallback<ListItemDto> OnItemSelection { get; set; }
 
     protected async override void OnInitialized()
+    {
+        if (!string.IsNullOrEmpty(TableName))
+        {
+            Data = await commonService.GetListItems(TableName, ParentName, ParentId);
+        }
+    }
+
+
+    protected override async Task OnParametersSetAsync()
     {
         if (!string.IsNullOrEmpty(TableName))
         {

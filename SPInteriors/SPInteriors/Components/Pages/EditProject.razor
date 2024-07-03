@@ -1,269 +1,284 @@
 ﻿@page "/projects/add"
 @page "/projects/edit/{id}"
+
+
+@inherits CommonBase
+
 @using SPInteriors.Models
+@using SPInteriors.Services.Implementations
 @using SPInteriors.Services.Interfaces
 @rendermode @(new InteractiveServerRenderMode(prerender:false))
 
-@if (isDataFetchedCompletely)
+
+@if (isDataFetchCompleted)
 {
-<div class="page-breadcrumb-area page-bg">
-    <div class="page-overlay"></div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="breadcrumb-wrapper">
-                    <div class="page-heading">
-                        <h3 class="page-title">Project Details</h3>
-                    </div>
-                    <div class="breadcrumb-list">
-                        <ul>
-                            <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/"))'>Home</a></li>
-                            <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/Projects"))'>Projects</a></li>
-                            <li><a href="javascript:void(0);">Project Details</a></li>
-                        </ul>
+    <div class="page-breadcrumb-area page-bg">
+        <div class="page-overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="breadcrumb-wrapper">
+                        <div class="page-heading">
+                            <h3 class="page-title">Project Details</h3>
+                        </div>
+                        <div class="breadcrumb-list">
+                            <ul>
+                                <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/"))'>Home</a></li>
+                                <li><a href="javascript:void(0);" @onclick='((value) => Navigate("/Projects"))'>Projects</a></li>
+                                <li><a href="javascript:void(0);">Project Details</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
+    <div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
 
-    <div class="container edit-screen-container">
+        <div class="container edit-screen-container">
 
-        <div class="row edit-screen-header">
-            <div class="col-xl-12">
-                <h3>@project.Name</h3>
+            <div class="row edit-screen-header">
+                <div class="col-xl-12">
+                    <h3>@project.Name</h3>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-xl-12 col-lg-12">
-                <div class="subscribe-form-widget">
-                    <form>
-                        <div class="row form-row">
-                            <div class="faq-area">
-                                <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12">
+                    <div class="subscribe-form-widget">
+                        <form>
+                            <div class="row form-row">
+                                <div class="faq-area">
+                                    <div class="container">
 
-                                    <div class="row form-row">
-                                        
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                Client Name *
+                                        <div class="row form-row">
+
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Client Name *
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xl-3 col-lg-3">
-                                            <div class="form-field">
-                                                <Dropdown ControlId="ClientId" TableName="Client" ExistingItem="@project.ClientId" OnItemSelection='((value) => project.ClientId = value.Id)'></Dropdown>
+                                            <div class="col-xl-3 col-lg-3">
+                                                <div class="form-field">
+                                                    <Dropdown ControlId="ClientId" TableName="Client" ExistingItem="@project.ClientId" OnItemSelection='((value) => project.ClientId = value.Id)'></Dropdown>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xl-1 col-lg-1" style="padding-left: 5px;">
-                                            <div class="form-field-button" style="margin:0 !important;">
-                                                <button style="margin-left: -3px;margin-top: 0px;border-radius:12px;" class="myButton text-right" @onclick="AddClient" type="button"><i class="fa-solid fa-add"></i></button>
+                                            <div class="col-xl-1 col-lg-1" style="padding-left: 5px;">
+                                                <div class="form-field-button" style="margin:0 !important;">
+                                                    <button style="margin-left: -3px;margin-top: 0px;border-radius:12px;" class="myButton text-right" @onclick='((value) => Navigate("client/add/" + project.Id))' type="button"><i class="fa-solid fa-add"></i></button>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                Status *
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Status *
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-4">
-                                            <div class="form-field">
-                                                <Dropdown ControlId="StatusId" TableName="Status" ExistingItem="@project.StatusId" OnItemSelection='((value) => project.StatusId = value.Id)'></Dropdown>
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <Dropdown ControlId="StatusId" TableName="Status" ExistingItem="@project.StatusId" OnItemSelection='((value) => project.StatusId = value.Id)'></Dropdown>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    House Type *
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <Dropdown ControlId="HouseTypeId" TableName="HouseType" ExistingItem="@project.HouseTypeId" OnItemSelection='((value) => project.HouseTypeId = value.Id)'></Dropdown>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Material *
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <Dropdown ControlId="MaterialId" TableName="MaterialType" ExistingItem="@project.MaterialId" OnItemSelection='((value) => project.MaterialId = value.Id)'></Dropdown>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Outer Finish *
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <Dropdown ControlId="OuterFrameId" TableName="OuterFrameType" ExistingItem="@project.OuterFrameId" OnItemSelection='((value) => project.OuterFrameId = value.Id)'></Dropdown>
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                House Type *
+                                        <div class="row" style="padding-left:10px;padding-top:47px;">
+                                            <div class="col-xl-6">
+                                                <h4>Rooms</h4>
+                                            </div>
+                                            <div class="col-xl-6 grid-buttons-container" style="display:block">
+                                                <button class="myButton text-right" @onclick='(() => AddRoom(project.Id))' type="button">Add <i class="fa-solid fa-add"></i></button>
+                                                <button class="myButton text-right" @onclick='((value) => Navigate("/quotations/" + project.Id))' type="button">Quotation</button>
+                                                <button class="myButton text-right" @onclick='((value) => Navigate("/worksheet/" + project.Id))' type="button">WorkSheet</button>
                                             </div>
                                         </div>
-                                        <div class="col-xl-4 col-lg-4">
-                                            <div class="form-field">
-                                                <Dropdown ControlId="HouseTypeId" TableName="HouseType" ExistingItem="@project.HouseTypeId" OnItemSelection='((value) => project.HouseTypeId = value.Id)'></Dropdown>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                Material *
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-4">
-                                            <div class="form-field">
-                                                <Dropdown ControlId="MaterialId" TableName="MaterialType" ExistingItem="@project.MaterialId" OnItemSelection='((value) => project.MaterialId = value.Id)'></Dropdown>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                Outer Finish *
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-4">
-                                            <div class="form-field">
-                                                <Dropdown ControlId="OuterFrameId" TableName="OuterFrameType" ExistingItem="@project.OuterFrameId" OnItemSelection='((value) => project.OuterFrameId = value.Id)'></Dropdown>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row" style="padding-left:10px;padding-top:47px;">
-                                        <div class="col-xl-6">
-                                            <h4>Rooms</h4>
-                                        </div>
-                                        <div class="col-xl-6 grid-buttons-container" style="display:block">
-                                            <button class="myButton text-right" @onclick='(() => AddRoom())' type="button">Add <i class="fa-solid fa-add"></i></button>
-                                            <button class="myButton text-right" @onclick="NavigateToQuotation" type="button">Quotation</button>
-                                            <button class="myButton text-right" @onclick="NavigateToWorkSheet" type="button">WorkSheet</button>
-                                        </div>
-                                    </div>
-                                    <div class="our-team-area style-2">
-                                        <div class="container">
-                                            <div class="team-card-wrapper">
-                                                <div class="row">
-                                                    @if (rooms != null && rooms.Count > 0)
-                                                    {
-                                                        @foreach (var item in rooms)
+                                        <div class="our-team-area style-2">
+                                            <div class="container">
+                                                <div class="team-card-wrapper">
+                                                    <div class="row" id="BOX">
+                                                        @if (rooms != null && rooms.Count > 0)
                                                         {
-                                                            <div class="col-lg-3 col-md-5" style="margin-top:20px;" @onclick='(() => UpdateRoom(item.Id))'>
-                                                                <div class="team-member-card">
-                                                                    <div class="content-wrapper">
-                                                                        <div class="content">
-                                                                            <h2 class="title">@item.Name</h2>
-                                                                            <p class="desc" style="padding:0;">@item.Material</p>
+                                                            @foreach (var item in rooms)
+                                                            {
+                                                                <div class="col-lg-3 col-md-5" style="margin-top:20px;" @onclick='(() => UpdateRoom(item.Id))'>
+                                                                    <div class="team-member-card">
+                                                                        <div class="content-wrapper">
+                                                                            <div class="content">
+                                                                                <h2 class="title">@item.Name</h2>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="image">
+                                                                            @if (!string.IsNullOrEmpty(item.ImagePath))
+                                                                            {
+                                                                                <img style="height:100%;max-height:250px;width:100%;" src="@item.ImagePath" />
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <img src="images/room/livingroom/livingroom.jpg" />
+                                                                            }
                                                                         </div>
                                                                     </div>
-                                                                    <div class="image">
-                                                                        @if (!string.IsNullOrEmpty(item.ImagePath))
-                                                                        {
-                                                                            <img style="height:300px;width:100%;" src="@item.ImagePath" />
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            <img src="images/room/livingroom/livingroom.jpg" />
-                                                                        }
-                                                                    </div>
                                                                 </div>
-                                                            </div>
+                                                            }
                                                         }
-                                                    }
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row form-row">
-                            <div class="col-xl-12 grid-buttons-container">
-                                <button class="myButton text-right" @onclick="SaveModel" type="button">Back</button>
-                                <button class="myButton text-right" @onclick="SaveAndRedirect" type="button">Save</button>
+                            <div class="row form-row">
+                                <div class="col-xl-12 grid-buttons-container">
+                                    <button class="myButton text-right" @onclick='((value) => Navigate("/Projects"))' type="button">Back</button>
+                                    <button class="myButton text-right" @onclick="SaveAndRedirect" type="button">Save</button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
 }
 
 @code {
     @inject IJSRuntime JSRuntime;
     @inject NavigationManager NavigationManager;
-    @inject IRoomService roomService;
     @inject IProjectService projectService;
+
 
     [Parameter]
     public string id { get; set; }
 
-    ProjectDto project { get; set; }
-    bool isDataFetchedCompletely = false;
-
     List<RoomDto> rooms = new List<RoomDto>();
+    ProjectDto project { get; set; } = new ProjectDto();
+    bool isDataFetchCompleted = false;
+
 
     protected async override void OnInitialized()
     {
-        if (!string.IsNullOrEmpty(id))
+        if (!isDataFetchCompleted)
         {
-            project = await projectService.GetProjectByIdAsync(Convert.ToInt32(id));
-            rooms = await roomService.GetRoomListAsync(Convert.ToInt32(id));
+            await FetchProject();
+            await FetchRooms();
+            isDataFetchCompleted = true;
         }
-        else
+    }
+
+    private async Task FetchProject()
+    {
+        try
         {
-            project = new ProjectDto();
+            if (!string.IsNullOrEmpty(id))
+            {
+                var response = await projectService.GetProjectByIdAsync(Convert.ToInt32(id));
+
+                if (response != null && response.IsSuccess)
+                    project = (ProjectDto)response.Result;
+                else if (response != null && !string.IsNullOrEmpty(response.ErrorMessage))
+                {
+                    project = new ProjectDto();
+                    await JSRuntime.InvokeVoidAsync("ShowAlert", response.ErrorMessage);
+                    NavigationManager.NavigateTo("/Error", true);
+                }
+                else
+                {
+                    await JSRuntime.InvokeVoidAsync("ShowAlert", "Some error occured. Please try again !");
+                    NavigationManager.NavigateTo("/Error", true);
+                }
+            }
+            else
+            {
+                project = new ProjectDto();
+            }
         }
-        isDataFetchedCompletely = true;
+        catch
+        {
+            await JSRuntime.InvokeVoidAsync("ShowAlert", "Some error occured. Please try again !");
+            NavigationManager.NavigateTo("/Error", true);
+        }
     }
 
-    private async Task AddClient()
+    private async Task FetchRooms()
     {
-        NavigationManager.NavigateTo("client/add/" + project.Id, false);
+        try
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                var response = await projectService.GetRoomListAsync(Convert.ToInt32(id));
+
+                if (response != null && response.IsSuccess)
+                    rooms = (List<RoomDto>)response.Result;
+                else if (response != null && !string.IsNullOrEmpty(response.ErrorMessage))
+                {
+                    await JSRuntime.InvokeVoidAsync("ShowAlert", response.ErrorMessage);
+                    NavigationManager.NavigateTo("/Error", true);
+                }
+                else
+                {
+                    await JSRuntime.InvokeVoidAsync("ShowAlert", "Some error occured. Please try again !");
+                    NavigationManager.NavigateTo("/Error", true);
+                }
+            }
+            else
+            {
+                rooms = new List<RoomDto>();
+            }
+        }
+        catch
+        {
+            await JSRuntime.InvokeVoidAsync("ShowAlert", "Some error occured. Please try again !");
+            NavigationManager.NavigateTo("/Error", true);
+        }
     }
 
-    private async Task AddService(int roomId)
-    {
-        NavigationManager.NavigateTo("workorder/add/" + roomId, false);
-    }
-
-
-    private async Task EditService(int serviceId, int roomId)
-    {
-        NavigationManager.NavigateTo("workorder/edit/" + roomId + "/" + serviceId, false);
-    }
-
-    private async Task SaveModel()
-    {
-        NavigationManager.NavigateTo("projects", false);
-    }
-
-    private async Task NavigateToQuotation()
-    {
-        NavigationManager.NavigateTo("/quotations/" + project.Id, true);
-    }
-        
-    private async Task NavigateToWorkSheet()
-    {
-        NavigationManager.NavigateTo("/worksheet/" + project.Id, true);
-    }
-
-    private async Task AddRoom()
+    private async Task AddRoom(int id)
     {
         if (await SaveProject())
         {
-            NavigationManager.NavigateTo("room/add/" + id, false);
+            NavigationManager.NavigateTo("room/add/" + id, true);
         }
     }
+
     private async Task UpdateRoom(int id)
     {
         if (await SaveProject())
         {
-            NavigationManager.NavigateTo("room/edit/" + project.Id + "/" + id, false);
-        }
-    }
-
-    private async Task AddWorkOrder(int roomId)
-    {
-        NavigationManager.NavigateTo("workorder/add/" + roomId, false);
-    }
-    private async Task GenerateWorkSheet(string id)
-    {
-        await JSRuntime.InvokeVoidAsync("SaveFile", id);
-    }
-
-    private async Task<bool> SaveProject()
-    {
-        if (string.IsNullOrEmpty(project.Name))
-        {
-            await JSRuntime.InvokeVoidAsync("ShowAlert", "Please Add all required fields");
-            return false;
-        }
-        else
-        {
-            await projectService.CreateProjectAsync(project);
-            return true;
+            NavigationManager.NavigateTo("room/edit/" + project.Id + "/" + id, true);
         }
     }
 
@@ -271,13 +286,62 @@
     {
         if (await SaveProject())
         {
-            NavigationManager.NavigateTo("projects", false);
+            NavigationManager.NavigateTo("projects", true);
         }
     }
 
-    private async void Navigate(string url)
+    private async Task<bool> ValidateForm()
     {
-        NavigationManager.NavigateTo(url, false);
+        if (string.IsNullOrEmpty(project.Name))
+        {
+            await JSRuntime.InvokeVoidAsync("ShowAlert", "Please Add all required fields");
+            return false;
+        }
+        return true;
+    }
+
+    private async Task<bool> SaveProject()
+    {
+        CommonResponseDto result = new CommonResponseDto();
+        try
+        {
+            if (await ValidateForm())
+            {
+                result = await projectService.CreateProjectAsync(project);
+
+                if (result.IsSuccess)
+                {
+                    NavigationManager.NavigateTo("projects", true);
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(result.ErrorMessage))
+                        await JSRuntime.InvokeVoidAsync("ShowAlert", result.ErrorMessage);
+                    else
+                        await JSRuntime.InvokeVoidAsync("ShowAlert", "Some error occured. Please try again !");
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("ShowAlert", ex.Message);
+        }
+        return result.IsSuccess;
+    }
+
+    private void Navigate(string url)
+    {
+        NavigationManager.NavigateTo(url, true);
+    }
+
+    private async Task NavigateToQuotation()
+    {
+        NavigationManager.NavigateTo("/quotations/" + project.Id, true);
+    }
+
+    private async Task NavigateToWorkSheet()
+    {
+        NavigationManager.NavigateTo("/worksheet/" + project.Id, true);
     }
 }
 

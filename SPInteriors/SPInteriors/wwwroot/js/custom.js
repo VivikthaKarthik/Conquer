@@ -1,6 +1,61 @@
+//function LoadDataFromAPI(id) {
+
+//    //document.getElementById('loader').style.display = "block";
+//    //e.preventDefault();
+//    $.ajax({
+//        url: "https://localhost:7092/api/Project/api/Project/GetRoomsByProjectId?projectId=" + id,
+//        type: "GET",
+//        contentType: false,
+//        cache: false,
+//        processData: false,
+//        success: function (data) {
+
+//            if (data.isSuccess) {
+//                $.each(data.result, function (index, value) {
+//                    if (value.imagePath.length > 0) {
+//                        var e = $('<div class="col-lg-3 col-md-5" style="margin-top:20px;"><div class= "team-member-card"><div class="content-wrapper"><div class="content"><h2 class="title">' + value.name + '</h2></div></div><div class="image"><img style="height:100%;max-height:250px;width:100%;" src="' + value.imagePath + '" /></div></div ></div > ');
+//                        $('#BOX').append(e);
+//                    }
+//                    else {
+//                        var e = $('<div class="col-lg-3 col-md-5" style="margin-top:20px;"><div class= "team-member-card"><div class="content-wrapper"><div class="content"><h2 class="title">' + value.name + '</h2></div></div><div class="image"><img style="height:100%;max-height:250px;width:100%;" src="images/room/livingroom/livingroom.jpg" /></div></div ></div > ');
+//                        $('#BOX').append(e);
+//                    }
+//                });
+
+//            }
+//        },
+//        error: function () {
+//            $('#loader').delay(100).fadeOut('slow');
+//            swal({
+//                text: "Something went wrong! Please try again or Contact administrator",
+//                icon: "warning"
+//            });
+//        }
+//    });
+
+//}
+
+//function stopLoader() {
+//    $("#preloader").fadeOut();
+//    $("#preloader-status").delay(200).fadeOut("slow");
+//    $("body").delay(200).css({ "overflow-x": "hidden" });
+//}
+
+function showLoader() {
+    $("#preloader").show();
+}
+
+function stopLoader() {
+    $("#preloader").hide();
+}
+
 (function ($) {
     "use strict";
+
+
     $(document).ready(function () {
+        //stopLoader();
+        //LoadDataFromAPI(15);
         /*
        Jquery Mobile Menu
        ============================*/
@@ -10,7 +65,8 @@
             meanExpand: ['<i class="fal fa-plus"></i>'],
         });
 
-        /*
+
+                /*
        Jquery Header Search
        ============================*/
         $('.search-btn').on('click', function (e) {
@@ -961,9 +1017,10 @@
        Window Load
        ============================*/
         window.onload = new function () {
-            $("#preloader").fadeOut();
-            $("#preloader-status").delay(200).fadeOut("slow");
-            $("body").delay(200).css({ "overflow-x": "hidden" });
+            //stopLoader();
+            //$("#preloader").fadeOut();
+            //$("#preloader-status").delay(200).fadeOut("slow");
+            //$("body").delay(200).css({ "overflow-x": "hidden" });
         };
 
         window.ShowAlert = function (text) {
@@ -971,24 +1028,65 @@
         }
 
         window.SaveFile = function (id) {
-            const options = {
-                margin: 0.5,
-                filename: 'invoice.pdf',    //name the output file
-                image: {
-                    type: 'jpeg',     //image type
-                    quality: 100
-                },
-                html2canvas: {
-                    scale: 1
-                },
-                jsPDF: {
-                    unit: 'in',
-                    format: 'letter',
-                    orientation: 'portrait'   // pdf orientation
-                }
-            }
+            
+            //const options = {
+            //    margin: 0.5,
+            //    filename: 'invoice.pdf',    //name the output file
+            //    image: {
+            //        type: 'jpeg',     //image type
+            //        quality: 100
+            //    },
+            //    html2canvas: {
+            //        scale: 1
+            //    },
+            //    jsPDF: {
+            //        unit: 'in',
+            //        format: 'letter',
+            //        orientation: 'portrait'   // pdf orientation
+            //    }
+            //}
             const element = document.getElementById(id);   //id for content area
-            html2pdf().from(element).set(options).save();
+
+            /*console.log(element.innerHTML);*/
+
+            //version 1
+            //var specialElementHandlers = {
+            //    '#editor': function (element, renderer) {
+            //        return true;
+            //    }
+            //};
+
+            //var doc = new jsPDF();
+            //doc.fromHTML(
+            //    $('#' + id).html(), 15, 15,
+            //    { 'width': 170, 'elementHandlers': specialElementHandlers },
+            //    function () { doc.save('sample-file.pdf'); }
+            //);
+
+            //version 2
+            //var pdf = new jsPDF('p', 'pt', 'a4');
+            ////$("#button-pdf").attr('hidden', 'true')
+            //pdf.addHTML($("#" + id), 0, -20, { allowTaint: true, useCORS: true, pagesplit: false }, function () {
+            //    pdf.save('{{downloaded_file_name}}.pdf');
+            //    //$("#button-pdf").removeAttr('hidden', 'true')
+            //});
+
+            //Version 3
+            var pdf = new jsPDF('p', 'pt', 'letter');
+
+            var pageHeight = pdf.internal.pageSize.height;
+
+            // Before adding new content
+            var y = 500 // Height position of new content
+            if (y >= pageHeight) {
+                pdf.addPage();
+                y = 0 // Restart height position
+            }
+            pdf.addHTML($('#mainContainer'), function () {
+                pdf.save('Test.pdf');
+            });
+
+            //html2pdf().from(element).set(options).save();
         }
 
         //window.SelectItem = function (id) {
@@ -1020,5 +1118,43 @@
             var element = document.getElementById(id);
             $('#modalBodyTemplate .grid-item-selected').removeClass('grid-item-selected');
         }
+
+        window.LoadDataFromAPI = function (id){
+            
+            //document.getElementById('loader').style.display = "block";
+            //e.preventDefault();
+            $.ajax({
+                url: "https://localhost:7092/api/Project/api/Project/GetRoomsByProjectId?projectId=" + id,
+                type: "GET",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function (data) {
+
+                    if (data.isSuccess) {
+                        $.each(data.result, function (index, value) {
+                            if (value.imagePath.length > 0) {
+                                var e = $('<div class="col-lg-3 col-md-5" style="margin-top:20px;"><div class= "team-member-card"><div class="content-wrapper"><div class="content"><h2 class="title">' + value.name + '</h2></div></div><div class="image"><img style="height:100%;max-height:250px;width:100%;" src="' + value.imagePath +'" /></div></div ></div > ');
+                                $('#BOX').append(e);
+                            }
+                            else {
+                                var e = $('<div class="col-lg-3 col-md-5" style="margin-top:20px;"><div class= "team-member-card"><div class="content-wrapper"><div class="content"><h2 class="title">' + value.name + '</h2></div></div><div class="image"><img style="height:100%;max-height:250px;width:100%;" src="images/room/livingroom/livingroom.jpg" /></div></div ></div > ');
+                                $('#BOX').append(e);
+                            }
+                        });
+                        
+                    }
+                },
+                error: function () {
+                    $('#loader').delay(100).fadeOut('slow');
+                    swal({
+                        text: "Something went wrong! Please try again or Contact administrator",
+                        icon: "warning"
+                    });
+                }
+            });
+
+        }
     });
+
 })(jQuery);

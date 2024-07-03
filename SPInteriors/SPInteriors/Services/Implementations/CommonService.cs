@@ -7,6 +7,7 @@ namespace SPInteriors.Services.Implementations
 {
     public class CommonService : ICommonService
     {
+        public string Dummy { get; set; }
         private IConfiguration config;
         private readonly SpinteriorsContext dbContext;
         public CommonService(SpinteriorsContext _dbContext, IConfiguration configuration)

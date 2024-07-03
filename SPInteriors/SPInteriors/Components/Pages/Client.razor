@@ -4,102 +4,104 @@
 @using SPInteriors.Services.Interfaces
 @rendermode @(new InteractiveServerRenderMode(prerender:false))
 
-<div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
+@if (client != null)
+{
+    <div class="grid-area style-1 scrollable-area" style="background-image: url(./images/contact/subscribe-bg.jpg)">
 
-    <div class="container edit-screen-container">
+        <div class="container edit-screen-container">
 
-        <div class="row edit-screen-header">
-            <div class="col-xl-12">
-                <h3>Client</h3>
+            <div class="row edit-screen-header">
+                <div class="col-xl-12">
+                    <h3>Client</h3>
+                </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-xl-12 col-lg-12">
-                <div class="subscribe-form-widget">
-                    <form>
-                        <div class="row form-row">
-                            <div class="faq-area">
-                                <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12">
+                    <div class="subscribe-form-widget">
+                        <form>
+                            <div class="row form-row">
+                                <div class="faq-area">
+                                    <div class="container">
 
-                                    <div class="row form-row">
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                Name
+                                        <div class="row form-row">
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Name *
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-4">
-                                            <div class="form-field">
-                                                <input type="text" class="form-control" @bind-value="@client.Name" placeholder="Enter Client Name" />
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <input type="text" class="form-control" @bind-value="@client.Name" placeholder="Enter Client Name" />
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                Mobile Number
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Mobile Number *
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-4">
-                                            <div class="form-field">
-                                                <input type="text" class="form-control" @bind-value="@client.MobileNumber" placeholder="Enter Mobile Number" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row form-row">
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                Email
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-4">
-                                            <div class="form-field">
-                                                <input type="text" class="form-control" @bind-value="@client.Email" placeholder="Enter Email" />
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <input type="text" class="form-control" @bind-value="@client.MobileNumber" placeholder="Enter Mobile Number" />
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
+                                        <div class="row form-row">
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Email
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-xl-4 col-lg-4">
-                                            <div class="form-field">
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                    <input type="text" class="form-control" @bind-value="@client.Email" placeholder="Enter Email" />
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
 
-
-                                    <div class="row form-row">
-                                        <div class="col-xl-2 col-lg-2">
-                                            <div class="form-label">
-                                                Material Type
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4">
+                                                <div class="form-field">
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-xl-10 col-lg-10">
-                                            <div class="form-field">
-                                                <textarea type="text" class="form-control" @bind="@client.Address" placeholder="Enter Email"></textarea>
+
+                                        <div class="row form-row">
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Address
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-10 col-lg-10">
+                                                <div class="form-field">
+                                                    <textarea type="text" class="form-control" @bind="@client.Address" placeholder="Enter Email"></textarea>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row form-row">
-                            <div class="col-xl-12 grid-buttons-container">
-                                <button class="myButton text-right" @onclick="OnBackClicked" type="button">Back</button>
-                                <button class="myButton text-right" @onclick="OnSaveClicked" type="button">Save</button>
+                            <div class="row form-row">
+                                <div class="col-xl-12 grid-buttons-container">
+                                    <button class="myButton text-right" @onclick="OnBackClicked" type="button">Back</button>
+                                    <button class="myButton text-right" @onclick="OnSaveClicked" type="button">Save</button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
+}
 
 @code {
+    @inject IJSRuntime JSRuntime;
     @inject NavigationManager NavigationManager;
     @inject IClientService clientService;
 
@@ -116,36 +118,94 @@
 
     protected async override void OnInitialized()
     {
-        if (!string.IsNullOrEmpty(id))
+        try
         {
-            isAdd = false;
-            client = await clientService.GetClientByIdAsync(Convert.ToInt32(id));
+            if (!string.IsNullOrEmpty(id))
+            {
+                isAdd = false;
+                var response = await clientService.GetClientByIdAsync(Convert.ToInt32(id));
+
+                if (response != null && response.IsSuccess)
+                    client = (ClientDto)response.Result;
+                else
+                    NavigationManager.NavigateTo("/Error", true);
+            }
+            else
+            {
+                client = new ClientDto();
+                isAdd = true;
+            }
+        }
+        catch
+        {
+            await JSRuntime.InvokeVoidAsync("ShowAlert", "Some error occured. Please try again !");
+            NavigationManager.NavigateTo("/Error", true);
+        }
+    }
+
+    private async Task<bool> ValidateForm()
+    {
+        bool isValid = true;
+
+        if (string.IsNullOrEmpty(client.Name))
+        {
+            await JSRuntime.InvokeVoidAsync("ShowAlert", "Name Cannot be Empty");
+            isValid = false;
         }
         else
+        if (string.IsNullOrEmpty(client.Name))
         {
-            client = new ClientDto();
-            isAdd = true;
+            await JSRuntime.InvokeVoidAsync("ShowAlert", "Mobile number Cannot be Empty");
+            isValid = false;
         }
+        return isValid;
     }
 
     private async Task OnBackClicked()
     {
         if (!string.IsNullOrEmpty(ProjectId) && ProjectId != "0")
-            NavigationManager.NavigateTo("projects/edit/" + ProjectId, false);
+            NavigationManager.NavigateTo("projects/edit/" + ProjectId, true);
         else if (!string.IsNullOrEmpty(ProjectId) && ProjectId == "0")
-            NavigationManager.NavigateTo("projects/add", false);
+            NavigationManager.NavigateTo("projects/add", true);
         else
-            NavigationManager.NavigateTo("projects", false);
+            NavigationManager.NavigateTo("projects", true);
     }
 
 
     private async Task OnSaveClicked()
     {
-        // if (isAdd)
-        //     await workOrderService.CreateWorkOrderAsync(workOrder);
-        // else
-        //     await workOrderService.UpdateWorkOrderAsync(workOrder);
-        NavigationManager.NavigateTo("projects", false);
+        CommonResponseDto result;
+        try
+        {
+            if (await ValidateForm())
+            {
+                if (isAdd)
+                    result = await clientService.CreateClientAsync(client);
+                else
+                    result = await clientService.UpdateClientAsync(client);
+
+                if (result.IsSuccess)
+                {
+                    if (!string.IsNullOrEmpty(ProjectId) && ProjectId != "0")
+                        NavigationManager.NavigateTo("projects/edit/" + ProjectId, true);
+                    else if (!string.IsNullOrEmpty(ProjectId) && ProjectId == "0")
+                        NavigationManager.NavigateTo("projects/add", true);
+                    else
+                        NavigationManager.NavigateTo("projects", true);
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(result.ErrorMessage))
+                        await JSRuntime.InvokeVoidAsync("ShowAlert", result.ErrorMessage);
+                    else
+                        await JSRuntime.InvokeVoidAsync("ShowAlert", "Some error occured. Please try again !");
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("ShowAlert", ex.Message);            
+        }
     }
 }
 

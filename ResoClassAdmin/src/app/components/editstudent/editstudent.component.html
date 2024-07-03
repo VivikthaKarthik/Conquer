@@ -6,10 +6,19 @@
                 <div class="row align-items-center">
                     <div class="col">
                         <h3 class="page-title">Students</h3>
+                        <div class="col-auto float-right ml-auto">
+                            <a (click)="remove()" class="btn add-btn"><i class="fa fa-trash-o"></i> Remove
+                                Device</a>
+                        </div>
+                        <div class="col-auto float-right ml-auto">
+                            <a (click)="reset()" class="btn add-btn"><i class="fa fa-refresh"></i> Reset
+                                Password</a>
+                        </div>
                         <ul class="breadcrumb">
 
                             <li class="breadcrumb-item">Edit Students</li>
                         </ul>
+
                     </div>
                 </div>
             </div>
@@ -153,11 +162,11 @@
                                 <div *ngIf="submitted && studentForm.controls.email.errors.required">
                                     Email is required
                                 </div>
-                                 <div *ngIf="studentForm.controls.email.hasError('invalidEmail')">
-                                Please enter a valid email address
-                              </div>
+                                <div *ngIf="studentForm.controls.email.hasError('invalidEmail')">
+                                    Please enter a valid email address
+                                </div>
                             </div>
-                           
+
 
                         </div>
                     </div>
