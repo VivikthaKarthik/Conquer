@@ -15,7 +15,5 @@ public partial class WorkOrderItem
 
     public int RoomTypeId { get; set; }
 
-    public virtual ICollection<DesignType> DesignTypes { get; set; } = new List<DesignType>();
-
     public virtual ICollection<WorkOrder> WorkOrders { get; set; } = new List<WorkOrder>();
 }

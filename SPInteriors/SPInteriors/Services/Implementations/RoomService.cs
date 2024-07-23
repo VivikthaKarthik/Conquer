@@ -12,9 +12,9 @@ namespace SPInteriors.Services.Implementations
 {
     public class RoomService: IRoomService
     {
-        private readonly SpinteriorsContext dbContext;
+        private readonly InteriorDesignContext dbContext;
         //private readonly IMapper mapper;
-        public RoomService(SpinteriorsContext _dbContext)
+        public RoomService(InteriorDesignContext _dbContext)
         {
             dbContext = _dbContext;
             //mapper = _mapper;

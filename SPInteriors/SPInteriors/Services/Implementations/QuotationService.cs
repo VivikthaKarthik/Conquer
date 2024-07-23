@@ -12,9 +12,9 @@ namespace SPInteriors.Services.Implementations
 {
     public class QuotationService : IQuotationService
     {
-        private readonly SpinteriorsContext dbContext;
+        private readonly InteriorDesignContext dbContext;
         //private readonly IMapper mapper;
-        public QuotationService(SpinteriorsContext _dbContext)
+        public QuotationService(InteriorDesignContext _dbContext)
         {
             dbContext = _dbContext;
             //mapper = _mapper;

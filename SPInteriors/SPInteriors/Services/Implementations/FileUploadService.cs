@@ -10,10 +10,10 @@ namespace SPInteriors.Services.Implementations
 {
     public class FileUploadService : IFileUploadService
     {
-        private readonly SpinteriorsContext dbContext;
+        private readonly InteriorDesignContext dbContext;
         private readonly IWebHostEnvironment _environment;
 
-        public FileUploadService(IWebHostEnvironment environment, SpinteriorsContext _dbContext)
+        public FileUploadService(IWebHostEnvironment environment, InteriorDesignContext _dbContext)
         {
             dbContext = _dbContext;
             _environment = environment;

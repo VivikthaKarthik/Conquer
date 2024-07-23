@@ -1,0 +1,470 @@
+CREATE TABLE [dbo].[User](
+	[Id] [bigint] IDENTITY(1000001,1) NOT NULL,
+	[FullName] [nvarchar](100) NOT NULL,
+	[Email] [nvarchar](128) NOT NULL,
+	[UserName] [nvarchar](128) NOT NULL,
+	[Password] [nvarchar](128) NOT NULL,
+	[PhoneNumber] [nvarchar](20) NOT NULL,
+	[IsAdmin] [bit] NOT NULL,
+	[LastLoginDate] [datetime] NULL,
+ CONSTRAINT [PK_ResoUser] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+
+CREATE TABLE [dbo].[Status](
+	[Id] [int] IDENTITY(1000001,1) NOT NULL,
+	[Name] [nvarchar](100) NOT NULL,
+ CONSTRAINT [PK_Status] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[Project](
+	[Id] [int] IDENTITY(1000001,1) NOT NULL,
+	[Name] [nvarchar](100) NOT NULL,
+	[ClientId] [int] NOT NULL,
+	[StatusId] [int] NOT NULL,
+	[HouseTypeId] [int] NOT NULL,
+	[MaterialTypeId] [int] NOT NULL,
+	[OuterFrameTypeId] [int] NOT NULL,
+	[Area] [int] NULL,
+	[StartDate] [date] NULL,
+	[EndDate] [date] NULL,
+	[IsActive] [bit] NOT NULL,
+ CONSTRAINT [PK_Project] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[RoomType](
+	[Id] [int] IDENTITY(1000001,1) NOT NULL,
+	[Name] [nvarchar](100) NOT NULL,
+	[Description] [nvarchar](max) NOT NULL,
+	[ImagePath] [nvarchar](max) NULL,
+ CONSTRAINT [PK_RoomType] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[HouseType](
+	[Id] [int] IDENTITY(1000001,1) NOT NULL,
+	[Name] [nvarchar](100) NOT NULL,
+	[Description] [nvarchar](max) NOT NULL,
+	[ImagePath] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_HouseType] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+CREATE TABLE [dbo].[Client](
+	[Id] [int] IDENTITY(1000001,1) NOT NULL,
+	[Name] [nvarchar](100) NOT NULL,
+	[MobileNumber] [nvarchar](12) NOT NULL,
+	[Email] [nvarchar](50) NULL,
+	[Address] [nvarchar](500) NULL,
+	[IsActive] [bit] NOT NULL,
+ CONSTRAINT [PK_Client] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[Category](
+	[Id] [int] IDENTITY(1000001,1) NOT NULL,
+	[Name] [nvarchar](250) NOT NULL,
+	[Description] [nvarchar](max) NULL,
+	[ThumbNail] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_Category] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[WorkOrderItem](
+	[Id] [int] IDENTITY(1000001,1) NOT NULL,
+	[Name] [nvarchar](100) NOT NULL,
+	[Description] [nvarchar](max) NOT NULL,
+	[ImagePath] [nvarchar](1024) NULL,
+	[RoomTypeId] [int] NOT NULL,
+ CONSTRAINT [PK_WorkOrderItem] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[WorkOrder](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](500) NOT NULL,
+	[WorkOrderItemId] [int] NULL,
+	[WorkOrderType] [nvarchar](500) NULL,
+	[RoomId] [int] NOT NULL,
+	[DesignType] [nvarchar](500) NULL,
+	[MaterialType] [nvarchar](500) NULL,
+	[OuterFrameType] [nvarchar](500) NULL,
+	[Height] [decimal](18, 2) NOT NULL,
+	[Width] [decimal](18, 2) NOT NULL,
+	[SuppressCalculation] [bit] NOT NULL,
+	[Amount] [int] NULL,
+	[IsActive] [bit] NULL,
+ CONSTRAINT [PK_WorkOrder] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[WorkOrder] ADD  CONSTRAINT [DF__WorkOrder__Heigh__2180FB33]  DEFAULT ((0)) FOR [Height]
+GO
+
+ALTER TABLE [dbo].[WorkOrder] ADD  CONSTRAINT [DF__WorkOrder__Width__236943A5]  DEFAULT ((0)) FOR [Width]
+GO
+
+ALTER TABLE [dbo].[WorkOrder]  WITH CHECK ADD  CONSTRAINT [FK_WorkOrder_Room] FOREIGN KEY([RoomId])
+REFERENCES [dbo].[Room] ([Id])
+GO
+
+ALTER TABLE [dbo].[WorkOrder] CHECK CONSTRAINT [FK_WorkOrder_Room]
+GO
+
+ALTER TABLE [dbo].[WorkOrder]  WITH CHECK ADD  CONSTRAINT [FK_WorkOrder_WorkOrderItem] FOREIGN KEY([WorkOrderItemId])
+REFERENCES [dbo].[WorkOrderItem] ([Id])
+GO
+
+ALTER TABLE [dbo].[WorkOrder] CHECK CONSTRAINT [FK_WorkOrder_WorkOrderItem]
+GO
+
+
+
+CREATE TABLE [dbo].[Room](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](250) NULL,
+	[RoomTypeId] [int] NOT NULL,
+	[MaterialTypeId] [int] NOT NULL,
+	[OuterFrameTypeId] [int] NOT NULL,
+	[ProjectId] [int] NOT NULL,
+	[IsActive] [bit] NOT NULL,
+ CONSTRAINT [PK_Room] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Room]  WITH CHECK ADD  CONSTRAINT [FK_Room_Project] FOREIGN KEY([ProjectId])
+REFERENCES [dbo].[Project] ([Id])
+GO
+
+ALTER TABLE [dbo].[Room] CHECK CONSTRAINT [FK_Room_Project]
+GO
+
+
+
+CREATE TABLE [dbo].[WorkOrderImage](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[WorkOrderId] [int] NOT NULL,
+	[Name] [nvarchar](250) NOT NULL,
+	[ImagePath] [nvarchar](max) NOT NULL,
+	[UploadedBy] [nvarchar](20) NOT NULL,
+	[IsFinal] [bit] NOT NULL,
+ CONSTRAINT [PK_WorkOrderImage] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[WorkOrderImage] ADD  CONSTRAINT [DF_WorkOrderImage_IsFinal]  DEFAULT ((0)) FOR [IsFinal]
+GO
+
+ALTER TABLE [dbo].[WorkOrderImage]  WITH CHECK ADD  CONSTRAINT [FK_WorkOrderImage_WorkOrder] FOREIGN KEY([WorkOrderId])
+REFERENCES [dbo].[WorkOrder] ([Id])
+GO
+
+ALTER TABLE [dbo].[WorkOrderImage] CHECK CONSTRAINT [FK_WorkOrderImage_WorkOrder]
+GO
+
+
+CREATE TABLE [dbo].[WorkOrderType](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](100) NOT NULL,
+	[WorkOrderItemId] [int] NULL,
+	[Description] [nvarchar](max) NOT NULL,
+	[Image] [nvarchar](max) NULL,
+	[Price] [int] NULL,
+ CONSTRAINT [PK_WorkOrderType] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+CREATE TABLE [dbo].[WorkOrderProperty](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](250) NOT NULL,
+	[AllowMultipleSelect] [bit] NOT NULL,
+ CONSTRAINT [PK_WorkOrderProperty] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[WorkOrderProperty] ADD  CONSTRAINT [DF_WorkOrderProperty_AllowMultipleSelect]  DEFAULT ((0)) FOR [AllowMultipleSelect]
+GO
+
+CREATE TABLE [dbo].[WorkOrderPropertyField](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](250) NOT NULL,
+	[WorkOrderPropertyId] [int] NOT NULL,
+ CONSTRAINT [PK_WorkOrderPropertyField] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[WorkOrderPropertyField]  WITH CHECK ADD  CONSTRAINT [FK_WorkOrderPropertyField_WorkOrderProperty] FOREIGN KEY([WorkOrderPropertyId])
+REFERENCES [dbo].[WorkOrderProperty] ([Id])
+GO
+
+ALTER TABLE [dbo].[WorkOrderPropertyField] CHECK CONSTRAINT [FK_WorkOrderPropertyField_WorkOrderProperty]
+GO
+
+CREATE TABLE [dbo].[WorkOrderPart](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[WorkOrderId] [int] NOT NULL,
+	[WorkOrderTypeId] [int] NOT NULL,
+	[Height] [decimal](18, 2) NOT NULL,
+	[Width] [decimal](18, 2) NOT NULL,
+	[Notes] [nvarchar](max) NULL,
+ CONSTRAINT [PK_WorkOrderPart] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[WorkOrderPart] ADD  CONSTRAINT [DF_WorkOrderPart_Height]  DEFAULT ((0.00)) FOR [Height]
+GO
+
+ALTER TABLE [dbo].[WorkOrderPart] ADD  CONSTRAINT [DF_WorkOrderPart_Width]  DEFAULT ((0.00)) FOR [Width]
+GO
+
+CREATE TABLE [dbo].[WorkOrderDetails](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[WorkOrderId] [int] NOT NULL,
+	[Name] [nvarchar](250) NOT NULL,
+	[Value] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_WorkOrderDetails] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+CREATE TABLE [dbo].[Quotation](
+	[Id] [int] NOT NULL,
+	[Name] [nvarchar](100) NOT NULL,
+	[ProjectId] [int] NOT NULL,
+	[Amount] [int] NULL,
+	[IssuedDate] [date] NULL,
+	[Version] [int] NOT NULL,
+	[IsActive] [bit] NOT NULL,
+ CONSTRAINT [PK_Quotation] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Quotation]  WITH CHECK ADD  CONSTRAINT [FK_Quotation_Project] FOREIGN KEY([ProjectId])
+REFERENCES [dbo].[Project] ([Id])
+GO
+
+ALTER TABLE [dbo].[Quotation] CHECK CONSTRAINT [FK_Quotation_Project]
+GO
+
+
+CREATE TABLE [dbo].[PortfolioImage](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](250) NOT NULL,
+	[Description] [nvarchar](max) NULL,
+	[CategoryId] [int] NOT NULL,
+	[ImagePath] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_Images] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[PortfolioImage]  WITH CHECK ADD  CONSTRAINT [FK_Images_Category] FOREIGN KEY([CategoryId])
+REFERENCES [dbo].[Category] ([Id])
+GO
+
+ALTER TABLE [dbo].[PortfolioImage] CHECK CONSTRAINT [FK_Images_Category]
+GO
+
+
+CREATE TABLE [dbo].[OuterFrameType](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](500) NOT NULL,
+	[Description] [nvarchar](max) NOT NULL,
+	[Price] [int] NOT NULL,
+ CONSTRAINT [PK_OuterFrameType] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+CREATE TABLE [dbo].[MaterialType](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](100) NOT NULL,
+	[Description] [nvarchar](max) NOT NULL,
+	[Price] [int] NOT NULL,
+ CONSTRAINT [PK_MaterialType] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+CREATE TABLE [dbo].[LaminateType](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](500) NOT NULL,
+	[Description] [nvarchar](max) NOT NULL,
+	[Price] [int] NOT NULL,
+ CONSTRAINT [PK_LaminateType] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+CREATE TABLE [dbo].[Hardware](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](500) NOT NULL,
+	[Description] [nvarchar](max) NOT NULL,
+	[Price] [int] NOT NULL,
+ CONSTRAINT [PK_Hardware] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+CREATE TABLE [dbo].[DucoPaintType](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](500) NOT NULL,
+	[Description] [nvarchar](max) NOT NULL,
+	[Price] [int] NOT NULL,
+ CONSTRAINT [PK_DucoPaintType] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+
+
+CREATE           VIEW [dbo].[vwProjects]
+AS
+Select 
+	P.Id, 
+	P.[Name],
+	C.Id AS ClientId,
+	C.[Name] AS ClientName,
+	S.Id AS StatusId,
+	S.[Name] AS [Status],
+	HT.ID AS HouseTypeId,
+	HT.[Name] AS HouseType,
+	HT.ImagePath,
+	MT.ID AS MaterialTypeId,
+	MT.[Name] AS MaterialType,
+	OT.ID AS OuterFrameTypeId,
+	OT.[Name] AS OuterFrameType,
+	P.StartDate,
+	P.EndDate
+from Project P
+Inner Join Client C ON C.Id = P.ClientId
+Inner Join [Status] S ON S.Id = P.StatusId
+Inner Join HouseType HT ON HT.Id = P.HouseTypeId
+Inner Join MaterialType MT ON MT.Id = P.MaterialTypeId
+Inner Join OuterFrameType OT ON OT.Id = P.OuterFrameTypeId
+
+GO
+
+
+
+CREATE     VIEW [dbo].[vwRooms]
+AS
+
+Select 
+	R.ID, 
+	RT.Id AS RoomTypeId,
+	RT.[Name],
+	P.Id AS ProjectId, 
+	P.[Name] AS ProjectName,
+	MT.ID AS MaterialTypeId,
+	MT.[Name] AS MaterialType,
+	OT.ID AS OuterFrameTypeId,
+	OT.[Name] AS OuterFrameType
+from Room R
+INNER JOIN RoomType RT ON RT.ID = R.RoomTypeId
+INNER JOIN Project P ON P.ID = R.ProjectId
+Inner Join MaterialType MT ON MT.Id = R.MaterialTypeId
+Inner Join OuterFrameType OT ON OT.Id = R.OuterFrameTypeId
+
+GO
+
+
+CREATE             VIEW [dbo].[vwWorkOrders]
+AS
+Select 
+	W.Id, 
+	W.[Name],
+	WI.ID AS WorkOrderItemId,
+	ISNULL(WI.[Name], '') AS WorkOrderItem,
+	W.WorkOrderType,
+	R.Id AS RoomId,
+	RT.Id AS RoomTypeId,
+	RT.[Name] AS Room,
+	W.DesignType,
+	W.OuterFrameType,
+	W.MaterialType,
+	W.Height,
+	W.Width,
+	W.SuppressCalculation,
+	W.Amount
+from [WorkOrder] W
+LEFT Join WorkOrderItem WI ON WI.Id = W.WorkOrderItemId
+Inner Join Room R ON R.Id = W.RoomId
+INNER JOIN RoomType RT ON RT.ID = R.RoomTypeId
+
+GO
+
+
+

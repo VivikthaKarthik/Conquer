@@ -1,0 +1,298 @@
+﻿@page
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+    <meta name="description" content="Smarthr - Bootstrap Admin Template">
+    <meta name="keywords" content="admin, estimates, bootstrap, business, corporate, creative, management, minimal, modern, accounts, invoice, html5, responsive, CRM, Projects">
+    <meta name="author" content="Dreamguys - Bootstrap Admin Template">
+    <meta name="robots" content="noindex, nofollow">
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/InteriorWeb.styles.css" asp-append-version="true" />
+
+    <title>SP Interiors</title>
+
+    <link rel="icon" type="image/png" href="images/logo/favicon.png" />
+</head>
+<body>
+
+    <!-- Header Start !-->
+    <header class="header-area style-4 noPrint">
+        <div class="header-menu-area sticky-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-6 d-flex align-items-center">
+                        <div class="logo-wrapper">
+                            <div class="logo">
+                                <a href="/" class="standard-logo">
+                                    <img src="images/logo/black-logo.png" alt="logo" />
+                                </a>
+                                <a href="/" class="sticky-logo">
+                                    <img src="images/logo/sticky-logo.png" alt="logo" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-9 col-lg-9 col-md-6 col-6 d-flex align-items-center justify-content-end">
+                        <div class="menu d-inline-block">
+                            <nav id="main-menu" class="main-menu">
+                                <ul>
+                                    <li><a href="/">Home</a></li>
+
+                                    <li><a href="explore">Explore</a></li>
+
+                                    <CascadingAuthenticationState>
+                                        <AuthorizeView>
+                                            <Authorized>
+                                                @* <li><a href="dashboard" @onclick='(() => HandleNavClick("dashboard"))'>Dashboard</a></li> *@
+                                                <li class="active"><a href="projects">Projects</a></li>
+                                                <li><a href="portfolio" class="active">Portfolio</a></li>
+                                                <li class='dropdown'>
+                                                    <a href="javascript:void(0);">Manage</a>
+                                                    <ul class="submenu">
+                                                        <li><a href="masterdata">MasterData</a></li>
+                                                        <li><a href="accounts">Accounts</a></li>
+                                                        <li><a href="inventory">Inventory</a></li>
+                                                    </ul>
+                                                </li>
+                                            </Authorized>
+                                        </AuthorizeView>
+                                    </CascadingAuthenticationState>
+                                    <li><a href="portfolio">About Us</a></li>
+                                    <li><a href="portfolio">Contact Us</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="search-btn-with-btn">
+                            @*  <div class="search-btn-wrapper">
+                            <a href="javascript:void(0);" class="search-btn">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            </a>
+                            </div> *@
+                            <CascadingAuthenticationState>
+                                <AuthorizeView>
+                                    <NotAuthorized>
+                                        <div class="btn-wrapper">
+                                            <a href="javascript:void(0);" onclick='(() => Login())' class="theme-btn">Login<i class="fa-solid fa-sign-in"></i></a>
+                                        </div>
+                                    </NotAuthorized>
+                                    <Authorized>
+
+                                        <div class="btn-wrapper">
+                                            <a href="javascript:void(0);" onclick='(() => Logout())' class="theme-btn">Logout<i class="fa-solid fa-sign-in"></i></a>
+                                        </div>
+                                    </Authorized>
+                                </AuthorizeView>
+                            </CascadingAuthenticationState>
+                        </div>
+                        <!-- Mobile Menu Toggle Button Start !-->
+                        <div class="mobile-menu-bar d-lg-none text-end">
+                            <a href="javascript:void(0);" onclick="Update" class="mobile-menu-toggle-btn"><i class="fal fa-bars"></i></a>
+                        </div>
+                        <!-- Mobile Menu Toggle Button End !-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header End !-->
+    <!-- Menu Sidebar Section Start -->
+    <div class="menu-sidebar-area">
+        <div class="menu-sidebar-wrapper">
+            <div class="menu-sidebar-close">
+                <button class="menu-sidebar-close-btn" id="menu_sidebar_close_btn">
+                    <i class="fal fa-times"></i>
+                </button>
+            </div>
+            <div class="menu-sidebar-content">
+                <div class="menu-sidebar-logo">
+                    <a href="index.html">
+                        <img src="images/logo/black-logo.png" alt="logo" />
+                    </a>
+                </div>
+                <div class="mobile-nav-menu"></div>
+                <div class="menu-sidebar-content">
+                    <div class="menu-sidebar-single-widget">
+                        <h5 class="menu-sidebar-title">Contact Info</h5>
+                        <div class="header-contact-info">
+                            <span>
+                                <i class="fa-solid fa-location-dot"></i>
+                                20, Bordeshi, New York, US
+                            </span>
+                            <span>
+                                <a href="mailto:hello@technova.com">
+                                    <i class="fa-regular fa-envelope"></i>
+                                    hello@technova.com
+                                </a>
+                            </span>
+                            <span>
+                                <a href="tel:+123-456-7890">
+                                    <i class="fa-solid fa-phone"></i>
+                                    +123-456-7890
+                                </a>
+                            </span>
+                        </div>
+                        <div class="social-profile">
+                            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Menu Sidebar Section Start -->
+    <div class="body-overlay"></div>
+    <div class="container">
+        <main role="main" class="pb-3" style="height:530px;">
+            @* <div id="preloader">
+                <div id="preloader-status" style="background-image: url('images/icon/preeloader.gif')"></div>
+            </div> *@
+            <div class="page-breadcrumb-area page-bg">
+                <div class="page-overlay"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="breadcrumb-wrapper">
+                                <div class="page-heading">
+                                    <h3 class="page-title">Projects</h3>
+                                </div>
+                                <div class="breadcrumb-list">
+                                    <ul>
+                                        <li><a href="javascript:void(0);">Home</a></li>
+                                        <li><a href="javascript:void(0);">Projects</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid-area style-1 scrollable-area" style="background-size:cover;background-image: url(./images/contact/subscribe-bg.jpg)">
+                <div class="container">
+                    <div class="row">
+                        <!-- Latest Posts Area Start style-3 -->
+                        <div class="latest-posts-area style-2 py-40">
+                            <div class="container">
+                                <div class="section-title">
+                                    <div class="sec-content">
+                                        <h2 class="title">
+                                            Designing Spaces for Every <br>
+                                            Taste and Budget
+                                        </h2>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="margin-bottom:20px;">
+                                    <div class="col-xl-3">
+                                        <input class="search-field" name="clientSearch" type="text" placeholder="Enter Client Name">
+                                    </div>
+                                    <div class="col-xl-3">
+                                        <select id="projectStatus" name="dropdownControl" class="form-control">
+                                            <option value="0">Select</option>
+                                            <option value="1">New</option>
+                                            <option value="2">Accepted</option>
+                                            <option value="3">Work  In Progress</option>
+                                            <option value="4">Completed</option>
+                                            <option value="5">Cancelled</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-xl-3">
+                                        <button class="myButton" onclick="SearchProjects()" type="button">Search</button>
+                                    </div>
+                                    <div class="col-xl-3 grid-buttons-container">
+                                        <button class="myButton text-right" onclick="AddProject()" type="button">New</button>
+                                    </div>
+                                </div>
+                                <div class="our-team-area style-2">
+                                    <div class="container">
+                                        <div class="team-card-wrapper">
+                                            <div class="row" id="projectRow">
+                                                
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <!-- Latest Posts Area End style-3 -->
+                    </div>
+
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <link rel="apple-touch-icon" href="images/logo/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="57x57" href="images/logo/apple-touch-icon-57x57.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="images/logo/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="76x76" href="images/logo/apple-touch-icon-76x76.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="images/logo/apple-touch-icon-114x114.png" />
+    <link rel="apple-touch-icon" sizes="120x120" href="images/logo/apple-touch-icon-120x120.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="images/logo/apple-touch-icon-144x144.png" />
+    <link rel="apple-touch-icon" sizes="152x152" href="images/logo/apple-touch-icon-152x152.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="images/logo/apple-touch-icon-180x180.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Rubik:wght@400;500;600;700&display=swap"
+          rel="stylesheet" />
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/fontawesome.min.css" />
+    <link rel="stylesheet" href="css/magnific-popup.css" />
+    <link rel="stylesheet" href="css/slick.min.css" />
+    <link rel="stylesheet" href="css/meanmenu.min.css" />
+    <link rel="stylesheet" href="css/nice-select.min.css" />
+    <link rel="stylesheet" href="css/animate.min.css" />
+    <link rel="stylesheet" href="css/style.css" />
+
+    <script src="js/interiorApp.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.nice-select.min.js"></script>
+    <script src="js/slick.min.js"></script>
+    <script src="js/jquery.counterup.min.js"></script>
+    <script src="js/waypoints.js"></script>
+    <script src="js/jquery.meanmenu.min.js"></script>
+    <script src="js/jquery.magnific-popup.min.js"></script>
+    <script src="js/inview.min.js"></script>
+    <script src="js/wow.min.js"></script>
+    <script src="js/tilt.jquery.min.js"></script>
+    <script src="js/isotope.min.js"></script>
+    <script src="js/jquery.imagesloaded.min.js"></script>
+    <script src="js/jquery.lettering.min.js"></script>
+    <script src="js/circletype.min.js"></script>
+    <script src="js/custom.js"></script>
+
+    <script src="js/jspdf.debug.js"></script>
+    <script src="js/html2canvas.min.js"></script>
+    <script src="js/html2pdf.min.js"></script>
+
+
+
+    <script src="_framework/blazor.web.js"></script>
+
+</body>
+</html>

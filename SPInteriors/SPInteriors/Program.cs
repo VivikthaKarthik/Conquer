@@ -54,7 +54,7 @@ builder.Services.AddRazorComponents()
 //builder.Services.AddAuthorization();
 //builder.Services.AddCascadingAuthenticationState();
 
-builder.Services.AddDbContext<SpinteriorsContext>((sp, options) =>
+builder.Services.AddDbContext<InteriorDesignContext>((sp, options) =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnectionString")).AddInterceptors();
 });

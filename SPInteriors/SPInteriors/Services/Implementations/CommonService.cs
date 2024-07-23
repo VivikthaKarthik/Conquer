@@ -9,8 +9,8 @@ namespace SPInteriors.Services.Implementations
     {
         public string Dummy { get; set; }
         private IConfiguration config;
-        private readonly SpinteriorsContext dbContext;
-        public CommonService(SpinteriorsContext _dbContext, IConfiguration configuration)
+        private readonly InteriorDesignContext dbContext;
+        public CommonService(InteriorDesignContext _dbContext, IConfiguration configuration)
         {
             config = configuration;
             this.dbContext = _dbContext;

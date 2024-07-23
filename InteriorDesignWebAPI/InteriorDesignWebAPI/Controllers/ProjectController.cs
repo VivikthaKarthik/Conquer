@@ -1,5 +1,6 @@
 ﻿using InteriorDesignWebAPI.Models.Dtos;
 using InteriorDesignWebAPI.Services.Interfaces;
+using InteriorDesignWebAPI.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -9,7 +10,6 @@ using Microsoft.Extensions.Logging;
 namespace InteriorDesignWebAPI.Controllers
 {
     [EnableCors("MyPolicy")]
-    [Route("api/[controller]")]
     [ApiController]
     public class ProjectController : ControllerBase
     {
@@ -21,15 +21,16 @@ namespace InteriorDesignWebAPI.Controllers
             projectService = _projectService;
             logger = _logger;
         }
+
         [HttpGet]
-        [Route("api/Project/Get")]
-        public async Task<ResponseDto> Get(int Id)
+        [Route("api/Project/GetProjectById")]
+        public async Task<ResponseDto> GetProjectById(int Id)
         {
             ResponseDto responseDto = new ResponseDto();
             try
             {
-                logger.LogInformation("Requested GetUser");
-                return await projectService.GetProjectById(Id);
+                logger.LogInformation("Requested GetProjectById");
+                return await projectService.GetProjectByIdAsync(Id);
             }
             catch (Exception ex)
             {
@@ -40,14 +41,14 @@ namespace InteriorDesignWebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("api/Project/GetRoomsByProjectId")]
-        public async Task<ResponseDto> GetRoomsByProjectId(int projectId)
+        [Route("api/Project/GetAllProjects")]
+        public async Task<ResponseDto> GetAllProjects()
         {
             ResponseDto responseDto = new ResponseDto();
             try
             {
-                logger.LogInformation("Requested GetRooms");
-                return await projectService.GetRoomsByProjectId(projectId);
+                logger.LogInformation("Requested GetAllProjects");
+                return await projectService.GetAllProjectsAsync();
             }
             catch (Exception ex)
             {
@@ -56,5 +57,78 @@ namespace InteriorDesignWebAPI.Controllers
             }
             return responseDto;
         }
+
+        [HttpGet]
+        [Route("api/Project/GetFilteredProjects")]
+        public async Task<ResponseDto> GetFilteredProjects(string? ClientName, int statusId)
+        {
+            ResponseDto responseDto = new ResponseDto();
+            try
+            {
+                logger.LogInformation("Requested GetFilteredProjects");
+                return await projectService.GetFilteredProjectsAsync(ClientName, statusId);
+            }
+            catch (Exception ex)
+            {
+                responseDto.IsSuccess = false;
+                responseDto.Message = ex.Message;
+            }
+            return responseDto;
+        }
+
+        [HttpGet]
+        [Route("api/Project/GetMyProjects")]
+        public async Task<ResponseDto> GetMyProjects(int clientId)
+        {
+            ResponseDto responseDto = new ResponseDto();
+            try
+            {
+                logger.LogInformation("Requested GetMyProjects");
+                return await projectService.GetMyProjectsAsync(clientId);
+            }
+            catch (Exception ex)
+            {
+                responseDto.IsSuccess = false;
+                responseDto.Message = ex.Message;
+            }
+            return responseDto;
+        }
+
+        [HttpPost]
+        [Route("api/Project/CreateProject")]
+        public async Task<ResponseDto> CreateProject(ProjectDto project)
+        {
+            ResponseDto responseDto = new ResponseDto();
+            try
+            {
+                logger.LogInformation("Requested CreateProject");
+                return await projectService.CreateProjectAsync(project);
+            }
+            catch (Exception ex)
+            {
+                responseDto.IsSuccess = false;
+                responseDto.Message = ex.Message;
+            }
+            return responseDto;
+        }
+
+        [HttpPut]
+        [Route("api/Project/UpdateProject")]
+        public async Task<ResponseDto> UpdateProject(ProjectDto project)
+        {
+            ResponseDto responseDto = new ResponseDto();
+            try
+            {
+                logger.LogInformation("Requested UpdateProject");
+                return await projectService.UpdateProjectAsync(project);
+            }
+            catch (Exception ex)
+            {
+                responseDto.IsSuccess = false;
+                responseDto.Message = ex.Message;
+            }
+            return responseDto;
+        }
+
     }
 }

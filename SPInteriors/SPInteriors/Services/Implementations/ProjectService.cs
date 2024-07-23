@@ -15,9 +15,9 @@ namespace SPInteriors.Services.Implementations
     public class ProjectService : IProjectService
     {
 
-        private readonly SpinteriorsContext dbContext;
+        private readonly InteriorDesignContext dbContext;
         //private readonly IMapper mapper;
-        public ProjectService(SpinteriorsContext _dbContext)
+        public ProjectService(InteriorDesignContext _dbContext)
         {
             dbContext = _dbContext;
             //mapper = _mapper;

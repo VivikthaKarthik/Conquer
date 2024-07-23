@@ -196,7 +196,7 @@ export class EditstudentComponent {
       CourseId: this.studentForm.controls.courseId.value,
       ClassId: this.studentForm.controls.classId.value,
       AdmissionDate: this.studentForm.controls.admissionDate.value,
-      MobileNumber: this.studentForm.controls.mobileNumber.value,
+      MobileNumber: this.studentForm.controls.mobileNumber.value.toString(),
       EmailAddress: this.studentForm.controls.email.value,
       AlternateMobileNumber: this.studentForm.controls.altMobileNumber.value,
       AddressLine1: this.studentForm.controls.addressLine1.value,

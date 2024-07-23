@@ -14,10 +14,10 @@ namespace SPInteriors.Services.Implementations
 {
     public class WorkOrderService : IWorkOrderService
     {
-        private readonly SpinteriorsContext dbContext;
+        private readonly InteriorDesignContext dbContext;
         private readonly IWebHostEnvironment _environment;
         //private readonly IMapper mapper;
-        public WorkOrderService(IWebHostEnvironment environment, SpinteriorsContext _dbContext)
+        public WorkOrderService(IWebHostEnvironment environment, InteriorDesignContext _dbContext)
         {
             dbContext = _dbContext;
             _environment = environment;

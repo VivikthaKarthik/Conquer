@@ -5,7 +5,7 @@ namespace ConquerAPI.Models.Domain;
 
 public partial class User
 {
-    public long Id { get; set; }
+    public int Id { get; set; }
 
     public string UserId { get; set; } = null!;
 

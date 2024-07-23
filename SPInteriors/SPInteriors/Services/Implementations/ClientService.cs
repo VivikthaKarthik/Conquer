@@ -9,8 +9,8 @@ namespace SPInteriors.Services.Implementations
 {
     public class ClientService : IClientService
     {
-        private readonly SpinteriorsContext dbContext;
-        public ClientService(SpinteriorsContext _dbContext)
+        private readonly InteriorDesignContext dbContext;
+        public ClientService(InteriorDesignContext _dbContext)
         {
             dbContext = _dbContext;
         }

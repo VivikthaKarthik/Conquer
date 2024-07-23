@@ -1,6 +1,9 @@
+using AutoMapper;
+using InteriorDesignWebAPI;
 using InteriorDesignWebAPI.Models.Domain;
 using InteriorDesignWebAPI.Services;
 using InteriorDesignWebAPI.Services.Interfaces;
+using InteriorDesignWebAPI.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -9,7 +12,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddScoped<HtmlAppender>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IRoomService, RoomService>();
+builder.Services.AddScoped<IWorkOrderService, WorkOrderService>();
+
+IMapper mapper = MapperConfig.RegisterMaps().CreateMapper();
+builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -47,7 +57,7 @@ builder.Services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
 }));
 
 
-builder.Services.AddDbContext<SpinteriorsContext>(options =>
+builder.Services.AddDbContext<InteriorDesignContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnectionString"));
 });

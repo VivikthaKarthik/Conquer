@@ -6,8 +6,8 @@ namespace SPInteriors.Services.Implementations
 {
     public class PortfolioService : IPortfolioService
     {
-        private readonly SpinteriorsContext dbContext;
-        public PortfolioService(SpinteriorsContext _dbContext)
+        private readonly InteriorDesignContext dbContext;
+        public PortfolioService(InteriorDesignContext _dbContext)
         {
             dbContext = _dbContext;
         }
