@@ -64,10 +64,7 @@ export class EditstudentComponent {
       dateofBirth: ['', Validators.required],
       gender: [''],
       mobileNumber: ['', [Validators.required, this.mobileNumberValidator()]],
-      altMobileNumber: [
-        '',
-        [Validators.required, this.mobileNumberValidator()],
-      ],
+      altMobileNumber: [''],
       email: ['', [Validators.required, this.emailValidator()]],
       courseId: ['', Validators.required],
       classId: ['', Validators.required],
@@ -198,7 +195,11 @@ export class EditstudentComponent {
       AdmissionDate: this.studentForm.controls.admissionDate.value,
       MobileNumber: this.studentForm.controls.mobileNumber.value.toString(),
       EmailAddress: this.studentForm.controls.email.value,
-      AlternateMobileNumber: this.studentForm.controls.altMobileNumber.value,
+      AlternateMobileNumber:
+        this.studentForm.controls.altMobileNumber.value !== null &&
+        this.studentForm.controls.altMobileNumber.value !== ''
+          ? this.studentForm.controls.altMobileNumber.value.toString()
+          : '',
       AddressLine1: this.studentForm.controls.addressLine1.value,
       AddressLine2: this.studentForm.controls.addressLine2.value,
       Gender: this.studentForm.controls.gender.value,

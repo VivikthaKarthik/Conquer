@@ -468,3 +468,106 @@ GO
 
 
 
+Master Data
+
+
+INSERT INTO RoomType VALUES ('Bath Room', '', '');
+INSERT INTO RoomType VALUES ('Living Room', '', '');
+INSERT INTO RoomType VALUES ('Dining Room', '', '');
+INSERT INTO RoomType VALUES ('Kitchen', '', '');
+INSERT INTO RoomType VALUES ('Bed Room', '', '');
+INSERT INTO RoomType VALUES ('Balcony', '', '');
+INSERT INTO RoomType VALUES ('Entrance Foyer', '', '');
+INSERT INTO RoomType VALUES ('Utility', '', '');
+INSERT INTO RoomType VALUES ('Study Room', '', '');
+INSERT INTO RoomType VALUES ('Pooja Room', '', '');
+
+
+INSERT INTO WorkOrderItem VALUES ('Bathroom Cabinet', '', '', 1000001);
+INSERT INTO WorkOrderItem VALUES ('False Ceiling', '', '', 1000001);
+INSERT INTO WorkOrderItem VALUES ('Vanity Unit - Sink Area', '', '', 1000001);
+
+INSERT INTO WorkOrderItem VALUES ('Bar Unit', '', '', 1000002);
+INSERT INTO WorkOrderItem VALUES ('Book Shelf', '', '', 1000002);
+INSERT INTO WorkOrderItem VALUES ('Center Table', '', '', 1000002);
+INSERT INTO WorkOrderItem VALUES ('Display Shelf', '', '', 1000002);
+INSERT INTO WorkOrderItem VALUES ('False Ceiling', '', '', 1000002);
+INSERT INTO WorkOrderItem VALUES ('Partition', '', '', 1000002);
+INSERT INTO WorkOrderItem VALUES ('Pooja Unit With Shutter', '', '', 1000002);
+INSERT INTO WorkOrderItem VALUES ('Pooja Unit Without Shutter', '', '', 1000002);
+INSERT INTO WorkOrderItem VALUES ('Sofa Set', '', '', 1000002);
+INSERT INTO WorkOrderItem VALUES ('Storage Unit', '', '', 1000002);
+INSERT INTO WorkOrderItem VALUES ('TV Base Unit', '', '', 1000002);
+INSERT INTO WorkOrderItem VALUES ('TV Wall Unit', '', '', 1000002);
+
+INSERT INTO WorkOrderItem VALUES ('Bar Unit', '', '', 1000003);
+INSERT INTO WorkOrderItem VALUES ('Crockery Unit', '', '', 1000003);
+INSERT INTO WorkOrderItem VALUES ('Display Shelf', '', '', 1000003);
+INSERT INTO WorkOrderItem VALUES ('Partition', '', '', 1000003);
+INSERT INTO WorkOrderItem VALUES ('Storage Unit', '', '', 1000003);
+INSERT INTO WorkOrderItem VALUES ('Vanity Unit - Sink Area', '', '', 1000003);
+
+
+INSERT INTO WorkOrderItem VALUES ('3 Tier Base Unit Pullout', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Bottom Unit - Base Unit', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Counter Top - Fixing', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Cup & Saucer Basket', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Dado - Tile - Fixing', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Double Bottle Pullout', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('False Ceiling', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Loft Storage - Top Storage', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Magic Corner', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Plain Basket', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('PVC Cutlery Tray', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Tall Unit', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Tall Unit Pullout - SS', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Tambor Unit - Storage Unit', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Tandem Drawers', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Thali Basket', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Under Sink Organiser', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Wall Mounted Plate Holder', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Wall Sliding Unit', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Wall Unit', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Wall Basket', '', '', 1000004);
+INSERT INTO WorkOrderItem VALUES ('Wooden Cutlery Tray', '', '', 1000004);
+
+
+INSERT INTO WorkOrderItem VALUES ('Bed', '', '', 1000005);
+INSERT INTO WorkOrderItem VALUES ('Bed Bench', '', '', 1000005);
+INSERT INTO WorkOrderItem VALUES ('Bed Side Table', '', '', 1000005);
+INSERT INTO WorkOrderItem VALUES ('Display Shelf', '', '', 1000005);
+INSERT INTO WorkOrderItem VALUES ('Dressing Unit', '', '', 1000005);
+INSERT INTO WorkOrderItem VALUES ('False Ceiling', '', '', 1000005);
+INSERT INTO WorkOrderItem VALUES ('Loft Storage - Top Storage', '', '', 1000005);
+INSERT INTO WorkOrderItem VALUES ('Study Unit', '', '', 1000005);
+INSERT INTO WorkOrderItem VALUES ('TV Base Unit', '', '', 1000005);
+INSERT INTO WorkOrderItem VALUES ('TV Wall Unit', '', '', 1000005);
+INSERT INTO WorkOrderItem VALUES ('Wardrobe', '', '', 1000005);
+
+
+INSERT INTO WorkOrderItem VALUES ('Seating - Table & Chair', '', '', 1000006);
+INSERT INTO WorkOrderItem VALUES ('Storage Cabinet', '', '', 1000006);
+
+
+INSERT INTO WorkOrderItem VALUES ('Console Table', '', '', 1000007);
+INSERT INTO WorkOrderItem VALUES ('Display Shelf', '', '', 1000007);
+INSERT INTO WorkOrderItem VALUES ('False Ceiling', '', '', 1000007);
+INSERT INTO WorkOrderItem VALUES ('Seating Area', '', '', 1000007);
+INSERT INTO WorkOrderItem VALUES ('Shoe Rack', '', '', 1000007);
+
+
+INSERT INTO WorkOrderItem VALUES ('Counter - Bottom Unit', '', '', 1000008);
+INSERT INTO WorkOrderItem VALUES ('Counter Top - Fixing', '', '', 1000008);
+INSERT INTO WorkOrderItem VALUES ('Wall Unit', '', '', 1000008);
+
+
+INSERT INTO WorkOrderItem VALUES ('Table', '', '', 1000009);
+INSERT INTO WorkOrderItem VALUES ('Storage Unit', '', '', 1000009);
+
+
+INSERT INTO WorkOrderItem VALUES ('Pooja Unit With Shutter', '', '', 10000010);
+INSERT INTO WorkOrderItem VALUES ('Pooja Unit Without Shutter', '', '', 10000010);
+INSERT INTO WorkOrderItem VALUES ('Storage Unit', '', '', 10000010);
+
+
+

@@ -16,6 +16,7 @@ builder.Services.AddScoped<HtmlAppender>();
 builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IWorkOrderService, WorkOrderService>();
+builder.Services.AddScoped<ICommonService, CommonService>();
 
 IMapper mapper = MapperConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);

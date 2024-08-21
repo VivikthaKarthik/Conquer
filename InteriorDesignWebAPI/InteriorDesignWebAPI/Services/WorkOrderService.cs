@@ -5,6 +5,7 @@ using InteriorDesignWebAPI.Models.Dtos;
 using InteriorDesignWebAPI.Services.Interfaces;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace InteriorDesignWebAPI.Services
 {
@@ -29,6 +30,90 @@ namespace InteriorDesignWebAPI.Services
                 if (workOrder != null)
                 {
                     response.Result = mapper.Map<WorkOrderDto>(workOrder);
+                    //if (dbContext.WorkOrderImages.Any(x => x.WorkOrderId == id))
+                    //{
+                    //    workorder.ImagePath = dbContext.WorkOrderImages.First(x => x.WorkOrderId == id).ImagePath;
+                    //}
+
+                    //if (dbContext.WorkOrderParts.Any(x => x.WorkOrderId == id))
+                    //{
+                    //    workorder.Parts = new List<WorkOrderPartDto>();
+                    //    var partsList = dbContext.WorkOrderParts.Where(x => x.WorkOrderId == id).ToList();
+
+                    //    var workOrderTypes = dbContext.WorkOrderTypes.ToList();
+
+                    //    foreach (var item in partsList)
+                    //    {
+                    //        WorkOrderPartDto part = new WorkOrderPartDto()
+                    //        {
+                    //            Id = item.Id,
+                    //            WorkOrderId = item.WorkOrderId,
+                    //            Notes = item.Notes,
+                    //            WorkOrderTypeId = item.WorkOrderTypeId
+                    //        };
+
+                    //        height += item.Height;
+                    //        width += item.Width;
+
+                    //        if (workOrderTypes.Any(x => x.Id == item.WorkOrderTypeId))
+                    //            part.WorkOrderType = workOrderTypes.First(x => x.Id == item.WorkOrderTypeId).Name;
+
+                    //        workorder.Parts.Add(part);
+                    //    }
+                    //}
+
+                    //if (height > 0)
+                    //    workorder.Height = height;
+
+                    //if (width > 0)
+                    //    workorder.Width = width;
+                }
+                else
+                    response.Message = "Not Found";
+
+                response.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.Message = ex.Message;
+            }
+            return response;
+        }
+        public async Task<ResponseDto> GetWorkOrdersByRoomIdAsync(int roomId)
+        {
+            ResponseDto response = new ResponseDto();
+            try
+            {
+                var workOrders = await dbContext.VwWorkOrders.Where(x => x.RoomId == roomId).ToListAsync();
+
+                if (workOrders != null && workOrders.Count > 0)
+                {
+                    List<WorkOrderDto> list = new List<WorkOrderDto>();
+                    foreach (var data in workOrders)
+                    {
+                        WorkOrderDto workorder = new WorkOrderDto();
+                        workorder.Id = data.Id;
+                        workorder.WorkOrderItemId = data.WorkOrderItemId;
+                        workorder.WorkOrderItem = data.WorkOrderItem;
+                        workorder.OuterFrameType = data.OuterFrameType;
+                        workorder.WorkOrderType = data.WorkOrderType;
+                        workorder.RoomId = data.RoomId;
+                        workorder.DesignType = data.DesignType;
+                        workorder.MaterialType = data.MaterialType;
+                        workorder.Height = data.Height;
+                        workorder.Width = data.Width;
+                        workorder.SuppressCalculation = data.SuppressCalculation;
+                        workorder.Amount = data.Amount;
+
+                        if (dbContext.WorkOrderImages.Any(x => x.WorkOrderId == data.Id))
+                        {
+                            workorder.ImagePath = dbContext.WorkOrderImages.First(x => x.WorkOrderId == data.Id).ImagePath;
+                        }
+
+                        list.Add(workorder);
+                    }
+                    response.Result = list;
                     //if (dbContext.WorkOrderImages.Any(x => x.WorkOrderId == id))
                     //{
                     //    workorder.ImagePath = dbContext.WorkOrderImages.First(x => x.WorkOrderId == id).ImagePath;

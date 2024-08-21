@@ -72,12 +72,12 @@
                                 </ul>
                             </nav>
                         </div>
-                        <div class="search-btn-with-btn">
-                            @*  <div class="search-btn-wrapper">
+                      @*   <div class="search-btn-with-btn">
+                             <div class="search-btn-wrapper">
                             <a href="javascript:void(0);" class="search-btn">
                             <i class="fa-solid fa-magnifying-glass"></i>
                             </a>
-                            </div> *@
+                            </div>
                             <CascadingAuthenticationState>
                                 <AuthorizeView>
                                     <NotAuthorized>
@@ -93,7 +93,7 @@
                                     </Authorized>
                                 </AuthorizeView>
                             </CascadingAuthenticationState>
-                        </div>
+                        </div> *@
                         <!-- Mobile Menu Toggle Button Start !-->
                         <div class="mobile-menu-bar d-lg-none text-end">
                             <a href="javascript:void(0);" onclick="Update" class="mobile-menu-toggle-btn"><i class="fal fa-bars"></i></a>
@@ -153,7 +153,8 @@
         </div>
     </div>
     <!-- Menu Sidebar Section Start -->
-    <div class="body-overlay"></div>
+    <div class="body-overlay">
+    </div>
     <div class="container">
         <main role="main" class="pb-3" style="height:530px;">
             @* <div id="preloader">
@@ -238,7 +239,6 @@
 
         </main>
     </div>
-
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

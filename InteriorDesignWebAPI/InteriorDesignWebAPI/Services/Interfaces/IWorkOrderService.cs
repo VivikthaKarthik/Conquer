@@ -6,6 +6,7 @@ namespace InteriorDesignWebAPI.Services.Interfaces
     public interface IWorkOrderService
     {
         Task<ResponseDto> GetWorkOrderByIdAsync(int id);
+        Task<ResponseDto> GetWorkOrdersByRoomIdAsync(int roomId);
         Task<ResponseDto> GetWorkOrderItemImage(int id);
         Task<ResponseDto> CreateWorkOrderAsync(WorkOrderDto data);
         Task<ResponseDto> UpdateWorkOrderAsync(WorkOrderDto data);
