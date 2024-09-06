@@ -149,10 +149,10 @@
                             <h3 class="page-title">Project Details</h3>
                         </div>
                         <div class="breadcrumb-list">
-                            <ul>
-                                <li><a href="javascript:void(0);">Home</a></li>
+                            <ul id="navigationLinks">
+                                <!-- <li><a href="javascript:void(0);">Home</a></li>
                                 <li><a href="javascript:void(0);">Projects</a></li>
-                                <li><a href="javascript:void(0);">Rooms</a></li>
+                                <li><a href="javascript:void(0);">Rooms</a></li> -->
                             </ul>
                         </div>
                     </div>
@@ -261,8 +261,10 @@
                                                 <button class="myButton text-right" type="button"
                                                     onclick="NavigateToEditRoom();">Add <i
                                                         class="fa-solid fa-add"></i></button>
-                                                <button class="myButton text-right" type="button">Quotation</button>
-                                                <button class="myButton text-right" type="button">WorkSheet</button>
+                                                <button class="myButton text-right" type="button"
+                                                    onclick="NavigateToQuotation();">Quotation</button>
+                                                <button class="myButton text-right" type="button"
+                                                    onclick="NavigateToWorksheet();">WorkSheet</button>
                                             </div>
                                         </div>
 
@@ -310,9 +312,78 @@
     <script src="js/circletype.min.js"></script>
     <script src="js/custom.js"></script>
     <script src="js/webapi.js"></script>
+    <script src="js/navigation.js"></script>
 
 
     <script type="text/javascript">
+        function pdfData() {
+            var options = {
+              documentSize: 'A4',
+              type: 'base64'
+            };
+            var fileName = "TestFile.pdf";
+            var pdfhtml = document.getElementById("pdfdata").innerHTML;
+            pdf.fromData(pdfhtml, options)
+              .then(function (base64) {
+                var contentType = "application/pdf";
+                var folderpath = cordova.file.externalRootDirectory + "Download/"; //you can select other folders
+                savebase64AsPDF(folderpath, fileName, base64, contentType);
+                shareData();
+              })
+              .catch((err) => console.err(err));
+        }
+        function shareData() {
+            var fileName = "TestFile.pdf";
+            var folderpath = cordova.file.externalRootDirectory + "Download/";
+            var options = {
+                message: 'share this',
+                subject: 'Document from SP',
+                files: [folderpath + fileName],
+                url: 'https://dsquad.in',
+                chooserTitle: 'Pick an app',
+            };
+            var onSuccess = function (result) {
+                console.log("Share completed? " + result.completed);
+                console.log("Shared to app: " + result.app);
+            };
+            var onError = function (msg) {
+                console.log("Sharing failed with message: " + msg);
+            };
+            window.plugins.socialsharing.shareWithOptions(options, onSuccess, onError);
+        }
+        function b64toBlob(b64Data, contentType, sliceSize) {
+            contentType = contentType || '';
+            sliceSize = sliceSize || 512;
+            var byteCharacters = atob(b64Data);
+            var byteArrays = [];
+            for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+                var slice = byteCharacters.slice(offset, offset + sliceSize);
+                var byteNumbers = new Array(slice.length);
+                for (var i = 0; i < slice.length; i++) {
+                    byteNumbers[i] = slice.charCodeAt(i);
+                }
+                var byteArray = new Uint8Array(byteNumbers);
+                byteArrays.push(byteArray);
+            }
+            var blob = new Blob(byteArrays, { type: contentType });
+            return blob;
+        }
+        function savebase64AsPDF(folderpath, filename, content, contentType) {
+            var DataBlob = b64toBlob(content, contentType);
+            console.log("Starting to write the file :3");
+            window.resolveLocalFileSystemURL(folderpath, function (dir) {
+                console.log("Access to the directory granted succesfully");
+                dir.getFile(filename, { create: true }, function (file) {
+                    console.log("File created succesfully.");
+                    file.createWriter(function (fileWriter) {
+                        console.log("Writing content to file");
+                        fileWriter.write(DataBlob);
+                    }, function () {
+                        alert('Unable to save file in path ' + folderpath);
+                    });
+                });
+            });
+        }
 
         var project = {};
         function getQueryParam(param) {
@@ -323,6 +394,16 @@
         function NavigateToEditRoom() {
             var projectId = getQueryParam('projectId');
             location.href = "editroom.html?projectId=" + projectId;
+        }
+
+        function NavigateToWorksheet() {
+            var projectId = getQueryParam('projectId');
+            location.href = "worksheet.html?projectId=" + projectId;
+        }
+
+        function NavigateToQuotation() {
+            var projectId = getQueryParam('projectId');
+            location.href = "quotation.html?projectId=" + projectId;
         }
 
         function FetchProject(projectId) {
@@ -431,6 +512,7 @@
         }
 
         $(document).ready(function () {
+            addToHistory('Project', window.location.href);
             LoadMainMenu('Projects');
 
             var projectId = getQueryParam('projectId');

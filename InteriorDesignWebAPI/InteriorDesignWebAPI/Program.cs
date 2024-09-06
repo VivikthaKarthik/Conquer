@@ -17,6 +17,9 @@ builder.Services.AddScoped<IProjectService, ProjectService>();
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IWorkOrderService, WorkOrderService>();
 builder.Services.AddScoped<ICommonService, CommonService>();
+builder.Services.AddScoped<IExplorer, ExplorerService>();
+builder.Services.AddScoped<IWorkSheetService, WorkSheetService>();
+builder.Services.AddScoped<IQuotationService, QuotationService>();
 
 IMapper mapper = MapperConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);

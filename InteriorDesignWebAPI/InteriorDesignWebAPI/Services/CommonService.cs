@@ -66,8 +66,9 @@ namespace InteriorDesignWebAPI.Services
 
             sb.Append("<ul>"); 
             sb.Append((pageName == "Home"? "<li class='active'>" : "<li>") + "<a href='index-2.html'>Home</a></li>");
-            sb.Append((pageName == "About" ? "<li class='active'>" : "<li>") + "<a href='about.html'>About</a></li>");
+            sb.Append((pageName == "Explore" ? "<li class='active'>" : "<li>") + "<a href='explore.html'>Explore</a></li>");
             sb.Append((pageName == "Projects" || pageName == "Rooms" ? "<li class='active'>" : "<li>") + "<a href='projects.html'>Projects</a></li>");
+            sb.Append((pageName == "About" ? "<li class='active'>" : "<li>") + "<a href='about.html'>About</a></li>");
             sb.Append("<li><a href=\"contact.html\">Contact</a></li>");
 
             response.Result = sb.ToString();

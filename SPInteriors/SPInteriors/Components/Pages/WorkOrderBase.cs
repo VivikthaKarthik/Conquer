@@ -12,6 +12,9 @@ namespace SPInteriors.Components.Pages
         [Inject] IRoomService roomService { get; set; }
         [Inject] IFileUploadService FileUploadService { get; set; }
         [Inject] ICommonService commonService { get; set; }
+        [Inject] NavigationManager NavigationManager {  get; set; }
+
+
         protected bool showModal;
 
         [Parameter]
@@ -206,7 +209,7 @@ namespace SPInteriors.Components.Pages
 
         protected async void Navigate(string url)
         {
-            Navigate(url);
+            NavigationManager.NavigateTo(url, true);
         }
     }
 }

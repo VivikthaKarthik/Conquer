@@ -194,10 +194,7 @@
                             <h3 class="page-title">Room Details</h3>
                         </div>
                         <div class="breadcrumb-list">
-                            <ul>
-                                <li><a href="javascript:void(0);">Home</a></li>
-                                <li><a href="javascript:void(0);">Projects</a></li>
-                                <li><a href="javascript:void(0);">Rooms</a></li>
+                            <ul id="navigationLinks">
                             </ul>
                         </div>
                     </div>
@@ -211,8 +208,12 @@
         <div class="container edit-screen-container">
 
             <div class="row edit-screen-header">
-                <div class="col-xl-12">
+                <div class="col-xl-6">
                     <h3 id="roomName"></h3>
+                </div>
+                <div class="col-xl-6 grid-buttons-container">
+                    <button class="myButton text-right" type="button">Back</button>
+                    <button class="myButton text-right" type="button">Save</button>
                 </div>
             </div>
 
@@ -225,7 +226,17 @@
                                     <div class="container">
 
                                         <div class="row form-row">
-
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    Room Name *
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-10 col-lg-10">
+                                                <div class="form-field">
+                                                    <input type="text" id="nameField" class="form-control"
+                                                        placeholder="Name" />
+                                                </div>
+                                            </div>
                                             <div class="col-xl-2 col-lg-2">
                                                 <div class="form-label">
                                                     Room Type *
@@ -242,7 +253,8 @@
                                                 <div class="form-field-button" style="margin:0 !important;">
                                                     <button
                                                         style="margin-left: -3px;margin-top: 0px;border-radius:12px;"
-                                                        class="myButton text-right" type="button"><i
+                                                        class="myButton text-right" type="button"
+                                                        onclick="NavigateToAddRoomType();"><i
                                                             class="fa-solid fa-add"></i></button>
                                                 </div>
                                             </div>
@@ -298,12 +310,6 @@
                                 </div>
                             </div>
 
-                            <div class="row form-row">
-                                <div class="col-xl-12 grid-buttons-container">
-                                    <button class="myButton text-right" type="button">Back</button>
-                                    <button class="myButton text-right" type="button">Save</button>
-                                </div>
-                            </div>
                         </form>
                     </div>
                 </div>
@@ -328,6 +334,7 @@
     <script src="js/circletype.min.js"></script>
     <script src="js/custom.js"></script>
     <script src="js/webapi.js"></script>
+    <script src="js/navigation.js"></script>
 
 
     <script type="text/javascript">
@@ -337,9 +344,21 @@
             return urlParams.get(param);
         }
 
+        function NavigateToAddRoomType() {
+            var workOrderId = getQueryParam('workOrderId');
+            location.href = "addroomtype.html";
+        }
+
         function NavigateToEditWorkOrder() {
             var roomId = getQueryParam('roomId');
-            location.href = "editworkorder.html?roomId=" + roomId;
+            var roomTypeId = $('#RoomTypeId').val();
+
+            if (roomTypeId != null && roomTypeId > 0) {
+                location.href = "editworkorder.html?roomId=" + roomId + "&roomTypeId=" + roomTypeId;
+            }
+            else {
+                alert('Please select Room Type.');
+            }
         }
 
         function FetchRoom(roomId) {
@@ -385,7 +404,7 @@
                                 div.style.marginTop = "20px";
 
                                 div.addEventListener("click", () => {
-                                    NavigateTo("editworkorder.html?workOrderId=" + workOrder.id);
+                                    NavigateTo("editworkorder.html?roomId=" + workOrder.roomId + "&workOrderId=" + workOrder.id);
                                 });
 
                                 div.innerHTML = `<div class="team-member-card">
@@ -445,6 +464,7 @@
         }
 
         $(document).ready(function () {
+            addToHistory('Room', window.location.href);
             LoadMainMenu('Rooms');
             var roomId = getQueryParam('roomId');
 

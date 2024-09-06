@@ -198,10 +198,10 @@
                             <h3 class="page-title">WorkOrder Details</h3>
                         </div>
                         <div class="breadcrumb-list">
-                            <ul>
-                                <li><a href="javascript:void(0);">Home</a></li>
+                            <ul id="navigationLinks">
+                                <!-- <li><a href="javascript:void(0);">Home</a></li>
                                 <li><a href="javascript:void(0);">Projects</a></li>
-                                <li><a href="javascript:void(0);">Rooms</a></li>
+                                <li><a href="javascript:void(0);">Rooms</a></li> -->
                             </ul>
                         </div>
                     </div>
@@ -215,8 +215,13 @@
         <div class="container edit-screen-container">
 
             <div class="row edit-screen-header">
-                <div class="col-xl-12">
+                <div class="col-xl-6">
                     <h3 id="workOrderName"></h3>
+                </div>
+                <div class="col-xl-6 grid-buttons-container">
+                    <button class="myButton text-right" type="button">Back</button>
+                    <button class="myButton text-right" type="button" onclick="SaveWorkOrder();">Save</button>
+                    <button class="myButton text-right" type="button" onclick="DeleteWorkOrder();">Delete</button>
                 </div>
             </div>
 
@@ -229,6 +234,17 @@
                                     <div class="container">
 
                                         <div class="row form-row">
+                                            <div class="col-xl-2 col-lg-2">
+                                                <div class="form-label">
+                                                    WorkOrder Name *
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-10 col-lg-10">
+                                                <div class="form-field">
+                                                    <input type="text" id="nameField" class="form-control"
+                                                        placeholder="Name" />
+                                                </div>
+                                            </div>
 
                                             <div class="col-xl-2 col-lg-2">
                                                 <div class="form-label">
@@ -246,7 +262,8 @@
                                                 <div class="form-field-button" style="margin:0 !important;">
                                                     <button
                                                         style="margin-left: -3px;margin-top: 0px;border-radius:12px;"
-                                                        class="myButton text-right" type="button"><i
+                                                        class="myButton text-right" type="button"
+                                                        onclick="NavigateToAddWorkOrderItem();"><i
                                                             class="fa-solid fa-add"></i></button>
                                                 </div>
                                             </div>
@@ -259,13 +276,13 @@
                                             <div class="col-xl-2 col-lg-2">
                                                 <div class="form-field">
                                                     <input type="number" id="heightInFeet" class="form-control"
-                                                        placeholder="feet" />
+                                                        placeholder="feet" readonly />
                                                 </div>
                                             </div>
                                             <div class="col-xl-2 col-lg-2">
                                                 <div class="form-field">
                                                     <input type="number" id="heightInInch" class="form-control" max="12"
-                                                        placeholder="inch" />
+                                                        placeholder="inch" readonly />
                                                 </div>
                                             </div>
 
@@ -277,13 +294,13 @@
                                             <div class="col-xl-2 col-lg-2">
                                                 <div class="form-field">
                                                     <input type="number" id="widthInFeet" class="form-control"
-                                                        placeholder="feet" />
+                                                        placeholder="feet" readonly />
                                                 </div>
                                             </div>
                                             <div class="col-xl-2 col-lg-2">
                                                 <div class="form-field">
                                                     <input type="number" id="widthInInch" class="form-control" max="12"
-                                                        placeholder="inch" />
+                                                        placeholder="inch" readonly />
                                                 </div>
                                             </div>
                                             <div class="col-xl-2 col-lg-2">
@@ -298,15 +315,15 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-xl-2 col-lg-2 amountFields">
+                                            <div class="col-xl-2 col-lg-2 amountFields hidden">
                                                 <div class="form-label">
                                                     Amount
                                                 </div>
                                             </div>
-                                            <div class="col-xl-4 col-lg-4 amountFields">
+                                            <div class="col-xl-4 col-lg-4 amountFields hidden">
                                                 <div class="form-field">
-                                                    <input type="text" class="form-control"
-                                                        @bind-value="@workOrder.Amount" placeholder="Enter Amount" />
+                                                    <input type="text" class="form-control" id="AmountField"
+                                                        placeholder="Enter Amount" />
                                                 </div>
                                             </div>
                                             <!-- <div class="col-xl-2 col-lg-2">
@@ -337,6 +354,38 @@
                                         </div>
 
                                         <div class="row" style="padding-left:10px;padding-top:47px;">
+                                            <div class="col-xl-12">
+                                                <h4>Images</h4>
+                                            </div>
+                                            <!-- <div class="col-xl-12" style="margin-left:10px;margin-top:20px;">
+                                                <InputFile />
+                                            </div> -->
+                                            <div class="col-xl-12">
+                                                <div class="contacts-message">
+                                                    <span style="font-size:16px;padding-left:4px;">Upload Image</span>
+                                                    <input style="padding-top:10px;" type="file" id="imageInput"
+                                                        name="images" multiple accept="image/*">
+                                                </div>
+                                            </div>
+                                            <div class="our-team-area style-2">
+                                                <div class="container">
+
+                                                    <div class="team-card-wrapper">
+                                                        <div class="row" id="imagePreview">
+                                                            <!-- <div class="col-lg-3 col-md-5" style="margin-top:20px;">
+                                                                        <img style="height:300px;width:300px;" src="@image.Name" />
+                                                                    </div> -->
+                                                            <div class="col-lg-3 col-md-5" style="margin-top:20px;">
+                                                                <span>No Images uploaded yet...</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row" style="padding-left:10px;padding-top:47px;">
                                             <div class="col-xl-6">
                                                 <h4>Parts</h4>
                                             </div>
@@ -350,7 +399,7 @@
                                         <div class="our-team-area style-2">
                                             <div class="container">
                                                 <div class="team-card-wrapper">
-                                                    <div class="row" id="workOrdersRow">
+                                                    <div class="row" id="workOrderPartsRow">
 
                                                     </div>
                                                 </div>
@@ -361,12 +410,6 @@
                                 </div>
                             </div>
 
-                            <div class="row form-row">
-                                <div class="col-xl-12 grid-buttons-container">
-                                    <button class="myButton text-right" type="button">Back</button>
-                                    <button class="myButton text-right" type="button">Save</button>
-                                </div>
-                            </div>
                         </form>
                     </div>
                 </div>
@@ -391,10 +434,12 @@
     <script src="js/circletype.min.js"></script>
     <script src="js/custom.js"></script>
     <script src="js/webapi.js"></script>
+    <script src="js/navigation.js"></script>
 
 
     <script type="text/javascript">
-
+        var roomTypeId = 0;
+        var images = [];
         function getQueryParam(param) {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get(param);
@@ -402,8 +447,139 @@
 
         function NavigateToEditPart() {
             var workOrderId = getQueryParam('workOrderId');
-            location.href = "editPart.html?workOrderId=" + workOrderId;
+            if (workOrderId != null && workOrderId > 0) {
+                location.href = "editPart.html?workOrderId=" + workOrderId;
+            }
+            else {
+                SaveWorkOrderAndAddPart();
+            }
         }
+
+        function NavigateToAddWorkOrderItem() {
+            var workOrderId = getQueryParam('workOrderId');
+            location.href = "addworkorderitem.html?roomTypeId=" + roomTypeId + "&workOrderId=" + workOrderId;
+        }
+
+
+        function DeleteWorkOrder() {
+            var workOrderId = getQueryParam('workOrderId');
+
+            del(
+                "WorkOrder",
+                "DeleteWorkOrder?id=" + workOrderId,
+                null,
+                function (response) {
+                    goBack();
+                },
+                function (error) {
+                    alert("There is an issue in calling WebAPi - GetWorkOrderById. Please try again");
+                    console.log("Error:", error);
+                }
+            );
+        }
+
+        function SaveWorkOrder() {
+            SaveForm(false);
+        }
+
+        function SaveWorkOrderAndAddPart() {
+            SaveForm(true);
+        }
+
+        function SaveForm(addPart) {
+            var workOrderItemId = $('#WorkOrderItemId').val();
+            var name = document.getElementById("nameField").value.trim();
+
+            if (workOrderItemId == null || workOrderItemId <= 0) {
+                alert("Please Select WorkOrderItem..");
+                return;
+            }
+
+            // Validate required fields
+            if (!name) {
+                alert("The Name field is required.");
+                return;
+            }
+
+            // Collect other form data
+            // var heightInFeet = document.getElementById("heightInFeet").value.trim();
+            // var heightInInch = document.getElementById("heightInInch").value.trim();
+            // var widthInFeet = document.getElementById("widthInFeet").value.trim();
+            // var widthInInch = document.getElementById("widthInInch").value.trim();
+            var suppressCalculation = document.getElementById("SuppressCalculationId").checked;
+            var amount = document.getElementById("AmountField").value.trim();
+            var roomId = getQueryParam('roomId');
+            var workOrderId = getQueryParam('workOrderId');
+
+
+            var workOrderDto = {
+                name: name,
+                WorkOrderItemId: parseInt(workOrderItemId),
+                id: workOrderId != '' ? parseInt(workOrderId) : 0,
+                heightInFeet: 0,
+                widthInFeet: 0,
+                heightInInch: 0,
+                widthInInch: 0,
+                amount: amount != '' ? parseInt(amount) : 0,
+                suppressCalculation: suppressCalculation,
+                roomId: roomId
+            };
+
+            // Use FormData to handle file uploads
+            var formData = new FormData();
+            formData.append("workOrder", JSON.stringify(workOrderDto));
+
+            for (var i = 0; i < images.length; i++) {
+                formData.append("images", images[i]);
+            }
+
+            $.ajax({
+                url: "https://localhost:7092/api/WorkOrder/SaveWorkOrder",
+                type: "POST",
+                data: formData,
+                processData: false, // Prevent jQuery from processing the data
+                contentType: false, // Prevent jQuery from setting the content type
+                success: function (response) {
+                    if (response.isSuccess) {
+                        workOrderId = response.result;
+                        if (addPart) {
+                            location.href = "editPart.html?workOrderId=" + workOrderId;
+                        }
+                        else {
+                            goBack();
+                        }
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                },
+                error: function (error) {
+                    alert("There was an issue in calling the API. Please try again.");
+                    console.log("Error:", error);
+                }
+            });
+        }
+
+
+        document.getElementById('imageInput').addEventListener('change', function () {
+            const imagePreview = document.getElementById('imagePreview');
+            imagePreview.innerHTML = '';
+
+            for (let i = 0; i < this.files.length; i++) {
+                const div = document.createElement("div");
+                div.className = "col-lg-3 col-md-5";
+                div.style.marginTop = "20px";
+
+                const img = document.createElement('img');
+                img.src = URL.createObjectURL(this.files[i]);
+                img.style.maxHeight = '250px';
+                img.style.margin = '30px';
+                div.appendChild(img);
+
+                imagePreview.appendChild(div);
+                images.push(this.files[i]);
+            }
+        });
 
         function toggleFields() {
             const fields = document.querySelectorAll('.amountFields');
@@ -426,18 +602,35 @@
 
                     if (data != null && data.isSuccess) {
                         workOrder = data.result;
+                        roomTypeId = workOrder.roomTypeId;
+
                         BindDropdown('WorkOrderItemId', 'WorkOrderItem', 'RoomType', workOrder.roomTypeId, workOrder.workOrderItemId);
                         // BindDropdown('MaterialTypeId', 'MaterialType', workOrder.materialTypeId);
                         // BindDropdown('OuterFrameTypeId', 'OuterFrameType', workOrder.outerFrameTypeId);
                         // FetchParts(workOrderId);
+                        document.getElementById("nameField").value = workOrder.name;
                         document.getElementById("workOrderName").innerText = workOrder.workOrderItem;
                         document.getElementById("heightInFeet").value = workOrder.heightInFeet;
                         document.getElementById("heightInInch").value = workOrder.heightInInch;
                         document.getElementById("widthInFeet").value = workOrder.widthInFeet;
                         document.getElementById("widthInInch").value = workOrder.widthInInch;
 
-                        if (workOrder.suppressCalculation)
-                            toggleFields();
+                        const fields = document.querySelectorAll('.amountFields');
+                        fields.forEach(field => {
+                            if (workOrder.suppressCalculation) {
+                                field.classList.remove('hidden'); // Show the field if it's hidden
+                            } else {
+                                field.classList.add('hidden'); // Hide the field
+                            }
+                        });
+
+                        if (workOrder.suppressCalculation) {
+                            document.getElementById("AmountField").value = workOrder.amount;
+                            document.getElementById("SuppressCalculationId").checked = true;
+                        }
+
+                        if (workOrder.parts != null && workOrder.parts.length > 0)
+                            FetchParts(workOrder.parts, workOrderId);
                     }
                     else {
                         document.getElementById("workOrderName").innerText = "New WorkOrder"
@@ -450,47 +643,71 @@
             );
         }
 
-        function FetchParts(workOrderId) {
+        function FetchParts(workOrderParts, workOrderId) {
+
+            if (workOrderParts != null && workOrderParts.length > 0) {
+                const container = document.getElementById("workOrderPartsRow");
+                container.innerHTML = ""; // Clear any existing content
+
+                workOrderParts.forEach((part) => {
+                    const div = document.createElement("div");
+                    div.className = "col-lg-3 col-md-5";
+                    div.style.marginTop = "20px";
+
+                    div.addEventListener("click", () => {
+                        NavigateTo("editpart.html?partId=" + part.id + "&workOrderId=" + workOrderId);
+                    });
+
+                    div.innerHTML = `<div class="team-member-card">
+                             <div class="content-wrapper">
+                                 <div class="content">
+                                     <h2 class="title">${part.workOrderType}</h2>
+                                 </div>
+                             </div>
+                             <div class="image">
+                                 <img src="images/room/livingroom/livingroom.jpg" alt="${part.name}" />
+                             </div>
+                         </div>`;
+
+                    container.appendChild(div);
+                });
+            }
+        }
+        function FetchWorkOrderImages(workOrderId) {
             get(
                 "WorkOrder",
-                "GetWorkOrderPartsByWorkOrderIdAsync?workOrderId=" + workOrderId,
+                "GetWorkOrderImages?id=" + workOrderId,
                 function (response) {
                     const data = response;
 
                     if (data != null && data.isSuccess) {
-                        var workOrders = data.result;
+                        var workOrderImages = data.result;
 
-                        if (workOrders != null && workOrders.length > 0) {
-                            const container = document.getElementById("workOrdersRow");
-                            container.innerHTML = ""; // Clear any existing content
+                        if (workOrderImages != null && workOrderImages.length > 0) {
+                            const imagePreview = document.getElementById('imagePreview');
+                            imagePreview.innerHTML = '';
 
-                            workOrders.forEach((workOrder) => {
+                            for (let i = 0; i < workOrderImages.length; i++) {
                                 const div = document.createElement("div");
                                 div.className = "col-lg-3 col-md-5";
                                 div.style.marginTop = "20px";
 
-                                div.addEventListener("click", () => {
-                                    NavigateTo("rooms.html");
-                                });
+                                const img = document.createElement('img');
+                                img.src = workOrderImages[i].imagePath;
+                                img.style.maxHeight = '250px';
+                                img.style.margin = '30px';
+                                div.appendChild(img);
 
-                                div.innerHTML = `<div class="team-member-card">
-                             <div class="content-wrapper">
-                                 <div class="content">
-                                     <h2 class="title">${workOrder.name}</h2>
-                                 </div>
-                             </div>
-                             <div class="image">
-                                 <img src="${workOrder.imagePath}" alt="${workOrder.name}" />
-                             </div>
-                         </div>`;
-
-                                container.appendChild(div);
-                            });
+                                imagePreview.appendChild(div);
+                            }
                         }
+                    }
+                    else {
+                        document.getElementById("workOrderName").innerText = "New WorkOrder"
                     }
                 },
                 function (error) {
-                    alert("There is an issue in calling WebAPi - GetWorkOrdersByRoomIdAsync. Please try again");
+                    alert("There is an issue in calling WebAPi - GetWorkOrderById. Please try again");
                     console.log("Error:", error);
                 }
             );
@@ -536,16 +753,24 @@
         }
 
         $(document).ready(function () {
+            addToHistory('WorkOrder', window.location.href);
             LoadMainMenu('WorkOrders');
             var workOrderId = getQueryParam('workOrderId');
 
             if (workOrderId != null && workOrderId > 0) {
                 FetchWorkOrder(workOrderId);
+                FetchWorkOrderImages(workOrderId);
             }
             else {
-                BindDropdown('RoomTypeId', 'RoomType', 0);
-                BindDropdown('MaterialTypeId', 'MaterialType', 0);
-                BindDropdown('OuterFrameTypeId', 'OuterFrameType', 0);
+                var roomTypeId = getQueryParam('roomTypeId');
+                if (roomTypeId != null && roomTypeId > 0) {
+                    BindDropdown('WorkOrderItemId', 'WorkOrderItem', 'RoomType', roomTypeId);
+                } else {
+                    alert('RoomType Details are missing..');
+                    goBack();
+                }
+                // BindDropdown('MaterialTypeId', 'MaterialType', 0);
+                // BindDropdown('OuterFrameTypeId', 'OuterFrameType', 0);
             }
         });
     </script>

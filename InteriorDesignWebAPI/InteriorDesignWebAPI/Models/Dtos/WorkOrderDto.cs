@@ -94,5 +94,7 @@
 
         public int WidthInInch { get; set; }
         public string ImagePath { get; set; }
+
+        public List<WorkOrderPartDto> Parts { get; set; }
     }
 }

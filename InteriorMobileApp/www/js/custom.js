@@ -1018,6 +1018,15 @@
       location.href = url;
     };
 
+    window.addEventListener("beforeunload", function (event) {
+      // Perform any actions before leaving the page
+      // let history = JSON.parse(localStorage.getItem("navigationHistory")) || [];
+      // if (history.length > 1) {
+      //   history.pop(); // Remove the current page
+      //   localStorage.setItem("navigationHistory", JSON.stringify(history));
+      // }
+    });
+
     window.LoadMainMenu = function (pageName) {
       get(
         "Common",

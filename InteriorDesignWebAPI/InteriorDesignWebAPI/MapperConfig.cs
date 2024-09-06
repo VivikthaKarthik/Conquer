@@ -19,12 +19,23 @@ namespace InteriorDesignWebAPI
 
                 config.CreateMap<Room, RoomDto>();
                 config.CreateMap<RoomDto, Room>();
+                config.CreateMap<RoomTypeDto, RoomType>();
 
 
                 config.CreateMap<WorkOrder, WorkOrderDto>();
                 config.CreateMap<WorkOrderDto, WorkOrder>();
                 config.CreateMap<VwWorkOrder, WorkOrderDto>();
                 config.CreateMap<WorkOrderDto, VwWorkOrder>();
+                config.CreateMap<SaveWorkOrderDto, WorkOrder>();
+                
+                config.CreateMap<WorkOrderItemDto, WorkOrderItem>();
+                config.CreateMap<WorkOrderImage, WorkOrderImageDto>();
+
+                config.CreateMap<Category, CategoryDto>();
+                config.CreateMap<CategoryDto, Category>();
+                
+                config.CreateMap<PortfolioImage, PortfolioImageDto>();
+                config.CreateMap<PortfolioImageDto, PortfolioImage>();
 
             });
             return mapperConfig;
